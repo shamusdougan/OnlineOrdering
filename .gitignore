@@ -1,9 +1,10 @@
 assets/*
 !assets/.gitignore
-protected/runtime/*
-!protected/runtime/.gitignore
-protected/data/*.db
+_protected/runtime/*
+!_protected/runtime/.gitignore
+_protected/data/*.db
 themes/classic/views/
+
 
 # =========================
 # Operating System Files
@@ -51,3 +52,11 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+/_protected/runtime/
+
+*.data
+*.log
+*.log
+*.log
+_protected/runtime/logs/app.log
