@@ -15,7 +15,11 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "nenad/yii2-password-strength": "*",
-        "mihaildev/yii2-ckeditor": "*"
+        "mihaildev/yii2-ckeditor": "*",
+          "kartik-v/yii2-widgets": "*",
+        "kartik-v/yii2-krajee-base": "*",
+        "kartik-v/yii2-builder":"*",
+        "mdmsoft/yii2-admin": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
