@@ -8,11 +8,6 @@ $config = [
     //'language' => 'sr',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'modules' => [
-        'admin' => [
-            'class' => 'mdm\admin\Module',
-			]
-		],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) 
@@ -102,14 +97,6 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
-	'as access' => [
-        'class' => 'mdm\admin\components\AccessControl',
-        'allowActions' => [
-            'admin/*',
-            '*' // add or remove allowed actions to this list
-       		 ]
-		],
-
     'params' => $params,
 ];
 
