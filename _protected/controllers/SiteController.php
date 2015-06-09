@@ -33,15 +33,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -50,7 +45,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['post', 'get'],
                 ],
             ],
         ];
@@ -142,30 +137,21 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+    	
+    	
         if (!Yii::$app->user->isGuest) 
         {
             return $this->goHome();
         }
 
-        // get setting value for 'Login With Email'
-        $lwe = Yii::$app->params['lwe'];
-
-        // if 'lwe' value is 'true' we instantiate LoginForm in 'lwe' scenario
-        $model = $lwe ? new LoginForm(['scenario' => 'lwe']) : new LoginForm();
+        //  we instantiate LoginForm in 'lwe' scenario
+        $this->layout = "login_layout.php";
+        $model = new LoginForm();
 
         // now we can try to log in the user
         if ($model->load(Yii::$app->request->post()) && $model->login()) 
         {
             return $this->goBack();
-        }
-        // user couldn't be logged in, because he has not activated his account
-        elseif($model->status === User::STATUS_NOT_ACTIVE)
-        {
-            // if his account is not activated, he will have to activate it first
-            Yii::$app->session->setFlash('error', 
-                Yii::t('app', 'You have to activate your account first. Please check your email.'));
-
-            return $this->refresh();
         }    
         // account is activated, but some other errors have happened
         else

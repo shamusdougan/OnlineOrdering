@@ -191,3 +191,41 @@ hr.article-devider {
 .nz-meter-container {
     display: none;
 }
+
+.sapient_wrap
+{
+	width: 100%;
+
+	height: 100%;
+}
+
+.sapient_leftMenu
+{
+	width: 250px;
+	float: left;
+	height: 100%;
+	
+	padding-right: 10px;
+}
+
+.sapient_titleBar
+{
+	height:100px;
+	background-color: blue;	
+}
+
+.sapient_content
+{
+	float: left;
+
+	width: 1000px;
+	padding-left : 10px;
+}
+
+.sapient_login
+{
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+
+}

@@ -2,8 +2,9 @@
 use app\assets\AppAsset;
 use app\widgets\Alert;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
+use kartik\widgets\SideNav;
 use yii\widgets\Breadcrumbs;
 
 /* @var $this \yii\web\View */
@@ -23,70 +24,41 @@ AppAsset::register($this);
 </head>
 <body>
     <?php $this->beginBody() ?>
-    <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => Yii::t('app', Yii::$app->name),
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-default navbar-fixed-top',
-                ],
-            ]);
-
-            // everyone can see Home page
-            $menuItems[] = ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index']];
-
-            // we do not need to display Article/index, About and Contact pages to editor+ roles
-            if (!Yii::$app->user->can('editor')) 
-            {
-                $menuItems[] = ['label' => Yii::t('app', 'Articles'), 'url' => ['/article/index']];
-                $menuItems[] = ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']];
-                $menuItems[] = ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']];
-            }
-
-            // display Article admin page to editor+ roles
-            if (Yii::$app->user->can('editor'))
-            {
-                $menuItems[] = ['label' => Yii::t('app', 'Articles'), 'url' => ['/article/admin']];
-            }            
-
-            // display Users to admin+ roles
-            if (Yii::$app->user->can('admin'))
-            {
-                $menuItems[] = ['label' => Yii::t('app', 'Users'), 'url' => ['/user/index']];
-            }
-            
-            // display Signup and Login pages to guests of the site
-            if (Yii::$app->user->isGuest) 
-            {
-                $menuItems[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
-            }
-            // display Logout to all logged in users
-            else 
-            {
-                $menuItems[] = [
-                    'label' => Yii::t('app', 'Logout'). ' (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ];
-            }
-
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => $menuItems,
-            ]);
-
-            NavBar::end();
-        ?>
-
-        <div class="container">
-        <?= Breadcrumbs::widget([
+    
+    <div class='sapient_wrap'>
+    	<div class='sapient_leftMenu'>
+    		<?php 
+    		
+    		$username = Yii::$app->user->identity->username;
+    		echo SideNav::widget([
+				'type' => SideNav::TYPE_DEFAULT,
+				'heading' => "Menu (".$username.")",
+				'items' => [
+					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],
+				
+					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
+						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active' => ($item == 'User Accounts')],
+						['label' => 'Lookups', 'url' => Url::toRoute('/lookup')],
+						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]
+					
+					]],
+					['label' => 'Logout', 'icon' => 'off', 'url' => Url::toRoute('site/logout')]
+				
+				]
+				]);        
+				?>
+    	</div>
+    	<div class='sapient_content'>
+    		 <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
-        </div>
+    	</div>
+    	
+    </div>
+    
+       
     </div>
 
     <footer class="footer">

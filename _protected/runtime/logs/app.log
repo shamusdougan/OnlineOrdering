@@ -109,3 +109,1310 @@ Additional Information:
     ]
     'argc' => 2
 ]
+2015-06-09 14:55:24 [127.0.0.1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Trying to get property of non-object' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php:747
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(747): yii\base\ErrorHandler->handleError(8, 'Trying to get p...', 'D:\\xampp_projec...', 747, Array)
+#1 D:\xampp_projects\OnlineOrdering\_protected\rbac\helpers\RbacHelper.php(34): yii\rbac\DbManager->assign(NULL, 1)
+#2 D:\xampp_projects\OnlineOrdering\_protected\models\SignupForm.php(111): app\rbac\helpers\RbacHelper::assignRole(1)
+#3 D:\xampp_projects\OnlineOrdering\_protected\controllers\SiteController.php(288): app\models\SignupForm->signup()
+#4 [internal function]: app\controllers\SiteController->actionSignup()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('signup', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/signup', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#11 {main}
+2015-06-09 14:55:24 [127.0.0.1][-][-][info][application] $_POST = [
+    '_csrf' => 'TVk4dGVoWTEBaw82DSxoaDo4YScLPTZWJD1IE1YxIwkAPkwlBy8zSA=='
+    'SignupForm' => [
+        'username' => 'irwinadmin'
+        'email' => 'irwinadmin@dontcare.com'
+        'password' => 'irwinadmin'
+    ]
+    'signup-button' => ''
+]
+
+$_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => '80avs0r9kbmmoq95mtscpthao5'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/site/signup'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'CONTENT_LENGTH' => '199'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=80avs0r9kbmmoq95mtscpthao5; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '57059'
+    'REDIRECT_URL' => '/site/signup'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/signup'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433825724.083
+    'REQUEST_TIME' => 1433825724
+]
+2015-06-09 15:35:35 [127.0.0.1][1][t0ab4dup3ueipju6v185a6cg15][error][yii\base\ErrorException:1] exception 'yii\base\ErrorException' with message 'Class 'kartik\widgets\SideNav' not found' in D:\xampp_projects\OnlineOrdering\_protected\views\layouts\main.php:33
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleFatalError()
+#1 {main}
+2015-06-09 15:35:35 [127.0.0.1][1][t0ab4dup3ueipju6v185a6cg15][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 't0ab4dup3ueipju6v185a6cg15'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    '__captcha/site/captcha' => 'ricios'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/site/contact'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=t0ab4dup3ueipju6v185a6cg15; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '57780'
+    'REDIRECT_URL' => '/site/index'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/index'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828135.264
+    'REQUEST_TIME' => 1433828135
+]
+2015-06-09 15:43:02 [127.0.0.1][1][-][error][yii\web\HttpException:405] exception 'yii\web\MethodNotAllowedHttpException' with message 'Method Not Allowed. This url can only handle the following request methods: POST.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\filters\VerbFilter.php:105
+Stack trace:
+#0 [internal function]: yii\filters\VerbFilter->beforeAction(Object(yii\base\ActionEvent))
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('logout', Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/logout', Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#9 {main}
+2015-06-09 15:43:02 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 't0ab4dup3ueipju6v185a6cg15'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    '__captcha/site/captcha' => 'ricios'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=t0ab4dup3ueipju6v185a6cg15; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58079'
+    'REDIRECT_URL' => '/site/logout'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/logout'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828582.795
+    'REQUEST_TIME' => 1433828582
+]
+2015-06-09 15:43:49 [127.0.0.1][1][-][error][yii\web\HttpException:405] exception 'yii\web\MethodNotAllowedHttpException' with message 'Method Not Allowed. This url can only handle the following request methods: POST.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\filters\VerbFilter.php:105
+Stack trace:
+#0 [internal function]: yii\filters\VerbFilter->beforeAction(Object(yii\base\ActionEvent))
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('logout', Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/logout', Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#9 {main}
+2015-06-09 15:43:49 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 't0ab4dup3ueipju6v185a6cg15'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    '__captcha/site/captcha' => 'ricios'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/site/logout'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=t0ab4dup3ueipju6v185a6cg15; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58089'
+    'REDIRECT_URL' => '/site/logout'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/logout'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828629.302
+    'REQUEST_TIME' => 1433828629
+]
+2015-06-09 15:44:09 [127.0.0.1][1][-][error][yii\web\HttpException:405] exception 'yii\web\MethodNotAllowedHttpException' with message 'Method Not Allowed. This url can only handle the following request methods: POST.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\filters\VerbFilter.php:105
+Stack trace:
+#0 [internal function]: yii\filters\VerbFilter->beforeAction(Object(yii\base\ActionEvent))
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('logout', Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/logout', Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#9 {main}
+2015-06-09 15:44:09 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 't0ab4dup3ueipju6v185a6cg15'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    '__captcha/site/captcha' => 'ricios'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=t0ab4dup3ueipju6v185a6cg15; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58090'
+    'REDIRECT_URL' => '/site/logout'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/logout'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828649.308
+    'REQUEST_TIME' => 1433828649
+]
+2015-06-09 15:44:52 [127.0.0.1][1][-][error][yii\web\HttpException:405] exception 'yii\web\MethodNotAllowedHttpException' with message 'Method Not Allowed. This url can only handle the following request methods: POST.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\filters\VerbFilter.php:105
+Stack trace:
+#0 [internal function]: yii\filters\VerbFilter->beforeAction(Object(yii\base\ActionEvent))
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('logout', Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/logout', Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#9 {main}
+2015-06-09 15:44:52 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 't0ab4dup3ueipju6v185a6cg15'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    '__captcha/site/captcha' => 'ricios'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=t0ab4dup3ueipju6v185a6cg15; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58108'
+    'REDIRECT_URL' => '/site/logout'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/logout'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828692.461
+    'REQUEST_TIME' => 1433828692
+]
+2015-06-09 15:46:41 [127.0.0.1][1][-][error][yii\web\HttpException:405] exception 'yii\web\MethodNotAllowedHttpException' with message 'Method Not Allowed. This url can only handle the following request methods: POST.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\filters\VerbFilter.php:105
+Stack trace:
+#0 [internal function]: yii\filters\VerbFilter->beforeAction(Object(yii\base\ActionEvent))
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Component.php(541): call_user_func(Array, Object(yii\base\ActionEvent))
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(263): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Controller.php(108): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(149): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('logout', Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/logout', Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#9 {main}
+2015-06-09 15:46:41 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 't0ab4dup3ueipju6v185a6cg15'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => 1
+    '__captcha/site/captcha' => 'ricios'
+    '__captcha/site/captchacount' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=t0ab4dup3ueipju6v185a6cg15; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58136'
+    'REDIRECT_URL' => '/site/logout'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/logout'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828801.914
+    'REQUEST_TIME' => 1433828801
+]
+2015-06-09 15:46:56 [127.0.0.1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Trying to get property of non-object' in D:\xampp_projects\OnlineOrdering\_protected\views\layouts\main.php:32
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\views\layouts\main.php(32): yii\base\ErrorHandler->handleError(8, 'Trying to get p...', 'D:\\xampp_projec...', 32, Array)
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\View.php(325): require('D:\\xampp_projec...')
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\View.php(247): yii\base\View->renderPhpFile('D:\\xampp_projec...', Array)
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(386): yii\base\View->renderFile('D:\\xampp_projec...', Array, Object(app\controllers\SiteController))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(372): yii\base\Controller->renderContent('<div class="sit...')
+#5 D:\xampp_projects\OnlineOrdering\_protected\controllers\SiteController.php(170): yii\base\Controller->render('login', Array)
+#6 [internal function]: app\controllers\SiteController->actionLogin()
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('login', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('site/login', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#12 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#13 {main}
+2015-06-09 15:46:56 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => '93e8t1702bcekldg5913r9jvm5'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_DNT' => '1'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=93e8t1702bcekldg5913r9jvm5; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58140'
+    'REDIRECT_URL' => '/site/login'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/site/login'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433828816.316
+    'REQUEST_TIME' => 1433828816
+]
+2015-06-09 16:11:18 [-][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined variable: admin' in D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php:57
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(57): yii\base\ErrorHandler->handleError(8, 'Undefined varia...', 'D:\\xampp_projec...', 57, Array)
+#1 [internal function]: app\console\controllers\RbacController->actionInit()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#9 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#10 {main}
+2015-06-09 16:11:18 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'SHAMUS-W7'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'D:'
+    'HOMEPATH' => '\\Users\\shamus.dougan.SAPIENT-TECH'
+    'LOCALAPPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Local'
+    'LOGONSERVER' => '\\\\STS-SBSESS'
+    'LTSHARE' => 'L:'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OPENSSL_CONF' => 'C:\\OpenSSL-Win32\\bin\\openssl.cfg'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PHP_COMMAND' => 'php.exe'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 42 Stepping 7, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2a07'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'D:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'TMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'USERDNSDOMAIN' => 'SAPIENT-TECH.LOCAL'
+    'USERDOMAIN' => 'SAPIENT-TECH'
+    'USERNAME' => 'shamus.dougan'
+    'USERPROFILE' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH'
+    'VBOX_MSI_INSTALL_PATH' => 'C:\\Program Files\\Oracle\\VirtualBox\\'
+    'VS110COMNTOOLS' => 'C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'YII_PATH' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\'
+    'PHP_SELF' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_NAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_FILENAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'PATH_TRANSLATED' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1433830278.3329
+    'REQUEST_TIME' => 1433830278
+    'argv' => [
+        0 => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+        1 => 'rbac/init'
+    ]
+    'argc' => 2
+]
+2015-06-09 16:11:34 [-][-][-][error][yii\db\IntegrityException] exception 'PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'isAuthor' for key 'PRIMARY'' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php:771
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php(771): PDOStatement->execute()
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(350): yii\db\Command->execute()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\BaseManager.php(120): yii\rbac\DbManager->addRule(Object(app\rbac\rules\AuthorRule))
+#3 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(47): yii\rbac\BaseManager->add(Object(app\rbac\rules\AuthorRule))
+#4 [internal function]: app\console\controllers\RbacController->actionInit()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#12 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#13 {main}
+
+Next exception 'yii\db\IntegrityException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'isAuthor' for key 'PRIMARY'
+The SQL being executed was: INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES ('isAuthor', 'O:25:\"app\\rbac\\rules\\AuthorRule\":3:{s:4:\"name\";s:8:\"isAuthor\";s:9:\"createdAt\";i:1433830294;s:9:\"updatedAt\";i:1433830294;}', 1433830294, 1433830294)' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Schema.php:595
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php(779): yii\db\Schema->convertException(Object(PDOException), 'INSERT INTO `au...')
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(350): yii\db\Command->execute()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\BaseManager.php(120): yii\rbac\DbManager->addRule(Object(app\rbac\rules\AuthorRule))
+#3 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(47): yii\rbac\BaseManager->add(Object(app\rbac\rules\AuthorRule))
+#4 [internal function]: app\console\controllers\RbacController->actionInit()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#12 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#13 {main}
+Additional Information:
+Array
+(
+    [0] => 23000
+    [1] => 1062
+    [2] => Duplicate entry 'isAuthor' for key 'PRIMARY'
+)
+
+2015-06-09 16:11:34 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'SHAMUS-W7'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'D:'
+    'HOMEPATH' => '\\Users\\shamus.dougan.SAPIENT-TECH'
+    'LOCALAPPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Local'
+    'LOGONSERVER' => '\\\\STS-SBSESS'
+    'LTSHARE' => 'L:'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OPENSSL_CONF' => 'C:\\OpenSSL-Win32\\bin\\openssl.cfg'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PHP_COMMAND' => 'php.exe'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 42 Stepping 7, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2a07'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'D:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'TMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'USERDNSDOMAIN' => 'SAPIENT-TECH.LOCAL'
+    'USERDOMAIN' => 'SAPIENT-TECH'
+    'USERNAME' => 'shamus.dougan'
+    'USERPROFILE' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH'
+    'VBOX_MSI_INSTALL_PATH' => 'C:\\Program Files\\Oracle\\VirtualBox\\'
+    'VS110COMNTOOLS' => 'C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'YII_PATH' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\'
+    'PHP_SELF' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_NAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_FILENAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'PATH_TRANSLATED' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1433830294.5949
+    'REQUEST_TIME' => 1433830294
+    'argv' => [
+        0 => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+        1 => 'rbac/init'
+    ]
+    'argc' => 2
+]
+2015-06-09 16:12:06 [-][-][-][error][yii\db\IntegrityException] exception 'PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'isAuthor' for key 'PRIMARY'' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php:771
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php(771): PDOStatement->execute()
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(350): yii\db\Command->execute()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\BaseManager.php(120): yii\rbac\DbManager->addRule(Object(app\rbac\rules\AuthorRule))
+#3 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(47): yii\rbac\BaseManager->add(Object(app\rbac\rules\AuthorRule))
+#4 [internal function]: app\console\controllers\RbacController->actionInit()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#12 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#13 {main}
+
+Next exception 'yii\db\IntegrityException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'isAuthor' for key 'PRIMARY'
+The SQL being executed was: INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES ('isAuthor', 'O:25:\"app\\rbac\\rules\\AuthorRule\":3:{s:4:\"name\";s:8:\"isAuthor\";s:9:\"createdAt\";i:1433830326;s:9:\"updatedAt\";i:1433830326;}', 1433830326, 1433830326)' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Schema.php:595
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php(779): yii\db\Schema->convertException(Object(PDOException), 'INSERT INTO `au...')
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(350): yii\db\Command->execute()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\BaseManager.php(120): yii\rbac\DbManager->addRule(Object(app\rbac\rules\AuthorRule))
+#3 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(47): yii\rbac\BaseManager->add(Object(app\rbac\rules\AuthorRule))
+#4 [internal function]: app\console\controllers\RbacController->actionInit()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#12 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#13 {main}
+Additional Information:
+Array
+(
+    [0] => 23000
+    [1] => 1062
+    [2] => Duplicate entry 'isAuthor' for key 'PRIMARY'
+)
+
+2015-06-09 16:12:06 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'SHAMUS-W7'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'D:'
+    'HOMEPATH' => '\\Users\\shamus.dougan.SAPIENT-TECH'
+    'LOCALAPPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Local'
+    'LOGONSERVER' => '\\\\STS-SBSESS'
+    'LTSHARE' => 'L:'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OPENSSL_CONF' => 'C:\\OpenSSL-Win32\\bin\\openssl.cfg'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PHP_COMMAND' => 'php.exe'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 42 Stepping 7, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2a07'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'D:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'TMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'USERDNSDOMAIN' => 'SAPIENT-TECH.LOCAL'
+    'USERDOMAIN' => 'SAPIENT-TECH'
+    'USERNAME' => 'shamus.dougan'
+    'USERPROFILE' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH'
+    'VBOX_MSI_INSTALL_PATH' => 'C:\\Program Files\\Oracle\\VirtualBox\\'
+    'VS110COMNTOOLS' => 'C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'YII_PATH' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\'
+    'PHP_SELF' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_NAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_FILENAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'PATH_TRANSLATED' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1433830326.1769
+    'REQUEST_TIME' => 1433830326
+    'argv' => [
+        0 => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+        1 => 'rbac/init'
+    ]
+    'argc' => 2
+]
+2015-06-09 16:12:30 [-][-][-][error][yii\db\IntegrityException] exception 'PDOException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'useSettings' for key 'PRIMARY'' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php:771
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php(771): PDOStatement->execute()
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(267): yii\db\Command->execute()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\BaseManager.php(118): yii\rbac\DbManager->addItem(Object(yii\rbac\Permission))
+#3 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(54): yii\rbac\BaseManager->add(Object(yii\rbac\Permission))
+#4 [internal function]: app\console\controllers\RbacController->actionInit()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#12 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#13 {main}
+
+Next exception 'yii\db\IntegrityException' with message 'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'useSettings' for key 'PRIMARY'
+The SQL being executed was: INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES ('useSettings', 2, 'Allow user to modify system settings', NULL, NULL, 1433830350, 1433830350)' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Schema.php:595
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\db\Command.php(779): yii\db\Schema->convertException(Object(PDOException), 'INSERT INTO `au...')
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\DbManager.php(267): yii\db\Command->execute()
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\rbac\BaseManager.php(118): yii\rbac\DbManager->addItem(Object(yii\rbac\Permission))
+#3 D:\xampp_projects\OnlineOrdering\_protected\console\controllers\RbacController.php(54): yii\rbac\BaseManager->add(Object(yii\rbac\Permission))
+#4 [internal function]: app\console\controllers\RbacController->actionInit()
+#5 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#6 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Controller.php(91): yii\base\Controller->runAction('init', Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\console\Controller->runAction('init', Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(161): yii\base\Module->runAction('rbac/init', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\console\Application.php(137): yii\console\Application->runAction('rbac/init', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#12 D:\xampp_projects\OnlineOrdering\_protected\yii(25): yii\base\Application->run()
+#13 {main}
+Additional Information:
+Array
+(
+    [0] => 23000
+    [1] => 1062
+    [2] => Duplicate entry 'useSettings' for key 'PRIMARY'
+)
+
+2015-06-09 16:12:30 [-][-][-][info][application] $_SERVER = [
+    'ALLUSERSPROFILE' => 'C:\\ProgramData'
+    'APPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Roaming'
+    'CommonProgramFiles' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramFiles(x86)' => 'C:\\Program Files (x86)\\Common Files'
+    'CommonProgramW6432' => 'C:\\Program Files\\Common Files'
+    'COMPUTERNAME' => 'SHAMUS-W7'
+    'ComSpec' => 'C:\\Windows\\system32\\cmd.exe'
+    'FP_NO_HOST_CHECK' => 'NO'
+    'HOMEDRIVE' => 'D:'
+    'HOMEPATH' => '\\Users\\shamus.dougan.SAPIENT-TECH'
+    'LOCALAPPDATA' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH\\AppData\\Local'
+    'LOGONSERVER' => '\\\\STS-SBSESS'
+    'LTSHARE' => 'L:'
+    'NUMBER_OF_PROCESSORS' => '4'
+    'OPENSSL_CONF' => 'C:\\OpenSSL-Win32\\bin\\openssl.cfg'
+    'OS' => 'Windows_NT'
+    'Path' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'PHP_COMMAND' => 'php.exe'
+    'PROCESSOR_ARCHITECTURE' => 'x86'
+    'PROCESSOR_ARCHITEW6432' => 'AMD64'
+    'PROCESSOR_IDENTIFIER' => 'Intel64 Family 6 Model 42 Stepping 7, GenuineIntel'
+    'PROCESSOR_LEVEL' => '6'
+    'PROCESSOR_REVISION' => '2a07'
+    'ProgramData' => 'C:\\ProgramData'
+    'ProgramFiles' => 'C:\\Program Files (x86)'
+    'ProgramFiles(x86)' => 'C:\\Program Files (x86)'
+    'ProgramW6432' => 'C:\\Program Files'
+    'PROMPT' => '$P$G'
+    'PSModulePath' => 'C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\'
+    'PUBLIC' => 'D:\\Users\\Public'
+    'SESSIONNAME' => 'Console'
+    'SystemDrive' => 'C:'
+    'SystemRoot' => 'C:\\Windows'
+    'TEMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'TMP' => 'D:\\Users\\SHAMUS~1.SAP\\AppData\\Local\\Temp'
+    'USERDNSDOMAIN' => 'SAPIENT-TECH.LOCAL'
+    'USERDOMAIN' => 'SAPIENT-TECH'
+    'USERNAME' => 'shamus.dougan'
+    'USERPROFILE' => 'D:\\Users\\shamus.dougan.SAPIENT-TECH'
+    'VBOX_MSI_INSTALL_PATH' => 'C:\\Program Files\\Oracle\\VirtualBox\\'
+    'VS110COMNTOOLS' => 'C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\'
+    'windir' => 'C:\\Windows'
+    'windows_tracing_flags' => '3'
+    'windows_tracing_logfile' => 'C:\\BVTBin\\Tests\\installpackage\\csilogfile.log'
+    'YII_PATH' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\'
+    'PHP_SELF' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_NAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'SCRIPT_FILENAME' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'PATH_TRANSLATED' => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1433830350.0409
+    'REQUEST_TIME' => 1433830350
+    'argv' => [
+        0 => 'D:\\xampp_projects\\OnlineOrdering\\_protected\\yii'
+        1 => 'rbac/init'
+    ]
+    'argc' => 2
+]
+2015-06-09 16:15:18 [127.0.0.1][1][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "lookup".' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php:461
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('lookup', Array)
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php:96
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#2 {main}
+2015-06-09 16:15:18 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 'mns7aqciofb2i05qf96ilhr7i5'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/user'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=mns7aqciofb2i05qf96ilhr7i5; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '58648'
+    'REDIRECT_URL' => '/lookup'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/lookup'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433830518.496
+    'REQUEST_TIME' => 1433830518
+]
+2015-06-09 16:17:06 [127.0.0.1][1][-][error][yii\web\HttpException:404] exception 'yii\base\InvalidRouteException' with message 'Unable to resolve the request "lookup".' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php:461
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('lookup', Array)
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#2 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#3 {main}
+
+Next exception 'yii\web\NotFoundHttpException' with message 'Page not found.' in D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php:96
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#2 {main}
+2015-06-09 16:17:06 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 'mns7aqciofb2i05qf96ilhr7i5'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => 1
+]
+
+$_SERVER = [
+    'REDIRECT_MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'REDIRECT_MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'REDIRECT_OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'REDIRECT_PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'REDIRECT_PHPRC' => '\\xampp\\php'
+    'REDIRECT_TMP' => '\\xampp\\tmp'
+    'REDIRECT_STATUS' => '200'
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_REFERER' => 'http://order.irwinstockfeeds.com.au/user'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=mns7aqciofb2i05qf96ilhr7i5; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '59065'
+    'REDIRECT_URL' => '/lookup'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/lookup'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433830626.29
+    'REQUEST_TIME' => 1433830626
+]
+2015-06-09 16:34:16 [127.0.0.1][1][mns7aqciofb2i05qf96ilhr7i5][error][yii\base\ErrorException:4] exception 'yii\base\ErrorException' with message 'syntax error, unexpected ']'' in D:\xampp_projects\OnlineOrdering\_protected\views\layouts\main.php:48
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleFatalError()
+#1 {main}
+2015-06-09 16:34:16 [127.0.0.1][1][mns7aqciofb2i05qf96ilhr7i5][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 'mns7aqciofb2i05qf96ilhr7i5'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=mns7aqciofb2i05qf96ilhr7i5; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '59913'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433831656.072
+    'REQUEST_TIME' => 1433831656
+]
+2015-06-09 16:34:34 [127.0.0.1][1][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined variable: item' in D:\xampp_projects\OnlineOrdering\_protected\views\layouts\main.php:40
+Stack trace:
+#0 D:\xampp_projects\OnlineOrdering\_protected\views\layouts\main.php(40): yii\base\ErrorHandler->handleError(8, 'Undefined varia...', 'D:\\xampp_projec...', 40, Array)
+#1 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\View.php(325): require('D:\\xampp_projec...')
+#2 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\View.php(247): yii\base\View->renderPhpFile('D:\\xampp_projec...', Array)
+#3 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(386): yii\base\View->renderFile('D:\\xampp_projec...', Array, Object(app\controllers\SiteController))
+#4 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(372): yii\base\Controller->renderContent('<div class="sit...')
+#5 D:\xampp_projects\OnlineOrdering\_protected\controllers\SiteController.php(84): yii\base\Controller->render('index')
+#6 [internal function]: app\controllers\SiteController->actionIndex()
+#7 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\InlineAction.php(55): call_user_func_array(Array, Array)
+#8 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#9 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Module.php(455): yii\base\Controller->runAction('', Array)
+#10 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\web\Application.php(84): yii\base\Module->runAction('', Array)
+#11 D:\xampp_projects\OnlineOrdering\_protected\vendor\yiisoft\yii2\base\Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#12 D:\xampp_projects\OnlineOrdering\index.php(12): yii\base\Application->run()
+#13 {main}
+2015-06-09 16:34:34 [127.0.0.1][1][-][info][application] $_COOKIE = [
+    '__utma' => '109225949.334655598.1433140341.1433140341.1433140341.1'
+    '__utmz' => '109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)'
+    'PHPSESSID' => 'mns7aqciofb2i05qf96ilhr7i5'
+    '_csrf' => 'afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__returnUrl' => '/'
+    '__id' => 1
+]
+
+$_SERVER = [
+    'MIBDIRS' => 'D:/xampp/php/extras/mibs'
+    'MYSQL_HOME' => '\\xampp\\mysql\\bin'
+    'OPENSSL_CONF' => 'D:/xampp/apache/bin/openssl.cnf'
+    'PHP_PEAR_SYSCONF_DIR' => '\\xampp\\php'
+    'PHPRC' => '\\xampp\\php'
+    'TMP' => '\\xampp\\tmp'
+    'HTTP_ACCEPT' => 'text/html, application/xhtml+xml, */*'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-AU'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_HOST' => 'order.irwinstockfeeds.com.au'
+    'HTTP_DNT' => '1'
+    'HTTP_CONNECTION' => 'Keep-Alive'
+    'HTTP_COOKIE' => '__utma=109225949.334655598.1433140341.1433140341.1433140341.1; __utmz=109225949.1433140341.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); PHPSESSID=mns7aqciofb2i05qf96ilhr7i5; _csrf=afe330aee638ab362daff4b7bcb3128d563ac5d69cc4d347622ac2ff7fba901da%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22L27BhD1YwaYSnUogidpg3Yz8MgtQbGjy%22%3B%7D'
+    'PATH' => 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Program Files (x86)\\Common Files\\Microsoft Shared\\Microsoft Online Services;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:Support\\;C:\\Program Files (x86)\\QuickTime\\QTSystem\\;C:\\Program Files\\Windows Imaging\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Windows AIK\\Tools\\amd64;D:\\xampp\\php;C:\\ProgramData\\ComposerSetup\\bin'
+    'SystemRoot' => 'C:\\Windows'
+    'COMSPEC' => 'C:\\Windows\\system32\\cmd.exe'
+    'PATHEXT' => '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC'
+    'WINDIR' => 'C:\\Windows'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11 Server at order.irwinstockfeeds.com.au Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.9 (Win32) OpenSSL/1.0.1g PHP/5.5.11'
+    'SERVER_NAME' => 'order.irwinstockfeeds.com.au'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => 'D:/xampp_projects/OnlineOrdering'
+    'SERVER_ADMIN' => 'postmaster@localhost'
+    'SCRIPT_FILENAME' => 'D:/xampp_projects/OnlineOrdering/index.php'
+    'REMOTE_PORT' => '59914'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/'
+    'SCRIPT_NAME' => '/index.php'
+    'PHP_SELF' => '/index.php'
+    'REQUEST_TIME_FLOAT' => 1433831674.515
+    'REQUEST_TIME' => 1433831674
+]
