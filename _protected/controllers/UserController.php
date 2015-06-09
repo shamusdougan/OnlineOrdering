@@ -25,6 +25,7 @@ class UserController extends AppController
          * @var int
          */
         $pageSize = 11;
+        $this->view->params['menuItem'] = 'userItem';
 
         /**
          * Only theCreator role can see all users.
@@ -35,6 +36,8 @@ class UserController extends AppController
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $pageSize, $theCreator);
+
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -52,6 +55,7 @@ class UserController extends AppController
      */
     public function actionView($id)
     {
+    	$this->view->params['menuItem'] = 'userItem';
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -65,6 +69,7 @@ class UserController extends AppController
      */
     public function actionCreate()
     {
+    	$this->view->params['menuItem'] = 'userItem';
         $user = new User(['scenario' => 'create']);
         $role = new Role();
 
@@ -107,6 +112,7 @@ class UserController extends AppController
 
         // get user details
         $user = $this->findModel($id);
+        $this->view->params['menuItem'] = 'userItem';
 
         // only The Creator can update everyone`s roles
         // admin will not be able to update role of theCreator
@@ -160,7 +166,7 @@ class UserController extends AppController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+		$this->view->params['menuItem'] = 'userItem';
         // delete this user's role from auth_assignment table
         if ($role = Role::find()->where(['user_id'=>$id])->one()) 
         {

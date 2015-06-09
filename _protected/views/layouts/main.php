@@ -29,6 +29,15 @@ AppAsset::register($this);
     	<div class='sapient_leftMenu'>
     		<?php 
     		
+    		$currentItem = false;
+    		if(isset($this->params['menuItem']))
+    			{
+				$currentItem = $this->params['menuItem'];
+				}
+    		
+   
+    		
+    		
     		$username = Yii::$app->user->identity->username;
     		echo SideNav::widget([
 				'type' => SideNav::TYPE_DEFAULT,
@@ -37,8 +46,8 @@ AppAsset::register($this);
 					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
-						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active' => ($item == 'User Accounts')],
-						['label' => 'Lookups', 'url' => Url::toRoute('/lookup')],
+						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
+						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')],
 						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]
 					
 					]],
