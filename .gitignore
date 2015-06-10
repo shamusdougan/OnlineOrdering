@@ -60,3 +60,6 @@ $RECYCLE.BIN/
 *.log
 *.log
 _protected/runtime/logs/app.log
+*.clpprj
+*.clpprj
+IrwinsOnline Ordering.clpprj
