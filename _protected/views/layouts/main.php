@@ -44,7 +44,8 @@ AppAsset::register($this);
 				'heading' => "Menu (".$username.")",
 				'items' => [
 					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],
-					['label' => 'Clients', 'icon' => 'home', 'url' => Url::toRoute('/clients')],
+					['label' => 'Customer Orders', 'icon' => 'home', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order')],
+					['label' => 'Clients', 'icon' => 'home', 'url' => Url::toRoute('/client'), 'active'=>($currentItem == 'client')],
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
 						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
