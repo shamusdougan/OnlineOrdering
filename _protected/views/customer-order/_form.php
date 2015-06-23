@@ -1,7 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
@@ -10,7 +13,27 @@ use yii\widgets\ActiveForm;
 
 <div class="customer-orders-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+   
+
+    <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); 
+    
+    
+    
+    echo Form::widget([
+    	'model'=>$model,
+    	'form'=>$form,
+    	'columns'=>2,
+    	'attributes'=>[
+    		'Customer' =>['type' =>FORM::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Company Name....'] ],
+    		'Mix_Type' => ['type' =>FORM::INPUT_TEXT, 'options'=>['placeholder'=>'Company ABN'] ]
+    	
+    	]
+    ]);
+    
+    
+
+
+    ?>
 
     <?= $form->field($model, 'Order_ID')->textInput(['maxlength' => true]) ?>
 
