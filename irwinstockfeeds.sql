@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2015 at 03:08 PM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Jun 25, 2015 at 04:28 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `article` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `summary` text COLLATE utf8_unicode_ci NOT NULL,
@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS `article` (
   `status` int(11) NOT NULL,
   `category` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -47,7 +49,8 @@ CREATE TABLE IF NOT EXISTS `article` (
 CREATE TABLE IF NOT EXISTS `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` int(11) DEFAULT NULL
+  `created_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`item_name`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -70,7 +73,10 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
   `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `data` text COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`name`),
+  KEY `rule_name` (`rule_name`),
+  KEY `idx-auth_item-type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -89,7 +95,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 
 CREATE TABLE IF NOT EXISTS `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
+  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`parent`,`child`),
+  KEY `child` (`child`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -109,7 +117,8 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `data` text COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -289,7 +298,8 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `Website` varchar(1) DEFAULT NULL,
   `Yomi_Account_Name` varchar(1) DEFAULT NULL,
   `z_old_Industry` varchar(1) DEFAULT NULL,
-  `z_old_Payment_Terms` varchar(1) DEFAULT NULL
+  `z_old_Payment_Terms` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`Account_Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -297,13 +307,13 @@ CREATE TABLE IF NOT EXISTS `clients` (
 --
 
 INSERT INTO `clients` (`Company_Name`, `Trading_as`, `Main_Phone`, `TownSuburb`, `Is_Customer`, `Is_Factory`, `Is_Supplier`, `Credit_Hold`, `Owner`, `Account_Number`, `Third_Party_Company`, `ABN`, `Account_Rating`, `Address_1`, `Address_1_Address_Type`, `Address_1_CountryRegion`, `Address_1_County`, `Address_1_Fax`, `Address_1_Freight_Terms`, `Address_1_Latitude`, `Address_1_Longitude`, `Address_1_Name`, `Address_1_Post_Office_Box`, `Address_1_Postal_Code`, `Address_1_Primary_Contact_Name`, `Address_1_Shipping_Method`, `Address_1_StateProvince`, `Address_1_Street_1`, `Address_1_Street_2`, `Address_1_Street_3`, `Address_1_Telephone_2`, `Address_1_Telephone_3`, `Address_1_UPS_Zone`, `Address_1_UTC_Offset`, `Address_2`, `Address_2_Address_Type`, `Address_2_CountryRegion`, `Address_2_County`, `Address_2_Fax`, `Address_2_Freight_Terms`, `Address_2_Latitude`, `Address_2_Longitude`, `Address_2_Name`, `Address_2_Post_Office_Box`, `Address_2_Postal_Code`, `Address_2_Primary_Contact_Name`, `Address_2_Shipping_Method`, `Address_2_StateProvince`, `Address_2_Street_1`, `Address_2_Street_2`, `Address_2_Street_3`, `Address_2_Telephone_1`, `Address_2_Telephone_2`, `Address_2_Telephone_3`, `Address_2_TownSuburb`, `Address_2_UPS_Zone`, `Address_2_UTC_Offset`, `Address_Phone`, `Address1_IsBillTo`, `Address1_IsShipTo`, `Aging_30`, `Aging_30_Base`, `Aging_60`, `Aging_60_Base`, `Aging_90`, `Aging_90_Base`, `Annual_Revenue`, `Annual_Revenue_Base`, `Beef_Notes`, `Billing_company_admin_fee`, `Billing_company_admin_fee_Base`, `Billing_contact`, `Billing_type`, `Business_Type`, `Category`, `Classification`, `Client_Status`, `Copy_addess`, `Copy_address`, `Created_By`, `Created_By_Delegate`, `Created_On`, `Credit_Limit`, `Credit_Limit_Base`, `Currency`, `Customer_Size`, `Dairy_No`, `Dairy_Notes`, `Delivery_Directions`, `Description`, `Do_not_allow_Bulk_Emails`, `Do_not_allow_Bulk_Mails`, `Do_not_allow_Emails`, `Do_not_allow_Faxes`, `Do_not_allow_Mails`, `Do_not_allow_Phone_Calls`, `Email`, `Email_Address_2`, `Email_Address_3`, `Exchange_Rate`, `Farm_Mgr`, `Farm_No`, `Farm_Operation`, `Fax`, `Feed_Days_Remaining`, `Feed_empty`, `Feed_QOH_Tonnes`, `Feed_QOH_Update`, `Feed_Rate_Kg_Day`, `FTP_Site`, `Herd_Notes`, `Herd_Size`, `Herd_Type`, `Industry_Code`, `Is_Internal`, `Is_Provider`, `Last_Date_Included_in_Campaign`, `Main_Competitor`, `Main_Product`, `Map_Reference`, `Market_Capitalization`, `Market_Capitalization_Base`, `Mobile_Phone`, `Modified_By`, `Modified_By_Delegate`, `Modified_On`, `Nearest_Town`, `No_of_Employees`, `Originating_Lead`, `Other_Phone`, `Ownership`, `Parent_Company`, `Parent_Region`, `Payment_Terms`, `Preferred_Day`, `Preferred_FacilityEquipment`, `Preferred_Method_of_Contact`, `Preferred_Service`, `Preferred_Time`, `Preferred_User`, `Price_List`, `Primary_Contact`, `Process`, `Process_Stage`, `Property_Name`, `Record_Created_On`, `Relationship_Type`, `Send_Marketing_Materials`, `Shares_Outstanding`, `Shipping_Method`, `SIC_Code`, `Status`, `Status_Reason`, `Stock_Exchange`, `Sub_Region`, `Supplies_to`, `Telephone_3`, `Territory`, `Territory_Code`, `Ticker_Symbol`, `Website`, `Yomi_Account_Name`, `z_old_Industry`, `z_old_Payment_Terms`) VALUES
+('A L Garland - DO NOT USE', 'Garland, Anne', '03 5157 6334', 'GLENALADALE', 'Yes', 'No', 'No', 'Yes', 'Peter Lowry', 'A10050', '', '16 130 265 597', 'Default Value', '1690 Fernbank-Glenaladale Road GLENALADALE VIC 3864 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3864, '', '', 'VIC', '1690 Fernbank-Glenaladale Road', '', '', '', '', '', '', '1690 Fernbank-Glenaladale Road Bairnsdale VIC 3875 Australia', 'Billing/Postal', 'Australia', '', '', 'Default Value', '', '', '', '', 3875, '', 'Default Value', 'VIC', '1690 Fernbank-Glenaladale Road', '', '', '', '', '', 'Bairnsdale', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', 'Anne Garland', 'Standard', 'Sole Trader', '', 'Default Value', 'Lost', '', '', 'Mark Fowler', '', '6/01/2012 6:31 PM', '', '', 'Australian Dollar', 'Default Value', 1360, '', 'From Stratford head towards Bairnsdale, turn left onto Dargo rd. Continue across the cross roads head down Fernbank Glenaladale road. Farm just over over small white bridge farm on right. (14.5km from highway)', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', 'anneg@wideband.net.au', '', '', '1.00000', '', '', 'Owned', NULL, NULL, NULL, NULL, '0000-00-00', '3.00', '', '', 150, 'Dairy', '', 'No', '', '', '', '', '83 G6', '', '', '0400 576 333', 'Molly Pinnuck', '', '28/02/2014 2:55 PM', 'East Gippsland > Outer East > GLENALADALE (265 KMs)', '', '', '', '', '', 'East Gippsland', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'East Gippsland > Outer East', 'Rose', '', '', 'Default Value', '', '', '', '', ''),
+('J Lawless', 'Jim Lawless', '03 5166 1225', 'HAZELWOOD SOUTH', 'Yes', 'No', 'No', 'No', 'Shane Doherty', 'A10074', '', '58 501 073 488', 'Default Value', '125 Farrans Road HAZELWOOD SOUTH VIC 3840 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3840, '', '', 'VIC', '125 Farrans Road', '', '', '', '', '', '', 'VIC Australia', 'Billing/Postal', 'Australia', '', '', 'Default Value', '', '', '', '', NULL, '', 'Default Value', 'VIC', '', '', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Default Value', '', '', '', 'Mark Fowler', '', '6/01/2012 6:31 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', 'From Morwell head to Chruchill on tramway road, just before S bends turn left to Traralgon, once up hill take toad to right. Farrans road farm on left at bottom of hill.', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', '', NULL, 8, '0000-00-00', '7.00', '0000-00-00', '4.00', '', '', 200, 'Dairy', '', 'No', '', '', '', '', '', '', '', '', 'SYSTEM', 'Vicky Kardas', '19/07/2012 4:09 PM', 'East Gippsland > Traralgon > HAZELWOOD (161.9 KMs)', '', '', '', '', '', '', '', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Inactive', 'Inactive', '', '', 'Murray Goulburn - Maffra', '', '', 'Default Value', '', '', '', '', ''),
+('A. Bezzina', '', '', 'WHITTLESEA', 'Yes', 'No', 'No', 'No', 'Peter Lowry', 'A10405', '', '', 'Default Value', 'WHITTLESEA VIC 3757 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3757, '', '', 'VIC', '', '', '', '', '', '', '', '', 'Billing/Postal', '', '', '', 'Default Value', '', '', '', '', NULL, '', 'Default Value', '', '', '', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Default Value', 'Current', 'No', 'No', 'Peter Lowry', '', '7/08/2012 1:30 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', 'HEAD OUT TO DONNYBROOK TAKE YAN YEAN ROAD, AT YAN YEAN ROUND ABOUT TURN LEFT TO WHITTLESEA, SECOND FARM ON RIGHT. AUGER TRUCK ONLY. ALFIE 0419 970 334', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', '', NULL, NULL, NULL, '0.00', '0000-00-00', '0.00', '', '', 0, '', '', 'No', 'No', '', '', '', '', '', '', '0419 970 334', 'CRM Admin', '', '15/04/2015 11:22 AM', 'Northern Victoria > WHITTLESEA (42.07 KMs)', '', '', '', '', '', '', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'Northern > Victoria', '', '', '', 'Default Value', '', '', '', '', ''),
 ('A & CJ Huts - Aristin Park (1)', 'Aristin Park - Farm 1', '0351472393', 'MAFFRA', 'Yes', 'No', 'No', 'No', 'Heath Killeen', 'A10498', '', '37006908335', 'Default Value', '147 Maffra Sale Rd MAFFRA VIC 3860 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3860, '', '', 'VIC', '147 Maffra Sale Rd', '', '', '', '', '', '', 'PO BOX 233 MAFFRA VIC 3860 AUSTRALIA', 'Billing/Postal', 'AUSTRALIA', '', '', 'Default Value', '', '', '', '', 3860, '', 'Default Value', 'VIC', 'PO BOX 233', 'MAFFRA', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', 'Standard', '', '', 'Default Value', 'Current', 'No', 'No', 'Molly Pinnuck', '', '4/02/2013 1:23 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', 'Travelling from Maffra to Sale - The driveway is on left just before channel crosses under road (Another dairy is on right of road on other side of channel) driveway is long, turn right at fork in driveway - dairy at the end past shedding. (ARISTIN PARK on gateway)', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', 'Owned', 351471842, 21, '0000-00-00', '16.00', '0000-00-00', '5.00', '', '', 150, 'Dairy', '', 'No', 'No', '', 'Barastoc', '', '', '', '', '0428311370', 'CRM Admin', '', '11/08/2014 7:22 AM', 'East Gippsland > Maffra > MAFFRA (223.52 KMs)', '', '', '', '', '', 'East Gippsland', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', 'Aristin Park', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'East Gippsland > Maffra', 'Murray Goulburn - Maffra', '', '', 'Default Value', '', '', '', '', ''),
 ('A & CJ Huts - Charondale (2)', 'A & C Huts Farm 2', '0351472393', 'MAFFRA', 'Yes', 'No', 'No', 'No', 'Heath Killeen', 'A10499', '', '37006908335', 'Default Value', '271 Maffra Sale Rd MAFFRA VIC 3860 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3860, '', '', 'VIC', '271 Maffra Sale Rd', '', '', '', '', '', '', 'PO BOX 233 MAFFRA VIC 3860 AUSTRALIA', 'Billing/Postal', 'AUSTRALIA', '', '', 'Default Value', '', '', '', '', 3860, '', 'Default Value', 'VIC', 'PO BOX 233', 'MAFFRA', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', 'Standard', '', '', 'Default Value', 'Current', 'No', 'No', 'Molly Pinnuck', '', '4/02/2013 1:27 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', 'Maffra/Sale Rd. 2-3km out of Maffra, dairy on left hand side just off road.(Farm is before Falls Ln)', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', 'Sharefarmer', 351471842, 250, '0000-00-00', '4.00', '0000-00-00', '4.00', '', '', 4, 'Dairy', '', 'No', 'No', '', 'Barastoc', '', '', '', '', '0428311370', 'CRM Admin', '', '12/08/2014 8:46 AM', 'East Gippsland > Maffra > MAFFRA (223.52 KMs)', '', '', '', '', '', 'East Gippsland', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'East Gippsland > Maffra', 'Murray Goulburn - Maffra', '', '', 'Default Value', '', '', '', '', ''),
-('A & W Cotchins', '', '9408 1359', '', 'Yes', 'No', 'No', 'No', 'Shane Doherty', 'A10793', '', '', 'Default Value', '50 Lehmanns Rd Wollert', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '50 Lehmanns Rd', '', 'Wollert', '', '', '', '', '', 'Billing/Postal', '', '', '', 'Default Value', '', '', '', '', NULL, '', 'Default Value', '', '', '', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Default Value', 'Swinger', 'No', 'No', 'Shane Doherty', '', '27/02/2015 3:46 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', '', NULL, 40, '0000-00-00', '4.00', '0000-00-00', '2.00', '', '', 50, '', '', 'No', 'No', '', '', '', '', '', '', '', 'CRM Admin', '', '2/03/2015 10:24 AM', 'Northern Victoria > WOLLERT (39.08 KMs)', '', '', '', '', '', '', 'New pending credit (7 days)', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'Northern > Victoria', '', '', '', 'Default Value', '', '', '', '', ''),
 ('A J & AG Lamb- Lamb 2', 'Lamb, Andrew & Ally', '03 5148 6249', 'NAMBROK', 'Yes', 'No', 'No', 'No', 'Heath Killeen', 'A10554', '', '73 146 011 282', 'Default Value', '853 Nambrok Road NAMBROK VIC 3847 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3847, '', '', 'VIC', '853 Nambrok Road', '', '', '', '', '', '', '853 Nambrok Road NAMBROK VIC 3847 AUSTRALIA', 'Billing/Postal', 'AUSTRALIA', '', '', 'Default Value', '', '', '', '', 3847, '', 'Default Value', 'VIC', '853 Nambrok Road', '', '', '', '', '', 'NAMBROK', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', 'Andrew Lamb', 'Standard', 'Partnership', '', 'Default Value', 'Current', '', 'Yes', 'Mark Fowler', '', '6/01/2012 6:31 PM', '', '', 'Australian Dollar', 'Default Value', 122, '', '', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', 'andrewandally@bigpond.com', '', '', '1.00000', 'Andrew and Ally Lamb', '', 'Owned', NULL, 14, '0000-00-00', '12.00', '0000-00-00', '1.50', '', '', 555, 'Dairy', '', 'No', '', '', '', '', '98 F2', '', '', '0419 560 668', 'CRM Admin', '', '9/04/2015 4:39 PM', 'East Gippsland > Nambrok > NAMBROK (203.07 KMs)', '', '', '', '', '', 'East Gippsland', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'East Gippsland > Nambrok', 'Bega', '', '', 'Default Value', '', '', '', '', ''),
-('A L Garland - DO NOT USE', 'Garland, Anne', '03 5157 6334', 'GLENALADALE', 'Yes', 'No', 'No', 'Yes', 'Peter Lowry', 'A10050', '', '16 130 265 597', 'Default Value', '1690 Fernbank-Glenaladale Road GLENALADALE VIC 3864 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3864, '', '', 'VIC', '1690 Fernbank-Glenaladale Road', '', '', '', '', '', '', '1690 Fernbank-Glenaladale Road Bairnsdale VIC 3875 Australia', 'Billing/Postal', 'Australia', '', '', 'Default Value', '', '', '', '', 3875, '', 'Default Value', 'VIC', '1690 Fernbank-Glenaladale Road', '', '', '', '', '', 'Bairnsdale', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', 'Anne Garland', 'Standard', 'Sole Trader', '', 'Default Value', 'Lost', '', '', 'Mark Fowler', '', '6/01/2012 6:31 PM', '', '', 'Australian Dollar', 'Default Value', 1360, '', 'From Stratford head towards Bairnsdale, turn left onto Dargo rd. Continue across the cross roads head down Fernbank Glenaladale road. Farm just over over small white bridge farm on right. (14.5km from highway)', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', 'anneg@wideband.net.au', '', '', '1.00000', '', '', 'Owned', NULL, NULL, NULL, NULL, '0000-00-00', '3.00', '', '', 150, 'Dairy', '', 'No', '', '', '', '', '83 G6', '', '', '0400 576 333', 'Molly Pinnuck', '', '28/02/2014 2:55 PM', 'East Gippsland > Outer East > GLENALADALE (265 KMs)', '', '', '', '', '', 'East Gippsland', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'East Gippsland > Outer East', 'Rose', '', '', 'Default Value', '', '', '', '', ''),
-('A. Bezzina', '', '', 'WHITTLESEA', 'Yes', 'No', 'No', 'No', 'Peter Lowry', 'A10405', '', '', 'Default Value', 'WHITTLESEA VIC 3757 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3757, '', '', 'VIC', '', '', '', '', '', '', '', '', 'Billing/Postal', '', '', '', 'Default Value', '', '', '', '', NULL, '', 'Default Value', '', '', '', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Default Value', 'Current', 'No', 'No', 'Peter Lowry', '', '7/08/2012 1:30 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', 'HEAD OUT TO DONNYBROOK TAKE YAN YEAN ROAD, AT YAN YEAN ROUND ABOUT TURN LEFT TO WHITTLESEA, SECOND FARM ON RIGHT. AUGER TRUCK ONLY. ALFIE 0419 970 334', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', '', NULL, NULL, NULL, '0.00', '0000-00-00', '0.00', '', '', 0, '', '', 'No', 'No', '', '', '', '', '', '', '0419 970 334', 'CRM Admin', '', '15/04/2015 11:22 AM', 'Northern Victoria > WHITTLESEA (42.07 KMs)', '', '', '', '', '', '', '30 days from delivery', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'Northern > Victoria', '', '', '', 'Default Value', '', '', '', '', ''),
-('J Lawless', 'Jim Lawless', '03 5166 1225', 'HAZELWOOD SOUTH', 'Yes', 'No', 'No', 'No', 'Shane Doherty', 'A10074', '', '58 501 073 488', 'Default Value', '125 Farrans Road HAZELWOOD SOUTH VIC 3840 AUSTRALIA', '', 'AUSTRALIA', '', '', '', '', '', '', '', 3840, '', '', 'VIC', '125 Farrans Road', '', '', '', '', '', '', 'VIC Australia', 'Billing/Postal', 'Australia', '', '', 'Default Value', '', '', '', '', NULL, '', 'Default Value', 'VIC', '', '', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Default Value', '', '', '', 'Mark Fowler', '', '6/01/2012 6:31 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', 'From Morwell head to Chruchill on tramway road, just before S bends turn left to Traralgon, once up hill take toad to right. Farrans road farm on left at bottom of hill.', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', '', NULL, 8, '0000-00-00', '7.00', '0000-00-00', '4.00', '', '', 200, 'Dairy', '', 'No', '', '', '', '', '', '', '', '', 'SYSTEM', 'Vicky Kardas', '19/07/2012 4:09 PM', 'East Gippsland > Traralgon > HAZELWOOD (161.9 KMs)', '', '', '', '', '', '', '', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Inactive', 'Inactive', '', '', 'Murray Goulburn - Maffra', '', '', 'Default Value', '', '', '', '', '');
+('A & W Cotchins', '', '9408 1359', '', 'Yes', 'No', 'No', 'No', 'Shane Doherty', 'A10793', '', '', 'Default Value', '50 Lehmanns Rd Wollert', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '50 Lehmanns Rd', '', 'Wollert', '', '', '', '', '', 'Billing/Postal', '', '', '', 'Default Value', '', '', '', '', NULL, '', 'Default Value', '', '', '', '', '', '', '', '', '', '', '', 'No', 'No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Default Value', 'Swinger', 'No', 'No', 'Shane Doherty', '', '27/02/2015 3:46 PM', '', '', 'Australian Dollar', 'Default Value', NULL, '', '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', '', 'Allow', 'No', 'Allow', 'Allow', 'Allow', 'Allow', '', '', '', '1.00000', '', '', '', NULL, 40, '0000-00-00', '4.00', '0000-00-00', '2.00', '', '', 50, '', '', 'No', 'No', '', '', '', '', '', '', '', 'CRM Admin', '', '2/03/2015 10:24 AM', 'Northern Victoria > WOLLERT (39.08 KMs)', '', '', '', '', '', '', 'New pending credit (7 days)', '', '', 'Any', '', '', '', 'Retail', '', '', '', '', '', '', 'Send', '', 'Default Value', '', 'Active', 'Active', '', 'Northern > Victoria', '', '', '', 'Default Value', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -447,7 +457,8 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Total_PreFreight_Amount_Base` varchar(6) DEFAULT NULL,
   `Total_Tax` decimal(4,2) DEFAULT NULL,
   `Total_Tax_Base` varchar(6) DEFAULT NULL,
-  `triggerSubmit` varchar(1) DEFAULT NULL
+  `triggerSubmit` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`Order_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -468,11 +479,12 @@ INSERT INTO `customer_orders` (`Order_ID`, `Customer`, `Name`, `Mix_Type`, `Qty_
 --
 
 CREATE TABLE IF NOT EXISTS `lookup` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `code` int(11) NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `position` int(11) NOT NULL
+  `position` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -483,7 +495,8 @@ CREATE TABLE IF NOT EXISTS `lookup` (
 
 CREATE TABLE IF NOT EXISTS `migration` (
   `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -503,7 +516,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -512,7 +525,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `account_activation_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
@@ -523,89 +537,6 @@ INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `status`, `auth_
 (1, 'admin', 'irwinadmin@dontcare.com', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504);
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `article`
---
-ALTER TABLE `article`
- ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `auth_assignment`
---
-ALTER TABLE `auth_assignment`
- ADD PRIMARY KEY (`item_name`,`user_id`);
-
---
--- Indexes for table `auth_item`
---
-ALTER TABLE `auth_item`
- ADD PRIMARY KEY (`name`), ADD KEY `rule_name` (`rule_name`), ADD KEY `idx-auth_item-type` (`type`);
-
---
--- Indexes for table `auth_item_child`
---
-ALTER TABLE `auth_item_child`
- ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
-
---
--- Indexes for table `auth_rule`
---
-ALTER TABLE `auth_rule`
- ADD PRIMARY KEY (`name`);
-
---
--- Indexes for table `clients`
---
-ALTER TABLE `clients`
- ADD PRIMARY KEY (`Company_Name`);
-
---
--- Indexes for table `customer_orders`
---
-ALTER TABLE `customer_orders`
- ADD PRIMARY KEY (`Order_ID`);
-
---
--- Indexes for table `lookup`
---
-ALTER TABLE `lookup`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migration`
---
-ALTER TABLE `migration`
- ADD PRIMARY KEY (`version`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `article`
---
-ALTER TABLE `article`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `lookup`
---
-ALTER TABLE `lookup`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
 -- Constraints for dumped tables
 --
 
@@ -613,26 +544,26 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- Constraints for table `article`
 --
 ALTER TABLE `article`
-ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item`
 --
 ALTER TABLE `auth_item`
-ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
