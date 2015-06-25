@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\customerOrders;
 use app\models\customerOrdersSearch;
+use app\models\clients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,7 @@ class CustomerOrderController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'customerdetails' => ['get', 'post']
                 ],
             ],
         ];
@@ -82,8 +84,11 @@ class CustomerOrderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->Order_ID]);
         } else {
+        	
+        	
+        	$clientList = clients::find()->all();
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model, 'clientlist' => $clientList
             ]);
         }
     }
@@ -135,4 +140,20 @@ class CustomerOrderController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    
+    public function actionCustomerdetails($id)
+    {
+		$model=  \app\models\clients::findOne(['Account_Number'=>$id]);
+    	return \yii\helpers\Json::encode([
+    		'contact' => $model->Address_1_Primary_Contact_Name,
+	        'address'=>$model->Address_1,
+	        'phone'=>$model->Main_Phone,
+	        'status'=>$model->Status,
+	        'nearestTown'=>$model->Nearest_Town,
+	        'account_number'=>$model->Account_Number
+	    ]);
+
+	}
 }

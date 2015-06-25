@@ -1,45 +1,139 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
+use kartik\widgets\Typeahead;
+use kartik\widgets\datePicker;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $clientlist app\models\clients*/
+
+$this->registerJs("$('#customerorders-customer').on('change',function(){
+    $.ajax({
+        url: '".yii\helpers\Url::toRoute("customer-order/customerdetails")."',
+        dataType: 'json',
+        method: 'GET',
+        data: {id: $(this).val()},
+        success: function (data, textStatus, jqXHR) {
+            $('#customerdetails-contactname').val(data.contact);
+           	$('#customerdetails-phone').val(data.number);
+           	$('#customerdetails-status').val(data.status);
+           	$('#customerdetails-address').val(data.address);
+           	$('#customerdetails-nearestTown').val(data.nearestTown);
+           	$('#customerdetails-viewmore').show();
+           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("client/view?id=")."' + data.account_number);
+        },
+       
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('An error occured!');
+            alert('Error in ajax request retriving customer details' );
+        }
+    });
+});"); 
+
+
 ?>
 
 <div class="customer-orders-form">
 
    
 
-    <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); 
+    <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]); 
     
-    
-    
+    $clientDropDownList = ArrayHelper::map($clientlist, 'Account_Number', 'Company_Name') ;
+	
+    //Customer Select options
     echo Form::widget([
     	'model'=>$model,
     	'form'=>$form,
-    	'columns'=>2,
+    	'columns'=>1,
     	'attributes'=>[
-    		'Customer' =>['type' =>FORM::INPUT_TEXT, 'options'=>['placeholder'=>'Enter Company Name....'] ],
-    		'Mix_Type' => ['type' =>FORM::INPUT_TEXT, 'options'=>['placeholder'=>'Company ABN'] ]
-    	
-    	]
+    		'Customer' =>
+    			[
+    				'type' => Form::INPUT_WIDGET,
+    				'widgetClass' => '\kartik\widgets\Select2',
+    				'options'=>
+    					[
+    					'data'=>$clientDropDownList,
+    					'options' => ['placeholder' => 'Select Client....']
+    					],
+
+    			],			 
+      	]
     ]);
     
-    
-
-
+    //Display the Customer Information this is view only for reference
+   
+	
     ?>
+    <fieldset id="w1_2">
+    <div class='col-md-12'>
+    	<label class="control-label col-md-2"></label>
+    	<div class='col-md-10' >
+    		<div class='col-md-4'><b>Contact:</b> <input type='text' id='customerdetails-contactname'  style='border: 0px  solid; width:170px' readonly></div>
+    		<div class='col-md-4'><b>Phone: </b><input type='text' id='customerdetails-phone' readonly style='border: 0px  solid'> </div>
+    		<div class='col-md-4'><b>Status:</b> <input type='text' id='customerdetails-status' style='border: 0px  solid' readonly> </div>
+    	</div>
+    	<label class="control-label col-md-2"></label>
+    	<div class='col-md-10'>
+    		<div class='col-md-10'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly style='border: 0px  solid; width: 500px'> </div>
+    	</div>
+    	<label class="control-label col-md-2"></label>
+    	<div class='col-md-10'>
+    		<div class='col-md-10' '><b>Address: </b><input type='text' id='customerdetails-address'  style='border: 0px  solid; width: 500px' readonly></div>
+    	</div>
+    	<label class="control-label col-md-2"></label>
+    	<div class='col-md-10' id='customerdetails-viewmore' style='display: none'>
+    		<div class='col-md-10'><a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View More Details</a></div>
+    	</div>
+    	<div class='col-md-12' style='height: 20px; width: 100%'></div>
+    	
+	</div>  	
+	</fieldset>
+	
+	
+   <?= Form::widget(
+		[
+		'model'=>$model,
+		'form'=>$form,
+		'columns'=>2,
+		'attributes'=>
+			[       
+			'Requested_Delivery_by'=>
+				[
+				'type'=>Form::INPUT_WIDGET, 
+				'widgetClass' => '\kartik\widgets\DatePicker',
+				'options' => 
+					[
+					'options' =>
+						[
+						'placeholder' => 'Requested Delivery....',
+						],	
+					'pluginOptions' => 
+						[
+						'format' => "dd-M-yyyy",
+						'todayHighlight' => true,
+						]
+					]
+			
+				],
+			'Storage_Unit' => 
+				[
+				'type' => FORM::INPUT_TEXT
+				]
+			]
+		]) ?>
 
-    <?= $form->field($model, 'Order_ID')->textInput(['maxlength' => true]) ?>
+ 	 <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Customer')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
+   
 
     <?= $form->field($model, 'Mix_Type')->textInput(['maxlength' => true]) ?>
 
