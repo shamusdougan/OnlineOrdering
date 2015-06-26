@@ -103,30 +103,48 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 		[
 		'model'=>$model,
 		'form'=>$form,
-		'columns'=>2,
+	
+		'columns'=>1,
 		'attributes'=>
-			[       
-			'Requested_Delivery_by'=>
-				[
-				'type'=>Form::INPUT_WIDGET, 
-				'widgetClass' => '\kartik\widgets\DatePicker',
-				'options' => 
-					[
-					'options' =>
+			[
+			'Delivery Info' =>
+				[  
+				'label' => 'Delivery Info',
+				'labelSpan' => 2,
+				'columns' => 10,
+				'attributes' =>
+					[    
+					'Requested_Delivery_by'=>
 						[
-						'placeholder' => 'Requested Delivery....',
-						],	
-					'pluginOptions' => 
+						'type'=>Form::INPUT_WIDGET, 
+						'widgetClass' => '\kartik\widgets\DatePicker',
+						'options' => 
+							[
+							'type' => DatePicker::TYPE_COMPONENT_APPEND,
+							'options' => 
+							[
+							'placeholder' => 'Requested Delivery By'
+							],
+							'pluginOptions' => 
+								[
+								'format' => "dd-M-yyyy",
+								'todayHighlight' => true,
+								]
+							],
+						'label' => false,
+						'columnOptions'=>['colspan'=>6],
+					
+						],
+					'Storage_Unit' => 
 						[
-						'format' => "dd-M-yyyy",
-						'todayHighlight' => true,
+						'type' => FORM::INPUT_TEXT,
+						'options' => 
+							[
+							'placeholder' => 'Select Silo.....'
+							],
+						'columnOptions'=>['colspan'=>6],
 						]
 					]
-			
-				],
-			'Storage_Unit' => 
-				[
-				'type' => FORM::INPUT_TEXT
 				]
 			]
 		]) ?>
@@ -134,7 +152,6 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
  	 <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
 
    
-
     <?= $form->field($model, 'Mix_Type')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Qty_Tonnes')->textInput() ?>
