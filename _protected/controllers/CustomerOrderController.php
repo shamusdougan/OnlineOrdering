@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\customerOrders;
 use app\models\customerOrdersSearch;
-use app\models\clients;
+use app\models\Clients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -86,7 +86,7 @@ class CustomerOrderController extends Controller
         } else {
         	
         	
-        	$clientList = clients::find()->all();
+        	$clientList = Clients::find()->all();
             return $this->render('create', [
                 'model' => $model, 'clientlist' => $clientList
             ]);
@@ -145,14 +145,14 @@ class CustomerOrderController extends Controller
     
     public function actionCustomerdetails($id)
     {
-		$model=  \app\models\clients::findOne(['Account_Number'=>$id]);
+		$model=  \app\models\Clients::findOne(['id'=>$id]);
     	return \yii\helpers\Json::encode([
-    		'contact' => $model->Address_1_Primary_Contact_Name,
+    		'contact' => $model->Owner,
 	        'address'=>$model->Address_1,
 	        'phone'=>$model->Main_Phone,
 	        'status'=>$model->Status,
 	        'nearestTown'=>$model->Nearest_Town,
-	        'account_number'=>$model->Account_Number
+	        'id'=>$model->id
 	    ]);
 
 	}

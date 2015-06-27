@@ -27,10 +27,9 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
            	$('#customerdetails-address').val(data.address);
            	$('#customerdetails-nearestTown').val(data.nearestTown);
            	$('#customerdetails-viewmore').show();
-           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("client/view?id=")."' + data.account_number);
+           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/view?id=")."' + data.id);
         },
-       
-
+      
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
             alert('Error in ajax request retriving customer details' );
@@ -47,7 +46,7 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]); 
     
-    $clientDropDownList = ArrayHelper::map($clientlist, 'Account_Number', 'Company_Name') ;
+    $clientDropDownList = ArrayHelper::map($clientlist, 'id', 'Company_Name') ;
 	
     //Customer Select options
     echo Form::widget([
