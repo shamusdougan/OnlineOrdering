@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.2
+ * @version   3.0.4
  */
 
 namespace kartik\grid;
@@ -692,7 +692,7 @@ HTML;
             \kartik\base\Config::checkDependency(
                 'mpdf\Pdf',
                 'yii2-mpdf',
-                "for PDF export functionality. To include PDF export, follow the install steps below. If you do not need PDF export functionality, do not include 'PDF' as a format in the 'export' property. You can otherwise set 'export' to false to disable all export functionality"
+                "for PDF export functionality. To include PDF export, follow the install steps below. If you do not need PDF export functionality, do not include 'PDF' as a format in the 'export' property. You can otherwise set 'export' to 'false' to disable all export functionality"
             );
         }
         $this->initHeader();
@@ -1238,7 +1238,7 @@ HTML;
             $js .= ".on('pjax:timeout', function(e){e.preventDefault()})";
         }
         $loadingCss = ArrayHelper::getvalue($this->pjaxSettings, 'loadingCssClass', 'kv-grid-loading');
-        $postPjaxJs = "setTimeout({$this->_gridClientFunc}(), 2500);";
+        $postPjaxJs = "setTimeout({$this->_gridClientFunc}, 2500);";
         if ($loadingCss !== false) {
             $grid = 'jQuery("#' . $this->containerOptions['id'] . '")';
             if ($loadingCss === true) {
@@ -1454,6 +1454,6 @@ HTML;
         }
         $this->_gridClientFunc = 'kvGridInit_' . hash('crc32', $script);
         $this->options['data-krajee-grid'] = $this->_gridClientFunc;
-        $view->registerJs("var {$this->_gridClientFunc}=function(){\n{$script}\n}\n{$this->_gridClientFunc}();");
+        $view->registerJs("var {$this->_gridClientFunc}=function(){\n{$script}\n};\n{$this->_gridClientFunc}();");
     }
 }

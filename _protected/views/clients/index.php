@@ -28,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'Company_Name',
             'Account_Number',
-            'Main_Phone',
             'Fax',
             // 'TownSuburb',
             // 'Is_Customer:boolean',

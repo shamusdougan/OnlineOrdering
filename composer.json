@@ -18,7 +18,8 @@
         "mihaildev/yii2-ckeditor": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-grid": "*",
-        "kartik-v/yii2-builder":"*"
+        "kartik-v/yii2-builder":"*",        
+		"kartik-v/yii2-tabs-x": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

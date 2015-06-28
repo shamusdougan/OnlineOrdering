@@ -4,7 +4,7 @@
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
  * @package yii2-widgets
  * @subpackage yii2-widget-select2
- * @version 2.0.0
+ * @version 2.0.1
  */
 
 namespace kartik\select2;
@@ -56,8 +56,10 @@ class Select2 extends \kartik\base\InputWidget
     public $theme = self::THEME_KRAJEE;
 
     /**
-     * @var string, the displayed text in the dropdown for the initial
+     * @var string|array, the displayed text in the dropdown for the initial
      * value when you do not set or provide `data` (e.g. using with ajax).
+     * If options['multiple'] is set to `true`, you can set this as an array of
+     * text descriptions for each item in the dropdown `value`.
      */
     public $initValueText;
 
@@ -105,11 +107,14 @@ class Select2 extends \kartik\base\InputWidget
      */
     public function init()
     {
-        $this->pluginOptions['theme'] = $this->theme;
         parent::init();
-        if (ArrayHelper::getValue($this->pluginOptions, 'tags', false)) {
-            $this->options['multiple'] = true;
+        $this->pluginOptions['theme'] = $this->theme;
+        if (!empty($this->addon) || empty($this->pluginOptions['width'])) {
+            $this->pluginOptions['width'] = '100%';
         }
+        $multiple = ArrayHelper::getValue($this->pluginOptions, 'multiple', false);
+        unset($this->pluginOptions['multiple']);
+        $this->options['multiple'] = ArrayHelper::getValue($this->options, 'multiple', $multiple);
         if ($this->hideSearch) {
             $css = ArrayHelper::getValue($this->pluginOptions, 'dropdownCssClass', '');
             $css .= ' kv-hide-search';
@@ -117,13 +122,16 @@ class Select2 extends \kartik\base\InputWidget
         }
         $this->initPlaceholder();
         if (!isset($this->data)) {
-            $key = empty($this->value) ? '' : $this->value;
-            $val = empty($this->initValueText) ? $key : $this->initValueText;
-            $this->data = [$key => $val];
+            if (empty($this->value) && empty($this->initValueText)) {
+                $this->data = [];
+            } else {
+                $key = empty($this->value) ? ($multiple ? [] : '') : $this->value;
+                $val = empty($this->initValueText) ? $key : $this->initValueText;
+                $this->data = $multiple ? array_combine($key, $val) : [$key => $val];
+            }
         }
         Html::addCssClass($this->options, 'form-control');
-        Html::addCssStyle($this->options, 'width:100%', false);
-        $this->initLanguage();
+        $this->initLanguage('language', true);
         $this->registerAssets();
         $this->renderInput();
     }
@@ -225,7 +233,7 @@ class Select2 extends \kartik\base\InputWidget
         if (in_array($this->theme, self::$_inbuiltThemes)) {
             $bundleClass = __NAMESPACE__ . '\Theme' . ucfirst($this->theme) . 'Asset';
             $bundleClass::register($view);
-        } 
+        }
     }
 
     /**
@@ -235,19 +243,18 @@ class Select2 extends \kartik\base\InputWidget
     {
         $id = $this->options['id'];
         $this->registerAssetBundle();
-        // validate bootstrap has-success & has-error states
-        $clear = 'kv_close_' . str_replace('-', '_', $id);
-        $this->pluginEvents += [
-            'select2:opening' => "function(event){initSelect2DropStyle('{$id}', '{$clear}', event);}",
-            'select2:unselect' => "function(){window.{$clear} = true;}"
-        ];
+        // do not open dropdown when clear icon is pressed to clear value
+        $js = "\$('#{$id}').on('select2:opening', initS2Open).on('select2:unselecting', initS2Unselect);";
+        $this->getView()->registerJs($js);
         // register plugin
         if ($this->pluginLoading) {
-            $this->registerPlugin('select2', "jQuery('#{$id}')",
-                "initSelect2Loading('{$id}', '.select2-container--{$this->theme}')");
+            $this->registerPlugin(
+                'select2',
+                "jQuery('#{$id}')",
+                "initS2Loading('{$id}', '.select2-container--{$this->theme}')"
+            );
         } else {
             $this->registerPlugin('select2');
         }
-
     }
 }

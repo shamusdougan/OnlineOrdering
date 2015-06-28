@@ -3,8 +3,8 @@
 /**
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
  * @package yii2-widgets
- * @subpackage yii2-widget-select2 
- * @version 2.0.0
+ * @subpackage yii2-widget-select2
+ * @version 2.0.1
  */
 
 namespace kartik\select2;
@@ -19,7 +19,6 @@ use Yii;
  */
 class Select2Asset extends \kartik\base\AssetBundle
 {
-
     /**
      * @inheritdoc
      */
@@ -30,5 +29,4 @@ class Select2Asset extends \kartik\base\AssetBundle
         $this->setupAssets('js', ['js/select2.full', 'js/select2-krajee']);
         parent::init();
     }
-
 }

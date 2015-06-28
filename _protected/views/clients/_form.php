@@ -1,7 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+use kartik\tabs\TabsX;
+use app\models\Lookup;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\clients */
@@ -10,49 +13,135 @@ use yii\widgets\ActiveForm;
 
 <div class="clients-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL] ); 
 
-    <?= $form->field($model, 'id')->textInput() ?>
 
-    <?= $form->field($model, 'Company_Name')->textInput(['maxlength' => true]) ?>
+ $content1 = Form::widget([
+    	'model'=>$model,
+    	'form'=>$form,
+    	'columns'=>2,
+    	'attributes'=>[
+			'Company_Name'=>['label' => 'Name', 'type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'Companny Name']],
+			'Trading_as'=>['label' => 'Trading','type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'Trading as...']]
 
-    <?= $form->field($model, 'Account_Number')->textInput(['maxlength' => true]) ?>
+    				 
+      	]
+    ]);
+  $content1 .= Form::widget(
+  		[
+		'model'=>$model,
+    	'form'=>$form,
+    	'columns'=>2,
+    	'attributes'=>
+    		[
+    		'Status'=>['label' => 'Status', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items' => Lookup::items("CLIENT_STATUS")  ],
+    		'ABN' => ['label' => 'ABN/ACN']
+    		]
+    	]);
+    	
+    	
+    	
+	$content1 .= Form::widget(
+		[
+		'model' => $model,
+		'form' => $form,
+		'columns' => 4,
+		'attributes' => 
+			[
+			'Is_Customer' => ['type'=>Form::INPUT_CHECKBOX, 'label' => 'Customer' ], 
+			'Is_Factory' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'Factory'],
+			'Is_Supplier' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'Supplier'],
+			'3rd_Party_Company' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'Other Provider'],
+			]
+		]);
+	 	
+	$content1 .= Form::widget(
+		[
+		'model' => $model,
+		'form' => $form,
+		'columns' => 2,
+		
+		'attributes' => 
+			[
+			'Address_1_Street_1' => 
+				[
+				'type'=>Form::INPUT_TEXT, 
+				'label' => 'Address',
+				'labelspan' => 1,
+				'columnOptions'=>['colspan'=>2 ],
+				'options' =>
+					[
+					'placeholder' => 'Address line 1'
+					],
+			
+				], 
+			'Address_1_Street_2' => 
+				[
+				'type'=>Form::INPUT_TEXT, 
+				'label' => '',
+				'labelSpan' => 1,
+				'columnOptions'=>['colspan'=>2 ],
+				'options' =>
+					[
+					'placeholder' => 'Address line 2',
+					]
+				], 
+			
+			'Address_1_TownSuburb' =>
+				[
+				'type' => Form::INPUT_TEXT,
+				'label' => 'City',
+				'options' =>
+					[
+					'placeholder' => 'City'
+					]
+				],
+			'Address_1_Postal_Code' =>
+				[
+				'type' => Form::INPUT_TEXT,
+				'label' => 'Postcode',
+				],	
+			'Main_Phone' =>
+				[
+				'type' => Form::INPUT_TEXT,
+				'label' => 'Phone'
+				],
+			'Fax' =>
+				[
+				'type' => Form::INPUT_TEXT,
+				'label' => 'Fax'
+				]
+				
+			]
+		
+		
+		]);
 
-    <?= $form->field($model, 'Main_Phone')->textInput(['maxlength' => true]) ?>
+$content2 = "Hello world";
+$items = 
+	[
+		[			
+		'label'=>'<i class="glyphicon glyphicon-home"></i> Company',
+		'content'=>$content1,
+		'active'=>true
+		],
+		[
+		'label'=>'<i class="glyphicon glyphicon-user"></i> Herd',
+		'content'=>$content2,
 
-    <?= $form->field($model, 'Fax')->textInput() ?>
+		],
+	];
 
-    <?= $form->field($model, 'TownSuburb')->textInput(['maxlength' => true]) ?>
+echo TabsX::widget([
+		'items'=>$items,
+		'position'=>TabsX::POS_ABOVE,
+		'encodeLabels'=>false
+]);
 
-    <?= $form->field($model, 'Is_Customer')->checkbox() ?>
+?>
 
-    <?= $form->field($model, 'Is_Factory')->checkbox() ?>
-
-    <?= $form->field($model, 'Is_Supplier')->checkbox() ?>
-
-    <?= $form->field($model, '3rd_Party_Company')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'ABN')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Address_Type')->textInput() ?>
-
-    <?= $form->field($model, 'Address_1_CountryRegion')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Postal_Code')->textInput() ?>
-
-    <?= $form->field($model, 'Address_1_StateProvince')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Street_1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Street_2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Street_3')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Telephone_2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Address_1_Telephone_3')->textInput(['maxlength' => true]) ?>
+    
+ 
 
     <?= $form->field($model, 'Address_2')->textInput(['maxlength' => true]) ?>
 

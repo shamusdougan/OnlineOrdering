@@ -1,3 +1,22 @@
+Version 3.0.4
+=============
+**Date:** 24-Jun-2015
+
+1. (enh #320): Trim trailing whitespaces from text/csv exports.
+2. (enh #321): Add Indonesian translations.
+
+Version 3.0.3
+=============
+**Date:** 15-Jun-2015
+
+1. (enh #300): Add Lithuanian Translations.
+2. (enh #301): Add Greek Translations.
+3. (enh #310): Updated German Translations.
+4. (enh #311): Better defaulting of Select2 `pluginOptions['width']`.
+5. (enh #313): Add Czech translations.
+6. (enh #317): Add missing spanish translations.
+7. (enh #318): Fix post pjax `setTimeout` JS function.
+
 Version 3.0.2
 =============
 **Date:** 11-May-2015
