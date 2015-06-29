@@ -191,6 +191,73 @@ $companyContact =  Form::widget(
 			'Do_not_allow_Phone_Calls' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'no Phone'],
 			]
 		]);
+		
+$companyHerd = Form::widget(
+	[
+	'model' => $model,
+	'form' => $form,
+	'columns' => 3,
+	'attributes' => 
+		[
+		'Farm_Mgr' => ['type' => Form::INPUT_TEXT,	'label' => 'Farm Manager'],	
+		'Farm_No' => ['type' => Form::INPUT_TEXT,	'label' => 'Farm Number'],	
+		'Farm_Operation'=>
+    			[
+				'type' => Form::INPUT_WIDGET,
+				'widgetClass' => '\kartik\widgets\Select2',
+				'options'=>
+					[
+					'data'=> Lookup::items("FARM_OPERATION"),
+					'options' => ['placeholder' => 'Select Business Type...']
+					],
+				'label' => 'Farm Operation'
+    			],	
+    	'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],	
+		]
+	]);
+	
+$companyHerd = Form::widget(
+	[
+	'model' => $model,
+	'form' => $form,
+	'columns' => 3,
+	'attributes' => 
+		[
+		'Herd_Type'=>
+			[
+				'type' => Form::INPUT_WIDGET,
+				'widgetClass' => '\kartik\widgets\Select2',
+				'options'=>
+					[
+					'data'=> Lookup::items("HERD_TYPE"),
+					'options' => ['placeholder' => 'Select Herd Type....']
+					],
+				'label' => 'Herd Type'
+			],	
+		'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],	
+		'Herd_Notes' => ['type' => Form::INPUT_TEXTAREA, 'columnOptions'=>['colspan'=>3 ]],
+		'Supplies_to' => ['type' => Form::INPUT_TEXT,	'label' => 'Supplies to'],
+		'Dairy_No' => ['type' => Form::INPUT_TEXT,	'label' => 'Dairy Number'],
+		'Dairy_Notes' => ['type' => Form::INPUT_TEXTAREA, 'columnOptions'=>['colspan'=>3 ]],
+    	]
+    ]);
+
+	
+$companyHerd .= Form::widget(
+	[
+	'model' => $model,
+	'form' => $form,
+	'columns' => 3,
+	'attributes' => 
+		[
+		'Feed_Days_Remaining' => ['type' => Form::INPUT_TEXT],	
+		'Feed_empty' => ['type' => Form::INPUT_TEXT],	
+		'Feed_QOH_Tonnes' => ['type' => Form::INPUT_TEXT],	
+		'Feed_QOH_Update' => ['type' => Form::INPUT_TEXT],	
+		'Feed_Rate_Kg_Day' => ['type' => Form::INPUT_TEXT],	
+		
+		]
+	]);
 
 $items = 
 	[
@@ -201,7 +268,7 @@ $items =
 		],
 		[
 		'label'=>'<i class="glyphicon glyphicon-tags"></i> Herd Info',
-		'content'=>$companyAccounts,
+		'content'=>$companyHerd,
 		],
 		[
 		'label'=>'<i class="glyphicon glyphicon-user"></i> Contacts',
@@ -223,38 +290,6 @@ echo TabsX::widget([
 
 ?>
 
-  
-
-
-    <?= $form->field($model, 'Farm_Mgr')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Farm_No')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Farm_Operation')->textInput() ?>
-
-    <?= $form->field($model, 'Feed_Days_Remaining')->textInput() ?>
-
-    <?= $form->field($model, 'Feed_empty')->textInput() ?>
-
-    <?= $form->field($model, 'Feed_QOH_Tonnes')->textInput() ?>
-
-    <?= $form->field($model, 'Feed_QOH_Update')->textInput() ?>
-
-    <?= $form->field($model, 'Feed_Rate_Kg_Day')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Herd_Notes')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Herd_Size')->textInput() ?>
-
-    <?= $form->field($model, 'Herd_Type')->textInput() ?>
-    
-    <?= $form->field($model, 'Supplies_to')->textInput(['maxlength' => true]) ?>
-    
-      <?= $form->field($model, 'Dairy_No')->textInput() ?>
-
-    <?= $form->field($model, 'Dairy_Notes')->textInput(['maxlength' => true]) ?>
-
-    
 
 
 
