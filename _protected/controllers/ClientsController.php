@@ -8,6 +8,8 @@ use app\models\clientsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * ClientsController implements the CRUD actions for clients model.
@@ -65,8 +67,12 @@ class ClientsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+        	
+        	$clientList = Clients::find()->all();
+        	$clientDropDownList = ArrayHelper::map($clientList, 'id', 'Company_Name') ;
+        	
             return $this->render('create', [
-                'model' => $model,
+                'model' => $model, 'clientList' => $clientDropDownList
             ]);
         }
     }
