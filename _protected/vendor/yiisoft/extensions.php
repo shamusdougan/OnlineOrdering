@@ -291,4 +291,13 @@ return array (
       '@kartik/tabs' => $vendorDir . '/kartik-v/yii2-tabs-x',
     ),
   ),
+  'synatree/yii2-dynamic-relations' => 
+  array (
+    'name' => 'synatree/yii2-dynamic-relations',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@synatree/dynamicrelations' => $vendorDir . '/synatree/yii2-dynamic-relations',
+    ),
+  ),
 );

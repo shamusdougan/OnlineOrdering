@@ -8,6 +8,14 @@ $config = [
     //'language' => 'sr',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+     'modules' =>
+     	[
+
+        'dynamicrelations' => 
+        	[
+            'class' => '\synatree\dynamicrelations\Module'
+        	],
+		],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) 
