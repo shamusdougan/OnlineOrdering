@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2015 at 03:20 PM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Jul 01, 2015 at 04:26 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `article` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `summary` text COLLATE utf8_unicode_ci NOT NULL,
@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS `article` (
   `status` int(11) NOT NULL,
   `category` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -47,7 +49,8 @@ CREATE TABLE IF NOT EXISTS `article` (
 CREATE TABLE IF NOT EXISTS `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` int(11) DEFAULT NULL
+  `created_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`item_name`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -75,7 +78,10 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
   `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `data` text COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`name`),
+  KEY `rule_name` (`rule_name`),
+  KEY `idx-auth_item-type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -94,7 +100,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 
 CREATE TABLE IF NOT EXISTS `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
+  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`parent`,`child`),
+  KEY `child` (`child`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -114,7 +122,8 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `data` text COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -131,7 +140,7 @@ INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `clients` (
-`id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `Company_Name` varchar(100) NOT NULL,
   `Account_Number` varchar(6) NOT NULL,
   `Main_Phone` varchar(12) NOT NULL,
@@ -224,7 +233,8 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `Sub_Region` varchar(255) DEFAULT NULL,
   `Supplies_to` varchar(255) DEFAULT NULL,
   `Trading_as` varchar(255) DEFAULT NULL,
-  `Website` varchar(255) DEFAULT NULL
+  `Website` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=906 ;
 
 --
@@ -1156,6 +1166,601 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contacts`
+--
+
+CREATE TABLE IF NOT EXISTS `contacts` (
+  `id` int(5) NOT NULL,
+  `Business_Phone` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `Address_1` varchar(100) DEFAULT NULL,
+  `Address_1_CountryRegion` varchar(100) DEFAULT NULL,
+  `Address_1_Postal_Code` varchar(10) DEFAULT NULL,
+  `Address_1_StateProvince` varchar(10) DEFAULT NULL,
+  `Address_1_Street_1` varchar(200) DEFAULT NULL,
+  `Address_1_Street_2` varchar(200) DEFAULT NULL,
+  `Address_1_TownSuburbCity` varchar(100) DEFAULT NULL,
+  `Do_Not_Allow_Bulk_Emails` bit(1) DEFAULT NULL,
+  `Do_Not_Allow_Bulk_Mails` bit(1) DEFAULT NULL,
+  `Do_Not_Allow_Emails` bit(1) DEFAULT NULL,
+  `Do_Not_Allow_Faxes` bit(1) DEFAULT NULL,
+  `Do_Not_Allow_Mails` bit(1) DEFAULT NULL,
+  `Do_Not_Allow_Phone_Calls` bit(1) DEFAULT NULL,
+  `Email` varchar(200) DEFAULT NULL,
+  `Fax` varchar(50) DEFAULT NULL,
+  `First_Name` varchar(100) NOT NULL,
+  `Job_Title` varchar(100) DEFAULT NULL,
+  `Last_Name` varchar(100) NOT NULL,
+  `Mobile_Phone` varchar(50) DEFAULT NULL,
+  `Company_id` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `Business_Phone`, `Address_1`, `Address_1_CountryRegion`, `Address_1_Postal_Code`, `Address_1_StateProvince`, `Address_1_Street_1`, `Address_1_Street_2`, `Address_1_TownSuburbCity`, `Do_Not_Allow_Bulk_Emails`, `Do_Not_Allow_Bulk_Mails`, `Do_Not_Allow_Emails`, `Do_Not_Allow_Faxes`, `Do_Not_Allow_Mails`, `Do_Not_Allow_Phone_Calls`, `Email`, `Fax`, `First_Name`, `Job_Title`, `Last_Name`, `Mobile_Phone`, `Company_id`) VALUES
+(1, '56596296', '795 Yannathan Road Nyora VIC 3987 Australia', 'Australia', '3987', 'VIC', '795 Yannathan Road', '', 'Nyora', b'0', b'1', b'0', b'0', b'0', b'0', '', '56294332', 'Aaron', '', 'Hancock', '488062252', '13'),
+(2, '', 'WERRIBEE VIC 3030 AUSTRALIA', 'AUSTRALIA', '3030', 'VIC', '', '', 'WERRIBEE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Aaron', '', 'Spalding', '0408 176 375', ''),
+(3, '03 9328 4778', '399 Flemington Rd NORTH MELBOURNE VIC 3051 AUSTRALIA', 'AUSTRALIA', '3051', 'VIC', '399 Flemington Rd', '', 'NORTH MELBOURNE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ace', 'Sales', 'Express Office Systems', '', '119'),
+(4, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Adam', 'Loader Driver', 'Riddell', '', '399'),
+(5, '51924219', '127 Rifle Range Road Glengarry VIC 3854 Australia', 'Australia', '3854', 'VIC', '127 Rifle Range Road', '', 'Glengarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Adam', 'Sharefarmer/son', 'Waltham', '0417010922', '354'),
+(6, '51924219', '127 Rifle Range Road Glengarry VIC 3854 Australia', 'Australia', '3854', 'VIC', '127 Rifle Range Road', '', 'Glengarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '51924219', 'Adam', '', 'Waltham', '0417 010 922', ''),
+(7, '56296266', '270 Evans Road Bunyip VIC 3851 Australia', 'Australia', '3851', 'VIC', '270 Evans Road', '', 'Bunyip', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Adam', '', 'Wright', '418179863', ''),
+(8, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Adrian', '', 'Cook', '', '222'),
+(9, '56266335', '353 Briggs Road Nilma North VIC 3821 Australia', 'Australia', '3821', 'VIC', '353 Briggs Road', '', 'Nilma North', b'0', b'1', b'0', b'0', b'0', b'0', 'amunden@dcsi.net.au', '', 'Adrian', '', 'Munden', '435414722', ''),
+(10, '', '479 Upper Maffra Road Newry VIC 3859 Australia', 'Australia', '3859', 'VIC', '479 Upper Maffra Road', '', 'Newry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alan', '', 'Clyne', '0407 544 761', '516'),
+(11, '03 5145 1414', 'Upper Mafra Road NEWRY VIC 3859 AUSTRALIA', 'AUSTRALIA', '3859', 'VIC', 'Upper Mafra Road', '', 'NEWRY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alan', 'Owner', 'Clyne', '0407 544 761', '33'),
+(12, '56832541', '925 Falls Road Fish Creek VIC 3959 Australia', 'Australia', '3959', 'VIC', '925 Falls Road', '', 'Fish Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alan', '', 'Flanders', '0411 869854', '487'),
+(13, '03 5683 2541', '925 Falls Road Fish Creek VIC 3959 Australia', 'Australia', '3959', 'VIC', '925 Falls Road', '', 'Fish Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alan', '', 'Flanders', '0411 869 854', ''),
+(14, '03 5149 8201', '376 Airly Estate Road AIRLY VIC 3851 AUSTRALIA', 'AUSTRALIA', '3851', 'VIC', '376 Airly Estate Road', '', 'AIRLY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alan', '', 'Pattison', '0408 498 201', '12'),
+(15, '56644260', '715 Farmers Road Meeniyan VIC 3956 Australia', 'Australia', '3956', 'VIC', '715 Farmers Road', '', 'Meeniyan', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Albert', '', 'Jans', '', ''),
+(16, '03 5659 2469', '795 Nyora Road Poowong VIC 3988 Australia', 'Australia', '3988', 'VIC', '795 Nyora Road', '', 'Poowong', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alex', '', 'Miller', '0447 592 469', '41'),
+(17, '03 5668 6330', '225 spencers road Leongatha North VIC 3953 Australia', 'Australia', '3953', 'VIC', '225 spencers road', '', 'Leongatha North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alex', 'Manager', 'Spencer', '0448 686231', '27'),
+(18, '56686330', '225 spencers road Leongatha North VIC 3953 Australia', 'Australia', '3953', 'VIC', '225 spencers road', '', 'Leongatha North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alex', '', 'Spencer', '448686231', ''),
+(19, '03 5145 1416', '459 Upper Maffra Road NEWRY VIC 3859 AUSTRALIA', 'AUSTRALIA', '3859', 'VIC', '459 Upper Maffra Road', '', 'NEWRY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Alister', 'Owner Manager', 'Clyne', '0427 451 010', '33'),
+(20, '0400105223', '92 Inland Rd HELENSVILLE, NZ', '', '', 'NZ', '92 Inland Rd', '', 'HELENSVILLE', b'0', b'1', b'0', b'0', b'0', b'1', 'allan.mc@xtra.co.nz', '', 'Allan', 'Owner', 'McCracken', '+64274815620', '334'),
+(21, '03 5182 0643', '380 Pound Road YARRAM VIC 3971 AUSTRALIA', 'AUSTRALIA', '3971', 'VIC', '380 Pound Road', '', 'YARRAM', b'0', b'1', b'0', b'0', b'0', b'0', 'asabernethy@bigpond.com', '', 'Andrew', 'Farm Manager', 'Abernethy', '0429 956 639', '42'),
+(22, '03 5148 6249', '853 Nambrok Road NAMBROK VIC 3847 AUSTRALIA', 'AUSTRALIA', '3847', 'VIC', '853 Nambrok Road', '', 'NAMBROK', b'0', b'1', b'0', b'0', b'0', b'0', 'andrewandally@bigpond.com', '', 'Andrew and Ally', '', 'Lamb', '0419 560 668', '4'),
+(23, '03 5147 1803', '277 Vardys Road RIVERSLEA VIC 3860 AUSTRALIA', 'AUSTRALIA', '3860', 'VIC', '277 Vardys Road', '', 'RIVERSLEA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', '', 'Coleman', '0428 471 803', '44'),
+(24, '035471803', '277 Vardy''s Road RIVERSLEA VIC 3860 AUSTRALIA', 'AUSTRALIA', '3860', 'VIC', '277 Vardy''s Road', '', 'RIVERSLEA', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 5141 1539', 'Andrew', 'Owner', 'Coleman', '0428 471 803', '44'),
+(25, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', 'Sharefarmer', 'Fraser', '0427 330 508', '450'),
+(26, '03 5148 6339', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'rustycow@wideband.net.au', '', 'Andrew', 'Owner', 'Hargreaves', '0412 508 046', '43'),
+(27, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', '', 'Kay', '0411950515', ''),
+(28, '07 4634 7344', '24 Molloy Street TOOWOOMBA CITY QLD 4350 AUSTRALIA', 'AUSTRALIA', '4350', 'QLD', '24 Molloy Street', '', 'TOOWOOMBA CITY', b'0', b'1', b'0', b'0', b'0', b'0', 'andrew@customvac.com.au', '', 'Andrew', 'Southern Regional Representative', 'McIntosh', '0409 347 344', '165'),
+(29, '0419 367 481', 'Mcmauns Road NILMA NORTH VIC 3821 AUSTRALIA', 'AUSTRALIA', '3821', 'VIC', 'Mcmauns Road', '', 'NILMA NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', 'Leasee', 'Morgan', '0419 367 481', '66'),
+(30, '03 9091 6915', 'Level 13, 350 Collins Street MELBOURNE VIC 3001 AUSTRALIA', 'AUSTRALIA', '3001', 'VIC', 'Level 13, 350 Collins Street', '', 'MELBOURNE', b'0', b'1', b'0', b'0', b'0', b'0', 'andrew@investmentgrowth.com.au', '03 9091 6933', 'Andrew', 'Managing Director', 'Oliver', '0403 266 171', '398'),
+(31, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', 'Son', 'Pouw', '', '355'),
+(32, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', 'Operations', 'Sheehan', '', '399'),
+(33, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andrew', 'Operations Manager', 'Sheehan', '', '399'),
+(34, '0419 599 493', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andy', 'Manager', 'Magro', '0423 307 098', '256'),
+(35, '03 5657 7202', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Andy', '', 'Thomas', '0409 577 204', '8'),
+(36, '03 6331 0270', 'P O Box 646 LAUNCESTON TAS 7250 AUSTRALIA', 'AUSTRALIA', '7250', 'TAS', 'P O Box 646', '', 'LAUNCESTON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Angus', '', 'TSS', '', '687'),
+(37, '03 5145 6072', '237 Stratford/Maffra Rd STRATFORD VIC 3862 AUSTRALIA', 'AUSTRALIA', '3862', 'VIC', '237 Stratford/Maffra Rd', '', 'STRATFORD', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Anja', 'Admin Office Manager', 'Bartle', '', '398'),
+(38, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ann', 'Owner', 'Barton', '0438 825 249', '745'),
+(39, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'cole@sympac.com.au', '', '', '', 'Anne & Paul Cole', '', ''),
+(40, '03 51576334', '1690 Fernbank-Glenaladale Road Glenaladale VIC Australia', 'Australia', '', 'VIC', '1690 Fernbank-Glenaladale Road', '', 'Glenaladale', b'0', b'1', b'0', b'0', b'0', b'0', 'anneg@wideband.net.au', '351411401', 'Anne', '', 'Garland', '0400 576 333', ''),
+(41, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'anthony@irwinstockfeeds.com.au', '', 'Anthony', '', 'Mann', '', ''),
+(42, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Anthony', 'Maintenance Super/Driver', 'Reid', '', '399'),
+(43, '02 9223 5414', 'Suite 5 84 Pitt Street SYDNEY NSW 2000 AUSTRALIA', 'AUSTRALIA', '2000', 'NSW', 'Suite 5', '84 Pitt Street', 'SYDNEY', b'0', b'1', b'0', b'0', b'0', b'0', 'antoine@aceoz.com.au', '02 8088 7307', 'Antoine', 'Accounts', 'Haldezos', '', '26'),
+(44, '56574304', '180 Scotts Estate Road Kongwak VIC 3951 Australia', 'Australia', '3951', 'VIC', '180 Scotts Estate Road', '', 'Kongwak', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Arther', '', 'Grabham', '417115912', ''),
+(45, '03 5191 8361', 'Cnr Archbolds Rd & Littles Ln', '', '', '', 'Cnr Archbolds Rd & Littles Ln', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Arthur', '', 'Baillie', '0409533684', '89'),
+(46, '56871287', '815 Millar Road Yanakie VIC 3960 Australia', 'Australia', '3960', 'VIC', '815 Millar Road', '', 'Yanakie', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ash', '', 'Zuidema', '', ''),
+(47, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'arhorsburgh@bigpond.com', '', 'Ashley', '', 'Horsburgh', '418172458', '13'),
+(48, '03 5148 6155', '1150 Nambrok Road DENISON VIC 3858 AUSTRALIA', 'AUSTRALIA', '3858', 'VIC', '1150 Nambrok Road', '', 'DENISON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ashley', '', 'Mezenberg', '0428 486 155', '14'),
+(49, '0351871294', 'Balloong Rd Woodside', '', '', '', 'Balloong Rd Woodside', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ashley', '', 'Walpole', '0467876654', '74'),
+(50, '03 5687 1287', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ashley', '', 'Zuidema', '', '55'),
+(51, '51871241', 'Carrajung Woodside Road Woodside VIC Australia', 'Australia', '', 'VIC', 'Carrajung Woodside Road', '', 'Woodside', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Barry', '', 'Williams', '', ''),
+(52, '0413 328228', '97 A.R. Gardner Road VICTORIA 3816', '', '3816', 'VICTORIA', '97 A.R. Gardner Road', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'bclark719@hotmail.com', '', 'Becky', 'Administrator', 'Clark', '', '290'),
+(53, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ben', 'Manager', 'Brighton', '0448 334 144', '80'),
+(54, '', '641 McDonalds Track MOUNTAIN VIEW, VIC 3988', '', '3988', 'VIC', '641 McDonalds Track', '', 'MOUNTAIN VIEW', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ben', '', 'Drew', '0427597348', '468'),
+(55, '0407 329 835', 'Kydd Road LABERTOUCHE VIC 3816 AUSTRALIA', 'AUSTRALIA', '3816', 'VIC', 'Kydd Road', '', 'LABERTOUCHE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ben', 'Leasee', 'Whiteley', '', '108'),
+(56, '', '94 Kydd Road Labertouche VIC 3186 Australia', 'Australia', '3186', 'VIC', '94 Kydd Road', '', 'Labertouche', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ben', '', 'Whiteley', '407329835', '339'),
+(57, '51977267', '1961 Hyland Highway Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '1961 Hyland Highway', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', 'bpthexton@bigpond.com', '', 'Benn', '', 'Thexton', '428495691', ''),
+(58, '56342433', '231 Little Moe River Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', '231 Little Moe River Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Bernard', '', 'Pyle', '', '78'),
+(59, '351446649', '46 Macalister Street Sale VIC 3850 Australia', 'Australia', '3850', 'VIC', '46 Macalister Street', '', 'Sale', b'0', b'1', b'0', b'0', b'0', b'0', 'bhookey@mac.com', '', 'Beverly', '', 'Hookey', '', ''),
+(60, '56574315', '260 Scotts Estate Road Kongwak VIC 3951 Australia', 'Australia', '3951', 'VIC', '260 Scotts Estate Road', '', 'Kongwak', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Billy', '', 'Rees', '408574313', ''),
+(61, '0352841357', '2025 Ballan Road Anakie', '', '', '', '2025 Ballan Road', 'Anakie', '', b'0', b'1', b'0', b'0', b'0', b'0', 'intechbob@hotmail.com', '', 'Bob', 'Director', 'Walker', '0427001214', '28'),
+(62, '03 5198 2206', '85 Taylors Road WILLUNG VIC 3847 AUSTRALIA', 'AUSTRALIA', '3847', 'VIC', '85 Taylors Road', '', 'WILLUNG', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brad', 'Sharefarmer 25%', 'Fleming', '0428770762', '461'),
+(63, '56592262', '295 Soldiers Road Loch VIC 3945 Australia', 'Australia', '3945', 'VIC', '295 Soldiers Road', '', 'Loch', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brad', '', 'McIntosh', '408507127', '112'),
+(64, '56285273', 'West Jindivick road JINDIVICK VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', 'West Jindivick road', '', 'JINDIVICK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brad', 'Sharefarmer', 'Pinkerton', '0428 319 053', '167'),
+(65, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Bradley', 'Driver', 'Egan', '', '399'),
+(66, '51471164', '24A Reedy''s Road Riverslea VIC 3860 Australia', 'Australia', '3860', 'VIC', '24A Reedy''s Road', '', 'Riverslea', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Bradley', '', 'White', '0422 224 653', '644'),
+(67, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Branko', 'Feed Mill Hand/Driver', 'Medjumurac', '', '399'),
+(68, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brendan', 'Farm Manager', 'Rigby', '0412 317 360', '90'),
+(69, '03 5185 1388', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brendan', '', 'Scott', '0435 060 870', '9'),
+(70, '', '792 Denison Road Denison VIC 3858 Australia', 'Australia', '3858', 'VIC', '792 Denison Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brenton', 'Worker', 'Llewellyn', '0400 710 856', '83'),
+(71, '56577281', '60 Shorts Road Woodleigh VIC 3945 Australia', 'Australia', '3945', 'VIC', '60 Shorts Road', '', 'Woodleigh', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brett', '', 'Gilpin', '409354443', '88'),
+(72, '03 5232 1504', '197 Murray Street COLAC VIC 3250 AUSTRALIA', 'AUSTRALIA', '3250', 'VIC', '197 Murray Street', '', 'COLAC', b'0', b'1', b'0', b'0', b'0', b'0', 'brett@bmtronics.com.au', '03 5232 1935', 'Brett', 'Managing Director', 'Mackay', '0418523000', '109'),
+(73, '0422 269 415', 'St Kilda Road Towers Business Centre 1 Queens Road MELBOURNE VIC 3000 AUSTRALIA', 'AUSTRALIA', '3000', 'VIC', 'St Kilda Road Towers Business Centre', '1 Queens Road', 'MELBOURNE', b'0', b'1', b'0', b'0', b'0', b'0', 'bprice@agriplacements.com.au', '', 'Brett', 'Director', 'Price', '0422269415', '37'),
+(74, '', 'C/o Secretary 145 Yannathan Road YANNATHAN VIC 3981 AUSTRALIA', 'AUSTRALIA', '3981', 'VIC', 'C/o Secretary', '145 Yannathan Road', 'YANNATHAN', b'0', b'1', b'0', b'0', b'0', b'0', 'catanifc@bigpond.com', '', 'Brian', 'Secretary', 'Edwards', '', '134'),
+(75, '56634273', '690 Buffalo Tarwin Road Middle Tarwin VIC 3956 Australia', 'Australia', '3956', 'VIC', '690 Buffalo Tarwin Road', '', 'Middle Tarwin', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brian', '', 'Launder', '427503707', ''),
+(76, '03 5391 0262', '80 Creek Road Glenlee VIC 3419 Australia', 'Australia', '3419', 'VIC', '80 Creek Road', '', 'Glenlee', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Brian', '', 'Smith', '', '149'),
+(77, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Bryan', 'Managing Director', 'Irwin', '', '399'),
+(78, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Bryce', '', 'Douch', '', ''),
+(79, '351451325', 'Three Chain Road Newry VIC 3859 Australia', 'Australia', '3859', 'VIC', 'Three Chain Road', '', 'Newry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Bull', '', 'Linaker', '408451325', ''),
+(80, '03 5678 3322', 'Korrie Road Glen Alvie VIC 3979 Australia', 'Australia', '3979', 'VIC', 'Korrie Road', '', 'Glen Alvie', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Caleb', '', 'Berry', '0407 533 893', '315'),
+(81, '0488 050 440', '330 Fisher Road DROUIN WEST VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', '330 Fisher Road', '', 'DROUIN WEST', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Cameron', 'Sharefarmer', 'Roberts', '0488 050 440', '129'),
+(82, '', '95 Lyons Road Sale VIC 3851 Australia', 'Australia', '3851', 'VIC', '95 Lyons Road', '', 'Sale', b'0', b'1', b'0', b'0', b'0', b'0', '', '51430560', 'Cameron Smith', '', '', '447443562', ''),
+(83, '56598168', '770 fair bank Road Arawata VIC 3951 Australia', 'Australia', '3951', 'VIC', '770 fair bank Road', '', 'Arawata', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Campbell', '', 'Greig', '447598168', '238'),
+(84, '03 5192 4242', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Carlene Glengarry', '', '', '0427 977 288', '132'),
+(85, '03 5197 7244', '386 Merrimans Creek road Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '386 Merrimans Creek road', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Carol', '', 'Morley', '0428 977 244', '353'),
+(86, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Carolyn', 'Sponsorship', 'Hilton', '0418 135 692', '327'),
+(87, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Carrie', '', 'Douch Farms', '', ''),
+(88, '03 9484 0114', 'PRESTON VIC 3072 AUSTRALIA', 'AUSTRALIA', '3072', 'VIC', '', '', 'PRESTON', b'0', b'1', b'0', b'0', b'0', b'0', 'charles.foletta@sapient-tech.com.au', '', 'Charles', 'IT', 'Foletta', '0413 211 537', '454'),
+(89, '03 5232 1504', '197 Murray Street COLAC VIC 3250 AUSTRALIA', 'AUSTRALIA', '3250', 'VIC', '197 Murray Street', '', 'COLAC', b'0', b'1', b'0', b'0', b'0', b'0', 'chris@bmtronics.com.au', '03 5232 1935', 'Chris', 'Field Operations Technician', 'Beasley', '0400 523 048', '109'),
+(90, '03 5127 3150', '124 Millers Road MOE VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', '124 Millers Road', '', 'MOE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Chris', '', 'Griffin', '', '139'),
+(91, '', 'Drayton Road Labertouche VIC 3816 Australia', 'Australia', '3816', 'VIC', 'Drayton Road', '', 'Labertouche', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Chris', '', 'Kane', '418397568', ''),
+(92, '', '670 Mt Lyall Rd', '', '', '', '670 Mt Lyall Rd', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Chris', 'Boss', 'Lancey', '0419 109 928', '517'),
+(93, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'Chris_Liston@cargill.com', '', 'Chris', '', 'Liston', '', ''),
+(94, '03 5657 2231', '38 Chapmans Road BENA VIC 3946 AUSTRALIA', 'AUSTRALIA', '3946', 'VIC', '38 Chapmans Road', '', 'BENA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Chris', 'manager', 'Reed', '0418 581 429', '687'),
+(95, '', '337 Falls Lane Bundalaguah VIC 3851 Australia', 'Australia', '3851', 'VIC', '337 Falls Lane', '', 'Bundalaguah', b'0', b'1', b'0', b'0', b'0', b'0', '', '5169 1649', 'Chris', '', 'Tudor', '0408 472 489', '140'),
+(96, '', 'P O Box 227 WHITTLESEA VIC 3757 AUSTRALIA', 'AUSTRALIA', '3757', 'VIC', 'P O Box 227', '', 'WHITTLESEA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Chris', 'Owner', 'Tyack', '', '364'),
+(97, '5627 6452', '510 Gardner-Holeman Road Drouin VIC 3818 Australia', 'Australia', '3818', 'VIC', '510 Gardner-Holeman Road', '', 'Drouin', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Chris', '', 'Upston', '0437 583 386', '857'),
+(98, '56331958', '255 Brock Road Hallora VIC 3818 Australia', 'Australia', '3818', 'VIC', '255 Brock Road', '', 'Hallora', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Clinton', '', 'Morello', '0409023010', '148'),
+(99, '56331958', '255 Brock Road Hallora VIC 3818 Australia', 'Australia', '3818', 'VIC', '255 Brock Road', '', 'Hallora', b'0', b'1', b'0', b'0', b'0', b'0', 'morello_clinton@hotmail.com', '', 'Clinton', '', 'Morello', '409023010', ''),
+(100, '56342476', 'Moe River Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', 'Moe River Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', '', '56342141', 'Clive & Phil', '', 'Orgill', '', ''),
+(101, '56342476', 'Moe River Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', 'Moe River Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Clive', '', 'Orgill', '', '123'),
+(102, '', '196 Shady Creek Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', '196 Shady Creek Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', '', '427688258', 'Colin', '', 'Marks', '400166584', ''),
+(103, '03 5682 2229', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Colin', '', 'McAinch', '0409 210 910', '263'),
+(104, '56745509', 'Powneys road Tarwin Lower VIC Australia', 'Australia', '', 'VIC', 'Powneys road', '', 'Tarwin Lower', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Con', '', 'Debont', '0402881152', '99'),
+(105, '56745509', 'Powneys road Tarwin Lower VIC Australia', 'Australia', '', 'VIC', 'Powneys road', '', 'Tarwin Lower', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Con', '', 'Debont', '402881152', ''),
+(106, '56816236', '550 Hazel Park Road Welshpool VIC 3966 Australia', 'Australia', '3966', 'VIC', '550 Hazel Park Road', '', 'Welshpool', b'0', b'1', b'0', b'0', b'0', b'0', 'allott@wideband.net.au', '56816232', 'Craig', '', 'Allott', '0437 256 713', '126'),
+(107, '03 5149 2254', '462 Killeen Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', '462 Killeen Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Craig', '', 'Arbuthnot', '0409 070 308', '73'),
+(108, '', '40 Heartsridge Road Westbury VIC 3824 Australia', 'Australia', '3824', 'VIC', '40 Heartsridge Road', '', 'Westbury', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Craig', '', 'Blackshaw', '428503559', ''),
+(109, '56891360', 'Whitelaws Track Fish Creek VIC Australia', 'Australia', '', 'VIC', 'Whitelaws Track', '', 'Fish Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Craig', '', 'Eagleton', '0437518373', '160'),
+(110, '56342141', '845 Shady Creek Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', '845 Shady Creek Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', 'craigmcwhinney@dcsi.net.au', '', 'Craig', '', 'McWhinney', '0438 514 114', '144'),
+(111, '56342141', '845 Shady Creek Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', '845 Shady Creek Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', '', '56266335', 'Craig', '', 'McWhinny', '438514114', ''),
+(112, '03 5664 5488', '680 Farmers Road Dumbalk North VIC 3956 Australia', 'Australia', '3956', 'VIC', '680 Farmers Road', '', 'Dumbalk North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Damian', 'Farm Manager', 'Murphy', '', '838'),
+(113, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Damian', '', 'Noxon', '0438 113 371', '546'),
+(114, '', '765 Drouin Korumburra Road Athlone VIC 3818 Australia', 'Australia', '3818', 'VIC', '765 Drouin Korumburra Road', '', 'Athlone', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Damian', '', 'Pinnuck', '428745419', ''),
+(115, '5627 5581', '765 Drouin KorumBurra Foods Road Athlone VIC 3818 Australia', 'Australia', '3818', 'VIC', '765 Drouin KorumBurra Foods Road', '', 'Athlone', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Damien', '', 'Pinnuck', '0428 745 419', '232'),
+(116, '03 9268 7200', 'Freshwater Place Southbank VIC 3006 Australia', 'Australia', '3006', 'VIC', 'Freshwater Place', '', 'Southbank', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Dan', '', 'Morgan', '', '131'),
+(117, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Daniel', 'Feed Mill Hand', 'Agius', '0468 489 523', '399'),
+(118, '', '124 Millers Road MOE VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', '124 Millers Road', '', 'MOE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Daniel', 'Manager', 'Keily', '0413389351', '139'),
+(119, '56862253', '100 kewita Road Toora VIC 3962 Australia', 'Australia', '3962', 'VIC', '100 kewita Road', '', 'Toora', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Daniel', '', 'Knee', '427862253', '121'),
+(120, '', '180 Browning & Johnston Road Middle Tarwin VIC 3956 Australia', 'Australia', '3956', 'VIC', '180 Browning & Johnston Road', '', 'Middle Tarwin', b'0', b'1', b'0', b'0', b'0', b'0', '', '56881354', 'Daniel', '', 'Mackie', '417015094', ''),
+(121, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Danny', 'Owner', 'Morgan', '', ''),
+(122, '56681396', '170 Peter Lowrys lane Mirboo North VIC 3871 Australia', 'Australia', '3871', 'VIC', '170 Peter Lowrys lane', '', 'Mirboo North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Darren', '', 'Pocklington', '417396058', '198'),
+(123, '56354232', '2588 Willowgrove Road Hill End VIC 3825 Australia', 'Australia', '3825', 'VIC', '2588 Willowgrove Road', '', 'Hill End', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Darryl', 'Owner', 'Earl', '0447?354?232', '230'),
+(124, '03 5148 2196', '2987 Taralgon Maffra Road Sale VIC 3850 Australia', 'Australia', '3850', 'VIC', '2987 Taralgon Maffra Road', '', 'Sale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Darryl', 'Farm Manager', 'Fogarty', '', '800'),
+(125, '351482196', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Darryl', '', 'Fogarty', '', ''),
+(126, '03 5198 2255', '716 Gormandale-Stradbroke Road VIC Australia', 'Australia', '', 'VIC', '716 Gormandale-Stradbroke Road', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Daryl', '', 'Fleming', '0428 982 255', '200'),
+(127, '03 5627 6281', '660 Main South Road DROUIN SOUTH VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', '660 Main South Road', '', 'DROUIN SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Daryl', '', 'Light', '0400?960?991', '202'),
+(128, '03 5199 2858', '785 Lwr Cairnbrook Road Glengarry VIC 3854 Australia', 'Australia', '3854', 'VIC', '785 Lwr Cairnbrook Road', '', 'Glengarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Daryl', '', 'Sawyer', '0407 804 998', '539'),
+(129, '', 'Sale-Toongabbie Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', 'Sale-Toongabbie Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Dave', '', 'Crone', '0437 360 682', '161'),
+(130, '51444900', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '51992858', 'Dave', '', 'Rogerson', '', ''),
+(131, '0417 343 068', 'Scallons drain road CATANI VIC 3981 AUSTRALIA', 'AUSTRALIA', '3981', 'VIC', 'Scallons drain road', '', 'CATANI', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Dave', 'Owner', 'Williams', '', '179'),
+(132, '03 5187 1385', '148 Cherrytree Road Woodside VIC 3874 Australia', 'Australia', '3874', 'VIC', '148 Cherrytree Road', '', 'Woodside', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David & Anita', '', 'Kerr', '0413 727 898', '171'),
+(133, '', '792 Denison Road Denison VIC 3858 Australia', 'Australia', '3858', 'VIC', '792 Denison Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David & Brenton', '', 'Llewellyn', '0400 710 856', '83'),
+(134, '56232898', 'Dollarburn Road Warragul VIC 3820 Australia', 'Australia', '3820', 'VIC', 'Dollarburn Road', '', 'Warragul', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Clayton', '', '206'),
+(135, '363599781', '110 Todd Road Hedley VIC 3967 Australia', 'Australia', '3967', 'VIC', '110 Todd Road', '', 'Hedley', b'0', b'1', b'0', b'0', b'0', b'0', '', '351411539', 'David', '', 'Conn', '427518412', '189'),
+(136, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', 'Partner', 'Eddy', '', ''),
+(137, '03 9602 5177', 'Level 8 501 Latrobe Street MELBOURNE VIC 3000 AUSTRALIA', 'AUSTRALIA', '3000', 'VIC', 'Level 8', '501 Latrobe Street', 'MELBOURNE', b'0', b'1', b'0', b'0', b'0', b'0', 'david@eddypartners.com.au', '03 9602 5766', 'David', 'Accountant', 'Eddy', '', ''),
+(138, '03 5634 2342', '216 Little Moe River Rd YARRAGON VIC 3823 AUSTRALIA', 'AUSTRALIA', '3823', 'VIC', '216 Little Moe River Rd', '', 'YARRAGON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', 'Owner', 'Hollier', '0418 576 680', '114'),
+(139, '56294374', '190 Parish Road Iona VIC 3815 Australia', 'Australia', '3815', 'VIC', '190 Parish Road', '', 'Iona', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Jeffers', '0448996499', '223'),
+(140, '56281214', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Johnston', '0418281220', '145'),
+(141, '03 5187 1385', '148 Cherrytree Road Woodside VIC 3874 Australia', 'Australia', '3874', 'VIC', '148 Cherrytree Road', '', 'Woodside', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Kerr', '0427 405 491', '171'),
+(142, '', '78 Ross Rd NAMBROK VIC 3847 AUSTRALIA', 'AUSTRALIA', '3847', 'VIC', '78 Ross Rd', '', 'NAMBROK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', 'Worker', 'Llewellyn', '0400 710 856', '83'),
+(143, '', '792 Denison Road Denison VIC 3858 Australia', 'Australia', '3858', 'VIC', '792 Denison Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Llewellyn', '400710856', ''),
+(144, '03 5149 2227', '88 Nambrok Hall Road NAMBROK VIC 3847 AUSTRALIA', 'AUSTRALIA', '3847', 'VIC', '88 Nambrok Hall Road', '', 'NAMBROK', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 5149 2577', 'David', '', 'Mason', '0400 810 309', '176'),
+(145, '56592439', 'Houlahans lane POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Houlahans lane', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', 'Sharefarmer', 'Pinkerton', '0448 463 066', '378'),
+(146, '0418539639', '14 Myrtle Grove BEACONSFIELD, VIC 3807', '', '3807', 'VIC', '14 Myrtle Grove', '', 'BEACONSFIELD', b'0', b'1', b'1', b'0', b'0', b'0', '', '', 'David', 'Partner', 'Ronalds', '', '435'),
+(147, '51691011', 'RMB 1292 Middle Creek Road Yinnar South VIC 3869 Australia', 'Australia', '3869', 'VIC', 'RMB 1292 Middle Creek Road', '', 'Yinnar South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Walker', '', '224'),
+(148, '03 5659 8137', '145 one chain road arawata VIC 3951 Australia', 'Australia', '3951', 'VIC', '145 one chain road', '', 'arawata', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'White', '0434 233 910', '601'),
+(149, '59988293', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'David', '', 'Young', '', ''),
+(150, '03 5634 2508', 'Shady Creek Road YARRAGON VIC 3823 AUSTRALIA', 'AUSTRALIA', '3823', 'VIC', 'Shady Creek Road', '', 'YARRAGON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Debra', '', 'Marcucci', '0428 342 660', '162'),
+(151, '03 5674 4514', 'PO BOX 4 INVERLOCH VIC 3996 AUSTRALIA', 'AUSTRALIA', '3996', 'VIC', 'PO BOX 4', '', 'INVERLOCH', b'0', b'1', b'0', b'0', b'0', b'0', 'oceanway@tpg.com.au', '', 'Dennis', 'Beef Producer', 'Ginn', '03 5674 8161', '90'),
+(152, '', 'Lang Lang VIC Australia', 'Australia', '', 'VIC', '', '', 'Lang Lang', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Dieter', '', 'Beilhartz', '0427975660', '225'),
+(153, '03 5146 8244', 'Soldiers Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', 'Soldiers Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Don', '', 'Bruce', '0434 210 803', '188'),
+(154, '0409 405 151', 'Sale-Toongabbie Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', 'Sale-Toongabbie Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Donna', '', 'Crone', '', '161'),
+(155, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'donnamcainch@irwinstockfeeds.apac.microsoftonline.com', '', 'Donna', '', 'McAinch', '', ''),
+(156, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Donna', 'Sales & Nutrition Area Manager, East Gippsland', 'McAinch', '', '399'),
+(157, '03 5182 5304', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Doug', '', 'Seton', '0427 825 304', '173'),
+(158, '51601312', 'Knights Road TANJIL SOUTH VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', 'Knights Road', '', 'TANJIL SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '035160132', 'Eileen', '', 'Laidlaw', '0488?691?230', '46'),
+(159, '51601312', '137 Knights Road Tanjil South VIC 3825 Australia', 'Australia', '3825', 'VIC', '137 Knights Road', '', 'Tanjil South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Eileen', '', 'Laidlaw', '488691230', ''),
+(160, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'elle@irwinstockfeeds.com.au', '', 'Elle', '', 'Lockey', '', ''),
+(161, '', 'St Helliers Road Woodleigh VIC 3945 Australia', 'Australia', '3945', 'VIC', 'St Helliers Road', '', 'Woodleigh', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Eric', '', 'Pocklington', '438517518', '259'),
+(162, '59978379', '410 Thwaites Road Yannathan VIC 3981 Australia', 'Australia', '3981', 'VIC', '410 Thwaites Road', '', 'Yannathan', b'0', b'1', b'0', b'0', b'0', b'0', 'evansher@dcsi.net.au', '59978379', 'Evan', 'Owner', 'Williams', '0408 122 905', '244'),
+(163, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ewan', 'Fleet Maintenance', 'Keast', '', ''),
+(164, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ewan', 'Fleet Maintenance', 'Keast', '', '399'),
+(165, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'EX', '', 'WORKS', '', '399'),
+(166, '51451774', '125 Boggy Creek Road TINAMBA VIC 3859 AUSTRALIA', 'AUSTRALIA', '3859', 'VIC', '125 Boggy Creek Road', '', 'TINAMBA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ferial', 'Director', 'Zekiman', '0425 793 745', '544'),
+(167, '51451022', '125 Boggy Creek Road Tinambra VIC 3859 Australia', 'Australia', '3859', 'VIC', '125 Boggy Creek Road', '', 'Tinambra', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ferial', '', 'Zekiman', '', ''),
+(168, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gary', 'Driver', 'Devine', '', '399'),
+(169, '', '440 Sarsfield-Nicholson Road Bairnsdale VIC 3858 Australia', 'Australia', '3858', 'VIC', '440 Sarsfield-Nicholson Road', '', 'Bairnsdale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gary', '', 'McAinch', '0418514440', '310'),
+(170, '56354223', 'Camp Creek Road HILL END VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', 'Camp Creek Road', '', 'HILL END', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gary', '', 'Paul', '', '296'),
+(171, '03 5147 3232', '525 Maffra Sale Road Bundlagulah VIC 3860 Australia', 'Australia', '3860', 'VIC', '525 Maffra Sale Road', '', 'Bundlagulah', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gary', '', 'Poynton', '0402 824 373', '312'),
+(172, '56832402', '645 Harding Lawson Road fish Creek VIC 3959 Australia', 'Australia', '3959', 'VIC', '645 Harding Lawson Road', '', 'fish Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gary', '', 'Shilliday', '0408 251 006', '356'),
+(173, '03 5674 3870', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gary', '', 'Wylie', '0428 594 330', '297'),
+(174, '03 8641 6980', 'Suite 805 343 Little Collins Steet Victoria Melbounre', '', 'Melbounre', 'Victoria', 'Suite 805', '343 Little Collins Steet', '', b'0', b'1', b'0', b'0', b'0', b'0', 'ganderson@connexus.net.au', '03 8641 6988', 'Gavyn', 'Director', 'Anderson', '0428 551 524', '531'),
+(175, '0428 101 589', 'Bald Hill Road PAKENHAM VIC 3810 AUSTRALIA', 'AUSTRALIA', '3810', 'VIC', 'Bald Hill Road', '', 'PAKENHAM', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Geoff', '', 'Beveridge', '', '58'),
+(176, '0428 101 589', 'Pakenham VIC 3810 Australia', 'Australia', '3810', 'VIC', '', '', 'Pakenham', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Geoff', '', 'Beveridge', '428101589', ''),
+(177, '51891392', '225 Calrossie Road Won Wron VIC 3971 Australia', 'Australia', '3971', 'VIC', '225 Calrossie Road', '', 'Won Wron', b'0', b'1', b'0', b'0', b'0', b'0', '', '51473232', 'Geoff', '', 'Ponsford', '', '407'),
+(178, '56592315', 'Houlahans lane POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Houlahans lane', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'George', 'Owner', 'Henry', '0409592314', '306'),
+(179, '56331439', 'Embletons Road Westbury VIC 3825 Australia', 'Australia', '3825', 'VIC', 'Embletons Road', '', 'Westbury', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'George', '', 'Wade', '0438572639', '298'),
+(180, '51924219', '127 Rifle Range Road Glengarry VIC 3854 Australia', 'Australia', '3854', 'VIC', '127 Rifle Range Road', '', 'Glengarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'George', '', 'Waltham', '', '354'),
+(181, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Georgia', 'Logistics', 'Irwin', '', ''),
+(182, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Georgia', '', 'Irwin', '', '399'),
+(183, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'georgie@irwinstockfeeds.com.au', '', 'Georgina', '', 'Warne', '0456 566 255', '399'),
+(184, '56294374', '190 Parish Road Iona VIC 3815 Australia', 'Australia', '3815', 'VIC', '190 Parish Road', '', 'Iona', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Geraldine', '', 'Jeffers', '', '223'),
+(185, '56294374', '190 Parish Road Iona VIC 3815 Australia', 'Australia', '3815', 'VIC', '190 Parish Road', '', 'Iona', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Geraldine', '', 'Jeffers', '448996499', ''),
+(186, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gerard', 'Driver', 'Dwyer', '', '399'),
+(187, '56622036', 'P.O Box 289 Leongatha VIC 3953 Australia', 'Australia', '3953', 'VIC', 'P.O Box 289', '', 'Leongatha', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gerry', '', 'Renden', '429987352', ''),
+(188, '56285485', 'Stoll Road Jindivick VIC 3818 Australia', 'Australia', '3818', 'VIC', 'Stoll Road', '', 'Jindivick', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gil', '', 'Willet', '0408682245', '309'),
+(189, '03 5197 7244', '386 Merrimans Creek road Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '386 Merrimans Creek road', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Glen & Carol', '', 'Morley', '0428977244', '353'),
+(190, '03 5169 6360', '585 Fosters Road Boolara VIC 3870 Australia', 'Australia', '3870', 'VIC', '585 Fosters Road', '', 'Boolara', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Glen', '', 'Smith', '0413 488 280', '278'),
+(191, '03 5659 6262', '895 Mt Lyall Road Nyora VIC 3987 Australia', 'Australia', '3987', 'VIC', '895 Mt Lyall Road', '', 'Nyora', b'0', b'1', b'0', b'0', b'0', b'0', 'mitchardag@gmail.com', '', 'Glenn', '', 'Mitchard', '0409 744 699', '595'),
+(192, '03 5197 7244', '386 Merrimans Creek road Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '386 Merrimans Creek road', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Glenn', '', 'Morley', '0427 977 244', '353'),
+(193, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gordon', '', 'Fyfe', '', ''),
+(194, '56284357', '565 Neerim North Road Neerim North VIC 3832 Australia', 'Australia', '3832', 'VIC', '565 Neerim North Road', '', 'Neerim North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gordon', '', 'Lockett', '408595848', ''),
+(195, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gordon', 'Auditor', 'Nash', '0417 356 113', '17'),
+(196, '', 'Neerim North Road NEERIM NORTH VIC 3832 AUSTRALIA', 'AUSTRALIA', '3832', 'VIC', 'Neerim North Road', '', 'NEERIM NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gordyn', '', 'Lockett', '0408 595 848', '331'),
+(197, '', 'Main Neerim Road NEERIM VIC 3831 AUSTRALIA', 'AUSTRALIA', '3831', 'VIC', 'Main Neerim Road', '', 'NEERIM', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Gordyn', 'Leasee', 'Lockett', '0408 595 848', '332'),
+(198, '56354302', '2148 Willowgrove Road Hill End VIC 3824 Australia', 'Australia', '3824', 'VIC', '2148 Willowgrove Road', '', 'Hill End', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graeme', '', 'Paul', '407356057', ''),
+(199, '51430075', '793 Denison Road Denison VIC 3858 Australia', 'Australia', '3858', 'VIC', '793 Denison Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', 'graeme@calcimolime.com.au', '', 'Graham and Helen', '', 'O''Connor', '0427?525?339', '334'),
+(200, '03 5674 9218', 'Korumburra Wonthaggi Road Lance Creek VIC 3995 Australia', 'Australia', '3995', 'VIC', 'Korumburra Wonthaggi Road', '', 'Lance Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graham', '', 'Bird', '', '336'),
+(201, '56599222', 'Waratah Road Fish Creek VIC 3959 Australia', 'Australia', '3959', 'VIC', 'Waratah Road', '', 'Fish Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graham', '', 'Hooker', '0428 369 115', '340'),
+(202, '03 5663 2384', '102 McBurnie & Boags Rd TARWIN LOWER, VIC 3956', '', '3956', 'VIC', '102 McBurnie & Boags Rd', '', 'TARWIN LOWER', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graham', '', 'Manager', '0428565125', '771'),
+(203, '0400 105 606', '155 Kydd Rd LABERTOUCHE, VIC 3816', '', '3816', 'VIC', '155 Kydd Rd', '', 'LABERTOUCHE', b'0', b'1', b'0', b'0', b'0', b'0', 'grahammccr@gmail.com', '', 'Graham', 'Owner/Manager', 'McCracken', '', '334'),
+(204, '0356686302', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graham', '', 'Pouw', '0428686310', '355'),
+(205, '0428658528', '97 A.R. Gardner Road VICTORIA 3816', '', '3816', 'VICTORIA', '97 A.R. Gardner Road', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graham', 'Owner/Manager', 'Turner', '', '290'),
+(206, '59978256', 'Westernport Road Lang Lang VIC 3984 Australia', 'Australia', '3984', 'VIC', 'Westernport Road', '', 'Lang Lang', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Graham', '', 'Wildes', '', '335'),
+(207, '59978256', 'Westernport Road Lang Lang VIC 3984 Australia', 'Australia', '3984', 'VIC', 'Westernport Road', '', 'Lang Lang', b'0', b'1', b'0', b'0', b'0', b'0', '', '56331430', 'Graham', '', 'Wildes', '', ''),
+(208, '56275577', 'Kellys Road HALLORA VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', 'Kellys Road', '', 'HALLORA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Grant', '', 'Williams', '0419 876 413', '348'),
+(209, '', '792 Denison Road Denison VIC 3858 Australia', 'Australia', '3858', 'VIC', '792 Denison Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Greame', 'Sharefarmer', 'O''Connor', '', '83'),
+(210, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Greame', '', 'O''Connor', '', ''),
+(211, '', '48 Lederman Road DROUIN WEST VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', '48 Lederman Road', '', 'DROUIN WEST', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Greg', 'Partner', 'Laundy', '0418855472', '470'),
+(212, '03 5943 2255', 'P O Box 199 OFFICER VIC 3809 AUSTRALIA', 'AUSTRALIA', '3809', 'VIC', 'P O Box 199', '', 'OFFICER', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Greg', '', 'Manley', '', '46'),
+(213, '03 5659 6242', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Greg', 'Manager', 'Miller', '0417 558 620', '41'),
+(214, '03 5668 6205', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Greg', '', 'Pearce', '0429 192 666', '351'),
+(215, '', '121 Nordens Lane Maffra VIC 3860 Australia', 'Australia', '3860', 'VIC', '121 Nordens Lane', '', 'Maffra', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Guy Gallatly', '', 'Mckenzie', '', '277'),
+(216, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Harold', '', 'Cocking', '0419109324', ''),
+(217, '56881354', '95 Barry Road Agnes Via Toora Toora VIC 3962 Australia', 'Australia', '3962', 'VIC', '95 Barry Road Agnes Via Toora', '', 'Toora', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Harry', '', 'Pruyin', '0429 382 304', '367'),
+(218, '0427 833 062', 'Mitchell Road JINDIVICK VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', 'Mitchell Road', '', 'JINDIVICK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Hayden', '', 'Dodd', '', '359'),
+(219, '0427 833 062', 'Jindivick VIC Australia', 'Australia', '', 'VIC', '', '', 'Jindivick', b'0', b'1', b'0', b'0', b'0', b'0', '', '56232121', 'Hayden', '', 'Dodd', '427833062', ''),
+(220, '351743208', '1175 Princess HWY Flynn VIC 3844 Australia', 'Australia', '3844', 'VIC', '1175 Princess HWY', '', 'Flynn', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Heath', '', '', '409646816', '372'),
+(221, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'heath@irwinstockfeeds.com.au', '', 'Heath', '', 'Killeen', '', ''),
+(222, '5627 5581', '765 Drouin KorumBurra Foods Road Athlone VIC 3818 Australia', 'Australia', '3818', 'VIC', '765 Drouin KorumBurra Foods Road', '', 'Athlone', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Heidi', '', 'Pinnuck', '0427 745 419', '232'),
+(223, '', '89 Pound Road Denison VIC 3971 Australia', 'Australia', '3971', 'VIC', '89 Pound Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', 'helen@eldersyarram.com.au', '', 'Helen', '', 'Sellings', '', '77'),
+(224, '56294264', '320 Parish Road Iona VIC 3816 Australia', 'Australia', '3816', 'VIC', '320 Parish Road', '', 'Iona', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', '', 'Accardi', '447723633', '402'),
+(225, '59425544', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', '', 'Anderson', '427991921', ''),
+(226, '03 5191 8361', 'Cnr Archbolds Rd & Littles Ln', '', '', '', 'Cnr Archbolds Rd & Littles Ln', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', '', 'Baillie', '0437624628', '89'),
+(227, '0418 367 209', '489 Whanregarwen Rd ALEXANDRA, VIC 3714', '', '3714', 'VIC', '489 Whanregarwen Rd', '', 'ALEXANDRA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', 'Farm Manager', 'Bates', '', '72'),
+(228, '0418 515 342', 'Clancy''s Road KORUMBURRA VIC 3950 AUSTRALIA', 'AUSTRALIA', '3950', 'VIC', 'Clancy''s Road', '', 'KORUMBURRA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', '', 'Cash', '', '111'),
+(229, '03 5144 6079', 'Myrtlebank Road Maffra VIC Australia', 'Australia', '', 'VIC', 'Myrtlebank Road', '', 'Maffra', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', '', 'McMillan', '', '382'),
+(230, '03 5149 2590', '3849 Taralgon Maffra Rd Heyfield', '', '', '', '3849 Taralgon Maffra Rd Heyfield', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ian', 'Farm Manager', 'Riseley', '0439612425', '886'),
+(231, '03 5821 7777', '22 Welshford Street PO BOX 1377 SHEPPARTON VIC 3630 AUSTRALIA', 'AUSTRALIA', '3630', 'VIC', '22 Welshford Street', 'PO BOX 1377', 'SHEPPARTON', b'0', b'1', b'0', b'0', b'0', b'0', 'ian.simpson@ggib.com.au', '', 'Ian', 'Account Executive', 'Simpson', '0409 576 883', '352'),
+(232, '02 8005 4941', 'PO BOX 159 SPIT JUNCTION NSW 2088 AUSTRALIA', 'AUSTRALIA', '2088', 'NSW', 'PO BOX 159', '', 'SPIT JUNCTION', b'0', b'1', b'0', b'0', b'0', b'0', 'innesbriscoe@xrelements.com.au', '', 'Innes', 'Principal Architect', 'Briscoe', '0403 833 135', '824'),
+(233, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'irwinstockfeeds@irwinstockfeeds.com.au', '', 'Irwin', '', 'Stockfeeds', '', ''),
+(234, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'Jacqui.Berry@wgbsa.com.au', '', 'Jacqui.', 'Communications Manager', 'Berry', '0427 219 595', ''),
+(235, '', 'Bass Highway Jam Jerrup VIC Australia', 'Australia', '', 'VIC', 'Bass Highway', '', 'Jam Jerrup', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jake', '', 'Follett', '0411 364 595', '681'),
+(236, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'James', '', 'Little River', '0418524863', ''),
+(237, '', 'Shady Creek Road YARRAGON VIC 3823 AUSTRALIA', 'AUSTRALIA', '3823', 'VIC', 'Shady Creek Road', '', 'YARRAGON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'James', 'Manager', 'Symes', '0467261611', '17'),
+(238, '0409 252 055', 'West Jindivick road JINDIVICK VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', 'West Jindivick road', '', 'JINDIVICK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jamie', 'Herd Manager', 'Cuthy', '', '167'),
+(239, '56352393', 'Embletons Road Trafalgar North VIC 3824 Australia', 'Australia', '3824', 'VIC', 'Embletons Road', '', 'Trafalgar North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jan', '', 'Parker', '', '420'),
+(240, '03 5668 6302', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jane', '', 'Pouw', '0428 686 302', '355'),
+(241, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jareth', 'Manager', 'Hume', '0438 891 262', '870'),
+(242, '03 5094 6260', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jason', '', 'Elliott', '0429 922 346', '254'),
+(243, '0409767295', '235 Cathcart Road LONGWARRY, VIC 3816', '', '3816', 'VIC', '235 Cathcart Road', '', 'LONGWARRY', b'0', b'1', b'0', b'0', b'0', b'0', 'jason.ronalds@jbssa.com.au', '0356299028', 'Jason', 'Partner', 'Ronalds', '', '435'),
+(244, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jayden', 'Produciton', 'Rinaldis', '', '399'),
+(245, '59977512', '30 Halls Road Bayles VIC 3981 Australia', 'Australia', '3981', 'VIC', '30 Halls Road', '', 'Bayles', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jeff', '', 'Ashby', '', ''),
+(246, '', 'McDonalds Road Wonthaggi VIC 3995 Australia', 'Australia', '3995', 'VIC', 'McDonalds Road', '', 'Wonthaggi', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jeff', '', 'Brusamerello', '0421517312', '428');
+INSERT INTO `contacts` (`id`, `Business_Phone`, `Address_1`, `Address_1_CountryRegion`, `Address_1_Postal_Code`, `Address_1_StateProvince`, `Address_1_Street_1`, `Address_1_Street_2`, `Address_1_TownSuburbCity`, `Do_Not_Allow_Bulk_Emails`, `Do_Not_Allow_Bulk_Mails`, `Do_Not_Allow_Emails`, `Do_Not_Allow_Faxes`, `Do_Not_Allow_Mails`, `Do_Not_Allow_Phone_Calls`, `Email`, `Fax`, `First_Name`, `Job_Title`, `Last_Name`, `Mobile_Phone`, `Company_id`) VALUES
+(247, '59978261', 'Factory Road Yannathan VIC 3891 Australia', 'Australia', '3891', 'VIC', 'Factory Road', '', 'Yannathan', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jeff', '', 'Gardiner', '0408 515 348', '430'),
+(248, '59978261', 'Factory Road Yannathan VIC 3891 Australia', 'Australia', '3891', 'VIC', 'Factory Road', '', 'Yannathan', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jeff', '', 'Gardiner', '408515348', ''),
+(249, '59977452', 'Nine Mile Road Cora lynn VIC 3814 Australia', 'Australia', '3814', 'VIC', 'Nine Mile Road', '', 'Cora lynn', b'0', b'1', b'0', b'0', b'0', b'0', '', '427809801', 'Jeff', '', 'McAuley', '', ''),
+(250, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jeff', '', 'Pate', '0428 595 761', '246'),
+(251, '02 9223 5414', 'Suite 5 84 Pitt Street SYDNEY NSW 2000 AUSTRALIA', 'AUSTRALIA', '2000', 'NSW', 'Suite 5', '84 Pitt Street', 'SYDNEY', b'0', b'1', b'0', b'0', b'0', b'0', 'jeremy@aceoz.com.au', '02 8088 7307', 'Jeremy', 'CEO', 'Bayard', '0400 121 344', '26'),
+(252, '', '245 Labertouche Rd LABERTOUCHE, VIC 3816', '', '3816', 'VIC', '245 Labertouche Rd', '', 'LABERTOUCHE', b'0', b'1', b'0', b'0', b'0', b'0', 'glenroypastoralco@gmail.com', '', 'Jess', 'Manager', 'Murphy', '0477977422', '325'),
+(253, '351661225', '125 Farrans Road Hazelwood South VIC Australia', 'Australia', '', 'VIC', '125 Farrans Road', '', 'Hazelwood South', b'0', b'1', b'0', b'0', b'0', b'0', '', '351924284', 'Jim', '', 'Lawless', '417592851', '412'),
+(254, '03 5185 1266', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jim', '', 'MacAuley', '0427 851 282', '409'),
+(255, '07 4634 7344', '24 Molloy Street TOOWOOMBA CITY QLD 4350 AUSTRALIA', 'AUSTRALIA', '4350', 'QLD', '24 Molloy Street', '', 'TOOWOOMBA CITY', b'0', b'1', b'0', b'0', b'0', b'0', 'jim@customvac.com.au', '07 4634 7606', 'Jim', 'Director', 'Sampson', '0418 717 099', '165'),
+(256, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jock', '', 'Little River', '0419520661', ''),
+(257, '03 5145 1774', '4952 Maffra-Traralgon Road TINAMBA VIC 3859 AUSTRALIA', 'AUSTRALIA', '3859', 'VIC', '4952 Maffra-Traralgon Road', '', 'TINAMBA', b'0', b'1', b'0', b'0', b'0', b'0', 'jodywerahiko@gmail.com', '', 'Jody', '', 'Werahiko', '', '544'),
+(258, '56722181', 'Helsops Road Wonthaggi VIC 3995 Australia', 'Australia', '3995', 'VIC', 'Helsops Road', '', 'Wonthaggi', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Joe', '', 'Bolding', '', '264'),
+(259, '03 5197 7211', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '351468244', 'Joe', '', 'Brown', '', '437'),
+(260, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Joe', 'Secretary', 'Green', '', '691'),
+(261, '5668550', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Joe', '', 'Jans', '', '439'),
+(262, '03 5149 8382', '136 Airly Estate Road Airly VIC 3851 Australia', 'Australia', '3851', 'VIC', '136 Airly Estate Road', '', 'Airly', b'0', b'1', b'0', b'0', b'0', b'0', 'jjward@netspace.net.au', '', 'John & Julie', '', 'Ward', '', '433'),
+(263, '03 5189 1262', '312 Carrajung Woodside Road CARRAJUNG VIC 3844 AUSTRALIA', 'AUSTRALIA', '3844', 'VIC', '312 Carrajung Woodside Road', '', 'CARRAJUNG', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 5189 1269', 'John & Marg', '', 'Willis', '0428 891 262', '266'),
+(264, '351891283', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Beale', '', '442'),
+(265, '', 'Loch Korumburra Road Wonthaggi VIC 3995 Australia', 'Australia', '3995', 'VIC', 'Loch Korumburra Road', '', 'Wonthaggi', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Silent Partner', 'Car', '0408 595 609', '444'),
+(266, '03 5997 5235', '5620 South Gippsland Highway LANG LANG VIC 3984 AUSTRALIA', 'AUSTRALIA', '3984', 'VIC', '5620 South Gippsland Highway', '', 'LANG LANG', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Casey', '', '406'),
+(267, '56287588', '62 Alcorn Road Labertouche VIC 3816 Australia', 'Australia', '3816', 'VIC', '62 Alcorn Road', '', 'Labertouche', b'0', b'1', b'0', b'0', b'0', b'0', 'drayfarm@dcsi.net.au', '59673635', 'John', '', 'Drayton', '407343135', ''),
+(268, '56686234', 'Leongatha North Road Leongatha North VIC Australia', 'Australia', '', 'VIC', 'Leongatha North Road', '', 'Leongatha North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Fiddelars', '437172514', '449'),
+(269, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Freeman', '', '274'),
+(270, '', 'Boggy Creek Road RIVERSLEA VIC 3860 AUSTRALIA', 'AUSTRALIA', '3860', 'VIC', 'Boggy Creek Road', '', 'RIVERSLEA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Manager', 'G', '', '555'),
+(271, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Gillan', '0417525745', '450'),
+(272, '03 5149 8260', 'Clydebank Road Clydebank VIC 3851 Australia', 'Australia', '3851', 'VIC', 'Clydebank Road', '', 'Clydebank', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Goddard', '0439 498 260', '175'),
+(273, '03 5633 2079', '13 Kitchener Street TRAFALGAR VIC 3824 AUSTRALIA', 'AUSTRALIA', '3824', 'VIC', '13 Kitchener Street', '', 'TRAFALGAR', b'0', b'1', b'0', b'0', b'0', b'0', 'john.gommans@gmail.com', '0423 764 531', 'John', 'Owner', 'Gommans', '0416 047 544', '142'),
+(274, '03 5633 2079', '13 Kitchener Street TRAFALGAR VIC 3824 AUSTRALIA', 'AUSTRALIA', '3824', 'VIC', '13 Kitchener Street', '', 'TRAFALGAR', b'0', b'1', b'0', b'0', b'0', b'0', 'johngommans@caprilac.com', '', 'John', 'Owner', 'Gommans', '0416 047 544', '142'),
+(275, '', 'Houlahans lane POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Houlahans lane', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Henry', '0428646523', '306'),
+(276, '03 5484 8293', 'Maple Park Corop, Vic 3559', '', '3559', 'Vic', 'Maple Park', '', 'Corop', b'0', b'1', b'0', b'0', b'0', b'0', 'kenagri@bigpond.com', '', 'John', '', 'Kennedy', '0427 845 323', '203'),
+(277, '0351871273', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Kerr', '', '404'),
+(278, '56643370', '945 Koonwarra Inverloch Road Leongatha South VIC 3953 Australia', 'Australia', '3953', 'VIC', '945 Koonwarra Inverloch Road', '', 'Leongatha South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Larcombe', '428605911', ''),
+(279, '03 5687 1403', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'McAinch', '0428 514 393', '411'),
+(280, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Manager', 'Moore', '0413 137 060', '444'),
+(281, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Loader/Mill Hand', 'O''Conner', '', ''),
+(282, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Loader Driver', 'O''Connor', '', ''),
+(283, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Feed Mill Hand', 'Pathe', '', '399'),
+(284, '97961915', '194 King Road HARKAWAY VIC 3806 AUSTRALIA', 'AUSTRALIA', '3806', 'VIC', '194 King Road', '', 'HARKAWAY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Owner', 'Shannon', '0418 361 657', '339'),
+(285, '03 56622284', 'Simons Lane LEONGATHA, VIC 3953', '', '3953', 'VIC', 'Simons Lane', '', 'LEONGATHA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', 'Farm Manager', 'Simpson', '0407343542', '451'),
+(286, '56299534', '465 Edgar Road Longwarry VIC 3816 Australia', 'Australia', '3816', 'VIC', '465 Edgar Road', '', 'Longwarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'John', '', 'Versteden', '407343111', ''),
+(287, '56299094', '465 Edgar Road Longwarry VIC 3816 Australia', 'Australia', '3816', 'VIC', '465 Edgar Road', '', 'Longwarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '56299040', 'John', '', 'Versterden', '407343111', ''),
+(288, '', '479 Upper Maffra Road Newry VIC 3859 Australia', 'Australia', '3859', 'VIC', '479 Upper Maffra Road', '', 'Newry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jon Ryan', 'Farm Manager', '', '0433 778 810', '516'),
+(289, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Jordan', 'Mill Hand', 'Diamond', '0401 267 783', '399'),
+(290, '56232121', 'Suite 4, 60 Victoria Street Warragul VIC 3820 Australia', 'Australia', '3820', 'VIC', 'Suite 4, 60 Victoria Street', '', 'Warragul', b'0', b'1', b'0', b'0', b'0', b'0', 'juliep@dairycropping.com.au', '', 'Julie', '', 'Pike', '412359713', ''),
+(291, '', '688 Locksley Road NAGAMBIE VIC 3608 AUSTRALIA', 'AUSTRALIA', '3608', 'VIC', '688 Locksley Road', '', 'NAGAMBIE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Justin', '', 'Boyer', '0438 563 006', ''),
+(292, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Karen', 'Manager', 'McAinch', '0429 871 403', '411'),
+(293, '', 'PO BOX 127 STRATFORD VIC 3862 AUSTRALIA', 'AUSTRALIA', '3862', 'VIC', 'PO BOX 127', '', 'STRATFORD', b'0', b'1', b'0', b'0', b'0', b'0', 'katesilich@gmail.com', '', 'Kate Silich', 'Owner', '- Farm 1', '0447 732 337', '178'),
+(294, '', 'PO BOX 127 STRATFORD VIC 3862 AUSTRALIA', 'AUSTRALIA', '3862', 'VIC', 'PO BOX 127', '', 'STRATFORD', b'0', b'1', b'0', b'0', b'0', b'0', 'katesilich@gmail.com', '', 'Kate Silich', 'Owner', '- Farm 2', '0447 732 337', '179'),
+(295, '51601378', '390 Tanjil River Road Tanjil South Vic 3825 Australia', 'Australia', '3825', 'Vic', '390 Tanjil River Road', '', 'Tanjil South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Katie', '', 'Birch', '0428 840 748', '468'),
+(296, '', '89 Pound Road Denison VIC 3971 Australia', 'Australia', '3971', 'VIC', '89 Pound Road', '', 'Denison', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Katlin', '', 'Sellings', '0409257150', '77'),
+(297, '0419 367 481', '80 McMahons Road NILMA NORTH VIC 3821 AUSTRALIA', 'AUSTRALIA', '3821', 'VIC', '80 McMahons Road', '', 'NILMA NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kaye', 'Manager', 'Willis', '0407 343 754', '66'),
+(298, '03 5149 2314', '616 Sale Toongabbie Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', '616 Sale Toongabbie Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Keith & Anne', '', 'Warren', '0409 492 314', '898'),
+(299, '0392871669', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Keith', 'Service', 'Tomlinson', '', '156'),
+(300, '03 5821 7777', '22 Welshford Street PO BOX 1377 SHEPPARTON VIC 3630 AUSTRALIA', 'AUSTRALIA', '3630', 'VIC', '22 Welshford Street', 'PO BOX 1377', 'SHEPPARTON', b'0', b'1', b'0', b'0', b'0', b'0', 'kelly.brun@ggib.com.au', '0358222916', 'Kelly', 'Account Executive', 'Brun', '', '352'),
+(301, '03 5189 1242', '4778 Hyland Way WON WRON VIC 3971 AUSTRALIA', 'AUSTRALIA', '3971', 'VIC', '4778 Hyland Way', '', 'WON WRON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kelvin', '', 'Trotman', '0428 517 934', '469'),
+(302, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ken & Tahne', '', 'May', '0427 631 475', '490'),
+(303, '03 5154 1468', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kevin & Mel', '', 'Douch', '', ''),
+(304, '56281054', 'Rendell Road NEERIM EAST VIC 3831 AUSTRALIA', 'AUSTRALIA', '3831', 'VIC', 'Rendell Road', '', 'NEERIM EAST', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kevin', '', 'Rhind', '0428305017', '482'),
+(305, '56281054', 'Neerim East Road Neerim East VIC 3831 Australia', 'Australia', '3831', 'VIC', 'Neerim East Road', '', 'Neerim East', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kevin', '', 'Rhind', '428305017', ''),
+(306, '', '143 Airly Estate Road AIRLY VIC 3851 AUSTRALIA', 'AUSTRALIA', '3851', 'VIC', '143 Airly Estate Road', '', 'AIRLY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kevin', '', 'Ward', '0458 498 262', '125'),
+(307, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kieran', '', 'McGrath', '0439 913 098', '493'),
+(308, '56648216', '405 clear creek road Mirboo VIC 3871 Australia', 'Australia', '3871', 'VIC', '405 clear creek road', '', 'Mirboo', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kris', '', 'Thomas', '429919995', ''),
+(309, '', '328 Ferriers Road Victoria 3945 Australia', 'Australia', '3945', 'Victoria', '328 Ferriers Road', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kristian', 'Manager', 'Bingham', '0419 261 318', '503'),
+(310, '', '448 North Poowong Road', '', '', '', '448 North Poowong Road', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'kmbingham@bigpond.com', '', 'Kristian', 'Manager', 'Bingham', '0419261318', '504'),
+(311, '0419 261 318', '2505 Princes Highway TYNONG Victoria 3813 Australia', 'Australia', '3813', 'Victoria', '2505 Princes Highway', 'TYNONG', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kristian', 'Manager', 'Bingham', '', '506'),
+(312, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kyal', 'Manager', 'Broman', '0419 214 487', '662'),
+(313, '0400 327 906', 'Ogilvy''s Road POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Ogilvy''s Road', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Kyle', '', 'Holt', '', '343'),
+(314, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lang', '', 'Lang', '', ''),
+(315, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lang', '', 'Lang', '', '399'),
+(316, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lang Lang', '', 'Lang Lang', '', ''),
+(317, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lang Lang', '', 'Lang Lang', '', ''),
+(318, '51671765', '45 Dernhams Road Yallourn North VIC 3825 Australia', 'Australia', '3825', 'VIC', '45 Dernhams Road', '', 'Yallourn North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Laurie', '', 'Baccega', '400671765', '496'),
+(319, '56342427', 'Shady Creek Road YARRAGON VIC 3823 AUSTRALIA', 'AUSTRALIA', '3823', 'VIC', 'Shady Creek Road', '', 'YARRAGON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Laurie', '', 'Kingwill', '0418595901', '17'),
+(320, '03 5668 6210', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Leo', 'owner', 'Argento', '0419 559 654', '240'),
+(321, '56574450', '110 Axfords Road Outrim VIC 3951 Australia', 'Australia', '3951', 'VIC', '110 Axfords Road', '', 'Outrim', b'0', b'1', b'0', b'0', b'0', b'0', '', '56649283', 'Les & Lyn', '', 'Hornby', '0429029597', '481'),
+(322, '51851347', '66 Tap Tap Road Jack River VIC 3971 Australia', 'Australia', '3971', 'VIC', '66 Tap Tap Road', '', 'Jack River', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Les', '', 'Albutt', '437913620', '523'),
+(323, '', 'Tanjil River Road TANJIL SOUTH VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', 'Tanjil River Road', '', 'TANJIL SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lesley', '', 'Hasthorpe', '0428 890 327', '300'),
+(324, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lesley', '', 'Hodges', '0400 144 235', '540'),
+(325, '', 'Main Neerim Road NEERIM VIC 3831 AUSTRALIA', 'AUSTRALIA', '3831', 'VIC', 'Main Neerim Road', '', 'NEERIM', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lindsey', 'Herd Manager', 'Lockett', '0421698130', '332'),
+(326, '56261484', 'PO BOX 145 WARRAGUL VIC 3820 AUSTRALIA', 'AUSTRALIA', '3820', 'VIC', 'PO BOX 145', '', 'WARRAGUL', b'0', b'1', b'0', b'0', b'0', b'0', 'lisast@dcsi.net.au', '', 'Lisa', 'Secretary', 'Stevens', '0414 961 201', ''),
+(327, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Loaded At', '', 'Five Star', '', '399'),
+(328, '56625182', '15malone''s Road Kardella VIC 3951 Australia', 'Australia', '3951', 'VIC', '15malone''s Road', '', 'Kardella', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lucas', '', 'Licciardello', '429673068', '61'),
+(329, '0459592044', 'Ogilvy''s Road POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Ogilvy''s Road', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Luke', 'Herd Manager', 'Hansch', '', '343'),
+(330, '0351444441', '6 Camdon Gardens BERWICK, VIC 3806', '', '3806', 'VIC', '6 Camdon Gardens', '', 'BERWICK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Luke', 'Director', 'Johnson', '', '889'),
+(331, '56354232', '2588 Willowgrove Road Hill End VIC 3825 Australia', 'Australia', '3825', 'VIC', '2588 Willowgrove Road', '', 'Hill End', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lynda', 'Owner', 'Earl', '0409436331', '230'),
+(332, '56871274', '1023 Fuller Road Foster VIC 3960 Australia', 'Australia', '3960', 'VIC', '1023 Fuller Road', '', 'Foster', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Lynne', '', 'Truscott', '0400 782 745', '74'),
+(333, '51924366', '785 Lower Cairnbrook Road GLENGARRY VIC 3854 AUSTRALIA', 'AUSTRALIA', '3854', 'VIC', '785 Lower Cairnbrook Road', '', 'GLENGARRY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'M J', '', 'Sawyer', '0407804998', '203'),
+(334, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Madeleine', 'Logistics', 'Pinnuck', '', ''),
+(335, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Madeleine', '', 'Pinnuck', '', '399'),
+(336, '51918129', '840A Cowwarr Seaeton Road Dawson VIC 3858 Australia', 'Australia', '3858', 'VIC', '840A Cowwarr Seaeton Road', '', 'Dawson', b'0', b'1', b'0', b'0', b'0', b'0', 'sales@springvalleypastoral.com.au', '', 'Mal', '', 'Stasinowsky', '488352121', ''),
+(337, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Malcolm', '', 'McRae', '0427144217', '540'),
+(338, '03 5593 1100', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'mal@fssf.com.au', '03 5593 1084', 'Malcolm', '', 'Sonnett', '0407 347 308', '265'),
+(339, '03 9268 7272', 'Level 11, Twenty-8 Freshwater Place PO BOX 58 SOUTHBANK VIC 3006 AUSTRALIA', 'AUSTRALIA', '3006', 'VIC', 'Level 11, Twenty-8 Freshwater Place', 'PO BOX 58', 'SOUTHBANK', b'0', b'1', b'0', b'0', b'0', b'0', 'margaret_lawn@cargill.com', '03 9682 3099', 'Margaret', 'Supply Chain Coordinator (Meal)', 'Lawn', '0447556033', '131'),
+(340, '56299266', 'Kin-Craig 390 Koo Wee Rup-Longwarry Road. Longwarry VIC 3816 Australia', 'Australia', '3816', 'VIC', 'Kin-Craig 390 Koo Wee Rup-Longwarry Road.', '', 'Longwarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Margaret', '', 'Roots', '0427 299 266', '766'),
+(341, '59975486', '195 Soldiers Road Lang Lang VIC 3984 Australia', 'Australia', '3984', 'VIC', '195 Soldiers Road', '', 'Lang Lang', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mark', '', 'Anderson', '', '846'),
+(342, '59975486', '195 Soldiers Road Lang Lang VIC 3984 Australia', 'Australia', '3984', 'VIC', '195 Soldiers Road', '', 'Lang Lang', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mark', '', 'Anderson', '417680943', ''),
+(343, '03 9016 3446', 'P.O. BOX 3016 NEWPORT VIC 3015 AUSTRALIA', 'AUSTRALIA', '3015', 'VIC', 'P.O. BOX 3016', '', 'NEWPORT', b'0', b'1', b'0', b'0', b'0', b'0', 'markfowler@xrelements.com.au', '', 'Mark', 'Consultant', 'Fowler', '0401 181 212', ''),
+(344, '03 9016 3446', 'PO BOX 3016 NEWPORT VIC 3015 AUSTRALIA', 'AUSTRALIA', '3015', 'VIC', 'PO BOX 3016', '', 'NEWPORT', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mark', 'Principal Consultant', 'Fowler', '0401 181 212', '824'),
+(345, '03 9353 3522', 'Level 2 32 Lincoln Square North CARLTON VIC 3053 AUSTRALIA', 'AUSTRALIA', '3053', 'VIC', 'Level 2', '32 Lincoln Square North', 'CARLTON', b'0', b'1', b'0', b'0', b'0', b'0', 'mark.harris@au.brookfield.com', '', 'Mark', 'Property Manager', 'Harris', '0383414500', '115'),
+(346, '', '2176 Sale Heyfield Road DENISON VIC 3858 AUSTRALIA', 'AUSTRALIA', '3858', 'VIC', '2176 Sale Heyfield Road', '', 'DENISON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mark', 'Farm Manager', 'Stephens', '0407 459 151', '22'),
+(347, '03 5145 1016', '771 Three Chain Road Newry VIC 3859 Australia', 'Australia', '3859', 'VIC', '771 Three Chain Road', '', 'Newry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mathew', '', 'Ross', '0488 366 018', '536'),
+(348, '', 'Stratford/Maffra Rd STRATFORD VIC 3862 AUSTRALIA', 'AUSTRALIA', '3862', 'VIC', 'Stratford/Maffra Rd', '', 'STRATFORD', b'0', b'1', b'0', b'0', b'0', b'0', 'gault.family@bigpond.com', '', 'Matt', 'Owner', 'Gault', '', '398'),
+(349, '03 5431 1251', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '02 8570 4705', 'Matt', 'Account Manager', 'Lynch', '0459 178 344', '180'),
+(350, '51451774', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'maxi.tameeka@hotmail.com', '51451491', 'Max &Tameeka', '', 'Vera', '425793745', ''),
+(351, '', 'Lot 15 Kingston Street MOOLAP VIC 3221 AUSTRALIA', 'AUSTRALIA', '3221', 'VIC', 'Lot 15 Kingston Street', '', 'MOOLAP', b'0', b'1', b'0', b'0', b'0', b'0', 'mad.dixon@bigpond.com', '0352485899', 'Max', 'Electrician', 'Dixon', '0428 522 658', '7'),
+(352, '03 9314 2555', 'Unit2/32 Westside Drive LAVERTON NORTH VIC 3026 AUSTRALIA', 'AUSTRALIA', '3026', 'VIC', 'Unit2/32 Westside Drive', '', 'LAVERTON NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Max', 'Account Manager', 'Masseni', '0417 505 542', '676'),
+(353, '', 'PO Box 313 Heyfield', '', '', '', 'PO Box 313', '', 'Heyfield', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Max', 'manager', 'Vera', '0425 793 745', '342'),
+(354, '03 9431 3000', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 9431 1618', 'Melinda', 'Director', 'McAllister', '', '103'),
+(355, '03 5623 6140', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'manderson@dcsi.net.au', '', 'Meredith', 'Treasurer', 'Anderson', '', '253'),
+(356, '03 5657 2236', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Merv', '', 'Prosser', '0457 572 236', '515'),
+(357, '56352300', '34 Balfour Road Willow Grove Vic 3825 Australia', 'Australia', '3825', 'Vic', '34 Balfour Road', '', 'Willow Grove', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Michael', '', 'Balfour', '0407 343 325', '118'),
+(358, '0351444441', '3 Sherrie Crt SALE, VIC 3850', '', '3850', 'VIC', '3 Sherrie Crt', '', 'SALE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Michael', 'Director', 'Brown', '', '889'),
+(359, '', '16 Ramsay Boulevard INVERLOCH VIC 3996 AUSTRALIA', 'AUSTRALIA', '3996', 'VIC', '16 Ramsay Boulevard', '', 'INVERLOCH', b'0', b'1', b'0', b'0', b'0', b'0', 'info@eugenies.com.au', '', 'Michael', 'Owner', 'Malone', '0407 343 843', '61'),
+(360, '', '618 Maffra Rosedale Rd DENISON VIC 3858 AUSTRALIA', 'AUSTRALIA', '3858', 'VIC', '618 Maffra Rosedale Rd', '', 'DENISON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Michael', '', 'O''Brien', '', '538'),
+(361, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Michael', 'Driver', 'Phillips', '', '399'),
+(362, '59425594', 'Longwarry road NAR NAR GOON VIC 3812 AUSTRALIA', 'AUSTRALIA', '3812', 'VIC', 'Longwarry road', '', 'NAR NAR GOON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Michael', 'Sharefarmer', 'Shipton', '0427 410 272', '302'),
+(363, '56281222', '2301 Main Road Neerim South VIC 3831 Australia', 'Australia', '3831', 'VIC', '2301 Main Road', '', 'Neerim South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Michael', '', 'Whitford', '407306234', ''),
+(364, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Micheal', '', 'Armstrong', '0427 667 114', '375'),
+(365, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'microsoftdynamics@e-mail.microsoft.com', '', 'Microsoft', '', 'Dynamics', '', ''),
+(366, '', '60 Nicholas Road LEONGATHA SOUTH VIC 3953 AUSTRALIA', 'AUSTRALIA', '3953', 'VIC', '60 Nicholas Road', '', 'LEONGATHA SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mike', 'farm manager-Leongatha', 'Kilkenny', '0488 055 664', '572'),
+(367, '56281222', '2301 Main Road Neerim South VIC 3831 Australia', 'Australia', '3831', 'VIC', '2301 Main Road', '', 'Neerim South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mike', '', 'Whitford', '0407306234', '596'),
+(368, '56281222', '2301 Main Road Neerim South VIC 3831 Australia', 'Australia', '3831', 'VIC', '2301 Main Road', '', 'Neerim South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Mike', '', 'Whitford', '407306234', ''),
+(369, '0357625077', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'MirvaC', '', 'Mirvac', '', ''),
+(370, '03 5657 2229', '240 Bass Valley Road BENA VIC 3946 AUSTRALIA', 'AUSTRALIA', '3946', 'VIC', '240 Bass Valley Road', '', 'BENA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Murray', '', 'Fowles', '0419886996', '52'),
+(371, '56572229', '240 bass valley Road Bena VIC 3946 Australia', 'Australia', '3946', 'VIC', '240 bass valley Road', '', 'Bena', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Murray', '', 'Fowles', '419886990', ''),
+(372, '', '328 Ferriers Road LOCH Victoria 3945 Australia', 'Australia', '3945', 'Victoria', '328 Ferriers Road', '', 'LOCH', b'0', b'1', b'0', b'0', b'0', b'0', 'narellewilliams@live.com.au', '', 'Narelle', '', 'Williams', '', '503'),
+(373, '02 6928 5791', '12-14 Parkes Road Newell Highway FORBES NSW 2871 AUSTRALIA', 'AUSTRALIA', '2871', 'NSW', '12-14 Parkes Road', 'Newell Highway', 'FORBES', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Nathan', '', 'Stoll', '', '35'),
+(374, '03 5143 1131', '72 Bengworden Road Cobains VIC 3851 Australia', 'Australia', '3851', 'VIC', '72 Bengworden Road', '', 'Cobains', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Neil', '', 'Bjorksten', '0407 473 277', '634'),
+(375, '03 5687 1334', '955 Millar Road YANAKIE VIC 3960 AUSTRALIA', 'AUSTRALIA', '3960', 'VIC', '955 Millar Road', '', 'YANAKIE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Neil', '', 'Comben', '0427 334 716', '269'),
+(376, '03 5079 2203', '917 Drury Road BERRIWILLOCK VIC 3531 AUSTRALIA', 'AUSTRALIA', '3531', 'VIC', '917 Drury Road', '', 'BERRIWILLOCK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Neil', '', 'Luehman', '', '555'),
+(377, '03 5668 6362', 'Canavans Road Wooreen VIC 3953 Australia', 'Australia', '3953', 'VIC', 'Canavans Road', '', 'Wooreen', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Neville', '', 'Beveridge', '0409572207', '626'),
+(378, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Nick', '', 'Ryan', '0438550630', '744'),
+(379, '', '75 James Road hedley VIC Australia', 'Australia', '', 'VIC', '75 James Road', '', 'hedley', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Nicole & Darren', '', 'Fletcher', '0438 500 453', '94'),
+(380, '03 9353 3522', 'Level 2 32 Lincoln Square North CARLTON VIC 3053 AUSTRALIA', 'AUSTRALIA', '3053', 'VIC', 'Level 2', '32 Lincoln Square North', 'CARLTON', b'0', b'1', b'0', b'0', b'0', b'0', 'insurance.victrack@au.brookfield.com', '', 'Nicole', 'Insurance', 'Insurance', '', '115'),
+(381, '59978325', 'Yannathan VIC Australia', 'Australia', '', 'VIC', '', '', 'Yannathan', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Noel', '', 'Campbell', '417381108', ''),
+(382, '59976343', '91 bay Road Jam Jerrup VIC 3984 Australia', 'Australia', '3984', 'VIC', '91 bay Road', '', 'Jam Jerrup', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Noel', '', 'Davis', '0488156925', '629'),
+(383, '51977368', '367 Lays Road Extension Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '367 Lays Road Extension', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Norm', '', 'Ripper', '', '622'),
+(384, '51977368', '367 Lays Road Extension Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '367 Lays Road Extension', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', 'neefripper@active9.com', '', 'Norm', '', 'Ripper', '', '622'),
+(385, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'North', '', 'Melbourne', '', '399'),
+(386, '', '"Woodlands" 2351 Romsey Rd ROMSEY, VIC', '', '', 'VIC', '"Woodlands" 2351 Romsey Rd', '', 'ROMSEY', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Pat', 'Farm Manager', 'McCrohon', '0407029845', '899'),
+(387, '03 5628 1054', 'Rendell Road NEERIM EAST VIC 3831 AUSTRALIA', 'AUSTRALIA', '3831', 'VIC', 'Rendell Road', '', 'NEERIM EAST', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Patricia', '', 'Holsworth', '', '482'),
+(388, '0428 839 013', '19 Flynn Road BOORHAMAN VIC 3678 AUSTRALIA', 'AUSTRALIA', '3678', 'VIC', '19 Flynn Road', '', 'BOORHAMAN', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', '', 'Blake', '', '107'),
+(389, '03 9894 7001', 'PO BOX 1342 BLACKBURN NORTH VIC 3130 AUSTRALIA', 'AUSTRALIA', '3130', 'VIC', 'PO BOX 1342', '', 'BLACKBURN NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 9894 7103', 'Paul', 'Pest Controller', 'Bryce', '0400 562 321', '69'),
+(390, '56278295', 'Nilma Shady Creek Road NILMA NORTH VIC 3821 AUSTRALIA', 'AUSTRALIA', '3821', 'VIC', 'Nilma Shady Creek Road', '', 'NILMA NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', 'Sharefarmer', 'Burdett', '', '465'),
+(391, '', '13 Kitchener Street TRAFALGAR VIC 3824 AUSTRALIA', 'AUSTRALIA', '3824', 'VIC', '13 Kitchener Street', '', 'TRAFALGAR', b'0', b'1', b'0', b'0', b'0', b'0', 'paul.cornelissen@caprilac.com', '', 'Paul', 'Manager', 'Cornelissen', '0400 511 076', '142'),
+(392, '', '13/110 Wattletree Road MALVERN VIC 3144 AUSTRALIA', 'AUSTRALIA', '3144', 'VIC', '13/110 Wattletree Road', '', 'MALVERN', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', 'Leasee', 'Ebbles', '', '662'),
+(393, '', 'Lynnes Road Wonthaggi VIC 3995 Australia', 'Australia', '3995', 'VIC', 'Lynnes Road', '', 'Wonthaggi', b'0', b'1', b'0', b'0', b'0', b'0', '', '438090223', 'Paul', '', 'Ebbles', '419214487', ''),
+(394, '03 5182 6056', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', '', 'Haymes', '0428 826 056', '641'),
+(395, '0356285215', '100 Anderson Road Jindivick VIC 3818 Australia', 'Australia', '3818', 'VIC', '100 Anderson Road', '', 'Jindivick', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', 'Sharefarmer', 'Pedersen', '', '748'),
+(396, '03 9738 1577', '4/26 Longstaff Road BAYSWATER VIC 3153 AUSTRALIA', 'AUSTRALIA', '3153', 'VIC', '4/26 Longstaff Road', '', 'BAYSWATER', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', '', 'Tipper Tarps', '', '177'),
+(397, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Paul', 'Driver', 'Warren', '', '399'),
+(398, '56871274', '1023 Fuller Road Foster VIC 3960 Australia', 'Australia', '3960', 'VIC', '1023 Fuller Road', '', 'Foster', b'0', b'1', b'0', b'0', b'0', b'0', 'ptrus@wideband.net.au', '51826154', 'Peter & Lynne', '', 'Truscott', '439821271', '74'),
+(399, '', '415 Princes Highway North Sale VIC 3850 Australia', 'Australia', '3850', 'VIC', '415 Princes Highway North', '', 'Sale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', 'Farm Manager', 'Coulson', '0429 496 386', '716'),
+(400, '', '641 McDonalds Track MOUNTAIN VIEW, VIC 3988', '', '3988', 'VIC', '641 McDonalds Track', '', 'MOUNTAIN VIEW', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Drew', '0407706302', '468'),
+(401, '56572231', '265 Bass Valley Road Bena VIC 3946 Australia', 'Australia', '3946', 'VIC', '265 Bass Valley Road', '', 'Bena', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Fowles', '428572249', '#N/A'),
+(402, '56572231', 'Chapmans Road Bena VIC 3946 Australia', 'Australia', '3946', 'VIC', 'Chapmans Road', '', 'Bena', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Fowles', '428572249', '687'),
+(403, '0383298500', '275 Dockereys Rd,Tallarook Vic', '', '', '', '275 Dockereys Rd,Tallarook Vic', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'phurst@amg.com.au', '', 'Peter', 'Sales Manager', 'Hurst', '0448550774', '249'),
+(404, '03 9328 2681', '5205 South Gippsland Hwy LANG LANG VIC 3984 AUSTRALIA', 'AUSTRALIA', '3984', 'VIC', '5205 South Gippsland Hwy', '', 'LANG LANG', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', 'Beef Feedlot Manger', 'Lowry', '', '591'),
+(405, '56871274', '1023 Fuller Road Foster VIC 3960 Australia', 'Australia', '3960', 'VIC', '1023 Fuller Road', '', 'Foster', b'0', b'1', b'0', b'0', b'0', b'0', 'ptrus@wideband.net.au', '51826154', 'Peter Lowry & Lynne', '', 'Truscott', '439821271', '74'),
+(406, '0418 512 035', 'Ogilvy''s Road POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Ogilvy''s Road', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Notman', '', '343'),
+(407, '(03) 5169 1686', '475 Fishers Road BOOLARRA SOUTH VICTORIA', '', '', 'VICTORIA', '475 Fishers Road', 'BOOLARRA SOUTH', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Polovinka', '0428302138', '651'),
+(408, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Puttock De Jong', '0457 570 022', '57'),
+(409, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Russell', '0431 317 162', '165'),
+(410, '', 'BENALLA VIC 3672 AUSTRALIA', 'AUSTRALIA', '3672', 'VIC', '', '', 'BENALLA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Tanner', '', ''),
+(411, '03 5687 1274', '1023 Fuller Road Foster VIC 3960 Australia', 'Australia', '3960', 'VIC', '1023 Fuller Road', '', 'Foster', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Truscott', '0439 821 271', '74'),
+(412, '56782153', 'Bass Highway Anderson VIC 3995 Australia', 'Australia', '3995', 'VIC', 'Bass Highway', '', 'Anderson', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Worboys', '', '647'),
+(413, '03 5663 6281', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Peter', '', 'Young', '0438 006 281', ''),
+(414, '03 5149 8240', '170 Hughes Road CLYDEBANK VIC 3851 AUSTRALIA', 'AUSTRALIA', '3851', 'VIC', '170 Hughes Road', '', 'CLYDEBANK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Phil', '', 'Jolly', '0418 515 282', '653'),
+(415, '56342476', 'Moe River Road Yarragon VIC 3823 Australia', 'Australia', '3823', 'VIC', 'Moe River Road', '', 'Yarragon', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Phil', '', 'Orgill', '0400982000', '123'),
+(416, '0410 507 991', 'Laidlaw Road NEERIM NORTH VIC 3832 AUSTRALIA', 'AUSTRALIA', '3832', 'VIC', 'Laidlaw Road', '', 'NEERIM NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Phil', '', 'Stammers', '', '676'),
+(417, '03 5149 2461', '612 Denison Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', '612 Denison Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', 'llewellyn@wideband.net.au', '', 'Philip', '', 'Llewellyn', '0427 492 461', '693'),
+(418, '0356287661', '245 Labertouche Rd LABERTOUCHE VIC 3816', '', '3816', 'VIC', '245 Labertouche Rd', 'LABERTOUCHE', '', b'0', b'1', b'1', b'0', b'1', b'1', 'philip@rhodens.com.au', '', 'Philip', 'Owner - Ballam Park Pastoral Co.', 'Rhoden', '', '90'),
+(419, '(03) 9328 2681', 'PO BOX 368 North Melbourne VIC 3051 Australia', 'Australia', '3051', 'VIC', 'PO BOX 368', '', 'North Melbourne', b'0', b'1', b'0', b'0', b'0', b'0', 'production@irwinstockfeeds.com.au', '', '', 'Production Supervisor', 'Production', '0409 851 831', ''),
+(420, '03 5663 6313', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ray', '', 'McRae', '0419 692 317', '143'),
+(421, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ray', '', 'Patullo', '0418 325 694', '165'),
+(422, '03 9353 3522', 'Level 2 32 Lincoln Square North CARLTON VIC 3053 AUSTRALIA', 'AUSTRALIA', '3053', 'VIC', 'Level 2', '32 Lincoln Square North', 'CARLTON', b'0', b'1', b'0', b'0', b'0', b'0', 'ray.tibbitss@au.brookfield.com', '', 'Ray', 'Snr Property Manager', 'Tibbitts', '', '115'),
+(423, '03 5678 3290', '455 Koftsveldt ARCHIES CREEK VIC 3995 AUSTRALIA', 'AUSTRALIA', '3995', 'VIC', '455 Koftsveldt', '', 'ARCHIES CREEK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rhonda', '', 'Magro', '0419 599 493', '256'),
+(424, '', '"Lismore Park" HOWLONG NSW 2643 AUSTRALIA', 'AUSTRALIA', '2643', 'NSW', '"Lismore Park"', '', 'HOWLONG', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Richard', '', 'Baker', '', '92'),
+(425, '03 5184 1200', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Richard', '', 'Egan', '0437 385 996', '719'),
+(426, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Richard', 'Manager', 'Johnson', '0438090223', '445'),
+(427, '56649293', '30 Lawson''s road Leongatha VIC 3953 Australia', 'Australia', '3953', 'VIC', '30 Lawson''s road', '', 'Leongatha', b'0', b'1', b'0', b'0', b'0', b'0', '', '51492226', 'Richard', '', 'McGrath', '419307482', '493'),
+(428, '', '141 James Road', '', '', '', '141 James Road', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Richard', 'owner', 'Peason', '', '755'),
+(429, '56285334', 'Labertouche VIC 3816 Australia', 'Australia', '3816', 'VIC', '', '', 'Labertouche', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rick', 'Sharefarmer', 'Boyes', '0447522780', '168'),
+(430, '03 5664 5452', '243 Dollar Road Dumbalk VIC 3956 Australia', 'Australia', '3956', 'VIC', '243 Dollar Road', '', 'Dumbalk', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rob', '', 'Auchterlonie', '0429 681 332', '707'),
+(431, '56294225', '905 koo wee rup- Longwarry Road Modella VIC 3816 Australia', 'Australia', '3816', 'VIC', '905 koo wee rup- Longwarry Road', '', 'Modella', b'0', b'1', b'0', b'0', b'0', b'0', '', '56354302', 'Rob', '', 'Peacock', '407811094', ''),
+(432, '', '100 Anderson Road Jindivick VIC 3818 Australia', 'Australia', '3818', 'VIC', '100 Anderson Road', '', 'Jindivick', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rob', 'Sharefarmer', 'Pedersen', '0409343884', '748'),
+(433, '03 5147 1828', '198 Montgomery Road Bundalaguah VIC 3851 Australia', 'Australia', '3851', 'VIC', '198 Montgomery Road', '', 'Bundalaguah', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Robert & Lynette', '', 'Johnston', '0448 871 828', '709'),
+(434, '03 5148 2319', '603 Cowwarr - Heyfield Road Heyfield VIC 3858 Australia', 'Australia', '3858', 'VIC', '603 Cowwarr - Heyfield Road', '', 'Heyfield', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Robert & Susan', '', 'Gilligan', '0427 482 319', '712'),
+(435, '56276366', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Robert', '', 'Alush', '', ''),
+(436, '0356686257', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Robert Charles', '', 'Calder', '', '870'),
+(437, '03 5627 8345', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 5627 8345', 'Robert', 'Manager', 'Coster', '', '721'),
+(438, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Robert', '', 'Danieli', '0419 992 077', '180'),
+(439, '51482319', '91 Fogartys Road Heyfield VIC 3858 Australia', 'Australia', '3858', 'VIC', '91 Fogartys Road', '', 'Heyfield', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Robert', '', 'Gilligan', '', '712'),
+(440, '', 'Australia', 'Australia', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'robin@irwinstockfeeds.com.au', '', '', '', 'Robin', '', ''),
+(441, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rod & June', '', 'Forest', '', ''),
+(442, '0359823252', '192 Balnarring Rd MERRICKS NTH VIC', '', '', 'VIC', '192 Balnarring Rd', 'MERRICKS NTH', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Roger', 'Farm Manager', 'Gordon', '0488616225', '92'),
+(443, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Roger', '', 'Henderson', '', '399'),
+(444, '0356574306', '1230 Bena Kongwak Rd Kongwak 3951', '', '3951', '', '1230 Bena Kongwak Rd Kongwak', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Roger', '', 'Perrett', '0407574406', '744'),
+(445, '03 5664 9294', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rohan', '', 'Kerr', '', '84'),
+(446, '56299200', '445 kooweerup-longwarry road Modella VIC 3816 Australia', 'Australia', '3816', 'VIC', '445 kooweerup-longwarry road', '', 'Modella', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Rohan', '', 'Marriott', '', ''),
+(447, '03 5687 1103', 'Millar Road Yanakie VIC 3960 Australia', 'Australia', '3960', 'VIC', 'Millar Road', '', 'Yanakie', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Roman', '', 'Bischof', '0435 967 534', '764'),
+(448, '', '7890 Sth Gippsland HWY Alberton VIC 3971 Australia', 'Australia', '3971', 'VIC', '7890 Sth Gippsland HWY', '', 'Alberton', b'0', b'1', b'0', b'0', b'0', b'0', '', '351431131', 'Ron', '', 'Barton', '438825249', '745'),
+(449, '03 5183 2214', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ron', '', 'Douch', '0448 468 983', '703'),
+(450, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ron', '', 'Five Star', '', '265'),
+(451, '351851361', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ron', '', 'Jones', '', '776'),
+(452, '', '40 Timbs Crossing Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '40 Timbs Crossing', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ross', '', 'Edgar', '0427 977 320', '380'),
+(453, '03 9463 5300', '73 Latitude Boulevard THOMASTOWN VIC 3074 AUSTRALIA', 'AUSTRALIA', '3074', 'VIC', '73 Latitude Boulevard', '', 'THOMASTOWN', b'0', b'1', b'0', b'0', b'0', b'0', 'rossh@wedderburn.com.au', '03 9463 5399', 'Ross', 'Technical Sales Executive', 'Hedstrom', '0419 537 306', '220'),
+(454, '56599265', '295 Kennys Road Nyora VIC 3987 Australia', 'Australia', '3987', 'VIC', '295 Kennys Road', '', 'Nyora', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Russel', '', 'Follet', '428599270', '683'),
+(455, '03 5144 3245', '415 Princes Highway North Sale VIC 3850 Australia', 'Australia', '3850', 'VIC', '415 Princes Highway North', '', 'Sale', b'0', b'1', b'0', b'0', b'0', b'0', 'rdnapper@bigpond.net.au', '03 5144 2215', 'Russel', '', 'Napper', '0419 582 202', '716'),
+(456, '03 5182 0643', '380 Pound Road YARRAM VIC 3971 AUSTRALIA', 'AUSTRALIA', '3971', 'VIC', '380 Pound Road', '', 'YARRAM', b'0', b'1', b'0', b'0', b'0', b'0', 'asabernethy@bigpond.com', '', 'Sally', 'Farm Manager', 'Abernethy', '0429 956 037', '42'),
+(457, '03 5182 0643', '380 Pound Rd West Yarram VIC 3971 Australia', 'Australia', '3971', 'VIC', '380 Pound Rd West', '', 'Yarram', b'0', b'1', b'0', b'0', b'0', b'0', 'asabernethy@bigpond.com', '', 'Sally', 'Farm Manager', 'Abernethy', '0429 956 037', '42'),
+(458, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Sam', '', 'Dumbar', '0431 489 057', '24'),
+(459, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Sam', 'Manager Ace Operation', 'Dunbar', '0431 489 057', '26'),
+(460, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Sam', '', 'Dunbar', '', '24'),
+(461, '', '618 Maffra Rosedale Rd DENISON VIC 3858 AUSTRALIA', 'AUSTRALIA', '3858', 'VIC', '618 Maffra Rosedale Rd', '', 'DENISON', b'0', b'1', b'0', b'0', b'0', b'0', 'gypsyjev@hotmail.com', '', 'Sarah', 'Accounts', 'O''Brien', '', '538'),
+(462, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Scott', '', 'Mainridge', '', '546'),
+(463, '56275753', '1103 main south road DROUIN SOUTH VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', '1103 main south road', '', 'DROUIN SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Sean', '', 'Allen', '0458 334 896', '464'),
+(464, '03 5657 7267', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Sean', '', 'Monson', '0427 773 065', '100'),
+(465, '03 9484 0114', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', 'shamus.dougan@sapient-tech.com.au', '', 'Shamus', 'IT', 'Dougan', '0468 645 334', '454'),
+(466, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Shane', '', 'Diamond', '0407324161', ''),
+(467, '0418 397 568', '30 Jacksons Track LABERTOUCHE VIC 3816 AUSTRALIA', 'AUSTRALIA', '3816', 'VIC', '30 Jacksons Track', '', 'LABERTOUCHE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Shane', 'Sharefarmer', 'Kennedy', '', '388'),
+(468, '', 'Drayton Road Labertouche VIC 3816 Australia', 'Australia', '3816', 'VIC', 'Drayton Road', '', 'Labertouche', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 5942 5107', 'Shane', 'Manager', 'Kennedy', '0400 934 837', '85'),
+(469, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Shannon', 'Loader Operator/Mill Hand', 'Hepi', '0429010870', '399'),
+(470, '03 5149 2226', '1159 Maffra-Rosedale Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', '1159 Maffra-Rosedale Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', 'snglen@gmail.com', '', 'Shaun', '', 'Glendenning', '0407 859 024', '60'),
+(471, '03 5678 3322', 'Korrie Road Glen Alvie VIC 3979 Australia', 'Australia', '3979', 'VIC', 'Korrie Road', '', 'Glen Alvie', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Shiona', '', 'Berry', '0428 147 144', '315'),
+(472, '03 5157 6240', '2815 Bairnsdale Dargo Rd Glenaladale VIC 3875 Australia', 'Australia', '3875', 'VIC', '2815 Bairnsdale Dargo Rd', '', 'Glenaladale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Shirley', 'Farm owner/Sharefarmer', 'McKenna', '', '780'),
+(473, '03 5148 9384', '2442 Traralgon Maffra Road Cowwarr VIC 3857 Australia', 'Australia', '3857', 'VIC', '2442 Traralgon Maffra Road', '', 'Cowwarr', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Simon & Fiona', '', 'Mitchell', '0408 697 110', '778'),
+(474, '03 5627 8345', '538 Darnum Allanbee Road CLOVERLEA VIC 3822 AUSTRALIA', 'AUSTRALIA', '3822', 'VIC', '538 Darnum Allanbee Road', '', 'CLOVERLEA', b'0', b'1', b'0', b'0', b'0', b'0', 'costlea@dcsi.net.au', '03 5627 8345', 'Simon', 'Owner', 'Coster', '0419 278 261', '721'),
+(475, '56278345', 'Cloverlea VIC Australia', 'Australia', '', 'VIC', '', '', 'Cloverlea', b'0', b'1', b'0', b'0', b'0', b'0', 'costlea@dcsi.net.au', '03 5627 8345', 'Simon', 'Owner', 'Coster', '419278261', ''),
+(476, '03 9796 5651', '3 Melverton Drive HALLAM VIC 3803 AUSTRALIA', 'AUSTRALIA', '3803', 'VIC', '3 Melverton Drive', '', 'HALLAM', b'0', b'1', b'0', b'0', b'0', b'0', 'simonel@securitysolutions.com.au', '', 'Simone', '', 'L', '', '258'),
+(477, '03 9372 2166', '71-89 Hobsons Road KENSINGTON VIC 3031 AUSTRALIA', 'AUSTRALIA', '3031', 'VIC', '71-89 Hobsons Road', '', 'KENSINGTON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stefan', '', 'Seketa', '0400443336', '414'),
+(478, '03 9938 0143', '314A Thomas Street DANDENONG VIC 3175 AUSTRALIA', 'AUSTRALIA', '3175', 'VIC', '314A Thomas Street', '', 'DANDENONG', b'0', b'1', b'0', b'0', b'0', b'0', 'stephen.day@dbi.vic.gov.au', '03 9794 5644', 'Stephen', 'Business Development Manager', 'Day', '0409 419 846', '220'),
+(479, '', '27 Vardy''s Road Riverlea VIC Australia', 'Australia', '', 'VIC', '27 Vardy''s Road', '', 'Riverlea', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stephen', '', 'Keoghan', '418584825', ''),
+(480, '03 5626 1138', '1250 Lardners Track LARDNER VIC 3821 AUSTRALIA', 'AUSTRALIA', '3821', 'VIC', '1250 Lardners Track', '', 'LARDNER', b'0', b'1', b'0', b'0', b'0', b'0', 'stephen.pratt@sp-ausnet.com.au', '', 'Stephen', 'Ellinbank FN Club President', 'Pratt', '0419 562 875', '253'),
+(481, '56352114', 'Daveys Road WILLOW GROVE VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', 'Daveys Road', '', 'WILLOW GROVE', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Fallon', '0427?352?231', '657'),
+(482, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Hooker', '0408381735', '340'),
+(483, '59978254', 'Martins Road LANG LANG VIC 3984 AUSTRALIA', 'AUSTRALIA', '3984', 'VIC', 'Martins Road', '', 'LANG LANG', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Kent', '0428978254', '158'),
+(484, '59978254', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Kent', '428978254', ''),
+(485, '03 5147 1177', '1011 Maffra Rosedale Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', '1011 Maffra Rosedale Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', 'Manager', 'Keoghan', '0418 584 825', '648'),
+(486, '56645456', '396 Farmers Road Dumbalk North VIC 3956 Australia', 'Australia', '3956', 'VIC', '396 Farmers Road', '', 'Dumbalk North', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Pocklington', '', '791'),
+(487, '', '125 Sawyers Lane Tyers VIC 3844 Australia', 'Australia', '3844', 'VIC', '125 Sawyers Lane', '', 'Tyers', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Snowden', '0417 138 508', '792'),
+(488, '', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '351851361', 'Steve', '', 'Stead', '', ''),
+(489, '1164274243231', 'Vardy''s Road Maffra VIC 3860 Australia', 'Australia', '3860', 'VIC', 'Vardy''s Road', '', 'Maffra', b'0', b'1', b'0', b'0', b'0', b'0', 'mooloo5@farmside.co.nz', '', 'Steve', '', 'Stead', '0414 323 880', '488'),
+(490, '56832293', 'Waratah Road Fish Creek VIC 3959 Australia', 'Australia', '3959', 'VIC', 'Waratah Road', '', 'Fish Creek', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steve', '', 'Thomson', '0429 178 359', '807'),
+(491, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steven', 'Mill Hand Loader Driver', 'Keselj', '', '399'),
+(492, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Steven', 'Driver', 'Riley', '', '399'),
+(493, '03 5821 5744', 'P O Box 96 SHEPPARTON VIC 3630 AUSTRALIA', 'AUSTRALIA', '3630', 'VIC', 'P O Box 96', '', 'SHEPPARTON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stewie', '', 'Coombes', '0459 215 744', '744');
+INSERT INTO `contacts` (`id`, `Business_Phone`, `Address_1`, `Address_1_CountryRegion`, `Address_1_Postal_Code`, `Address_1_StateProvince`, `Address_1_Street_1`, `Address_1_Street_2`, `Address_1_TownSuburbCity`, `Do_Not_Allow_Bulk_Emails`, `Do_Not_Allow_Bulk_Mails`, `Do_Not_Allow_Emails`, `Do_Not_Allow_Faxes`, `Do_Not_Allow_Mails`, `Do_Not_Allow_Phone_Calls`, `Email`, `Fax`, `First_Name`, `Job_Title`, `Last_Name`, `Mobile_Phone`, `Company_id`) VALUES
+(494, '56599230', 'Beverlys Road POOWONG NORTH VIC 3988 AUSTRALIA', 'AUSTRALIA', '3988', 'VIC', 'Beverlys Road', '', 'POOWONG NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stuart', '', 'Beverly', '0428 599 230', '551'),
+(495, '', '199 Meadows Road Alberton VIC 3971 Australia', 'Australia', '3971', 'VIC', '199 Meadows Road', '', 'Alberton', b'0', b'1', b'0', b'0', b'0', b'0', 's.jbland@wideband.net.au', '03 5184 1220', 'Stuart', '', 'Bland', '0428 832 230', '801'),
+(496, '', 'Soldiers Rd NAMBROK VIC 3847 AUSTRALIA', 'AUSTRALIA', '3847', 'VIC', 'Soldiers Rd', '', 'NAMBROK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stuart', 'Son of Don Bruce', 'Bruce', '0407 862 631', '188'),
+(497, '56285361', 'Old Telegraph Road JINDIVICK VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', 'Old Telegraph Road', '', 'JINDIVICK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stuart', '', 'Cadzo', '', '25'),
+(498, '56285361', 'Jindivick VIC Australia', 'Australia', '', 'VIC', '', '', 'Jindivick', b'0', b'1', b'0', b'0', b'0', b'0', '', '56278295', 'Stuart', '', 'Cadzo', '', ''),
+(499, '56285361', 'Old Telegraph Road Jindivick VIC 3818 Australia', 'Australia', '3818', 'VIC', 'Old Telegraph Road', '', 'Jindivick', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stuart', '', 'Cazdo', '0', ''),
+(500, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stuart', 'Electrician', 'Electrian', '0418 552 414', '478'),
+(501, '56577237', '315 Woodleigh Road Loch VIC 3945 Australia', 'Australia', '3945', 'VIC', '315 Woodleigh Road', '', 'Loch', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Stuart', '', 'Hayes', '438577999', ''),
+(502, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Sue', '', 'Kerr', '0400 909 227', '84'),
+(503, '03 5145 1001', '771 Three Chain Road Newry VIC 3859 Australia', 'Australia', '3859', 'VIC', '771 Three Chain Road', '', 'Newry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'T & C', 'Farm Owner/Sharefarmer', 'Dwyer', '', '536'),
+(504, '03 5591 0344', '514 Timboon-Terang Road ECKLIN SOUTH VIC 3265 AUSTRALIA', 'AUSTRALIA', '3265', 'VIC', '514 Timboon-Terang Road', '', 'ECKLIN SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', 'tiammi@farmgatestockfeeds.com.au', '', 'Tammi', 'Admin', 'Logan', '', '262'),
+(505, '56261491', 'Lardner VIC 3820 Australia', 'Australia', '3820', 'VIC', '', '', 'Lardner', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Ted', '', 'Bingham', '0428515830', '891'),
+(506, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'tep', '', 'test', '', ''),
+(507, '56231621', '147 Dollarburn Road Warragul VIC 3820 Australia', 'Australia', '3820', 'VIC', '147 Dollarburn Road', '', 'Warragul', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Terry', '', 'Ahearn', '438562816', ''),
+(508, '03 5141 1665', '834 Bundalaguah Road Bundalaguah VIC 3851 Australia', 'Australia', '3851', 'VIC', '834 Bundalaguah Road', '', 'Bundalaguah', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Terry', '', 'Horan', '0418 581 165', '817'),
+(509, '', '440 Sarsfield-Nicholson Road Bairnsdale VIC 3858 Australia', 'Australia', '3858', 'VIC', '440 Sarsfield-Nicholson Road', '', 'Bairnsdale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Terry', 'Farm Manager', 'Watt', '0427 055 288', '310'),
+(510, '56299720', 'Princes way LONGWARRY NORTH VIC 3816 AUSTRALIA', 'AUSTRALIA', '3816', 'VIC', 'Princes way', '', 'LONGWARRY NORTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Terry', '', 'Werner', '0417 314 674', '824'),
+(511, '56299040', '395 Princes Way Longwarry North VIC 3816 Australia', 'Australia', '3816', 'VIC', '395 Princes Way', '', 'Longwarry North', b'0', b'1', b'0', b'0', b'0', b'0', 'twerner@dcsi.net.au', '', 'Terry', '', 'Werner', '417314674', ''),
+(512, '56642262', 'Cashin Road Leongatha South VIC Australia', 'Australia', '', 'VIC', 'Cashin Road', '', 'Leongatha South', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', '', 'Cashin', '0419113496', '833'),
+(513, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', 'Feed Mill Hand/Loader Operator', 'Irwin', '', '399'),
+(514, '03 5157 6240', '2815 Bairnsdale Dargo Rd Glenaladale VIC 3875 Australia', 'Australia', '3875', 'VIC', '2815 Bairnsdale Dargo Rd', '', 'Glenaladale', b'0', b'1', b'0', b'0', b'0', b'0', 'bmac73@gmail.com', '', 'Tim', '', 'McKenna', '0488 505 395', '780'),
+(515, '035157 6240', '2815 Bairnsdale Dargo Rd Glenaladale VIC 3875 Australia', 'Australia', '3875', 'VIC', '2815 Bairnsdale Dargo Rd', '', 'Glenaladale', b'0', b'1', b'0', b'0', b'0', b'0', 'bmac73@gmail.com', '', 'Tim', '', 'McKenna', '0488 505 395', ''),
+(516, '', '386 Merrimans Creek road Gormandale VIC 3873 Australia', 'Australia', '3873', 'VIC', '386 Merrimans Creek road', '', 'Gormandale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', 'Son', 'Morley', '0427977200', '353'),
+(517, '03 6331 0270', 'P O Box 646 LAUNCESTON TAS 7250 AUSTRALIA', 'AUSTRALIA', '7250', 'TAS', 'P O Box 646', '', 'LAUNCESTON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', '', 'Oakley', '', '687'),
+(518, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', '', 'Oakley', '', ''),
+(519, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', '', 'Oakley', '', ''),
+(520, '0356574306', '1230 Bena Kongwak Rd Kongwak 3951', '', '3951', '', '1230 Bena Kongwak Rd Kongwak', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', '', 'perrett', '0407343106', '744'),
+(521, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tim', '', 'Stewart', '', ''),
+(522, '51601242', 'Tanjil River Road TANJIL SOUTH VIC 3825 AUSTRALIA', 'AUSTRALIA', '3825', 'VIC', 'Tanjil River Road', '', 'TANJIL SOUTH', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tom', '', 'Hasthorpe', '0427 601 263', '300'),
+(523, '03 5668 6277', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tom', '', 'Pouw', '', '840'),
+(524, '56641209', '1950 Meeniyan Mirboo NTH road Mardan VIC 3953 Australia', 'Australia', '3953', 'VIC', '1950 Meeniyan Mirboo NTH road', '', 'Mardan', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tommy', '', 'Marshman', '409641209', '621'),
+(525, '56636268', 'Buffalo - Stony Creek Road buffalo VIC 3957 Australia', 'Australia', '3957', 'VIC', 'Buffalo - Stony Creek Road', '', 'buffalo', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tony', '', 'Greig', '', ''),
+(526, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Tony', 'Catani FC President 2012', 'McFarlane', '0418393818', '134'),
+(527, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Travis', '', 'Glover', '0419 373 878', '80'),
+(528, '03 5398 2500', 'P O Box 326 WARRACKNABEAL VIC 3393 AUSTRALIA', 'AUSTRALIA', '3393', 'VIC', 'P O Box 326', '', 'WARRACKNABEAL', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Travis', '', 'Penny', '0409 131 988', '129'),
+(529, '03 5148 3348', '335 Riverview Road Heyfield VIC 3858 Australia', 'Australia', '3858', 'VIC', '335 Riverview Road', '', 'Heyfield', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor & Catherine', 'Owners', 'Erskin', '0400 725 290', '486'),
+(530, '51826154', '365 Woranga School Road Yarram VIC 3971 Australia', 'Australia', '3971', 'VIC', '365 Woranga School Road', '', 'Yarram', b'0', b'1', b'0', b'0', b'0', b'0', 'trevor_clare@bigpond.com', '427055288', 'Trevor & Clare', '', 'Porter', '488055007', '462'),
+(531, '03 5145 4469', '203 Back Valencia Creek Road Boisdale VIC Australia', 'Australia', '', 'VIC', '203 Back Valencia Creek Road', '', 'Boisdale', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor & Dawn', '', 'Johnston', '', '815'),
+(532, '56299166', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', '', 'Griffiths', '0427 285 331', '847'),
+(533, '56299166', '190 Cook Road Longwarry VIC 3816 Australia', 'Australia', '3816', 'VIC', '190 Cook Road', '', 'Longwarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', '', 'Griffiths', '427285331', ''),
+(534, '03 5145 1548', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', '', 'Henry', '0429 451 548', '436'),
+(535, '', 'Shady Creek Road YARRAGON VIC 3823 AUSTRALIA', 'AUSTRALIA', '3823', 'VIC', 'Shady Creek Road', '', 'YARRAGON', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', 'Sharefarmer', 'Kersten', '0407 889 208', '419'),
+(536, '03 5147 1735', 'Maffra-Sale Road MAFFRA VIC 3860 AUSTRALIA', 'AUSTRALIA', '3860', 'VIC', 'Maffra-Sale Road', '', 'MAFFRA', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', '', 'Lee', '0432 446 123', '816'),
+(537, '56275659', 'Invermay East Road Athlone VIC 3818 Australia', 'Australia', '3818', 'VIC', 'Invermay East Road', '', 'Athlone', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', '', 'Mills', '', '850'),
+(538, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Trevor', 'Complaince/Grain Receival', 'Paul', '0419221593', '399'),
+(539, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Troy', '', 'Allott', '', '126'),
+(540, '56287648', '48 Lederman Road DROUIN WEST VIC 3818 AUSTRALIA', 'AUSTRALIA', '3818', 'VIC', '48 Lederman Road', '', 'DROUIN WEST', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Vanessa', '', 'SAVAGE', '0424404246', '470'),
+(541, '', '180 smiths road Mardan VIC 3953 Australia', 'Australia', '3953', 'VIC', '180 smiths road', '', 'Mardan', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Vic', '', 'Stephens', '413750118', ''),
+(542, '03 5148 9478', '252 Killeens Road Nambrok VIC 3847 Australia', 'Australia', '3847', 'VIC', '252 Killeens Road', '', 'Nambrok', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Vicki', '', 'Rhodes', '0466 847 008', '859'),
+(543, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Vince', 'Operations Manager - Casual', 'Kucan', '0422 422 260', '399'),
+(544, '56254214', '340 Main South Road Drouin Vic 3818 Australia', 'Australia', '3818', 'Vic', '340 Main South Road', '', 'Drouin', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Warwick', '', 'Guy', '0418 365 834', '871'),
+(545, '56332307', 'VIC Australia', 'Australia', '', 'VIC', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Wayne', '', 'Farrel', '0418394704', '873'),
+(546, '03 5657 4347', '105 Korumburra Inverloch Road KONGWAK VIC 3951 AUSTRALIA', 'AUSTRALIA', '3951', 'VIC', '105 Korumburra Inverloch Road', '', 'KONGWAK', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Wayne', 'Farm Employee', 'McDonnell', '0427 574 229', '746'),
+(547, '56299266', 'Kin-Craig 390 Koo Wee Rup-Longwarry Road. Longwarry VIC 3816 Australia', 'Australia', '3816', 'VIC', 'Kin-Craig 390 Koo Wee Rup-Longwarry Road.', '', 'Longwarry', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Wayne', 'Manager', 'Roots', '0427 299 266', '766'),
+(548, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Wayne', '', 'Spinks', '0418557679', ''),
+(549, '03 5664 1395', '1950 Meeniyan Mirboo North Road MARDAN VIC 3953 AUSTRALIA', 'AUSTRALIA', '3953', 'VIC', '1950 Meeniyan Mirboo North Road', '', 'MARDAN', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Wes', 'Sharfarmer', 'Allcorn', '0427 717 911', '621'),
+(550, '0439 978 322', 'Forrest Road YANNATHAN VIC 3981 AUSTRALIA', 'AUSTRALIA', '3981', 'VIC', 'Forrest Road', '', 'YANNATHAN', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Will', '', 'Chase', '', '257'),
+(551, '0439 978 305', 'Heads Road YANNATHAN VIC 3981 AUSTRALIA', 'AUSTRALIA', '3981', 'VIC', 'Heads Road', '', 'YANNATHAN', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Will', '', 'Chase', '', '190'),
+(552, '0439 978 322', 'Yannathan VIC 3891 Australia', 'Australia', '3891', 'VIC', '', '', 'Yannathan', b'0', b'1', b'0', b'0', b'0', b'0', '', '59978325', 'Will', '', 'Chase', '439978322', ''),
+(553, '56636331', '1030 Meeniyan-Promortory Road Buffalo VIC 3958 Australia', 'Australia', '3958', 'VIC', '1030 Meeniyan-Promortory Road', '', 'Buffalo', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'Will', '', 'Heldens', '428173530', ''),
+(554, '03 5147 1803', '277 Vardy''s Road RIVERSLEA VIC 3860 AUSTRALIA', 'AUSTRALIA', '3860', 'VIC', '277 Vardy''s Road', '', 'RIVERSLEA', b'0', b'1', b'0', b'0', b'0', b'0', '', '03 5141 1539', 'William', 'Owner', 'Coleman', '0427 472 430', '44'),
+(555, '', '', '', '', '', '', '', '', b'0', b'1', b'0', b'0', b'0', b'0', '', '', 'William', '', 'Gooden', '', '100');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer_orders`
 --
 
@@ -1295,7 +1900,8 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Total_PreFreight_Amount_Base` varchar(6) DEFAULT NULL,
   `Total_Tax` decimal(4,2) DEFAULT NULL,
   `Total_Tax_Base` varchar(6) DEFAULT NULL,
-  `triggerSubmit` varchar(1) DEFAULT NULL
+  `triggerSubmit` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`Order_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1316,11 +1922,12 @@ INSERT INTO `customer_orders` (`Order_ID`, `Customer`, `Name`, `Mix_Type`, `Qty_
 --
 
 CREATE TABLE IF NOT EXISTS `lookup` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `code` int(11) NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `position` int(11) NOT NULL
+  `position` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=23 ;
 
 --
@@ -1359,7 +1966,8 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 
 CREATE TABLE IF NOT EXISTS `migration` (
   `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1379,7 +1987,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `firstname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `surname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -1390,7 +1998,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `account_activation_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
 
 --
@@ -1427,94 +2036,6 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `email`, `password
 (29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', 'vicky@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504);
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `article`
---
-ALTER TABLE `article`
- ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `auth_assignment`
---
-ALTER TABLE `auth_assignment`
- ADD PRIMARY KEY (`item_name`,`user_id`);
-
---
--- Indexes for table `auth_item`
---
-ALTER TABLE `auth_item`
- ADD PRIMARY KEY (`name`), ADD KEY `rule_name` (`rule_name`), ADD KEY `idx-auth_item-type` (`type`);
-
---
--- Indexes for table `auth_item_child`
---
-ALTER TABLE `auth_item_child`
- ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
-
---
--- Indexes for table `auth_rule`
---
-ALTER TABLE `auth_rule`
- ADD PRIMARY KEY (`name`);
-
---
--- Indexes for table `clients`
---
-ALTER TABLE `clients`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `customer_orders`
---
-ALTER TABLE `customer_orders`
- ADD PRIMARY KEY (`Order_ID`);
-
---
--- Indexes for table `lookup`
---
-ALTER TABLE `lookup`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migration`
---
-ALTER TABLE `migration`
- ADD PRIMARY KEY (`version`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `article`
---
-ALTER TABLE `article`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `clients`
---
-ALTER TABLE `clients`
-MODIFY `id` int(100) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=906;
---
--- AUTO_INCREMENT for table `lookup`
---
-ALTER TABLE `lookup`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
 -- Constraints for dumped tables
 --
 
@@ -1522,26 +2043,26 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
 -- Constraints for table `article`
 --
 ALTER TABLE `article`
-ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item`
 --
 ALTER TABLE `auth_item`
-ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

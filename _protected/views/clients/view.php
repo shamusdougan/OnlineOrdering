@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'Account_Number',
             'Main_Phone',
             'Fax',
-            'TownSuburb',
             'Is_Customer:boolean',
             'Is_Factory:boolean',
             'Is_Supplier:boolean',
@@ -47,6 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'Address_1_Street_1',
             'Address_1_Street_2',
             'Address_1_Street_3',
+            'Address_1_TownSuburb',
+            'Address_1_Telephone_1',
             'Address_1_Telephone_2',
             'Address_1_Telephone_3',
             'Address_2',
@@ -122,6 +123,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'Trading_as',
             'Website',
         ],
-    ]) ?>
+    ]) ;
+    
+    
+
+    
+    ?>
 
 </div>

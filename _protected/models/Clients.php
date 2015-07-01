@@ -240,4 +240,12 @@ class Clients extends \yii\db\ActiveRecord
             'Website' => 'Website',
         ];
     }
+    
+    
+    public function getContacts()
+    {
+		 return $this->hasMany(Contacts::className(), ['Company_id' => 'id']);
+		
+		
+	}
 }

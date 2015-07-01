@@ -46,6 +46,7 @@ AppAsset::register($this);
 					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],
 					['label' => 'Customer Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order')],
 					['label' => 'Clients', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
+					['label' => 'Contacts', 'icon' => 'user', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
 						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
@@ -70,7 +71,7 @@ AppAsset::register($this);
     </div>
     
        
-    </div>
+
 
     <footer class="footer">
         <div class="container">

@@ -24,6 +24,8 @@ use app\models\Lookup;
 			'Company_Name'=>['label' => 'Name', 'type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'Companny Name']],
 			'Trading_as'=>['label' => 'Trading','type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'Trading as...']],
 			'Status'=>['label' => 'Status', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items' => Lookup::items("CLIENT_STATUS")  ],
+			'Owner' => ['type' => Form::INPUT_TEXT],
+			'Main_Competitor' => ['type' => Form::INPUT_TEXT],
     				 
       	]
     ]);
@@ -79,11 +81,16 @@ use app\models\Lookup;
 			'Address_1_Telephone_1' =>['type' => Form::INPUT_TEXT,'label' => 'Phone','options' =>['placeholder' => 'Address Phone...']],
 			'Address_1_Telephone_2' =>['type' => Form::INPUT_TEXT,'label' => 'Fax', 'options' =>['placeholder' => 'Address Fax...']],
 			'Address_2_Telephone_1' =>['type' => Form::INPUT_TEXT,'label' => 'Phone','options' =>['placeholder' => 'Postal/Billing Phone...']],
-			'Address_2_Telephone_2' =>['type' => Form::INPUT_TEXT,'label' => 'Fax', 'options' =>['placeholder' => 'Postal/Billing Fax...']],	
+			'Address_2_Telephone_2' =>['type' => Form::INPUT_TEXT,'label' => 'Fax', 'options' =>['placeholder' => 'Postal/Billing Fax...']],
+			
+			'Map_Reference' => ['type' => Form::INPUT_TEXT],
+			'Nearest_Town' => ['type' => Form::INPUT_TEXT],
+			'Parent_Region' => ['type' => Form::INPUT_TEXT],
+			'Sub_Region' => ['type' => Form::INPUT_TEXT],	
 			]
 		]);
 
-	$companyInfo .= "<br><b>Company Details</b><HR>";		
+	$companyInfo .= "<br><b>Delivery Details</b><HR>";		
 
 	$companyInfo .= Form::widget(
 		[
@@ -93,12 +100,8 @@ use app\models\Lookup;
 		
 		'attributes' => 
 			[
-			'Owner' => ['type' => Form::INPUT_TEXT],
-			'Main_Competitor' => ['type' => Form::INPUT_TEXT],
-			'Map_Reference' => ['type' => Form::INPUT_TEXT],
-			'Nearest_Town' => ['type' => Form::INPUT_TEXT],
-			'Parent_Region' => ['type' => Form::INPUT_TEXT],
-			'Sub_Region' => ['type' => Form::INPUT_TEXT],
+			
+			
 			'Property_Name' => ['type' => Form::INPUT_TEXT],
 			'Preferred_Day' => ['type' => Form::INPUT_TEXT],
 			'Preferred_FacilityEquipment' => ['type' => Form::INPUT_TEXT],
