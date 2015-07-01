@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\clients;
 use app\models\clientsSearch;
+use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -90,8 +91,15 @@ class ClientsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+        	
+        	$clientList = Clients::find()->all();
+        	$clientDropDownList = ArrayHelper::map($clientList, 'id', 'Company_Name') ;
+        	
+        	$userList = User::find()->all();
+        	$userDropDownList = ArrayHelper::map($userList, 'id', 'fullname') ;
+        	
             return $this->render('update', [
-                'model' => $model,
+                'model' => $model, 'clientList' => $clientDropDownList, 'userList' => $userDropDownList
             ]);
         }
     }

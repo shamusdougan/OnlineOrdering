@@ -6,6 +6,7 @@ use kartik\builder\Form;
 use kartik\tabs\TabsX;
 use app\models\Lookup;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\clients */
 /* @var $form yii\widgets\ActiveForm */
@@ -24,7 +25,7 @@ use app\models\Lookup;
 			'Company_Name'=>['label' => 'Name', 'type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'Companny Name']],
 			'Trading_as'=>['label' => 'Trading','type'=>Form::INPUT_TEXT, 'options'=>['placeholder'=>'Trading as...']],
 			'Status'=>['label' => 'Status', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items' => Lookup::items("CLIENT_STATUS")  ],
-			'Owner' => ['type' => Form::INPUT_TEXT],
+			'owner' => ['type'=>Form::INPUT_DROPDOWN_LIST, 'items' => $userList ],
 			'Main_Competitor' => ['type' => Form::INPUT_TEXT],
     				 
       	]

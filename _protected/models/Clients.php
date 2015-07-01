@@ -118,7 +118,7 @@ class Clients extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'Company_Name', 'Account_Number'], 'required'],
-            [['id', 'Fax', 'Address_1_Address_Type', 'Address_1_Postal_Code', 'Address_2_Address_Type', 'Address_2_Postal_Code', 'Billing_contact', 'Billing_type', 'Business_Type', 'Client_Status', 'Created_By', 'Dairy_No', 'Exchange_Rate', 'Farm_Operation', 'Feed_Days_Remaining', 'Feed_QOH_Tonnes', 'Herd_Size', 'Herd_Type', 'Modified_By', 'No_of_Employees', 'Owner', 'Status'], 'integer'],
+            [['id', 'Fax', 'Address_1_Address_Type', 'Address_1_Postal_Code', 'Address_2_Address_Type', 'Address_2_Postal_Code', 'Billing_contact', 'Billing_type', 'Business_Type', 'Client_Status', 'Created_By', 'Dairy_No', 'Exchange_Rate', 'Farm_Operation', 'Feed_Days_Remaining', 'Feed_QOH_Tonnes', 'Herd_Size', 'Herd_Type', 'Modified_By', 'No_of_Employees', 'Owner_id', 'Status'], 'integer'],
             [['Is_Customer', 'Is_Factory', 'Is_Supplier', 'Address1_IsBillTo', 'Address1_IsShipTo', 'Credit_Hold', 'Do_not_allow_Bulk_Emails', 'Do_not_allow_Bulk_Mails', 'Do_not_allow_Emails', 'Do_not_allow_Faxes', 'Do_not_allow_Mails', 'Do_not_allow_Phone_Calls', 'Is_Internal', 'Is_Provider'], 'boolean'],
             [['Created_On', 'Feed_empty', 'Feed_QOH_Update', 'Modified_On'], 'safe'],
             [['Feed_Rate_Kg_Day'], 'number'],
@@ -227,7 +227,6 @@ class Clients extends \yii\db\ActiveRecord
             'Modified_On' => 'Modified  On',
             'Nearest_Town' => 'Nearest  Town',
             'No_of_Employees' => 'No Of  Employees',
-            'Owner' => 'Owner',
             'Parent_Region' => 'Parent  Region',
             'Payment_Terms' => 'Payment  Terms',
             'Preferred_Day' => 'Preferred  Day',
@@ -245,7 +244,10 @@ class Clients extends \yii\db\ActiveRecord
     public function getContacts()
     {
 		 return $this->hasMany(Contacts::className(), ['Company_id' => 'id']);
-		
-		
+	}
+	
+	public function getOwner()
+	{
+		return $this->hasOne(User::className(), ['id' => 'Owner_id']);
 	}
 }
