@@ -72,8 +72,12 @@ class ClientsController extends Controller
         	$clientList = Clients::find()->all();
         	$clientDropDownList = ArrayHelper::map($clientList, 'id', 'Company_Name') ;
         	
+        	$userList = User::find()->all();
+        	$userDropDownList = ArrayHelper::map($userList, 'id', 'fullname') ;
+        	
+        	
             return $this->render('create', [
-                'model' => $model, 'clientList' => $clientDropDownList
+                'model' => $model, 'clientList' => $clientDropDownList, 'userList' => $userDropDownList
             ]);
         }
     }

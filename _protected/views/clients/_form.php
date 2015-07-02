@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\tabs\TabsX;
+use kartik\grid\GridView;
 use app\models\Lookup;
 
 
@@ -195,6 +196,38 @@ $companyContact =  Form::widget(
 			'Do_not_allow_Phone_Calls' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'no Phone'],
 			]
 		]);
+	
+	
+$gridColumns = [
+	[
+    'class'=>'kartik\grid\SerialColumn',
+    'contentOptions'=>['class'=>'kartik-sheet-style'],
+    'width'=>'36px',
+    'header'=>'',
+    'headerOptions'=>['class'=>'kartik-sheet-style']
+	]
+	];
+		
+$companyContact .= GridView::widget(
+		[
+		'dataProvider'=>$model->contacts,
+		//'filterModel'=>$searchModel,
+		'columns'=>$gridColumns,
+		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+		'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+		'pjax'=>true, // pjax is set to always true for this demo
+ 		'toolbar'=> [
+			['content'=>
+				Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>Yii::t('kvgrid', 'Add Book'), 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
+				Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>Yii::t('kvgrid', 'Reset Grid')])
+			],
+			'{export}',
+			'{toggleData}',
+			],
+		]);
+		
+		
 		
 $companyHerd = Form::widget(
 	[

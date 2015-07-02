@@ -2544,48 +2544,6 @@
         ]
     },
     {
-        "name": "synatree/yii2-dynamic-relations",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/synatree/yii2-dynamic-relations.git",
-            "reference": "67e024c43348ff986b70b31542c16dda9f4508d6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/synatree/yii2-dynamic-relations/zipball/67e024c43348ff986b70b31542c16dda9f4508d6",
-            "reference": "67e024c43348ff986b70b31542c16dda9f4508d6",
-            "shasum": ""
-        },
-        "require": {
-            "yiisoft/yii2": "*"
-        },
-        "time": "2015-03-08 18:46:44",
-        "type": "yii2-extension",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "synatree\\dynamicrelations\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-3.0+"
-        ],
-        "authors": [
-            {
-                "name": "David Baltusavich, SynaTree",
-                "email": "david@synatree.com"
-            }
-        ],
-        "description": "Allows Yii2 views to contain a dynamically expanding set of fields based on model relations.",
-        "keywords": [
-            "extension",
-            "yii2"
-        ]
-    },
-    {
         "name": "bower-asset/bootstrap",
         "version": "v3.3.5",
         "version_normalized": "3.3.5.0",

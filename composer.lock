@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "abe4cc767c47d9385c43f15eb7740b35",
+    "hash": "1d062d83f87ae30f6329c8609fdfee49",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1872,46 +1872,6 @@
             "time": "2015-06-06 14:19:39"
         },
         {
-            "name": "synatree/yii2-dynamic-relations",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/synatree/yii2-dynamic-relations.git",
-                "reference": "67e024c43348ff986b70b31542c16dda9f4508d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/synatree/yii2-dynamic-relations/zipball/67e024c43348ff986b70b31542c16dda9f4508d6",
-                "reference": "67e024c43348ff986b70b31542c16dda9f4508d6",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "synatree\\dynamicrelations\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "David Baltusavich, SynaTree",
-                    "email": "david@synatree.com"
-                }
-            ],
-            "description": "Allows Yii2 views to contain a dynamically expanding set of fields based on model relations.",
-            "keywords": [
-                "extension",
-                "yii2"
-            ],
-            "time": "2015-03-08 18:46:44"
-        },
-        {
             "name": "yiisoft/yii2",
             "version": "2.0.4",
             "source": {
@@ -2569,9 +2529,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "synatree/yii2-dynamic-relations": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

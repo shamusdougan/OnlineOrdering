@@ -8,6 +8,7 @@ use app\models\contactsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use synatree\dynamicrelations\DynamicRelations;
 
 /**
  * ContactsController implements the CRUD actions for contacts model.
