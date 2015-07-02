@@ -92,5 +92,10 @@ class Contacts extends \yii\db\ActiveRecord
 		 return $this->hasOne(Clients::className(), ['id' => 'Company_id']);
 
 	}
+	
+	public function getFullname()
+	{
+		return $this->First_Name. " ".$this->Last_Name;
+	}
     
 }

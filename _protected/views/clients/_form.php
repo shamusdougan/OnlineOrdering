@@ -199,32 +199,25 @@ $companyContact =  Form::widget(
 	
 	
 $gridColumns = [
-	[
-    'class'=>'kartik\grid\SerialColumn',
-    'contentOptions'=>['class'=>'kartik-sheet-style'],
-    'width'=>'36px',
-    'header'=>'',
-    'headerOptions'=>['class'=>'kartik-sheet-style']
-	]
+	[ 'attribute' => 'fullname'],
+	['attribute' => 'Mobile_Phone'],
+	
+	['attribute' => 'Business_Phone'],
+	
+	['attribute' => 'Email'],
+	
 	];
 		
 $companyContact .= GridView::widget(
 		[
-		'dataProvider'=>$model->contacts,
+		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getContacts()]),
 		//'filterModel'=>$searchModel,
 		'columns'=>$gridColumns,
 		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 		'filterRowOptions'=>['class'=>'kartik-sheet-style'],
 		'pjax'=>true, // pjax is set to always true for this demo
- 		'toolbar'=> [
-			['content'=>
-				Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>Yii::t('kvgrid', 'Add Book'), 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-				Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>Yii::t('kvgrid', 'Reset Grid')])
-			],
-			'{export}',
-			'{toggleData}',
-			],
+ 		'export' => false,
 		]);
 		
 		

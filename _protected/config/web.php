@@ -11,10 +11,14 @@ $config = [
      'modules' =>
      	[
 
-        'dynamicrelations' => 
+        'gridview' =>  
         	[
-            'class' => '\synatree\dynamicrelations\Module'
+        	'class' => '\kartik\grid\Module',
+        //	'export' => false,
+        	
+        	
         	],
+
 		],
     'components' => [
         'request' => [
