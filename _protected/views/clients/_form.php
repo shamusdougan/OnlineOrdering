@@ -205,11 +205,31 @@ $gridColumns = [
 	['attribute' => 'Business_Phone'],
 	
 	['attribute' => 'Email'],
+	[
+	    'class'=>'kartik\grid\ActionColumn',
+	    'urlCreator'=>function($action, $model, $key, $index) { return '#'; },
+	    'viewOptions'=>['title'=>'This will launch the book details page. Disabled for this demo!', 'data-toggle'=>'tooltip'],
+	    'updateOptions'=>['title'=>'This will launch the book update page. Disabled for this demo!', 'data-toggle'=>'tooltip'],
+	    'deleteOptions'=>['title'=>'This will launch the book delete action. Disabled for this demo!', 'data-toggle'=>'tooltip'],
+	    'headerOptions'=>['class'=>'kartik-sheet-style'],
+	],
 	
 	];
 		
 $companyContact .= GridView::widget(
 		[
+		'panel'=>[
+        		'type'=>GridView::TYPE_PRIMARY,
+        		'heading'=>"Company Contacts",
+   		 ],
+		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+		'toolbar'=> 
+			[
+				['content'=>
+					Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Contact', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
+					Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
+				],
+			],
 		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getContacts()]),
 		//'filterModel'=>$searchModel,
 		'columns'=>$gridColumns,
