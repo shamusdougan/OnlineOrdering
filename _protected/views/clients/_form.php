@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\bootstrap\Modal;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\tabs\TabsX;
@@ -181,6 +182,12 @@ $companyAccounts .= Form::widget(
 	]);	
 	
 	
+/**
+* 
+* @var Contacts Page for Clients
+* 
+*/
+	
 $companyContact =  Form::widget(
 		[
 		'model' => $model,
@@ -207,14 +214,79 @@ $gridColumns = [
 	['attribute' => 'Email'],
 	[
 	    'class'=>'kartik\grid\ActionColumn',
-	    'urlCreator'=>function($action, $model, $key, $index) { return '#'; },
-	    'viewOptions'=>['title'=>'This will launch the book details page. Disabled for this demo!', 'data-toggle'=>'tooltip'],
-	    'updateOptions'=>['title'=>'This will launch the book update page. Disabled for this demo!', 'data-toggle'=>'tooltip'],
-	    'deleteOptions'=>['title'=>'This will launch the book delete action. Disabled for this demo!', 'data-toggle'=>'tooltip'],
+		'template' => '{view} {update} {delete}',
+		'contentOptions' => ['class' => 'padding-left-5px'],
+
+	   	'buttons' => 
+	   		[
+	   		'view' => function ($url, $model, $key) 
+	   			{
+                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>','#', 
+                	[
+                    'class' => 'activity-view-link',
+                    'title' => 'View',
+                    'data-toggle' => 'modal',
+                    'data-target' => '#activity-modal',
+                    'data-id' => $key,
+                    'data-pjax' => '0',
+					]);
+				},
+			],
 	    'headerOptions'=>['class'=>'kartik-sheet-style'],
 	],
 	
 	];
+		
+$this->registerJs(
+    "$('.activity-view-link').click(function() 
+    {
+  	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("contacts/ajax-view")."',
+		data: {id: $(this).closest('tr').data('key')},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('.modal-body').html(data);
+            $('#activity-modal').modal();
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+
+
+		});
+   	});"
+   
+   
+   
+   );
+	
+	
+	
+	
+		
+Modal::begin([
+    'id' => 'activity-modal',
+    'header' => '<h4 class="modal-title">Contact Information</h4>',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>',
+
+]);		?>
+
+
+<div class="well">
+
+
+</div>
+
+<?php
+
+Modal::end(); 
+		
+		
+		
+		
 		
 $companyContact .= GridView::widget(
 		[
@@ -241,6 +313,20 @@ $companyContact .= GridView::widget(
 		]);
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+/**
+* 
+* @var Herd information page for clients
+* 
+*/	
 		
 $companyHerd = Form::widget(
 	[

@@ -119,4 +119,13 @@ class ContactsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionAjaxView($id)
+    {
+		 return $this->renderAjax('view', [
+            'model' => $this->findModel($id),
+        ]);
+	}
+    
+    
 }
