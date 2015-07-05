@@ -5,10 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\contacts;
 use app\models\contactsSearch;
+use app\models\Clients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use synatree\dynamicrelations\DynamicRelations;
+use yii\helpers\ArrayHelper;
 
 /**
  * ContactsController implements the CRUD actions for contacts model.
@@ -49,8 +50,11 @@ class ContactsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+    	
+    	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+        	 
+        return $this->render('dialog', [
+            'model' => $this->findModel($id), 'clientList' => $clientList, 'readOnly' => true
         ]);
     }
 
@@ -66,8 +70,11 @@ class ContactsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
+        	
+        	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+        	
+            return $this->render('dialog', [
+                'model' => $model, 'clientList' => $clientList
             ]);
         }
     }
@@ -85,8 +92,11 @@ class ContactsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
+        	
+        	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+        	
+            return $this->render('dialog', [
+                'model' => $model, 'clientList' => $clientList
             ]);
         }
     }
@@ -122,8 +132,10 @@ class ContactsController extends Controller
     
     public function actionAjaxView($id)
     {
-		 return $this->renderAjax('view', [
-            'model' => $this->findModel($id),
+    	
+    	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+		 return $this->renderAjax('dialog', [
+            'model' => $this->findModel($id), 'clientList' => $clientList
         ]);
 	}
     

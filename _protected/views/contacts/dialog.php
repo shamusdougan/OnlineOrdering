@@ -1,0 +1,112 @@
+<?php
+
+use yii\helpers\Html;
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\contacts */
+
+$this->title = 'Update Contacts: ' . ' ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Contacts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Update';
+
+if(!isset($readOnly))
+	{
+	$readOnly = false;
+	}
+?>
+
+<div class="contact-form">
+<?php
+
+
+$form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL] ); 
+
+
+ $contactForm = Form::widget([
+    	'model'=>$model,
+    	'form'=>$form,
+    	'columns'=>3,
+    	'attributes'=>
+    		[
+			'First_Name' => 
+				[
+				'type'=>Form::INPUT_TEXT, 
+				'options' => ['readonly' => $readOnly]
+				],
+			'Last_Name' => ['type'=>Form::INPUT_TEXT, 'options' => ['readonly' => $readOnly]],
+			'Job_Title' => ['type'=>Form::INPUT_TEXT, 'options' => ['readonly' => $readOnly]],
+			'Business_Phone' => ['type'=>Form::INPUT_TEXT, 'options' => ['readonly' => $readOnly]],
+			'Mobile_Phone' => ['type'=>Form::INPUT_TEXT, 'options' => ['readonly' => $readOnly]],
+    		'company' =>
+    			[
+    				'type' => Form::INPUT_WIDGET,
+    				'widgetClass' => '\kartik\widgets\Select2',
+    				'options'=>
+    					[
+    					'data'=>$clientList,
+    					'readonly' => True,
+    					'options' => ['placeholder' => 'Select Client....' ]
+    					],
+
+    			],			 
+      		]
+    ]);
+  	
+
+$contactForm .= Form::widget([
+	'model' => $model,
+	'form'=>$form,
+	'columns' => 2,
+	'attributes' => 
+		[
+		'Address_1_Street_1' => 
+			[
+			'type'=>Form::INPUT_TEXT,
+			'columnOptions'=>['colspan'=>2],
+			],
+		'Address_1_Street_2' => 
+			[
+			'type'=>Form::INPUT_TEXT,
+			'columnOptions'=>['colspan'=>2],
+			'label' => false,
+			],		
+		'Address_1_TownSuburbCity' => ['type'=>Form::INPUT_TEXT],
+		'Address_1_Postal_Code'=> ['type'=>Form::INPUT_TEXT],
+		]
+
+	]);
+
+$contactForm .=  Form::widget(
+		[
+		'model' => $model,
+		'form' => $form,
+		'columns' => 4,
+		'attributes' => 
+			[
+			'Do_Not_Allow_Bulk_Emails' => ['type'=>Form::INPUT_CHECKBOX, 'label' => 'No Bulk Emails' ], 
+			'Do_Not_Allow_Bulk_Mails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Bulk Mail'],
+			'Do_Not_Allow_Emails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Emails'],
+			'Do_Not_Allow_Faxes' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Faxes'],
+			'Do_Not_Allow_Mails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Mail'],
+			'Do_Not_Allow_Phone_Calls' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'no Phone'],
+			]
+		]);
+
+
+
+echo $contactForm;
+
+
+?>
+
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+    
+   </div>

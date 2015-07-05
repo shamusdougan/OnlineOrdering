@@ -46,8 +46,8 @@ class Contacts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'Business_Phone', 'First_Name', 'Last_Name'], 'required'],
-            [['id', 'company_id'], 'integer'],
+            [['Business_Phone', 'First_Name'], 'required'],
+            [['id', 'Company_id'], 'integer'],
             [['Do_Not_Allow_Bulk_Emails', 'Do_Not_Allow_Bulk_Mails', 'Do_Not_Allow_Emails', 'Do_Not_Allow_Faxes', 'Do_Not_Allow_Mails', 'Do_Not_Allow_Phone_Calls'], 'boolean'],
             [['Business_Phone', 'Address_1', 'Address_1_CountryRegion', 'Address_1_TownSuburbCity', 'First_Name', 'Job_Title', 'Last_Name'], 'string', 'max' => 100],
             [['Address_1_Postal_Code', 'Address_1_StateProvince'], 'string', 'max' => 10],
@@ -63,7 +63,7 @@ class Contacts extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'Business_Phone' => 'Business  Phone',
+            'Business_Phone' => 'Land Line',
             'Address_1_CountryRegion' => 'Country',
             'Address_1_Postal_Code' => 'Postal Code',
             'Address_1_StateProvince' => 'State',
