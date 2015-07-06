@@ -53,7 +53,7 @@ class ContactsController extends Controller
     	
     	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
         	 
-        return $this->render('dialog', [
+        return $this->render('view', [
             'model' => $this->findModel($id), 'clientList' => $clientList, 'readOnly' => true
         ]);
     }
@@ -134,7 +134,7 @@ class ContactsController extends Controller
     {
     	
     	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
-		 return $this->renderAjax('dialog', [
+		 return $this->renderAjax('view', [
             'model' => $this->findModel($id), 'clientList' => $clientList
         ]);
 	}
