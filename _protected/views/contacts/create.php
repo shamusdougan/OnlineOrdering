@@ -1,5 +1,5 @@
 <?php
-
+use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 
 
@@ -12,10 +12,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="contacts-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php $form = ActiveForm::begin(); ?>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model' => $model, 'clientList' => $clientList, 'mode' => $mode
     ]) ?>
+
+
+ 	<div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
 
 </div>

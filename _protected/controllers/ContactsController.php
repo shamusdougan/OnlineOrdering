@@ -53,9 +53,11 @@ class ContactsController extends Controller
     	
     	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
         	 
-        return $this->render('view', [
-            'model' => $this->findModel($id), 'clientList' => $clientList, 'readOnly' => true
-        ]);
+        	 
+       if(Yii::$app->request->isAjax ){
+       		return $this->renderAjax('view', ['model' => $this->findModel($id), 'clientList' => $clientList]);
+       		}
+        return $this->render('view', ['model' => $this->findModel($id), 'clientList' => $clientList]);
     }
 
     /**
@@ -68,13 +70,13 @@ class ContactsController extends Controller
         $model = new contacts();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
         	
         	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
         	
-            return $this->render('dialog', [
-                'model' => $model, 'clientList' => $clientList
+            return $this->render('details', [
+                'model' => $model, 'clientList' => $clientList, 'mode' => 'edit'
             ]);
         }
     }
@@ -87,19 +89,38 @@ class ContactsController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-        	
-        	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
-        	
-            return $this->render('dialog', [
-                'model' => $model, 'clientList' => $clientList
-            ]);
-        }
+     
+        $model = $this->findModel($id);	
+		$post = Yii::$app->request->post(); 
+		if ($model->load($post) && $model->save()) 
+			{
+        	Yii::$app->session->setFlash('kv-detail-success', 'Details Saved');
+			}
+			
+		$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+		if(Yii::$app->request->isAjax ){
+			return $this->renderAjax('_form', ['model' => $model, 'clientList' => $clientList]);	
+			}
+        return $this->render('_form', ['model' => $model, 'clientList' => $clientList, 'mode' => 'edit']);
     }
+
+
+
+	public function actionModal($id)
+	{
+		 $model = $this->findModel($id);	
+		$post = Yii::$app->request->post(); 
+		if ($model->load($post) && $model->save()) 
+			{
+        	return $this->renderAjax('//clients/update', ['id' => '13']);
+			}
+			
+		$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+		if(Yii::$app->request->isAjax ){
+			return $this->renderAjax('_form', ['model' => $model, 'clientList' => $clientList]);	
+			}
+        return $this->render('_form', ['model' => $model, 'clientList' => $clientList, 'mode' => 'edit']);
+	}
 
     /**
      * Deletes an existing contacts model.
@@ -130,14 +151,49 @@ class ContactsController extends Controller
         }
     }
     
-    public function actionAjaxView($id)
-    {
-    	
-    	$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
-		 return $this->renderAjax('view', [
-            'model' => $this->findModel($id), 'clientList' => $clientList
-        ]);
+ 
+    
+    
+    
+    public function actionDetail($id = null, $mode = 'view') 
+	{
+		
+		
+	if(isset($id)){
+		$model = $this->findModel($id);	
+		}
+	else{
+		$model = new contacts();
 	}
+    
+   
+     $post = Yii::$app->request->post();  
+    // process ajax delete
+    if (Yii::$app->request->isAjax && isset($post['delete'])) {
+        echo Json::encode([
+            'success' => true,
+            'messages' => [
+                'kv-detail-info' => 'Contact Deleted. '
+            ]
+        ]);
+        return;
+    }
+    
+    
+    // return messages on update of record
+	
+    if ($model->load($post) && $model->save()) {
+        Yii::$app->session->setFlash('kv-detail-success', 'Details Saved');
+    }
+    
+    
+    $clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name');
+    if(Yii::$app->request->isAjax ){
+		return $this->renderAjax('details', ['model'=>$model, 'clientList' => $clientList, 'mode' => $mode]);
+		}
+    return $this->render('details', ['model'=>$model, 'clientList' => $clientList, 'mode' => $mode]);
+	}
+    
     
     
 }

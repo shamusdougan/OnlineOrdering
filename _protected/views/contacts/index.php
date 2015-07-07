@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\contactsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -48,7 +48,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'Do_Not_Allow_Phone_Calls:boolean',
 
 
-            ['class' => 'yii\grid\ActionColumn', 'contentOptions' => ['style' => 'width:80px; white-space: nowrap;'],],
+            [
+            	'class' => 'yii\grid\ActionColumn', 
+            	'buttons' =>
+            		[
+            			'view' => function ($url, $model, $key)
+            				{
+							return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::toRoute('contacts/detail?id='.$model->id), 
+									[
+                    				'title' => 'View',
+									]);
+							},
+						'update' => function ($url, $model, $key)
+            				{
+							return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute('contacts/detail?id='.$model->id.'&mode=edit'), 
+									[
+                    				'title' => 'View',
+									]);
+							},
+            		],
+            	'contentOptions' => ['style' => 'width:80px; white-space: nowrap;'],],
         ],
     ]); ?>
 

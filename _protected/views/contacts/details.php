@@ -1,16 +1,22 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use kartik\detail\DetailView;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\contacts */
+/* @var $form yii\widgets\ActiveForm */
+  
 
 $this->params['breadcrumbs'][] = ['label' => 'Contacts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->fullname;
 
-
+if(!isset($mode)){
+	$mode = 'edit';
+}
+   
 $attributes = [
 		[
 			'group'=>true,
@@ -51,11 +57,27 @@ $attributes = [
 		'Do_Not_Allow_Mails',
 		'Do_Not_Allow_Phone_Calls',
 	 ];
-?>
+   
+   
+ echo  DetailView::widget([
+		'model'=>$model,
+		'condensed'=>true,
+		'hover'=>true,
+		'mode'=>$mode,
+		'panel'=>[
+			'heading'=>'Contact',
+			'type'=>DetailView::TYPE_INFO,
+			],
+			
+		'formOptions' => ['action' => Url::current(), 'id' => 'contact-form'],
+		'attributes' => $attributes,
+		'buttons1' => '{update}',
+		
 
-
-     <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => $attributes,
     ]) ?>
+  
+
+ 
+
+
 </div>

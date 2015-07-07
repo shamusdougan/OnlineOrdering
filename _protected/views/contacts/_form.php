@@ -10,17 +10,11 @@ use yii\widgets\ActiveForm;
 
 <div class="contacts-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-    
-    <?= $form->field($model, 'First_Name')->textInput(['maxlength' => true]) ?>
-    
-     <?= $form->field($model, 'Last_Name')->textInput(['maxlength' => true]) ?>
+    <?php $form = ActiveForm::begin(['id' => 'contact_update_form']); ?>
+
+    <?= $form->field($model, 'id')->textInput() ?>
 
     <?= $form->field($model, 'Business_Phone')->textInput(['maxlength' => true]) ?>
-    
-      <?= $form->field($model, 'Mobile_Phone')->textInput(['maxlength' => true]) ?>
-      
-        <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Address_1')->textInput(['maxlength' => true]) ?>
 
@@ -48,19 +42,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Do_Not_Allow_Phone_Calls')->checkbox() ?>
 
-  
+    <?= $form->field($model, 'Email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Fax')->textInput(['maxlength' => true]) ?>
 
-   
+    <?= $form->field($model, 'First_Name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Job_Title')->textInput(['maxlength' => true]) ?>
 
-   
+    <?= $form->field($model, 'Last_Name')->textInput(['maxlength' => true]) ?>
 
-  
+    <?= $form->field($model, 'Mobile_Phone')->textInput(['maxlength' => true]) ?>
 
- 
+    <?= $form->field($model, 'Company_id')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -16,7 +16,7 @@ use app\models\Lookup;
 
 <div class="clients-form">
 
-<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL] ); 
+<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id'=>'client_edit_form'] ); 
 
 
  $companyInfo = Form::widget([
@@ -231,6 +231,18 @@ $gridColumns = [
                     'data-pjax' => '0',
 					]);
 				},
+			'update' => function ($url, $model, $key) 
+	   			{
+                return Html::a('<span class="glyphicon glyphicon-pencil"></span>','#', 
+                	[
+                    'class' => 'activity-update-link',
+                    'title' => 'Update',
+                    'data-toggle' => 'modal',
+                    'data-target' => '#activity-modal',
+                    'data-id' => $key,
+                    'data-pjax' => '0',
+					]);
+				},
 			],
 	    'headerOptions'=>['class'=>'kartik-sheet-style'],
 	],
@@ -242,7 +254,7 @@ $this->registerJs(
     {
   	$.ajax
   		({
-  		url: '".yii\helpers\Url::toRoute("contacts/ajax-view")."',
+  		url: '".yii\helpers\Url::toRoute("contacts/view")."',
 		data: {id: $(this).closest('tr').data('key')},
 		success: function (data, textStatus, jqXHR) 
 			{
@@ -254,36 +266,33 @@ $this->registerJs(
             console.log('An error occured!');
             alert('Error in ajax request' );
         	}
-
-
 		});
    	});"
-   
-   
-   
+   );
+	
+$this->registerJs(
+    "$('.activity-update-link').click(function() 
+    {
+  	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("contacts/modal")."',
+		data: {id: $(this).closest('tr').data('key')},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('.modal-body').html(data);
+            $('#activity-modal').modal();
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+   	});"
    );
 	
 	
-	
-	
-		
-Modal::begin([
-    'id' => 'activity-modal',
-    'header' => '<h4 class="modal-title">Contact Information</h4>',
-    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>',
 
-]);		?>
-
-
-<div class="well">
-
-
-</div>
-
-<?php
-
-Modal::end(); 
-		
 		
 		
 		
@@ -435,5 +444,22 @@ echo TabsX::widget([
     </div>
 
     <?php ActiveForm::end(); ?>
+
+<?php		
+Modal::begin([
+    'id' => 'activity-modal',
+    'header' => '<h4 class="modal-title">Contact Information</h4>',
+    'size' => 'modal-lg',
+
+]);		?>
+
+
+<div class="well"></div>
+
+<?php
+
+Modal::end(); 
+		
+?>
 
 </div>

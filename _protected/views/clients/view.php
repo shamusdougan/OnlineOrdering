@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'Modified_On',
             'Nearest_Town',
             'No_of_Employees',
-            'Owner',
+            'owner.fullname',
             'Parent_Region',
             'Payment_Terms',
             'Preferred_Day',
