@@ -97,7 +97,7 @@ class ContactsController extends Controller
         	Yii::$app->session->setFlash('kv-detail-success', 'Details Saved');
 			}
 			
-		$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+		$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
 		if(Yii::$app->request->isAjax ){
 			return $this->renderAjax('_form', ['model' => $model, 'clientList' => $clientList]);	
 			}
@@ -112,14 +112,14 @@ class ContactsController extends Controller
 		$post = Yii::$app->request->post(); 
 		if ($model->load($post) && $model->save()) 
 			{
-        	return $this->renderAjax('//clients/update', ['id' => '13']);
+        	 return true;
 			}
 			
-		$clientList = ArrayHelper::map(Clients::find()->all(), 'id', 'Company_Name') ;
+		$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
 		if(Yii::$app->request->isAjax ){
-			return $this->renderAjax('_form', ['model' => $model, 'clientList' => $clientList]);	
+			return $this->renderAjax('details', ['model' => $model, 'clientList' => $clientList]);	
 			}
-        return $this->render('_form', ['model' => $model, 'clientList' => $clientList, 'mode' => 'edit']);
+        return $this->render('details', ['model' => $model, 'clientList' => $clientList, 'mode' => 'edit']);
 	}
 
     /**

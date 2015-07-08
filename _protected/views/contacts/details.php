@@ -72,7 +72,7 @@ $attributes = [
 		'formOptions' => ['action' => Url::current(), 'id' => 'contact-form'],
 		'attributes' => $attributes,
 		'buttons1' => '{update}',
-		
+		'buttons2' => '{save}'
 
     ]) ?>
   

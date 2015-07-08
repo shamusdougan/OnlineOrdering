@@ -96,7 +96,7 @@ class ClientsController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
         	
-        	$clientList = Clients::find()->all();
+        	$clientList = Clients::find()->select(['id', 'Company_Name'])->all();
         	$clientDropDownList = ArrayHelper::map($clientList, 'id', 'Company_Name') ;
         	
         	$userList = User::find()->all();
