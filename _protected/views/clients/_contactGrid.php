@@ -35,10 +35,10 @@ $gridColumns = [
                 	[
                     'class' => 'activity-update-link',
                     'title' => 'Update',
-                    'data-toggle' => 'modal',
-                    'data-target' => '#activity-modal',
-                    'data-id' => $key,
-                    'data-pjax' => '0',
+                  //	'data-toggle' => 'modal',
+                  // 	'data-target' => '#activity-modal',
+                  //  'data-id' => $key,
+                  //  'data-pjax' => '0',
 					]);
 				},
 			],
@@ -57,6 +57,28 @@ $this->registerJs(
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('.modal-body').html(data);
+           
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+   	});"
+   );
+  
+ 
+  $this->registerJs(
+    "$('.activity-update-link').click(function() 
+    {
+  	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("contacts/modal")."',
+		data: {id: $(this).closest('tr').data('key')},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('.modal-body').html(data);
             $('#activity-modal').modal();
 			},
         error: function (jqXHR, textStatus, errorThrown) 
@@ -67,30 +89,21 @@ $this->registerJs(
 		});
    	});"
    );
-	
+ 
+/*	
 $this->registerJs(
-    "$('.activity-update-link').click(function() 
+      "$('.activity-update-link').click(function() 
     {
-  	$.ajax
-  		({
-  		url: '".yii\helpers\Url::toRoute("contacts/modal")."',
-		data: {id: $(this).closest('tr').data('key')},
-		success: function (data, textStatus, jqXHR) 
-			{
-			alert(data);
-			$('#activity-modal').modal('show')
- 					.find('#modalContent')
-					 .load(data);
-			},
-        error: function (jqXHR, textStatus, errorThrown) 
-        	{
-            console.log('An error occured!');
-            alert('Error in ajax request' );
-        	}
-		});
+ 	 $('#activity-modal').modal('show').find('#modal_content').load('".yii\helpers\Url::toRoute(["contacts/modal", 'id' => '1' ])."');
+
+
+ 	alert('clicly clicky');
+ 	
    	});"
    );
-	
+  */ 
+   
+ 
 $this->registerJs("
 $('body').on('beforeSubmit', 'form#contact-form', function () {
      var form = $(this);
@@ -104,9 +117,11 @@ $('body').on('beforeSubmit', 'form#contact-form', function () {
           type: 'post',
           data: form.serialize(),
           success: function (response) {
-				$.pjax.reload({container:'#123client-contact-grid'});
+          		location.reload();
+	//			$.pjax.reload({container:'#123client-contact-grid'});
 				$('#activity-modal').modal('hide');
-
+				//alert('blah');
+				
           }
      });
      return false;
@@ -114,7 +129,10 @@ $('body').on('beforeSubmit', 'form#contact-form', function () {
 "
 );
 
+//
 
+
+/*
 $this->registerJs("
 
 $('body').on('hidden.bs.modal', '.modal', function () {
@@ -123,7 +141,7 @@ $('body').on('hidden.bs.modal', '.modal', function () {
 
 
 ");
-
+*/
 		
 //Pjax::begin(['id' => '123client-contact-grid']); 
 echo GridView::widget(

@@ -350,7 +350,7 @@ Modal::begin([
 ]);		?>
 
 
-<div class="modalContent"></div>
+<div id="modal_content"></div>
 
 <?php
 
