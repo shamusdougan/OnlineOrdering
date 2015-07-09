@@ -311,13 +311,20 @@ $items =
 		],
 		[
 			'label'=>'<i class="glyphicon glyphicon-user"></i> Contacts',
-			'content'=>$this->render("_contactGrid", ['model' => $model]),
-			'active'=>true
+			'content'=>$this->render("_contactGrid", ['model' => $model, 'form' => $form]),
+
 		],
 		[
 		'label'=>'<i class="glyphicon glyphicon-list-alt"></i> Accounts',
 		'content'=>$companyAccounts,
 		],
+		[
+		'label'=>'<i class="glyphicon glyphicon-download-alt"></i> Storage',
+		'content'=>$this->render("_storageGrid", ['model' => $model, 'form' => $form]),
+		'active'=>true
+		],
+		
+		
 	];
 	
 	

@@ -246,6 +246,11 @@ class Clients extends \yii\db\ActiveRecord
 		 return $this->hasMany(Contacts::className(), ['Company_id' => 'id']);
 	}
 	
+	 public function getStorage()
+    {
+		 return $this->hasMany(Storage::className(), ['company_id' => 'id']);
+	}
+	
 	public function getOwner()
 	{
 		return $this->hasOne(User::className(), ['id' => 'Owner_id']);

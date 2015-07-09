@@ -69,14 +69,12 @@ class ClientsController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
         	
-        	$clientList = Clients::find()->all();
-        	$clientDropDownList = ArrayHelper::map($clientList, 'id', 'Company_Name') ;
-        	
-        	$userList = User::find()->all();
-        	$userDropDownList = ArrayHelper::map($userList, 'id', 'fullname') ;
+
+        	$clientDropDownList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
+        	$userDropDownList = ArrayHelper::map(User::find()->all(), 'id', 'fullname') ;
         	
         	
-            return $this->render('create', [
+            return $this->render('update', [
                 'model' => $model, 'clientList' => $clientDropDownList, 'userList' => $userDropDownList
             ]);
         }

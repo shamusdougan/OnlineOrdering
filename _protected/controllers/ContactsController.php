@@ -106,7 +106,7 @@ class ContactsController extends Controller
 
 
 
-	public function actionModal($id)
+	public function actionModal($id, $mode='edit')
 	{
 		 $model = $this->findModel($id);	
 		$post = Yii::$app->request->post(); 
@@ -117,9 +117,9 @@ class ContactsController extends Controller
 			
 		$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
 		if(Yii::$app->request->isAjax ){
-			return $this->renderAjax('details', ['model' => $model, 'clientList' => $clientList]);	
+			return $this->renderAjax('details', ['model' => $model, 'mode' => $mode, 'clientList' => $clientList]);	
 			}
-        return $this->render('details', ['model' => $model, 'clientList' => $clientList, 'mode' => 'edit']);
+        //return $this->render('details', ['model' => $model, 'clientList' => $clientList, 'mode' => 'edit']);
 	}
 
     /**

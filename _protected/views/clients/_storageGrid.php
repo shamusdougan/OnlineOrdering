@@ -48,6 +48,24 @@ $gridColumns = [
 	],
 	
 	];
+	
+	
+
+$gridColumns = [
+	['class' => 'yii\grid\SerialColumn'],
+	'Description',
+	'Capacity',
+	'Auger:boolean',
+	'Blower:boolean',
+	// 'Delivery_Instructions',
+	// 'Postcode',
+	// 'Status',
+	// 'Street_1',
+	// 'SuburbTown',
+	'Tipper:boolean',
+
+	[ 'class'=>'kartik\grid\ActionColumn'],
+];
 		
 $this->registerJs(
     "$(document).on('click', '.activity-view-link', function()  
@@ -152,23 +170,7 @@ $('body').on('hidden.bs.modal', '.modal', function () {
 ");
 */
 		
-	
-echo Form::widget(
-		[
-		'model' => $model,
-		'form' => $form,
-		'columns' => 4,
-		'attributes' => 
-			[
-			'Do_not_allow_Bulk_Emails' => ['type'=>Form::INPUT_CHECKBOX, 'label' => 'No Bulk Emails' ], 
-			'Do_not_allow_Bulk_Mails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Bulk Mail'],
-			'Do_not_allow_Emails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Emails'],
-			'Do_not_allow_Faxes' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Faxes'],
-			'Do_not_allow_Mails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Mail'],
-			'Do_not_allow_Phone_Calls' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'no Phone'],
-			]
-		]);		
-		
+
 		
 //Pjax::begin(['id' => '123client-contact-grid']); 
 echo GridView::widget(
@@ -176,7 +178,7 @@ echo GridView::widget(
 		'id' => 'client_contact-grid',
 		'panel'=>[
         		'type'=>GridView::TYPE_PRIMARY,
-        		'heading'=>"Company Contacts",
+        		'heading'=>"Storage",
    		 ],
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 //		'toolbar'=> 
@@ -186,7 +188,7 @@ echo GridView::widget(
 //					Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
 //				],
 //			],
-		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getContacts()]),
+		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getStorage()]),
 		//'filterModel'=>$searchModel,
 		'columns'=>$gridColumns,
 		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false

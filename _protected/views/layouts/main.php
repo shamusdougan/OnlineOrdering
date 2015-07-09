@@ -46,9 +46,11 @@ AppAsset::register($this);
 					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],
 					['label' => 'Customer Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order')],
 					['label' => 'Clients', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
-					['label' => 'Contacts', 'icon' => 'user', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
+					
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
+						['label' => 'Storage',  'url' => Url::toRoute('/storage'), 'active'=>($currentItem == 'storage')],
+						['label' => 'Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
 						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
 						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')],
 						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]

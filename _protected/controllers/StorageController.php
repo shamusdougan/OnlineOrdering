@@ -3,19 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\customerOrders;
-use app\models\customerOrdersSearch;
+use app\models\Storage;
+use app\models\StorageSearch;
 use app\models\Clients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use app\models\Lookup;
 
 /**
- * CustomerOrderController implements the CRUD actions for customerOrders model.
+ * StorageController implements the CRUD actions for Storage model.
  */
-class CustomerOrderController extends Controller
+class StorageController extends Controller
 {
     public function behaviors()
     {
@@ -24,13 +22,10 @@ class CustomerOrderController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
-                    'customerdetails' => ['get', 'post']
                 ],
             ],
         ];
     }
-
-
 
 
 	public function beforeAction($action)
@@ -39,32 +34,37 @@ class CustomerOrderController extends Controller
 	        return false;
 	    }
 
-	    $this->view->params['menuItem'] = 'customer-order';
+	    $this->view->params['menuItem'] = 'storage';
 
 	    return true; // or false to not run the action
 	}
 
 
 
-
     /**
-     * Lists all customerOrders models.
+     * Lists all Storage models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new customerOrdersSearch();
+        $searchModel = new StorageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		
+		
+		$clientList = clients::find()->select(['id', 'Company_Name'])->orderBy('Company_Name')->asArray()->all();
+
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'clientList' => $clientList,
         ]);
     }
 
     /**
-     * Displays a single customerOrders model.
-     * @param string $id
+     * Displays a single Storage model.
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
@@ -75,30 +75,27 @@ class CustomerOrderController extends Controller
     }
 
     /**
-     * Creates a new customerOrders model.
+     * Creates a new Storage model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new customerOrders();
+        $model = new Storage();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->Order_ID]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-        	
-        	
-        	$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
             return $this->render('create', [
-                'model' => $model, 'clientList' => $clientList
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing customerOrders model.
+     * Updates an existing Storage model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -106,20 +103,18 @@ class CustomerOrderController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->Order_ID]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-        	
-        	$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
             return $this->render('update', [
-                'model' => $model, 'clientList' => $clientList
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Deletes an existing customerOrders model.
+     * Deletes an existing Storage model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -130,34 +125,18 @@ class CustomerOrderController extends Controller
     }
 
     /**
-     * Finds the customerOrders model based on its primary key value.
+     * Finds the Storage model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return customerOrders the loaded model
+     * @param integer $id
+     * @return Storage the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = customerOrders::findOne($id)) !== null) {
+        if (($model = Storage::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-    
-    
-    public function actionAjaxCompanyDetails($id)
-    {
-		$model=  \app\models\Clients::findOne(['id'=>$id]);
-    	return \yii\helpers\Json::encode([
-    		'contact' => $model->owner->fullname,
-	        'address'=>$model->Address_1,
-	        'phone'=>$model->Main_Phone,
-	        'status'=>Lookup::item($model->Status, 'CLIENT_STATUS'),
-	        'nearestTown'=>$model->Nearest_Town,
-	        'id'=>$model->id
-	    ]);
-
-	}
 }

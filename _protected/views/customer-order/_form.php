@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
+
 
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
@@ -16,7 +16,7 @@ use kartik\widgets\datePicker;
 
 $this->registerJs("$('#customerorders-customer').on('change',function(){
     $.ajax({
-        url: '".yii\helpers\Url::toRoute("customer-order/customerdetails")."',
+        url: '".yii\helpers\Url::toRoute("customer-order/ajax-company-details")."',
         dataType: 'json',
         method: 'GET',
         data: {id: $(this).val()},
@@ -29,7 +29,6 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
            	$('#customerdetails-viewmore').show();
            	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/view?id=")."' + data.id);
         },
-      
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
             alert('Error in ajax request retriving customer details' );
@@ -46,7 +45,7 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 
     <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL]); 
     
-    $clientDropDownList = ArrayHelper::map($clientlist, 'id', 'Company_Name') ;
+    
 	
     //Customer Select options
     echo Form::widget([
@@ -60,7 +59,7 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
     				'widgetClass' => '\kartik\widgets\Select2',
     				'options'=>
     					[
-    					'data'=>$clientDropDownList,
+    					'data'=>$clientList,
     					'options' => ['placeholder' => 'Select Client....']
     					],
 
