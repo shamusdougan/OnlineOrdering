@@ -7,6 +7,8 @@ use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\widgets\Typeahead;
 use kartik\widgets\datePicker;
+use kartik\widgets\DepDrop;
+use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -28,6 +30,15 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
            	$('#customerdetails-nearestTown').val(data.nearestTown);
            	$('#customerdetails-viewmore').show();
            	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/view?id=")."' + data.id);
+           	
+			var listItems= \"\";
+     		for (var i = 0; i < jsonList.Table.length; i++){
+       			 listItems+= \"<option value='\" + jsonList.Table[i].stateid + \"'>\" + jsonList.Table[i].statename + \"</option>\";
+     			 }
+     		$(\"#customerorders-storage_unit\").html(listItems);
+
+           	
+           	
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
@@ -135,10 +146,15 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 						],
 					'Storage_Unit' => 
 						[
-						'type' => FORM::INPUT_TEXT,
-						'options' => 
-							[
-							'placeholder' => 'Select Silo.....'
+						'type' => FORM::INPUT_WIDGET,
+						'widgetClass' => DepDrop::classname(), 
+						'options'=>[
+							'pluginOptions'=>
+								[
+								'depends'=>['customerorders-customer'],
+								'placeholder'=>'Select...',
+								'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details')
+								],
 							],
 						'columnOptions'=>['colspan'=>6],
 						]

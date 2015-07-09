@@ -150,14 +150,48 @@ class CustomerOrderController extends Controller
     public function actionAjaxCompanyDetails($id)
     {
 		$model=  \app\models\Clients::findOne(['id'=>$id]);
+		$storageList = ArrayHelper::map($model->storage, 'id', 'Description');
     	return \yii\helpers\Json::encode([
     		'contact' => $model->owner->fullname,
 	        'address'=>$model->Address_1,
 	        'phone'=>$model->Main_Phone,
 	        'status'=>Lookup::item($model->Status, 'CLIENT_STATUS'),
 	        'nearestTown'=>$model->Nearest_Town,
-	        'id'=>$model->id
+	        'id'=>$model->id,
+	        'storage' => $storageList
 	    ]);
 
+	}
+	
+	public function actionAjaxStorageDetails($id)
+	{
+			
+		$out = [];
+		if (isset($_POST['depdrop_parents'])) 
+			{
+			$parents = $_POST['depdrop_parents'];
+			if ($parents != null) {
+				$clientID = $parents[0];
+				$out = array(); 
+				
+				$client =  \app\models\Clients::findOne(['id'=>$clientID]);
+				foreach($client->storage as $storage)
+					{
+					$out[] = array('id' => $storage->id, 'name' => $storage->Description);
+					}
+				
+				
+				
+				
+				// the getSubCatList function will query the database based on the
+				// cat_id and return an array like below:
+				// [
+				//    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
+				//    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
+				// ]
+				echo Json::encode(['output'=>$out, 'selected'=>'']);
+				return;
+			}
+		}
 	}
 }
