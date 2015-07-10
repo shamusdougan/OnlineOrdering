@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use app\models\Lookup;
+use yii\helpers\Json;
 
 /**
  * CustomerOrderController implements the CRUD actions for customerOrders model.
@@ -163,7 +164,7 @@ class CustomerOrderController extends Controller
 
 	}
 	
-	public function actionAjaxStorageDetails($id)
+	public function actionAjaxStorageDetails()
 	{
 			
 		$out = [];
@@ -172,9 +173,10 @@ class CustomerOrderController extends Controller
 			$parents = $_POST['depdrop_parents'];
 			if ($parents != null) {
 				$clientID = $parents[0];
-				$out = array(); 
 				
-				$client =  \app\models\Clients::findOne(['id'=>$clientID]);
+				
+				$client =  Clients::findOne(['id'=>$clientID]);
+				
 				foreach($client->storage as $storage)
 					{
 					$out[] = array('id' => $storage->id, 'name' => $storage->Description);
@@ -189,7 +191,7 @@ class CustomerOrderController extends Controller
 				//    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
 				//    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
 				// ]
-				echo Json::encode(['output'=>$out, 'selected'=>'']);
+				echo Json::encode(['output'=>$out, 'selected'=>$client->storage[0]->id]);
 				return;
 			}
 		}

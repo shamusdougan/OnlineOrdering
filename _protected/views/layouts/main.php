@@ -26,6 +26,9 @@ AppAsset::register($this);
     <?php $this->beginBody() ?>
     
     <div class='sapient_wrap'>
+   	
+    
+    
     	<div class='sapient_leftMenu'>
     		<?php 
     		
@@ -62,12 +65,21 @@ AppAsset::register($this);
 				]);        
 				?>
     	</div>
-    	<div class='sapient_content'>
+		<div class='sapient_content'>
     		 <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
+        
+        
+        
+        
         <?= $content ?>
+        
+        
+        
+        
+        
     	</div>
     	
     </div>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2015 at 04:25 PM
+-- Generation Time: Jul 10, 2015 at 04:23 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1929,7 +1929,7 @@ CREATE TABLE IF NOT EXISTS `lookup` (
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `lookup`
@@ -1957,7 +1957,12 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (19, 'Trust', 4, 'BUSINESS_TYPE', 4),
 (20, 'Active', 1, 'ACTIVE_STATUS', 1),
 (21, 'Inactive', 2, 'ACTIVE_STATUS', 2),
-(22, 'Share Farmer', 6, 'FARM_OPERATION', 6);
+(22, 'Share Farmer', 6, 'FARM_OPERATION', 6),
+(23, 'Commodity', 1, 'ORDER_CATEGORY', 1),
+(24, 'Mix - Custom', 2, 'ORDER_CATEGORY', 2),
+(25, 'Mix - Standard', 3, 'ORDER_CATEGORY', 3),
+(26, 'Pellet', 4, 'ORDER_CATEGORY', 4),
+(27, 'Additive', 5, 'ORDER_CATEGORY', 5);
 
 -- --------------------------------------------------------
 
