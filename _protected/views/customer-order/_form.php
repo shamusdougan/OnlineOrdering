@@ -8,6 +8,8 @@ use kartik\builder\Form;
 use kartik\widgets\Typeahead;
 use kartik\widgets\datePicker;
 use kartik\widgets\DepDrop;
+use kartik\grid\GridView;
+
 use yii\helpers\Url;
 
 
@@ -189,7 +191,7 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 				]);
 
 		    
-		    echo GridView::widget(
+		/*    echo GridView::widget(
 				[
 				'id' => 'customer_order_products',
 				'panel'=>[
@@ -221,7 +223,7 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 				]);
 	
 		    
-		    
+		    */
 		    ?>
 		    
 		    

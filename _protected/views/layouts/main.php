@@ -55,7 +55,8 @@ AppAsset::register($this);
 						['label' => 'Storage',  'url' => Url::toRoute('/storage'), 'active'=>($currentItem == 'storage')],
 						['label' => 'Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
 						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
-						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')],
+						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')], 
+						['label' => 'Products', 'url' => Url::toRoute('/product'), 'active'=>($currentItem == 'product')],
 						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]
 					
 					]],
