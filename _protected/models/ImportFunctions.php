@@ -72,7 +72,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		//$this->progress .= "importing record for ".$importArray[3]." client"
 		
 		//This array discribes the relationship between the database attribute and the column that atttribute is found in on the import CSV
-		$attributesRows = [
+		$mapping = [
 			'Order_ID' => 0,
 			'Customer_id' => 1,
 			'Name' => 2,
@@ -80,75 +80,84 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			'Qty_Tonnes' => 4,
 			'Nearest_Town' => 5,
 			'Date_Fulfilled' => 6,
-			'Date_Fulfilled',
-  			'Date_Submitted',
-  			'Status_Reason',
-  			'Anticipated_Sales',
-  			'Billing_company',
-  			'Billing_type',
-  			'Created_By',
-  			'Created_On',
-  			'Delivery_created',
-  			'Discount_',
-  			'Discount_pT',
-  			'Discount_pT_Base',
-  			'Discount_notation',
-  			'Discount_type',
-  			'Feed_Days_Remaining',
-  			'Feed_QOH_Tonnes',
-  			'Feed_Rate_Kg_Day',
-  			'Feed_Type',
-  			'Herd_Size',
-  			'Load_Due',
-  			'Modified_By',
-  			'Modified_On',
-  			'Order_instructions',
-  			'Order_notification',
-  			'Owner',
-  			'Price_pT',
-  			'Price_pT_Base',
-  			'Price_Production',
-  			'Price_Production_Base',
-  			'Price_production_pT',
-  			'Price_production_pT_Base',
-  			'Price_Sub_Total',
-  			'Price_Sub_Total_Base',
-  			'Price_Total',
-  			'Price_Total_Base',
-  			'Price_Total_pT',
-  			'Price_Total_pT_Base',
-  			'Price_Transport',
-  			'Price_Transport_Base',
-  			'Price_transport_pT',
-  			'Price_transport_pT_Base',
-  			'Process',
-  			'Process_Stage',
-  			'Product_Category',
-  			'Product_Name',
-  			'Requested_Delivery_by',
-  			'Second_Customer',
-  			'Second_customer_Order_percent',
-  			'Ship_To',
-  			'Status',
-  			'Storage_Unit',
-  			'Submitted_Status',
-  			'Submitted_Status_Description'
+  			'Date_Submitted' => 7,
+  			'Status_Reason' => 8,
+  			'Anticipated_Sales' => 9,
+  			'Billing_company' => 22,
+  			'Billing_type' => 26,
+  			'Created_By' => 28,
+  			'Created_On' => 30,
+  			'Delivery_created' => 35,
+  			'Discount_Percent' => 37,
+  			'Discount_pT' => 38,
+  			'Discount_pT_Base' => 39,
+  			'Discount_notation' => 40,
+  			'Discount_type' => 41,
+  			'Feed_Days_Remaining' => 43,
+  			'Feed_QOH_Tonnes' => 44,
+  			'Feed_Rate_Kg_Day' => 45,
+  			'Feed_Type' => 46,
+  			'Herd_Size' => 50,
+  			'Load_Due' => 57 ,
+  			'Modified_By' => 59,
+  			'Modified_On' => 61,
+  			'Order_instructions' => 66,
+  			'Order_notification' => 67,
+  			'Owner' => 68,
+  			'Price_pT' => 72,
+  			'Price_pT_Base' => 73,
+  			'Price_Production' => 75,
+  			'Price_Production_Base' => 76 ,
+  			'Price_production_pT' => 77,
+  			'Price_production_pT_Base' => 78,
+  			'Price_Sub_Total' => 79,
+  			'Price_Sub_Total_Base' => 80,
+  			'Price_Total' => 81,
+  			'Price_Total_Base' => 82,
+  			'Price_Total_pT' => 83,
+  			'Price_Total_pT_Base' => 84,
+  			'Price_Transport' => 85,
+  			'Price_Transport_Base' => 86,
+  			'Price_transport_pT' => 87,
+  			'Price_transport_pT_Base' => 88,
+  			'Process' => 91,
+  			'Process_Stage' => 92,
+  			'Product_Category' => 94,
+  			'Product_Name' => 95,
+  			'Requested_Delivery_by' => 98,
+  			'Second_Customer' => 99,
+  			'Second_customer_Order_percent' => 100,
+  			'Ship_To' => 101,
+  			'Status' => 119,
+  			'Storage_Unit' => 120,
+  			'Submitted_Status' =>121,
+  			'Submitted_Status_Description' => 122
 		];
 		
 		
 		
 		
-		//$customerOrder = new CustomerOrders;
-		//$customerOrder->Order_ID = $importArray[2];
+		$customerOrder = new CustomerOrders;
 		
 		
-		//$this->progress .= $importArray[2]."\n";
-		$customer = Clients::find()->where(['Company_Name' => $importArray[$attributesRows['Customer_id']]])->one();
+		$customer = Clients::find()->where(['Company_Name' => $importArray[$mapping['Customer_id']]])->one();
 		if(!$customer){
-			$this->progress .= "WARNING: unable to locate customer record from name: ".$importArray[$attributesRows['Customer_id']]." for Order record: ".$importArray[$attributesRows['Order_ID']]."\n";
+			$this->progress .= "WARNING: unable to locate customer record from name: ".$importArray[$mapping['Customer_id']]." for Order record: ".$importArray[$mapping['Order_ID']]."\n";
 			$this->recordsFailed++;
 			return null;
-		}
+			}
+			
+		//$this->progress .=  $importArray[$mapping['Order_ID']];
+		$customerOrder->Order_ID = $importArray[$mapping['Order_ID']];
+		$customerOrder->Customer_id = $customer->id;
+		$customerOrder->Name = $importArray[$mapping['Name']];
+		$customerOrder->Mix_Type = $importArray[$mapping['Mix_Type']];
+		$customerOrder->Qty_Tonnes = $importArray[$mapping['Qty_Tonnes']];
+		$customerOrder->Nearest_Town = $importArray[$mapping['Nearest_Town']];
+		$customerOrder->Date_Fulfilled = $this->exceltoepoch($importArray[$mapping['Date_Fulfilled']]);
+		$customerOrder->Date_Submitted = $this->exceltoepoch($importArray[$mapping['Date_Submitted']]);
+		$customerOrder->Status_Reason = $importArray[$mapping['Status_Reason']];
+		
 		//$this->progress .= "import record for customer id ".$customer->id."\n";
 		//$this->progress .= $customer->id."\n";
 		
@@ -166,7 +175,30 @@ class ImportFunctions extends \yii\db\ActiveRecord
     
     
     
-    
+    function exceltoepoch($whackyexceltime) {
+			// intify 
+			$int_portion = (int)$whackyexceltime;	
+			// get the decimals
+			$dec_portion = $whackyexceltime - $int_portion;
+			// $int portion is days since Jan 1, 1900.
+			$epoch = new \DateTime('1900-01-01');
+			// remove 2 seems to be the magic number of days to remove.   
+			$epoch->add(new \DateInterval("P".($int_portion-2)."D"));
+			// get the seconds that are left
+			$sec = ceil(86400 * $dec_portion);
+			// add the second to the epoch
+			$epoch->add(new \DateInterval("PT".$sec."S"));
+			$ret = $epoch->getTimestamp();
+			unset($epoch);
+			//echo date("D, d M Y H:i:s", $ret) ."\n\n";
+			return $ret;
+		}
+
+
+
+		
+  
+
     
     
     

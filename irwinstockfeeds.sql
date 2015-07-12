@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.2.7.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2015 at 08:41 AM
--- Server version: 5.6.16
--- PHP Version: 5.5.11
+-- Generation Time: Jul 12, 2015 at 08:17 PM
+-- Server version: 5.6.20
+-- PHP Version: 5.5.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `article` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `summary` text COLLATE utf8_unicode_ci NOT NULL,
@@ -35,9 +35,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `status` int(11) NOT NULL,
   `category` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  `updated_at` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -49,8 +47,7 @@ CREATE TABLE IF NOT EXISTS `article` (
 CREATE TABLE IF NOT EXISTS `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` int(11) DEFAULT NULL,
-  PRIMARY KEY (`item_name`,`user_id`)
+  `created_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -78,10 +75,7 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
   `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `data` text COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL,
-  PRIMARY KEY (`name`),
-  KEY `rule_name` (`rule_name`),
-  KEY `idx-auth_item-type` (`type`)
+  `updated_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -100,9 +94,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 
 CREATE TABLE IF NOT EXISTS `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`parent`,`child`),
-  KEY `child` (`child`)
+  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -122,8 +114,7 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `data` text COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL,
-  PRIMARY KEY (`name`)
+  `updated_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -140,7 +131,7 @@ INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `clients` (
-  `id` int(100) NOT NULL AUTO_INCREMENT,
+`id` int(100) NOT NULL,
   `Company_Name` varchar(100) NOT NULL,
   `Account_Number` varchar(6) NOT NULL,
   `Main_Phone` varchar(12) NOT NULL,
@@ -233,8 +224,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `Sub_Region` varchar(255) DEFAULT NULL,
   `Supplies_to` varchar(255) DEFAULT NULL,
   `Trading_as` varchar(255) DEFAULT NULL,
-  `Website` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `Website` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=906 ;
 
 --
@@ -1170,7 +1160,7 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 --
 
 CREATE TABLE IF NOT EXISTS `contacts` (
-  `id` int(5) NOT NULL AUTO_INCREMENT,
+`id` int(5) NOT NULL,
   `Business_Phone` varchar(100) CHARACTER SET utf8 NOT NULL,
   `Address_1` varchar(100) DEFAULT NULL,
   `Address_1_CountryRegion` varchar(100) DEFAULT NULL,
@@ -1191,8 +1181,7 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `Job_Title` varchar(100) DEFAULT NULL,
   `Last_Name` varchar(100) NOT NULL,
   `Mobile_Phone` varchar(50) DEFAULT NULL,
-  `Company_id` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `Company_id` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=557 ;
 
 --
@@ -1766,7 +1755,7 @@ INSERT INTO `contacts` (`id`, `Business_Phone`, `Address_1`, `Address_1_CountryR
 --
 
 CREATE TABLE IF NOT EXISTS `customer_orders` (
-  `id` int(4) NOT NULL AUTO_INCREMENT,
+`id` int(4) NOT NULL,
   `Order_ID` varchar(8) NOT NULL,
   `Customer_id` int(10) NOT NULL,
   `Name` varchar(200) NOT NULL,
@@ -1825,8 +1814,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Status` int(5) DEFAULT NULL,
   `Storage_Unit` int(5) DEFAULT NULL,
   `Submitted_Status` int(5) DEFAULT NULL,
-  `Submitted_Status_Description` int(5) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `Submitted_Status_Description` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1836,10 +1824,9 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
 --
 
 CREATE TABLE IF NOT EXISTS `import_functions` (
-  `id` int(5) NOT NULL AUTO_INCREMENT,
+`id` int(5) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `function` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `function` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
@@ -1856,12 +1843,11 @@ INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `lookup` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `code` int(11) NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `position` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `position` int(11) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
 
 --
@@ -1905,8 +1891,7 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 
 CREATE TABLE IF NOT EXISTS `migration` (
   `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
+  `apply_time` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1926,7 +1911,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `products` (
-  `id` int(3) NOT NULL AUTO_INCREMENT,
+`id` int(3) NOT NULL,
   `Name` varchar(100) NOT NULL,
   `Product_ID` int(10) NOT NULL,
   `Description` varchar(200) DEFAULT NULL,
@@ -1942,8 +1927,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `Mix_Type` int(5) DEFAULT NULL,
   `ndf` decimal(5,2) DEFAULT NULL,
   `Product_Category` int(1) DEFAULT NULL,
-  `Retail_Price_t` decimal(8,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `Retail_Price_t` decimal(8,2) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=167 ;
 
 --
@@ -2125,7 +2109,7 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 --
 
 CREATE TABLE IF NOT EXISTS `storage` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+`id` int(10) NOT NULL,
   `Description` varchar(600) DEFAULT NULL,
   `Capacity` decimal(10,2) DEFAULT NULL,
   `company_id` int(3) NOT NULL,
@@ -2136,8 +2120,7 @@ CREATE TABLE IF NOT EXISTS `storage` (
   `Status` int(1) NOT NULL,
   `Street_1` varchar(100) DEFAULT NULL,
   `SuburbTown` varchar(100) DEFAULT NULL,
-  `Tipper` bit(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  `Tipper` bit(1) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1239 ;
 
 --
@@ -3311,7 +3294,7 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `firstname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `surname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -3322,8 +3305,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `account_activation_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` int(11) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
 
 --
@@ -3360,6 +3342,143 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `email`, `password
 (29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', 'vicky@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504);
 
 --
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `article`
+--
+ALTER TABLE `article`
+ ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `auth_assignment`
+--
+ALTER TABLE `auth_assignment`
+ ADD PRIMARY KEY (`item_name`,`user_id`);
+
+--
+-- Indexes for table `auth_item`
+--
+ALTER TABLE `auth_item`
+ ADD PRIMARY KEY (`name`), ADD KEY `rule_name` (`rule_name`), ADD KEY `idx-auth_item-type` (`type`);
+
+--
+-- Indexes for table `auth_item_child`
+--
+ALTER TABLE `auth_item_child`
+ ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
+
+--
+-- Indexes for table `auth_rule`
+--
+ALTER TABLE `auth_rule`
+ ADD PRIMARY KEY (`name`);
+
+--
+-- Indexes for table `clients`
+--
+ALTER TABLE `clients`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contacts`
+--
+ALTER TABLE `contacts`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `customer_orders`
+--
+ALTER TABLE `customer_orders`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `import_functions`
+--
+ALTER TABLE `import_functions`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lookup`
+--
+ALTER TABLE `lookup`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `migration`
+--
+ALTER TABLE `migration`
+ ADD PRIMARY KEY (`version`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `storage`
+--
+ALTER TABLE `storage`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `article`
+--
+ALTER TABLE `article`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `clients`
+--
+ALTER TABLE `clients`
+MODIFY `id` int(100) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=906;
+--
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=557;
+--
+-- AUTO_INCREMENT for table `customer_orders`
+--
+ALTER TABLE `customer_orders`
+MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `import_functions`
+--
+ALTER TABLE `import_functions`
+MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `lookup`
+--
+ALTER TABLE `lookup`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=167;
+--
+-- AUTO_INCREMENT for table `storage`
+--
+ALTER TABLE `storage`
+MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1239;
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
+--
 -- Constraints for dumped tables
 --
 
@@ -3367,26 +3486,26 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `email`, `password
 -- Constraints for table `article`
 --
 ALTER TABLE `article`
-  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item`
 --
 ALTER TABLE `auth_item`
-  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
