@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2015 at 08:17 PM
+-- Generation Time: Jul 14, 2015 at 05:53 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -908,7 +908,7 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 (663, 'Paul Thomas', 'A10503', '03 5184 1284', 0, b'1', b'1', b'1', '', '319 199 868 30', '115 Gelliondale Rd GELLIONDALE, VIC 3971', 1, '', 3971, 'VIC', '115 Gelliondale Rd', '', '', 'GELLIONDALE', '', '', '', '115 Gelliondale Rd GELLIONDALE, VIC 3971', 2, '', 3971, 'VIC', '115 Gelliondale Rd', '', '', '', '', '', 'GELLIONDALE', '', b'1', b'1', '', '', 0, 1, 2, '', 1, 'No', 'Ye', 19, '0000-00-00', b'1', 0, '', 'Go through Welshpool towards Alberton on the South Gippsland hwy 16km turn Left up Gelliondale Rd , Follow this road for less than 1km milking shed on the left just after a Blue house.Silo next to milking shed. would prefer Auger as Blower pipe leaks', '', b'0', b'0', b'0', b'0', b'0', b'0', 'thomaspd@wideband.net.au', '', '', 1, '', '', 5, 50, '0000-00-00', 5, '0000-00-00', '2.0', '', 50, 1, b'1', b'1', 'Reid Stockfeeds', '', '0419 348 748', 0, '0000-00-00', 'South Gippsland > Promontory > WELSHPOOL (196.13km) (196.13 KMs)', 0, 9, 'South Gippsland', '30 days from delivery', '', '', '', 1, 'South Gippsland > Promontory', 'Fonterra', 'Thomas, Paul', ''),
 (664, 'PD Yates & AJ Smith', 'A10287', '03 5149 2542', 0, b'1', b'1', b'1', '', '50 727 567 101', '362 Nambrok Hall Road NAMBROK VIC 3847 AUSTRALIA', 1, 'AUSTRALIA', 3847, 'VIC', '362 Nambrok Hall Road', '', '', 'NAMBROK', '', '', '', '362 Nambrok Hall road Nambrok VIC 3847 Australia', 2, 'Australia', 3847, 'VIC', '362 Nambrok Hall road', '', '', '', '', '', 'Nambrok', '', b'1', b'1', '', '', 0, 1, 0, '', 3, '', '', 20, '0000-00-00', b'1', 0, '', 'From Rosedale head to Sale Turn Left down Maffra Rosedale Road. At 2nd Cross Road turn right into Nambrok Hall Road. Dairy 1st on Right.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'ajsmith_pdyates@bigpond.com', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 190, 1, b'1', b'0', '', '', '', 0, '0000-00-00', 'East Gippsland > Nambrok > NAMBROK (203.07 KMs)', 0, 9, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Nambrok', '', 'P Yates and A Smith', ''),
 (665, 'Penny Farming', 'A10457', '03 5398 2500', 0, b'1', b'1', b'1', '', '', 'P O Box 326 WARRACKNABEAL VIC 3393 AUSTRALIA', 1, 'AUSTRALIA', 3393, 'VIC', 'P O Box 326', '', '', 'WARRACKNABEAL', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 29, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '0409 131 988', 0, '0000-00-00', '', 0, 29, '', '', '', '', '', 1, '', '', 'Penny Farming', ''),
-(666, 'PETE TEST ORDER', 'A10742', '', 0, b'1', b'1', b'1', '', '', '', 1, '', 0, '', '', '', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 0, 'No', 'No', 23, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', '', 0, 23, '', '', '', '', '', 1, '', '', '', ''),
+(666, 'DUMMY ACCOUNT - DO NOT USE', 'A00666', '', 0, b'1', b'1', b'1', '', '', '', 1, '', 0, '', '', '', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 0, 'No', 'No', 23, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', '', 0, 23, '', '', '', '', '', 1, '', '', '', ''),
 (667, 'Peter Allen C.O.D.', 'A10802', '', 0, b'1', b'1', b'1', '', '', '1 Miepoll School Road MIEPOLL, VIC 3666', 1, '', 3666, 'VIC', '1 Miepoll School Road', '', '', 'MIEPOLL', '', '', '', 'PO Box 632 MIEPOLL, VIC 3666', 2, '', 3666, 'VIC', 'PO Box 632', '', '', '', '', '', 'MIEPOLL', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 23, '0000-00-00', b'1', 0, '', 'From The Hume Hwy Take the Euroa Exit into town approx. 10km out the Benalla Road, Phone Peter Allen for instructions 0407 903 227', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '1.0', '', 500, 0, b'1', b'1', '', '', '0407 903 227', 0, '0000-00-00', 'Northern Victoria > EUROA (162 KMs)', 0, 23, '', 'New pending credit (7 days)', '', '', '', 1, 'Northern > Victoria', '', 'PD & KM Allen', ''),
 (668, 'Peter Collins C.O.D.', 'A10200', '', 0, b'1', b'1', b'1', '', '', '455 Buffalo North Road, Buffalo YANAKIE', 1, '', 0, '', '455 Buffalo North Road, Buffalo', '', '', 'YANAKIE', '', '', '', '455 Buffalo North Road, Buffalo Yanakie VIC 3960 Australia', 2, 'Australia', 3960, 'VIC', '455 Buffalo North Road, Buffalo', '', '', '', '', '', 'Yanakie', '', b'1', b'1', '', '', 0, 1, 0, '', 1, '', '', 20, '0000-00-00', b'1', 0, '', 'Delivery Address 455 Buffalo North Road, Buffalo, Calve Pellets into Feeders balance into bulka Bags if any.', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '2.0', '', 100, 1, b'1', b'0', '', '', '0407 708 863', 0, '0000-00-00', 'South Gippsland > Fish Creek > BUFFALO (163.95 KMs)', 0, 23, 'South Gippsland', 'New pending credit (7 days)', '', '', '', 1, 'South Gippsland > Fish Creek', 'Burra Foods', 'Collins, Peter & Kerrie', ''),
 (669, 'Peter Ferrari', 'A10397', '0419 893 587', 0, b'1', b'1', b'1', '', '', '2575 Healesville Kooweerup Road YELLINGBO VIC 3139 AUSTRALIA', 1, 'AUSTRALIA', 3139, 'VIC', '2575 Healesville Kooweerup Road', '', '', 'YELLINGBO', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 0, 'No', 'No', 29, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '0419 893 587', 0, '0000-00-00', 'Northern Victoria > LAUNCHING PLACE (65.71 KMs)', 0, 29, '', '30 days from delivery', '', '', '', 1, 'Northern > Victoria', '', 'Peter Ferrari', ''),
@@ -1815,6 +1815,33 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Storage_Unit` int(5) DEFAULT NULL,
   `Submitted_Status` int(5) DEFAULT NULL,
   `Submitted_Status_Description` int(5) DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `customer_orders`
+--
+
+INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_created`, `Discount_`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`) VALUES
+(16, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(18, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(19, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_orders_ingredients`
+--
+
+CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
+`id` int(5) NOT NULL,
+  `created_on` date NOT NULL,
+  `category` int(5) NOT NULL,
+  `ingredient_id` int(5) NOT NULL,
+  `ingredient_percent` decimal(10,0) NOT NULL,
+  `modified_by` int(5) DEFAULT NULL,
+  `modified_on` date DEFAULT NULL,
+  `order_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -3394,6 +3421,12 @@ ALTER TABLE `customer_orders`
  ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customer_orders_ingredients`
+--
+ALTER TABLE `customer_orders_ingredients`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `import_functions`
 --
 ALTER TABLE `import_functions`
@@ -3452,7 +3485,12 @@ MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=557;
 -- AUTO_INCREMENT for table `customer_orders`
 --
 ALTER TABLE `customer_orders`
-MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT for table `customer_orders_ingredients`
+--
+ALTER TABLE `customer_orders_ingredients`
+MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `import_functions`
 --
