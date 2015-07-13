@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\customerOrdersSearch */
@@ -22,13 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'export' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             'Order_ID',
             'Customer',
             'Name',
-            'Mix_Type',
             'Qty_Tonnes',
             // 'Nearest_Town',
             // 'Date_Fulfilled',
@@ -144,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'Source_Campaign',
             // 'Standard_Cost_pT',
             // 'Standard_Cost_pT_Base',
-            // 'Status',
+             'Status',
             // 'Storage_Unit',
             // 'Submitted_Status',
             // 'Submitted_Status_Description',

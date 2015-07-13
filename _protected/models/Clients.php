@@ -105,7 +105,13 @@ class Clients extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
+     * 
      */
+     
+     
+    const DUMMY = 666;
+     
+     
     public static function tableName()
     {
         return 'clients';

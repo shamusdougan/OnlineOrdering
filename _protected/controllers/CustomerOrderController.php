@@ -6,6 +6,7 @@ use Yii;
 use app\models\customerOrders;
 use app\models\customerOrdersSearch;
 use app\models\Clients;
+use app\models\CustomerOrdersIngredients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -89,7 +90,21 @@ class CustomerOrderController extends Controller
         } else {
         	
         	
-        	$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
+        	//To get around the issue of linking item, we create an order using a dummy company ID.
+        	$model->Customer_id = '666';
+        	$model->Order_ID = 'ORDXXXX';
+        	$model->Name = "XXXXX";
+        	$model->Created_On = Time();
+        	if(!$model->save())
+        		{
+        		die("unable to create new order");
+        		}
+        	
+        	$clientObjects = Clients::find()
+        				->where('id != :id', ['id'=>Clients::DUMMY])
+        				->select(['id', 'Company_Name'])
+        				->all();
+        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
             return $this->render('create', [
                 'model' => $model, 'clientList' => $clientList
             ]);
@@ -196,4 +211,22 @@ class CustomerOrderController extends Controller
 			}
 		}
 	}
+	
+	
+	public function actionAjaxAddIngredient($id, $order_id){
+		
+		if($id == "new"){
+			$orderIngredient = new CustomerOrdersIngredients();
+			$orderIngredient->order_id = $order_id;
+			$orderIngredient->created_on = Time();
+			}	
+		else{
+			$orderIngredient = CustomerOrdersIngredients::findOne($id);
+			}
+		
+		
+		return $this->renderAjax("/customer-orders-ingredients/_form", ['model' => $orderIngredient]);
+		
+		}
+	
 }

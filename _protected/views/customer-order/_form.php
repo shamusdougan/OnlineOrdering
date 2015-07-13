@@ -9,6 +9,7 @@ use kartik\widgets\Typeahead;
 use kartik\widgets\datePicker;
 use kartik\widgets\DepDrop;
 use kartik\grid\GridView;
+use yii\bootstrap\Modal;
 
 use yii\helpers\Url;
 
@@ -18,7 +19,7 @@ use yii\helpers\Url;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $clientlist app\models\clients*/
 
-$this->registerJs("$('#customerorders-customer').on('change',function(){
+$this->registerJs("$('#customerorders-customer_id').on('change',function(){
     $.ajax({
         url: '".yii\helpers\Url::toRoute("customer-order/ajax-company-details")."',
         dataType: 'json',
@@ -59,14 +60,15 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 		    	'form'=>$form,
 		    	'columns'=>1,
 		    	'attributes'=>[
-		    		'Customer' =>
+		    		'Customer_id' =>
 		    			[
 		    				'type' => Form::INPUT_WIDGET,
 		    				'widgetClass' => '\kartik\widgets\Select2',
 		    				'options'=>
 		    					[
 		    					'data'=>$clientList,
-		    					'options' => ['placeholder' => 'Select Client....']
+		    					
+		    					'options' => ['placeholder' => 'Select Client....', 'selected' => null,]
 		    					],
 
 		    			],			 
@@ -151,7 +153,7 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 										],
 									'pluginOptions'=>
 										[
-										'depends'=>[Html::getInputId($model, 'customer')],
+										'depends'=>[Html::getInputId($model, 'Customer_id')],
 										'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details'),
 										'emptyMsg' => 'No Storage Available',
 										'initialize'=>false,
@@ -191,22 +193,29 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 				]);
 
 		    
-		/*    echo GridView::widget(
+		    $gridColumns = 
+		    	[
+			    	['attribute' => 'product.Name'],
+			    	['attribute' => 'ingredient_percent'],
+		    	];
+		    
+		    
+		    echo GridView::widget(
 				[
-				'id' => 'customer_order_products',
+				'id' => 'ingredients',
 				'panel'=>[
 		        		'type'=>GridView::TYPE_PRIMARY,
-		        		'heading'=>"Company Contacts",
+		        		'heading'=>"Ingredients",
 		   		 ],
 				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
-		//		'toolbar'=> 
-		//			[
-		//				['content'=>
-		//					Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Contact', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-		//					Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
-		//				],
-		//			],
-				'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getContacts()]),
+				'toolbar'=> 
+					[
+						['content'=>
+							Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success']) . ' '.
+							Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
+						],
+					],
+				'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getIngredients()]),
 				//'filterModel'=>$searchModel,
 				'columns'=>$gridColumns,
 				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
@@ -216,14 +225,14 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 				'pjaxSettings' =>
 					[
 					'neverTimeout'=>true,
-					'options' =>['id' => '123client-contact-grid'],
+					'options' =>['id' => 'order_ingredient_grid'],
 					
 					],
 		 		'export' => false,
 				]);
 	
 		    
-		    */
+		    
 		    ?>
 		    
 		    
@@ -236,4 +245,57 @@ $this->registerJs("$('#customerorders-customer').on('change',function(){
 			<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>
 	<?php ActiveForm::end(); ?>
+	
+	<?php  $this->registerJs(
+    "$(document).on('click', '#add_ingredient_button', function() 
+    	{
+		$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("customer-order/ajax-add-ingredient")."',
+		data: {id: 'new', order_id: ".$model->id."},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('.modal-body').removeData('bs.modal').find('.modal-content').empty();
+			$('#activity-modal').modal();
+			$('.modal-body').html(data);
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		});
+	"
+   );
+	?>
+	
+	
+	<?php		
+		Modal::begin([
+		    'id' => 'activity-modal',
+		    'header' => '<h4 class="modal-title">Contact Information</h4>',
+		    'size' => 'modal-lg',
+
+		]);		?>
+
+
+		<div id="modal_content"></div>
+
+	<?php Modal::end(); ?>
+	
+	
+	
 </div>
