@@ -255,7 +255,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 		data: {id: 'new', order_id: ".$model->id."},
 		success: function (data, textStatus, jqXHR) 
 			{
-			$('.modal-body').removeData('bs.modal').find('.modal-content').empty();
+		
 			$('#activity-modal').modal();
 			$('.modal-body').html(data);
 			},
@@ -265,37 +265,35 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
             alert('Error in ajax request' );
         	}
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		});
-	"
+	});"
    );
+	
+
+	
+	
+	
+	
 	?>
-	
-	
-	<?php		
-		Modal::begin([
-		    'id' => 'activity-modal',
-		    'header' => '<h4 class="modal-title">Contact Information</h4>',
-		    'size' => 'modal-lg',
-
-		]);		?>
-
-
-		<div id="modal_content"></div>
-
-	<?php Modal::end(); ?>
 	
 	
 	
 </div>
+<div>
+	<?php		
+		Modal::begin([
+		    'id' => 'activity-modal',
+		    'header' => '<h4 class="modal-title">Add Product</h4>',
+		    'size' => 'modal-lg',
+		    'options' =>
+		    	[
+				'tabindex' => false,
+				]
+
+		]);		?>
+
+
+		<div id="modal_content">dd</div>
+
+	<?php Modal::end(); ?>
+	
+	</div>

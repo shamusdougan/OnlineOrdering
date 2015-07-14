@@ -32,9 +32,9 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_on', 'category', 'ingredient_id', 'ingredient_percent', 'order_id'], 'required'],
+            [['created_on', 'ingredient_id', 'ingredient_percent', 'order_id'], 'required'],
             [['created_on', 'modified_on'], 'safe'],
-            [['category', 'ingredient_id', 'modified_by', 'order_id'], 'integer'],
+            [['ingredient_id', 'modified_by', 'order_id'], 'integer'],
             [['ingredient_percent'], 'number']
         ];
     }
@@ -47,7 +47,6 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'created_on' => 'Created On',
-            'category' => 'Category',
             'ingredient_id' => 'Ingredient ID',
             'ingredient_percent' => 'Ingredient Percent',
             'modified_by' => 'Modified By',

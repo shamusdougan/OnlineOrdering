@@ -7,6 +7,7 @@ use app\models\customerOrders;
 use app\models\customerOrdersSearch;
 use app\models\Clients;
 use app\models\CustomerOrdersIngredients;
+use app\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -215,18 +216,52 @@ class CustomerOrderController extends Controller
 	
 	public function actionAjaxAddIngredient($id, $order_id){
 		
-		if($id == "new"){
-			$orderIngredient = new CustomerOrdersIngredients();
-			$orderIngredient->order_id = $order_id;
-			$orderIngredient->created_on = Time();
-			}	
-		else{
-			$orderIngredient = CustomerOrdersIngredients::findOne($id);
+		
+		//check to see if the form has been submitted
+		$orderIngredient = new CustomerOrdersIngredients();
+		
+		
+		
+		//Form has been submitted process accordingly
+		if ($orderIngredient->load(Yii::$app->request->post()))
+			{
+			if($orderIngredient->save()) 
+				{
+				return print_r($orderIngredient);
+				}
+				
+				
+			//form was submitted but failed to save correctly, resend the form through to be rendered
+			else{
+				return print_r($orderIngredient->getErrors());
+				}
 			}
 		
 		
-		return $this->renderAjax("/customer-orders-ingredients/_form", ['model' => $orderIngredient]);
-		
+		//Form being rendered for the first time
+		else
+			{
+				
+				
+				
+				
+				
+			if($id == "new"){
+				$orderIngredient = new CustomerOrdersIngredients();
+				$orderIngredient->order_id = $order_id;
+				//$orderIngredient->created_on = Date("d M Y");
+				}	
+			else{
+				$orderIngredient = CustomerOrdersIngredients::findOne($id);
+				}
+			
+			$products = Product::find()
+	        				->where(['status' => Product::ACTIVE])
+	        				->select(['id', 'Name'])
+	        				->all();
+	        $productList = ArrayHelper::map($products, 'id', 'Name') ;
+			return $this->renderAjax("/customer-orders-ingredients/_orderAdd", ['model' => $orderIngredient, 'productList' => $productList]);
+			}
 		}
 	
 }
