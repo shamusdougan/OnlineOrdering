@@ -15,9 +15,12 @@ $config = [
         	[
         	'class' => '\kartik\grid\Module',
         //	'export' => false,
-        	
-        	
         	],
+        'datecontrol' => 
+        	[
+        	'class' => '\kartik\datecontrol\Module'
+    		],
+
 
 		],
     'components' => [

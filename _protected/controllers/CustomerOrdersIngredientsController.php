@@ -133,4 +133,12 @@ class CustomerOrdersIngredientsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    
+    public function actionAjaxDelete($id)
+    {
+		$this->findModel($id)->delete();
+	}
+    
 }

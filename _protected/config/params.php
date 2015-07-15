@@ -1,4 +1,6 @@
 <?php
+use kartik\datecontrol\Module;
+
 return [
 
 //------------------------//
@@ -46,4 +48,20 @@ return [
      * You can set support email here.
      */
     'supportEmail' => 'support@example.com',
+    
+    
+    
+    'dateControlDisplay' => [
+        Module::FORMAT_DATE => 'php:d-M-Y',
+        Module::FORMAT_TIME => 'HH:mm:ss a',
+        Module::FORMAT_DATETIME => 'dd-MM-yyyy HH:mm:ss a', 
+    ],
+    
+    // format settings for saving each date attribute (PHP format example)
+    'dateControlSave' => [
+        Module::FORMAT_DATE => 'php:Y-m-d', // saves as unix timestamp
+        Module::FORMAT_TIME => 'php:H:i:s',
+        Module::FORMAT_DATETIME => 'php:Y-m-d H:i:s',
+    ]
+
 ];

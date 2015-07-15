@@ -11,6 +11,7 @@ use kartik\widgets\DepDrop;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
 
+
 use yii\helpers\Url;
 
 
@@ -192,20 +193,54 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 					
 				]);
 
-		    
 		    $gridColumns = 
 		    	[
 			    	['attribute' => 'product.Name'],
-			    	['attribute' => 'ingredient_percent'],
+			    
+			    	[
+			    		'class' => 'kartik\grid\EditableColumn',
+        				'attribute' => 'ingredient_percentage',
+        				'pageSummary'=>'Total',
+        				'editableOptions'=> function ($model, $key, $index, $widget) {
+        					   return $form->field($model, "ingredient_percentage")->widget(\kartik\widgets\RangeInput::classname(), 
+									[
+									'options' =>
+		    							[
+										'name' => 'Percentage',
+										'html5Options' => ['min' => 0, 'max' => 100, 'step' => 0.01],
+										'addon' => ['append' => ['content' => '%']],
+					    				],
+		    						]);
+		    					}
+
+					],
+			    	[
+			    	'class' => '\kartik\grid\ActionColumn',
+			    	'template' => '{delete}',
+					'buttons' =>
+						[
+						'delete' => function ($url, $model, $key) 
+	   						{
+           					return Html::a('<span class="glyphicon glyphicon-remove"></span>','#', 
+            					[
+                				'class' => 'order_ingredient_delete',
+                				'title' => 'Delete',
+                				'data-pjax' => '0',
+              					]);
+							},
+						]
+			    	
+			    	
+			    	]
 		    	];
 		    
 		    
 		    echo GridView::widget(
 				[
-				'id' => 'ingredients',
+				'id' => 'ingredients1234',
 				'panel'=>[
 		        		'type'=>GridView::TYPE_PRIMARY,
-		        		'heading'=>"Ingredients",
+		        		'heading'=>"Ingredients order (".$model->id.")",
 		   		 ],
 				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 				'toolbar'=> 
@@ -225,7 +260,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 				'pjaxSettings' =>
 					[
 					'neverTimeout'=>true,
-					'options' =>['id' => 'order_ingredient_grid'],
+					'options' =>['id' => 'order_ingredient_grid666'],
 					
 					],
 		 		'export' => false,
@@ -246,7 +281,10 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 		</div>
 	<?php ActiveForm::end(); ?>
 	
-	<?php  $this->registerJs(
+<?php  
+
+
+$this->registerJs(
     "$(document).on('click', '#add_ingredient_button', function() 
     	{
 		$.ajax
@@ -269,8 +307,53 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
    );
 	
 
+
+$this->registerJs("
+$('body').on('beforeSubmit', 'form#ingredient_add', function () {
+     var form = $(this);
+     // return false if form still have some validation errors
+     if (form.find('.has-error').length) {
+          return false;
+     }
+     // submit form
+     $.ajax({
+          url: form.attr('action'),
+          type: 'post',
+          data: form.serialize(),
+          success: function (response) 
+          		{
+          		$('#activity-modal').modal('hide');
+          		var url = '".yii\helpers\Url::toRoute("customer-order/create")."&_id=".$model->id."';
+          		$.pjax.reload({url: url, container:'#order_ingredient_grid666'});
+				
+				}
+		  });	
+     return false;
+});
+");	
 	
 	
+$this->registerJs(
+    "$(document).on('click', '.order_ingredient_delete', function()  
+    {
+  	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("customer-orders-ingredients/ajax-delete")."',
+		data: {id: $(this).closest('tr').data('key')},
+		success: function (data, textStatus, jqXHR) 
+			{
+			var url = '".yii\helpers\Url::toRoute("customer-order/create")."&_id=".$model->id."';
+          	$.pjax.reload({url: url, container:'#order_ingredient_grid666'});
+           
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+   	});"
+   );
 	
 	
 	?>

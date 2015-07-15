@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
-use kartik\widgets\datePicker;
+use kartik\datecontrol\DateControl;
 use kartik\builder\Form;
 //use kartik\widgets\Typeahead;
 
@@ -56,44 +56,14 @@ use kartik\builder\Form;
    ?>
    
    
-<?= $form->field($model, 'created_on')->widget(DatePicker::classname(), 
-	[
-	'options' => ['placeholder' => 'created on'],
-	'pluginOptions' => 
-		[
-		'autoclose'=>true
-		],
-	]); ?>
 
-      
-	<?= $form->field($model, 'order_id')->textInput() ?>
+    <?= $form->field($model, 'created_on')->hiddenInput()->label(false) ;  ?>  
+	<?= $form->field($model, 'order_id')->hiddenInput()->label(false) ;  ?>
 		    	
 		    	
 		    	<?php
 ActiveForm::end(); 
 
-$this->registerJs("
-$('body').on('beforeSubmit', 'form#ingredient_add', function () {
-     var form = $(this);
-     // return false if form still have some validation errors
-     if (form.find('.has-error').length) {
-          return false;
-     }
-     // submit form
-     $.ajax({
-          url: form.attr('action'),
-          type: 'post',
-          data: form.serialize(),
-          success: function (response) 
-          		{
-          		alert(response);
-				}
-		  });
-
-				
-     return false;
-});
-");
 
 
 

@@ -86,21 +86,30 @@ class CustomerOrderController extends Controller
     {
         $model = new customerOrders();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
             return $this->redirect(['view', 'id' => $model->Order_ID]);
-        } else {
+        	} 
+        else {
         	
-        	
-        	//To get around the issue of linking item, we create an order using a dummy company ID.
-        	$model->Customer_id = '666';
-        	$model->Order_ID = 'ORDXXXX';
-        	$model->Name = "XXXXX";
-        	$model->Created_On = Time();
-        	if(!$model->save())
-        		{
-        		die("unable to create new order");
-        		}
-        	
+     
+			if(Yii::$app->request->isPjax)
+				{
+				$id = Yii::$app->getRequest()->getQueryParam('_id');
+				$model = customerOrders::findOne($id);	
+				}
+			else
+				{
+				//To get around the issue of linking item, we create an order using a dummy company ID.
+	        	$model->Customer_id = '666';
+	        	$model->Order_ID = 'ORDXXXX';
+	        	$model->Name = "XXXXX";
+	        	$model->Created_On = Time();
+	        	if(!$model->save())
+	        		{
+	        		die("unable to create new order");
+	        		}
+	        	}
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
         				->select(['id', 'Company_Name'])
@@ -109,6 +118,8 @@ class CustomerOrderController extends Controller
             return $this->render('create', [
                 'model' => $model, 'clientList' => $clientList
             ]);
+				
+        
         }
     }
 
@@ -249,7 +260,8 @@ class CustomerOrderController extends Controller
 			if($id == "new"){
 				$orderIngredient = new CustomerOrdersIngredients();
 				$orderIngredient->order_id = $order_id;
-				//$orderIngredient->created_on = Date("d M Y");
+				$orderIngredient->created_on = Date('Y-m-d');
+				$orderIngredient->ingredient_percent = 50;
 				}	
 			else{
 				$orderIngredient = CustomerOrdersIngredients::findOne($id);
