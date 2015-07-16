@@ -199,20 +199,21 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 			    
 			    	[
 			    		'class' => 'kartik\grid\EditableColumn',
-        				'attribute' => 'ingredient_percentage',
+        				'attribute' => 'ingredient_percent',
         				'pageSummary'=>'Total',
-        				'editableOptions'=> function ($model, $key, $index, $widget) {
-        					   return $form->field($model, "ingredient_percentage")->widget(\kartik\widgets\RangeInput::classname(), 
-									[
-									'options' =>
-		    							[
-										'name' => 'Percentage',
-										'html5Options' => ['min' => 0, 'max' => 100, 'step' => 0.01],
-										'addon' => ['append' => ['content' => '%']],
-					    				],
-		    						]);
-		    					}
-
+        				'editableOptions'=>
+        					[
+        					'header' => "%",
+        					'inputType' => \kartik\editable\Editable::INPUT_SPIN,
+        					'options' =>
+        						[
+								'pluginOptions'=>['min'=>0, 'max'=>100],
+        						]
+        					]
+        				
+        				
+        				
+        				
 					],
 			    	[
 			    	'class' => '\kartik\grid\ActionColumn',
