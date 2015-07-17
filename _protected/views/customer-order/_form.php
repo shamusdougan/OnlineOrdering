@@ -222,7 +222,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 						[
 						'delete' => function ($url, $model, $key) 
 	   						{
-           					return Html::a('<span class="glyphicon glyphicon-remove"></span>','#', 
+           					return Html::a('<span class="glyphicon glyphicon-remove"></span>','#gridTop', 
             					[
                 				'class' => 'order_ingredient_delete',
                 				'title' => 'Delete',
@@ -235,7 +235,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 			    	]
 		    	];
 		    
-		    
+		    echo "<A Href='#gridTop' />";
 		    echo GridView::widget(
 				[
 				'id' => 'ingredients1234',
@@ -261,7 +261,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 				'pjaxSettings' =>
 					[
 					'neverTimeout'=>true,
-					'options' =>['id' => 'order_ingredient_grid666'],
+					'options' =>['id' => 'order_ingredient_grid'],
 					
 					],
 		 		'export' => false,
@@ -324,9 +324,9 @@ $('body').on('beforeSubmit', 'form#ingredient_add', function () {
           success: function (response) 
           		{
           		$('#activity-modal').modal('hide');
-          		var url = '".yii\helpers\Url::toRoute("customer-order/create")."&_id=".$model->id."';
-          		$.pjax.reload({url: url, container:'#order_ingredient_grid666'});
-				
+          		//alert(form.attr('action'));
+          		var url = '".yii\helpers\Url::toRoute("customer-order/update")."&id=".$model->id."';
+          		$.pjax.reload({url: url, container:'#order_ingredient_grid'});
 				}
 		  });	
      return false;
@@ -343,8 +343,8 @@ $this->registerJs(
 		data: {id: $(this).closest('tr').data('key')},
 		success: function (data, textStatus, jqXHR) 
 			{
-			var url = '".yii\helpers\Url::toRoute("customer-order/create")."&_id=".$model->id."';
-          	$.pjax.reload({url: url, container:'#order_ingredient_grid666'});
+			var url = '".yii\helpers\Url::toRoute("customer-order/update")."&id=".$model->id."';
+          	$.pjax.reload({url: url, container:'#order_ingredient_grid'});
            
 			},
         error: function (jqXHR, textStatus, errorThrown) 

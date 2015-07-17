@@ -35,12 +35,18 @@ use kartik\builder\Form;
 		    		'ingredient_percent' => 
 		    			[
 		    			'type' => Form::INPUT_WIDGET,
-		    			'widgetClass' => '\kartik\widgets\RangeInput',
+		    			'widgetClass' => '\kartik\widgets\TouchSpin',
 		    			'options' =>
 		    				[
 							'name' => 'Percentage',
-							'html5Options' => ['min' => 0, 'max' => 100, 'step' => 0.01],
-							'addon' => ['append' => ['content' => '%']],
+							'pluginOptions' => 
+								[
+								'min' => 0, 
+								'max' => 100, 
+								'postfix' => '%',
+								'step' => 1,
+								'decimals' => 2,
+								],
 		    				],
 		    			'columnOptions'=>['colspan'=>2],
 		    			'label' =>false,

@@ -85,23 +85,7 @@ class CustomerOrderController extends Controller
     public function actionCreate()
     {
         $model = new customerOrders();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) 
-        	{
-            return $this->redirect(['view', 'id' => $model->Order_ID]);
-        	} 
-        else {
-        	
-     
-			if(Yii::$app->request->isPjax)
-				{
-				$id = Yii::$app->getRequest()->getQueryParam('_id');
-				$model = customerOrders::findOne($id);	
-				}
-			else
-				{
-				//To get around the issue of linking item, we create an order using a dummy company ID.
-	        	$model->Customer_id = '666';
+		$model->Customer_id = '666';
 	        	$model->Order_ID = 'ORDXXXX';
 	        	$model->Name = "XXXXX";
 	        	$model->Created_On = Time();
@@ -109,18 +93,12 @@ class CustomerOrderController extends Controller
 	        		{
 	        		die("unable to create new order");
 	        		}
-	        	}
-        	$clientObjects = Clients::find()
-        				->where('id != :id', ['id'=>Clients::DUMMY])
-        				->select(['id', 'Company_Name'])
-        				->all();
-        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
-            return $this->render('create', [
-                'model' => $model, 'clientList' => $clientList
-            ]);
-				
+	        	
+		 return $this->redirect(['update', 'id' => $model->id]);
         
-        }
+
+        
+
     }
 
     /**
@@ -133,11 +111,55 @@ class CustomerOrderController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+		//Section for the eidtable content of the Form
+		if (Yii::$app->request->post('hasEditable')) 
+			{
+			$ingredientID = Yii::$app->request->post('editableKey');
+        	$model = CustomerOrdersIngredients::findOne($ingredientID);
+        
+        
+			$out = Json::encode(['output'=>'', 'message'=>'']);
+        	 
+        	 
+        	//get the array information from the POST vairable. in the post the value is seens as
+        	//$_POST[CustomerOrdersIngredients][1][ingredient_percent] = XX
+			$post = [];
+	        $posted = current($_POST['CustomerOrdersIngredients']);
+	       	$post['CustomerOrdersIngredients'] = $posted;
+        	 
+        	 if ($model->load($post)) 
+        	 	{
+        	 	$model->save();
+        	 	$output = '';
+        	 	
+				$out = Json::encode(['output'=>$output, 'message'=>'']);
+        	 	
+        	 	
+        	 	
+        	 	}
+        	 
+			echo $out;
+			return;
+				
+				
+			}
+
+        else if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->Order_ID]);
         } else {
         	
-        	$clientList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
+        	
+        	
+        	
+        	
+        	
+        	
+        	$clientObjects = Clients::find()
+        				->where('id != :id', ['id'=>Clients::DUMMY])
+        				->select(['id', 'Company_Name'])
+        				->all();
+        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
             return $this->render('update', [
                 'model' => $model, 'clientList' => $clientList
             ]);
