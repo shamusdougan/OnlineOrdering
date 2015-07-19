@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Lookup;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProductSearch */
@@ -40,9 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'Mix_Margin_Base',
             // 'Mix_Type',
             // 'ndf',
-            // 'Product_Category',
-            // 'Retail_Price_t',
-
+            [
+	            'attribute' => 'Product_Category',
+	            'value' => function($data) {
+					return Lookup::item($data->Product_Category, "ORDER_CATEGORY");
+					},
+				'filter' => Lookup::items("ORDER_CATEGORY"),
+			],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -288,6 +288,8 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 $this->registerJs(
     "$(document).on('click', '#add_ingredient_button', function() 
     	{
+    	alert($('#".Html::getInputId($model, 'Customer_id')." option:selected').text());
+    	alert('".Html::getInputId($model, 'Customer_id')."');
 		$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("customer-order/ajax-add-ingredient")."',
