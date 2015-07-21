@@ -31,6 +31,11 @@ class Product extends \yii\db\ActiveRecord
 	const ACTIVE = 1;
 	const INACTIVE = 2;
 	
+	const COMMODITY = 1;
+	const CUSTOM = 2;
+	const STANDARD_MIX = 3;
+	const PELLET = 4;	
+	const ADDITIVE = 5;
 	
 	
     /**

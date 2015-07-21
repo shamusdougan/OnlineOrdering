@@ -247,7 +247,7 @@ class CustomerOrderController extends Controller
 	}
 	
 	
-	public function actionAjaxAddIngredient($id, $order_id){
+	public function actionAjaxAddIngredient($id, $order_id, $productType){
 		
 		
 		//check to see if the form has been submitted
@@ -275,8 +275,7 @@ class CustomerOrderController extends Controller
 		else
 			{
 				
-				
-				
+					
 				
 				
 			if($id == "new"){
@@ -289,8 +288,10 @@ class CustomerOrderController extends Controller
 				$orderIngredient = CustomerOrdersIngredients::findOne($id);
 				}
 			
+			
 			$products = Product::find()
 	        				->where(['status' => Product::ACTIVE])
+	        				->where(['Product_Category' => $productType])
 	        				->select(['id', 'Name'])
 	        				->all();
 	        $productList = ArrayHelper::map($products, 'id', 'Name') ;
