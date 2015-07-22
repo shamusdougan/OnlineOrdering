@@ -195,12 +195,15 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 
 		    $gridColumns = 
 		    	[
-			    	['attribute' => 'product.Name'],
+			    	[
+			    		'attribute' => 'product.Name',
+			    		'pageSummary' => "Total",
+			    	],
 			    
 			    	[
 			    		'class' => 'kartik\grid\EditableColumn',
         				'attribute' => 'ingredient_percent',
-        				'pageSummary'=>'Total',
+        				'pageSummary'=>True,
         				'editableOptions'=>
         					[
         					'header' => "%",
@@ -208,10 +211,12 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
         					'options' =>
         						[
 								'pluginOptions'=>['min'=>0, 'max'=>100],
-        						]
-        					]
-        				
-        				
+        						],
+        					'pluginEvents' =>
+	        					[
+	        					'editableSuccess'=>"function(event, val, form, data) { $.pjax.reload({container:'#order_ingredient_grid'}); }"
+	        					],
+        					],
         				
         				
 					],
@@ -265,6 +270,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 					
 					],
 		 		'export' => false,
+		 		'showPageSummary' => true,
 				]);
 	
 		    
