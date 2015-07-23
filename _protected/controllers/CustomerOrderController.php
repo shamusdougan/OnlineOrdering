@@ -247,7 +247,7 @@ class CustomerOrderController extends Controller
 	}
 	
 	
-	public function actionAjaxAddIngredient($id, $order_id, $productType){
+	public function actionAjaxAddIngredient($id, $order_id, $productType, $total){
 		
 		
 		//check to see if the form has been submitted
@@ -282,7 +282,7 @@ class CustomerOrderController extends Controller
 				$orderIngredient = new CustomerOrdersIngredients();
 				$orderIngredient->order_id = $order_id;
 				$orderIngredient->created_on = Date('Y-m-d');
-				$orderIngredient->ingredient_percent = 50;
+				$orderIngredient->ingredient_percent = 100-$total;
 				}	
 			else{
 				$orderIngredient = CustomerOrdersIngredients::findOne($id);

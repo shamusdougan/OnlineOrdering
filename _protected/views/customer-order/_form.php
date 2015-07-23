@@ -42,13 +42,62 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
     });
 });"); 
 
+$this->registerJs("
+
+function getIngredientSum()
+{
+	
+	var sum = 0
+	$(\".kv-editable-value\").each(function() 
+ 		{
+		if(!isNaN($(this).text()) && $(this).text().length!=0) 
+			{
+           	sum += parseFloat($(this).text());
+       		}
+		});
+	$(\"#".Html::getInputId($model, 'Percent_ingredients')."\").val(sum);
+	
+	return sum;
+}
+");
+
+
+$this->registerJs("
+$(document).on('pjax:end', function() {
+   getIngredientSum();
+    });
+");
+
 
 ?>
 
 <div class="customer-orders-form">
 	<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); ?>
 		<div class='customer-orders-form-pricing'>
-			blah blah blah
+			<fieldset id="w1_2">
+		    <div class='col-md-12'>
+		    	<label class="control-label col-md-4"></label>
+		    	<div class='col-md-10' >
+		    		<div class='col-md-4'><b>Contact:</b> <input type='text' id='customerdetails-contactname'  style='border: 0px  solid; width:170px' readonly></div>
+		    		<div class='col-md-4'><b>Phone: </b><input type='text' id='customerdetails-phone' readonly style='border: 0px  solid'> </div>
+		    		<div class='col-md-4'><b>Status:</b> <input type='text' id='customerdetails-status' style='border: 0px  solid' readonly> </div>
+		    	</div>
+		    	<label class="control-label col-md-2"></label>
+		    	<div class='col-md-10'>
+		    		<div class='col-md-10'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly style='border: 0px  solid; width: 500px'> </div>
+		    	</div>
+		    	<label class="control-label col-md-2"></label>
+		    	<div class='col-md-10'>
+		    		<div class='col-md-10' '><b>Address: </b><input type='text' id='customerdetails-address'  style='border: 0px  solid; width: 500px' readonly></div>
+		    	</div>
+		    	<label class="control-label col-md-2"></label>
+		    	<div class='col-md-10' id='customerdetails-viewmore' style='display: none'>
+		    		<div class='col-md-10'><a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View More Details</a></div>
+		    	</div>
+		    	<div class='col-md-12' style='height: 20px; width: 100%'></div>
+		    	
+			</div>  	
+			</fieldset>
 		</div>
 		<div class='customer-orders-form-main'>
    		
@@ -80,30 +129,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 		   
 			
 		    ?>
-		    <fieldset id="w1_2">
-		    <div class='col-md-12'>
-		    	<label class="control-label col-md-4"></label>
-		    	<div class='col-md-10' >
-		    		<div class='col-md-4'><b>Contact:</b> <input type='text' id='customerdetails-contactname'  style='border: 0px  solid; width:170px' readonly></div>
-		    		<div class='col-md-4'><b>Phone: </b><input type='text' id='customerdetails-phone' readonly style='border: 0px  solid'> </div>
-		    		<div class='col-md-4'><b>Status:</b> <input type='text' id='customerdetails-status' style='border: 0px  solid' readonly> </div>
-		    	</div>
-		    	<label class="control-label col-md-2"></label>
-		    	<div class='col-md-10'>
-		    		<div class='col-md-10'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly style='border: 0px  solid; width: 500px'> </div>
-		    	</div>
-		    	<label class="control-label col-md-2"></label>
-		    	<div class='col-md-10'>
-		    		<div class='col-md-10' '><b>Address: </b><input type='text' id='customerdetails-address'  style='border: 0px  solid; width: 500px' readonly></div>
-		    	</div>
-		    	<label class="control-label col-md-2"></label>
-		    	<div class='col-md-10' id='customerdetails-viewmore' style='display: none'>
-		    		<div class='col-md-10'><a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View More Details</a></div>
-		    	</div>
-		    	<div class='col-md-12' style='height: 20px; width: 100%'></div>
-		    	
-			</div>  	
-			</fieldset>
+		  
 			
 			
 		   <?= Form::widget(
@@ -188,6 +214,11 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 						'type' => FORM::INPUT_DROPDOWN_LIST,
 						'items' => Lookup::items("ORDER_CATEGORY"),
 						'columnOptions'=>['colspan'=>2],
+						],
+					'Percent_ingredients' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
 						]
 					],
 					
@@ -214,7 +245,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
         						],
         					'pluginEvents' =>
 	        					[
-	        					'editableSuccess'=>"function(event, val, form, data) { $.pjax.reload({container:'#order_ingredient_grid'}); }"
+	        					'editableSuccess'=>"function(event, val, form, data) { $.pjax.reload({container:'#order_ingredient_grid'});  }"
 	        					],
         					],
         				
@@ -253,7 +284,7 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 					[
 						['content'=>
 							Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success']) . ' '.
-							Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
+							Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh', 'id' => 'refresh_ingredients_grid', 'class'=>'btn btn-success'])
 						],
 					],
 				'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getIngredients()]),
@@ -294,14 +325,14 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 $this->registerJs(
     "$(document).on('click', '#add_ingredient_button', function() 
     	{
+    	var percentAllocated = getIngredientSum();
     	productType = $(\"#".Html::getInputId($model, 'Product_Category')."\").val();
 		$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("customer-order/ajax-add-ingredient")."',
-		data: {id: 'new', order_id: ".$model->id.", productType: productType},
+		data: {id: 'new', order_id: ".$model->id.", productType: productType, total: percentAllocated},
 		success: function (data, textStatus, jqXHR) 
 			{
-		
 			$('#activity-modal').modal();
 			$('.modal-body').html(data);
 			},
@@ -313,7 +344,14 @@ $this->registerJs(
 		});
 	});"
    );
-	
+
+
+$this->registerJs(
+    "$(document).on('click', '#refresh_ingredients_grid', function() 
+    	{
+    	$.pjax.reload({container:'#order_ingredient_grid'});
+		});"
+   );	
 
 
 $this->registerJs("
@@ -331,7 +369,6 @@ $('body').on('beforeSubmit', 'form#ingredient_add', function () {
           success: function (response) 
           		{
           		$('#activity-modal').modal('hide');
-          		//alert(form.attr('action'));
           		var url = '".yii\helpers\Url::toRoute("customer-order/update")."&id=".$model->id."';
           		$.pjax.reload({url: url, container:'#order_ingredient_grid'});
 				}
@@ -340,6 +377,8 @@ $('body').on('beforeSubmit', 'form#ingredient_add', function () {
 });
 ");	
 	
+
+
 	
 $this->registerJs(
     "$(document).on('click', '.order_ingredient_delete', function()  
@@ -352,7 +391,6 @@ $this->registerJs(
 			{
 			var url = '".yii\helpers\Url::toRoute("customer-order/update")."&id=".$model->id."';
           	$.pjax.reload({url: url, container:'#order_ingredient_grid'});
-           
 			},
         error: function (jqXHR, textStatus, errorThrown) 
         	{
