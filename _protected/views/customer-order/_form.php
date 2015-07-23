@@ -72,36 +72,30 @@ $(document).on('pjax:end', function() {
 ?>
 
 <div class="customer-orders-form">
-	<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); ?>
 		<div class='customer-orders-form-pricing'>
-			<fieldset id="w1_2">
-		    <div class='col-md-12'>
-		    	<label class="control-label col-md-4"></label>
-		    	<div class='col-md-10' >
-		    		<div class='col-md-4'><b>Contact:</b> <input type='text' id='customerdetails-contactname'  style='border: 0px  solid; width:170px' readonly></div>
-		    		<div class='col-md-4'><b>Phone: </b><input type='text' id='customerdetails-phone' readonly style='border: 0px  solid'> </div>
-		    		<div class='col-md-4'><b>Status:</b> <input type='text' id='customerdetails-status' style='border: 0px  solid' readonly> </div>
+			<fieldset>
+		    
+		    		<div class='order_info'>
+		    			<b>Owner:</b> <input class='order_info_input' type='text' id='customerdetails-contactname'  readonly>
+		    			<b>Phone: </b><input type='text' id='customerdetails-phone' readonly style='border: 0px  solid'> 
+		    		</div>
+		    		<div class='order_info'><b>Status:</b> <input type='text' id='customerdetails-status' style='border: 0px  solid' readonly> </div>
+		       		<div class='order_info'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly style='width: 350px' class='order_info_input'> </div>
+		    		<div class='order_info'><b>Address: </b><input type='text' id='customerdetails-address'  style='width: 350px' class='order_info_input' readonly></div>
+		    
+		
+		    	<div class='order_info' id='customerdetails-viewmore' style='display: none'>
+		    		<a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View More Details</a>
 		    	</div>
-		    	<label class="control-label col-md-2"></label>
-		    	<div class='col-md-10'>
-		    		<div class='col-md-10'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly style='border: 0px  solid; width: 500px'> </div>
-		    	</div>
-		    	<label class="control-label col-md-2"></label>
-		    	<div class='col-md-10'>
-		    		<div class='col-md-10' '><b>Address: </b><input type='text' id='customerdetails-address'  style='border: 0px  solid; width: 500px' readonly></div>
-		    	</div>
-		    	<label class="control-label col-md-2"></label>
-		    	<div class='col-md-10' id='customerdetails-viewmore' style='display: none'>
-		    		<div class='col-md-10'><a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View More Details</a></div>
-		    	</div>
-		    	<div class='col-md-12' style='height: 20px; width: 100%'></div>
+		    	<hr>
 		    	
 			</div>  	
 			</fieldset>
 		</div>
 		<div class='customer-orders-form-main'>
    		
-		    
+		 	<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); ?>
+   
 		    
 		<?php	
 		    //Customer Select options
