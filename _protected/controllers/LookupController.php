@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\lookup;
+use app\models\lookupSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -32,14 +33,13 @@ class LookupController extends Controller
      */
     public function actionIndex()
     {
-    	
+    	$searchModel = new lookupSearch();
+    	 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     	$this->view->params['menuItem'] = 'lookupItem';
-        $dataProvider = new ActiveDataProvider([
-            'query' => lookup::find(),
-        ]);
+
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider, 'searchModel' => $searchModel
         ]);
     }
 

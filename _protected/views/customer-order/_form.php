@@ -59,12 +59,33 @@ function getIngredientSum()
 	
 	return sum;
 }
+
+
+function updateOrderPricePerTonne()
+{
+	var sum = 0
+	$(\".pricePerTon\").each(function() 
+ 		{
+		if(!isNaN($(this).text()) && $(this).text().length!=0) 
+			{
+           	sum += parseFloat($(this).text());
+       		}
+		});
+	$(\"#".Html::getInputId($model, 'Price_pT')."\").val(sum);
+	
+	return sum;
+}
+
+
+
+
 ");
 
 
 $this->registerJs("
 $(document).on('pjax:end', function() {
    getIngredientSum();
+   updateOrderPricePerTonne();
     });
 ");
 
@@ -94,7 +115,7 @@ $(document).on('pjax:end', function() {
 		</div>
 		<div class='customer-orders-form-main'>
    		
-		 	<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); ?>
+		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); ?>
    
 		    
 		<?php	
@@ -186,7 +207,11 @@ $(document).on('pjax:end', function() {
 						]
 					]
 				]) ?><br>
-		<div class='customer_order_subheading'>Order Information</div>
+				
+				
+				
+		
+		<div class='customer_order_subheading'>Order Details</div>
 		
 		
 		
@@ -211,8 +236,10 @@ $(document).on('pjax:end', function() {
 						],
 					'Percent_ingredients' =>
 						[
-						'type' => FORM::INPUT_TEXT,
+						'type' => FORM::INPUT_HIDDEN,
 						'columnOptions'=>['colspan'=>2],
+						'label' => false,
+						'hidden' => true
 						]
 					],
 					
@@ -245,6 +272,14 @@ $(document).on('pjax:end', function() {
         				
         				
 					],
+					[
+			    		'attribute' => 'product.List_Price_pT_Base',
+			    		'hidden' => true,
+			    		 'contentOptions' => ['class' => 'pricePerTon'],
+
+			    	
+			    		'pageSummary' => True,
+			    	],
 			    	[
 			    	'class' => '\kartik\grid\ActionColumn',
 			    	'template' => '{delete}',
@@ -265,10 +300,10 @@ $(document).on('pjax:end', function() {
 			    	]
 		    	];
 		    
-		    echo "<A Href='#gridTop' />";
+		    echo "<A Href='#gridTop' /></A>";
 		    echo GridView::widget(
 				[
-				'id' => 'ingredients1234',
+				'id' => 'ingredients',
 				'panel'=>[
 		        		'type'=>GridView::TYPE_PRIMARY,
 		        		'heading'=>"Ingredients order (".$model->id.")",
@@ -302,7 +337,78 @@ $(document).on('pjax:end', function() {
 		    
 		    ?>
 		    
-		    
+		  <div class='customer_order_subheading'>Pricing Information</div>	
+		
+		<?= Form::widget(
+				[
+				'model'=>$model,
+				'form'=>$form,
+			
+				'columns'=>6,
+				'attributes' => 
+					[
+					'Price_pT' => 
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						'options' => ['readonly' => true],
+						],
+					'Price_production_pT' => 
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						],
+					'Price_transport_pT' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						],
+					'Price_Sub_Total' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						'options' => ['readonly' => true],
+						]
+					],
+					
+				]); ?>
+		
+		<div class='customer_order_subheading'>Discounts</div>	
+		
+			<?= Form::widget(
+				[
+				'model'=>$model,
+				'form'=>$form,
+				'columns'=>6,
+				'attributes' => 
+					[
+					'Discount_type' => 
+						[
+						'type' => FORM::INPUT_DROPDOWN_LIST,
+						'items' => Lookup::items("DISCOUNT_TYPE"),
+						'columnOptions'=>['colspan'=>2],
+						],
+					'Discount_pT' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						'options' => ['readonly' => true],
+						],
+					'Discount_Percent' => 
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						'options' => ['readonly' => true],
+						],
+					'Discount_notation' =>
+						[
+						'type' => FORM::INPUT_TEXTAREA,
+						'columnOptions'=>['colspan'=>6],
+						'options' => ['readonly' => true],
+						]
+					],
+					
+				]);	?>		  
 		    
 		    
 		    
@@ -395,6 +501,26 @@ $this->registerJs(
    	});"
    );
 	
+	
+$this->registerJs("
+	$('#".Html::getInputId($model, 'Discount_type')."').on('change', function()
+		{
+		if(this.value > 0)
+			{
+			$('#".Html::getInputId($model, 'Discount_pT')."').prop('readonly', false);
+			$('#".Html::getInputId($model, 'Discount_notation')."').prop('readonly', false);
+			}
+		});
+
+	$('#".Html::getInputId($model, 'Discount_pT')."').on('change', function()
+		{
+		$('#".Html::getInputId($model, 'Discount_Percent')."').val(
+			$('#".Html::getInputId($model, 'Discount_pT')."').val() / $('#".Html::getInputId($model, 'Price_Sub_Total')."').val());
+		});
+	
+	
+	
+	");
 	
 	?>
 	

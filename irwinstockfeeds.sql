@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2015 at 03:56 PM
+-- Generation Time: Jul 24, 2015 at 04:25 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1782,7 +1782,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Created_By` int(10) DEFAULT NULL,
   `Created_On` date NOT NULL,
   `Delivery_created` date DEFAULT NULL,
-  `Discount_` decimal(5,2) DEFAULT NULL,
+  `Discount_Percent` decimal(5,2) DEFAULT NULL,
   `Discount_pT` int(5) DEFAULT NULL,
   `Discount_pT_Base` int(5) DEFAULT NULL,
   `Discount_notation` varchar(200) DEFAULT NULL,
@@ -1834,7 +1834,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
 -- Dumping data for table `customer_orders`
 --
 
-INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_created`, `Discount_`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
+INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_created`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
 (206, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (207, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (208, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -1855,7 +1855,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=97 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1865,8 +1865,8 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (66, '2015-07-17', 3, '50', NULL, NULL, 206),
 (85, '2015-07-17', 3, '50', NULL, NULL, 206),
 (89, '2015-07-23', 2, '48', NULL, NULL, 209),
-(95, '2015-07-23', 3, '3', NULL, NULL, 209),
-(96, '2015-07-23', 2, '49', NULL, NULL, 209);
+(99, '2015-07-24', 10, '43', NULL, NULL, 209),
+(100, '2015-07-24', 15, '9', NULL, NULL, 209);
 
 -- --------------------------------------------------------
 
@@ -1901,7 +1901,7 @@ CREATE TABLE IF NOT EXISTS `lookup` (
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `lookup`
@@ -1934,7 +1934,14 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (24, 'Mix - Custom', 2, 'ORDER_CATEGORY', 2),
 (25, 'Mix - Standard', 3, 'ORDER_CATEGORY', 3),
 (26, 'Pellet', 4, 'ORDER_CATEGORY', 4),
-(27, 'Additive', 5, 'ORDER_CATEGORY', 5);
+(27, 'Additive', 5, 'ORDER_CATEGORY', 5),
+(28, 'None', 1, 'DISCOUNT_TYPE', 1),
+(29, 'Contract Price', 2, 'DISCOUNT_TYPE', 2),
+(30, 'Group Discount', 3, 'DISCOUNT_TYPE', 3),
+(31, 'Inferior Product', 4, 'DISCOUNT_TYPE', 4),
+(32, 'Price Matching', 5, 'DISCOUNT_TYPE', 5),
+(33, 'Volume Discount', 6, 'DISCOUNT_TYPE', 6),
+(34, 'Other', 7, 'DISCOUNT_TYPE', 7);
 
 -- --------------------------------------------------------
 

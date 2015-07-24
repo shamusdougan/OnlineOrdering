@@ -23,7 +23,7 @@ use Yii;
  * @property integer $Created_By
  * @property string $Created_On
  * @property string $Delivery_created
- * @property string $Discount_
+ * @property string $Discount_Percent
  * @property integer $Discount_pT
  * @property integer $Discount_pT_Base
  * @property string $Discount_notation
@@ -87,7 +87,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             [['Order_ID', 'Customer_id', 'Name', 'Created_On'], 'required'],
             [['Customer_id', 'Mix_Type', 'Qty_Tonnes', 'Billing_company', 'Billing_type', 'Created_By', 'Discount_pT', 'Discount_pT_Base', 'Discount_type', 'Feed_Days_Remaining', 'Feed_Type', 'Herd_Size', 'Modified_By', 'Order_notification', 'Owner', 'Price_Production', 'Price_Production_Base', 'Price_production_pT', 'Price_production_pT_Base', 'Price_Transport', 'Price_Transport_Base', 'Price_transport_pT', 'Price_transport_pT_Base', 'Process', 'Process_Stage', 'Product_Category', 'Second_Customer', 'Second_customer_Order_percent', 'Ship_To', 'Status', 'Storage_Unit', 'Submitted_Status', 'Submitted_Status_Description'], 'integer'],
             [['Date_Fulfilled', 'Date_Submitted', 'Created_On', 'Delivery_created', 'Load_Due', 'Modified_On', 'Requested_Delivery_by'], 'safe'],
-            [['Discount_', 'Feed_QOH_Tonnes', 'Feed_Rate_Kg_Day', 'Price_pT', 'Price_pT_Base', 'Price_Sub_Total', 'Price_Sub_Total_Base', 'Price_Total', 'Price_Total_Base', 'Price_Total_pT', 'Price_Total_pT_Base'], 'number'],
+            [['Feed_QOH_Tonnes', 'Feed_Rate_Kg_Day', 'Price_pT', 'Price_pT_Base', 'Price_Sub_Total', 'Price_Sub_Total_Base', 'Price_Total', 'Price_Total_Base', 'Price_Total_pT', 'Price_Total_pT_Base'], 'number'],
             [['Order_ID'], 'string', 'max' => 8],
             [['Name', 'Nearest_Town', 'Discount_notation'], 'string', 'max' => 200],
             [['Status_Reason'], 'string', 'max' => 50],
@@ -119,8 +119,8 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Created_By' => 'Created  By',
             'Created_On' => 'Created  On',
             'Delivery_created' => 'Delivery Created',
-            'Discount_' => 'Discount',
-            'Discount_pT' => 'Discount P T',
+            'Discount_Percent' => 'Discount',
+            'Discount_pT' => 'Discount Per Tonne',
             'Discount_pT_Base' => 'Discount P T  Base',
             'Discount_notation' => 'Discount Notation',
             'Discount_type' => 'Discount Type',
@@ -135,13 +135,13 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Order_instructions' => 'Order Instructions',
             'Order_notification' => 'Order Notification',
             'Owner' => 'Owner',
-            'Price_pT' => 'Price P T',
+            'Price_pT' => 'Base Price per Ton',
             'Price_pT_Base' => 'Price P T  Base',
-            'Price_Production' => 'Price  Production',
+            'Price_Production' => 'Add Production per Ton',
             'Price_Production_Base' => 'Price  Production  Base',
-            'Price_production_pT' => 'Price Production P T',
+            'Price_production_pT' => 'Add Production Price per Ton',
             'Price_production_pT_Base' => 'Price Production P T  Base',
-            'Price_Sub_Total' => 'Price  Sub  Total',
+            'Price_Sub_Total' => 'Price  Subtotal',
             'Price_Sub_Total_Base' => 'Price  Sub  Total  Base',
             'Price_Total' => 'Price  Total',
             'Price_Total_Base' => 'Price  Total  Base',
@@ -149,7 +149,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Price_Total_pT_Base' => 'Price  Total P T  Base',
             'Price_Transport' => 'Price  Transport',
             'Price_Transport_Base' => 'Price  Transport  Base',
-            'Price_transport_pT' => 'Price Transport P T',
+            'Price_transport_pT' => 'Transport Cost per Ton',
             'Price_transport_pT_Base' => 'Price Transport P T  Base',
             'Process' => 'Process',
             'Process_Stage' => 'Process  Stage',
