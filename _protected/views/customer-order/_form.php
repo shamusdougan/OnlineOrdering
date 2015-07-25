@@ -1,12 +1,12 @@
 <?php
-
+$debug = true;
 use yii\helpers\Html;
 
 use app\models\Lookup;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\widgets\Typeahead;
-use kartik\widgets\datePicker;
+use kartik\datecontrol\DateControl;
 use kartik\widgets\DepDrop;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
@@ -112,7 +112,7 @@ $(document).on('pjax:end', function() {
 		    	</div>
 		    	<hr>
 		    	
-			</div>  	
+
 			</fieldset>
 		</div>
 		<div class='customer-orders-form-main'>
@@ -121,6 +121,9 @@ $(document).on('pjax:end', function() {
    
 		    
 		<?php	
+		
+		
+		
 		    //Customer Select options
 		    echo Form::widget([
 		    	'model'=>$model,
@@ -167,20 +170,19 @@ $(document).on('pjax:end', function() {
 							'Requested_Delivery_by'=>
 								[
 								'type'=>Form::INPUT_WIDGET, 
-								'widgetClass' => '\kartik\widgets\DatePicker',
+								'widgetClass' => DateControl::classname(),
 								'options' => 
 									[
-									'type' => DatePicker::TYPE_COMPONENT_APPEND,
-									'options' => 
+									'type'=>DateControl::FORMAT_DATE,
+									//'type' => DatePicker::TYPE_COMPONENT_APPEND,
+									'options' =>
 										[
-										'placeholder' => 'Requested Delivery By'
-										],
-										'pluginOptions' => 
+										'pluginOptions' =>
 											[
-											'format' => "dd-M-yyyy",
-											'todayHighlight' => true,
 											'autoclose' => true,
+											
 											]
+										]
 									],
 								'label' => false,
 								'columnOptions'=>['colspan'=>6],
@@ -200,7 +202,7 @@ $(document).on('pjax:end', function() {
 										'depends'=>[Html::getInputId($model, 'Customer_id')],
 										'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details'),
 										'emptyMsg' => 'No Storage Available',
-										'initialize'=>false,
+										'initialize'=>true,
 										],
 									],
 								'columnOptions'=>['colspan'=>6],
@@ -302,7 +304,7 @@ $(document).on('pjax:end', function() {
 			    	]
 		    	];
 		    
-		    echo "<A Href='#gridTop' /></A>";
+		    echo "<A Href='#gridTop' ></A>";
 		    echo GridView::widget(
 				[
 				'id' => 'ingredients',
@@ -415,11 +417,22 @@ $(document).on('pjax:end', function() {
 		    
 		    
 		    
+		    <?php
+				if($debug)
+					{
+					echo $form->field($model, 'Order_ID')->textInput();	
+					}
+				else{
+					echo $form->field($model, 'Order_ID')->hiddenInput()->label(false) ;		
+					}
+			
+		    ?>
+		    
     
 
 		
 			<?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-		</div>
+
 	<?php ActiveForm::end(); ?>
 	
 <?php  
@@ -560,4 +573,8 @@ $this->registerJs("
 
 	<?php Modal::end(); ?>
 	
-	</div>
+</div>
+
+
+
+

@@ -70,8 +70,16 @@ use Yii;
  */
 class CustomerOrders extends \yii\db\ActiveRecord
 {
+	
+	const PLACEHOLDERID = 666;
+	const STATUS_ACTIVE = 1;
+	const STATUS_SUBMITTED = 2;
+	const STATUS_PROCESSING = 3;
+	const STATUS_DELIVERY = 4;
+	
     /**
      * @inheritdoc
+     * 
      */
     public static function tableName()
     {
@@ -84,7 +92,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Order_ID', 'Customer_id', 'Name', 'Created_On'], 'required'],
+            [['Customer_id', 'Name', 'Created_On'], 'required'],
             [['Customer_id', 'Mix_Type', 'Qty_Tonnes', 'Billing_company', 'Billing_type', 'Created_By', 'Discount_pT', 'Discount_pT_Base', 'Discount_type', 'Feed_Days_Remaining', 'Feed_Type', 'Herd_Size', 'Modified_By', 'Order_notification', 'Owner', 'Price_Production', 'Price_Production_Base', 'Price_production_pT', 'Price_production_pT_Base', 'Price_Transport', 'Price_Transport_Base', 'Price_transport_pT', 'Price_transport_pT_Base', 'Process', 'Process_Stage', 'Product_Category', 'Second_Customer', 'Second_customer_Order_percent', 'Ship_To', 'Status', 'Storage_Unit', 'Submitted_Status', 'Submitted_Status_Description'], 'integer'],
             [['Date_Fulfilled', 'Date_Submitted', 'Created_On', 'Delivery_created', 'Load_Due', 'Modified_On', 'Requested_Delivery_by'], 'safe'],
             [['Feed_QOH_Tonnes', 'Feed_Rate_Kg_Day', 'Price_pT', 'Price_pT_Base', 'Price_Sub_Total', 'Price_Sub_Total_Base', 'Price_Total', 'Price_Total_Base', 'Price_Total_pT', 'Price_Total_pT_Base'], 'number'],
@@ -119,7 +127,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Created_By' => 'Created  By',
             'Created_On' => 'Created  On',
             'Delivery_created' => 'Delivery Created',
-            'Discount_Percent' => 'Discount',
+            'Discount_Percent' => 'Discount %',
             'Discount_pT' => 'Discount Per Tonne',
             'Discount_pT_Base' => 'Discount P T  Base',
             'Discount_notation' => 'Discount Notation',
@@ -177,5 +185,30 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		return $this->hasMany(CustomerOrdersIngredients::className(), ['order_id' => 'id' ]);
 	}
 	
+	
+	public function getOrderNumber()
+	{
+		return "ORD".(3000 + $this->id);
+	}
+    
+   public function generateOrderName()
+   {
+   	return $this->client->Company_Name." ".Lookup::item($this->Product_Category, "ORDER_CATEGORY" )." ".$this->Qty_Tonnes."T";
+   }
+   
+   
+    public function beforeSave($insert)
+	{
+    if (parent::beforeSave($insert)) 
+    	{
+		$this->Name = $this->generateOrderName();
+		return true;
+    	} 
+    else 
+    	{
+        return false;
+    	}
+	}
+   
     
 }

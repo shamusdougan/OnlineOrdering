@@ -85,16 +85,17 @@ class CustomerOrderController extends Controller
     public function actionCreate()
     {
         $model = new customerOrders();
-		$model->Customer_id = '666';
-	        	$model->Order_ID = 'ORDXXXX';
-	        	$model->Name = "XXXXX";
-	        	$model->Created_On = Time();
-	        	if(!$model->save())
-	        		{
-	        		die("unable to create new order");
-	        		}
-	        	
-		 return $this->redirect(['update', 'id' => $model->id]);
+		$model->Customer_id = customerOrders::PLACEHOLDERID;
+    	$model->Name = "XXXXX";
+    	$model->Created_On = Date('Y-m-d');
+    	$model->Status = customerOrders::STATUS_SUBMITTED;
+    	if(!$model->save())
+    		{
+    		die("unable to create new order");
+        	}
+		$model->Order_ID = $model->getOrderNumber();
+		$model->save();
+		return $this->redirect(['update', 'id' => $model->id]);
         
 
         
@@ -145,9 +146,13 @@ class CustomerOrderController extends Controller
 				
 			}
 
-        else if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->Order_ID]);
-        } else {
+        else if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        		{
+        	
+        	
+            	return $this->redirect(['update', 'id' => $model->id]);
+        		} 
+        else {
         	
         	
         	
