@@ -355,10 +355,6 @@ $(document).on('pjax:end', function() {
 						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
 						'options' => ['readonly' => true],
-						'pluginOptions' => [
-							'prefix' => '$ ',
-							],
-
 						],
 					'Price_production_pT' => 
 						[
@@ -454,9 +450,9 @@ $this->registerJs(
 
 
 $this->registerJs(
-    "$(document).on('click', '#refresh_ingredients_grid', function() 
+    "$(document).on('click', \"#refresh_ingredients_grid\", function() 
     	{
-    	$.pjax.reload({container:'#order_ingredient_grid'});
+    	$.pjax.reload({container:\"#order_ingredient_grid\"});
 		});"
    );	
 
