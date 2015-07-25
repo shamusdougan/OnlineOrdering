@@ -336,4 +336,13 @@ return array (
       '@kartik/editable' => $vendorDir . '/kartik-v/yii2-editable',
     ),
   ),
+  'kartik-v/yii2-money' => 
+  array (
+    'name' => 'kartik-v/yii2-money',
+    'version' => '1.2.1.0',
+    'alias' => 
+    array (
+      '@kartik/money' => $vendorDir . '/kartik-v/yii2-money',
+    ),
+  ),
 );

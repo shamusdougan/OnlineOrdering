@@ -71,6 +71,8 @@ function updateOrderPricePerTonne()
            	sum += parseFloat($(this).text());
        		}
 		});
+		
+	$(\"#".Html::getInputId($model, 'Price_pT')."-disp\").maskMoney('mask',sum);	
 	$(\"#".Html::getInputId($model, 'Price_pT')."\").val(sum);
 	
 	return sum;
@@ -349,9 +351,14 @@ $(document).on('pjax:end', function() {
 					[
 					'Price_pT' => 
 						[
-						'type' => FORM::INPUT_TEXT,
+						'type'=>Form::INPUT_WIDGET, 
+						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
 						'options' => ['readonly' => true],
+						'pluginOptions' => [
+							'prefix' => '$ ',
+							],
+
 						],
 					'Price_production_pT' => 
 						[
@@ -501,22 +508,34 @@ $this->registerJs(
    	});"
    );
 	
-	
+//activate the discount fields when a discount type is selected	
 $this->registerJs("
 	$('#".Html::getInputId($model, 'Discount_type')."').on('change', function()
 		{
-		if(this.value > 0)
+		if(this.value > 1)
 			{
 			$('#".Html::getInputId($model, 'Discount_pT')."').prop('readonly', false);
 			$('#".Html::getInputId($model, 'Discount_notation')."').prop('readonly', false);
 			}
+		else{
+			$('#".Html::getInputId($model, 'Discount_pT')."').prop('readonly', true);
+			$('#".Html::getInputId($model, 'Discount_notation')."').prop('readonly', true);
+			
+			}
 		});
+	");
+	
+//add the calculation function to the form
+$this->registerJs("
 
-	$('#".Html::getInputId($model, 'Discount_pT')."').on('change', function()
+	function calcPriceSubTotal()
 		{
-		$('#".Html::getInputId($model, 'Discount_Percent')."').val(
-			$('#".Html::getInputId($model, 'Discount_pT')."').val() / $('#".Html::getInputId($model, 'Price_Sub_Total')."').val());
-		});
+		var basePrice = $('#".Html::getInputId($model, 'Price_pT')."').val();
+		var productionPrice = $('#".Html::getInputId($model, 'Price_production_pT')."').val();
+		var transportPrice = $('#".Html::getInputId($model, 'Price_transport_pT')."').val();
+		
+		};
+	
 	
 	
 	

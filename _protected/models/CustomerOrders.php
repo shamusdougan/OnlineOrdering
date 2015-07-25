@@ -139,7 +139,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Price_pT_Base' => 'Price P T  Base',
             'Price_Production' => 'Add Production per Ton',
             'Price_Production_Base' => 'Price  Production  Base',
-            'Price_production_pT' => 'Add Production Price per Ton',
+            'Price_production_pT' => 'Add Price per Ton',
             'Price_production_pT_Base' => 'Price Production P T  Base',
             'Price_Sub_Total' => 'Price  Subtotal',
             'Price_Sub_Total_Base' => 'Price  Sub  Total  Base',
