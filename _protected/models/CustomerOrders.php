@@ -144,7 +144,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Order_notification' => 'Order Notification',
             'Owner' => 'Owner',
             'Price_pT' => 'Base Price per Ton',
-            'Price_pT_Base' => 'Price P T  Base',
+            'Price_pT_Base' => 'Price per Ton  Base',
             'Price_Production' => 'Add Production per Ton',
             'Price_Production_Base' => 'Price  Production  Base',
             'Price_production_pT' => 'Add Price per Ton',
@@ -163,7 +163,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Process_Stage' => 'Process  Stage',
             'Product_Category' => 'Product  Category',
             'Product_Name' => 'Product  Name',
-            'Requested_Delivery_by' => 'Requested  Delivery By',
+            'Requested_Delivery_by' => 'Requested Delivery By',
             'Second_Customer' => 'Second  Customer',
             'Second_customer_Order_percent' => 'Second Customer  Order Percent',
             'Ship_To' => 'Ship  To',
@@ -196,12 +196,33 @@ class CustomerOrders extends \yii\db\ActiveRecord
    	return $this->client->Company_Name." ".Lookup::item($this->Product_Category, "ORDER_CATEGORY" )." ".$this->Qty_Tonnes."T";
    }
    
+   public function calculatePricePT()
+   {
+   	
+		//First calculate the price per ton, which is the sum of the ingedients->product price per tom
+   		$sum = 0;
+		foreach($this->ingredients as $ingredientItem)
+			{
+			$sum += $ingredientItem->weightedCost;
+			}
+		$this->Price_pT_Base = $sum;
+		
+		//calculate the overall price per tone, added prodcution cost + transport cost
+		$this->Price_Sub_Total = $this->Price_pT_Base + $this->Price_production_pT + $this->Price_transport_pT;
+		
+		
+   }
+   
+   
+   
+   
    
     public function beforeSave($insert)
 	{
     if (parent::beforeSave($insert)) 
     	{
 		$this->Name = $this->generateOrderName();
+		$this->calculatePricePT();
 		return true;
     	} 
     else 

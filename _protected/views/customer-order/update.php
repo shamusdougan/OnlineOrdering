@@ -1,11 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\CustomerOrders;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
 
-$this->title = 'Customer Orders: ' . ' ' . $model->Name;
+$this->title = 'Customer Orders: ' . ' ' . ($model->Customer_id ==  CustomerOrders::PLACEHOLDERID) ? "New Order" : $model->Name;
 $this->params['breadcrumbs'][] = ['label' => 'Customer Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update', 'id' => $model->Order_ID]];
 

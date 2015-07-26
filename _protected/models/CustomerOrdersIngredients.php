@@ -67,4 +67,9 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
 		return $this->hasOne(Product::className(), ['id' => 'ingredient_id']);
 	}
     
+	
+	public function getWeightedCost()
+	{
+		return ($this->ingredient_percent /100) *$this->product->Retail_Price_t;
+	}
 }

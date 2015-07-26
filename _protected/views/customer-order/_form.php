@@ -7,6 +7,7 @@ use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use kartik\widgets\Typeahead;
 use kartik\datecontrol\DateControl;
+use kartik\widgets\datePicker;
 use kartik\widgets\DepDrop;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
@@ -60,22 +61,32 @@ function getIngredientSum()
 	return sum;
 }
 
-
-function updateOrderPricePerTonne()
+function getIngredientWeightedCost()
 {
-	var sum = 0
-	$(\".pricePerTon\").each(function() 
+	var weightedCost = 0
+	$(\".weightedCost\").each(function() 
  		{
 		if(!isNaN($(this).text()) && $(this).text().length!=0) 
 			{
-           	sum += parseFloat($(this).text());
+           	weightedCost += parseFloat($(this).text());
        		}
 		});
-		
-	$(\"#".Html::getInputId($model, 'Price_pT')."-disp\").maskMoney('mask',sum);	
-	$(\"#".Html::getInputId($model, 'Price_pT')."\").val(sum);
+	$(\"#".Html::getInputId($model, 'Price_pT_Base')."-disp\").maskMoney('mask',weightedCost);	
+	$(\"#".Html::getInputId($model, 'Price_pT_Base')."\").val(weightedCost);
 	
-	return sum;
+	return weightedCost;
+}
+
+function updateOrderPricePerTonne()
+{
+	
+	var weightedCost = getIngredientWeightedCost();
+	var productionCost = $(\"#".Html::getInputId($model, 'Price_production_pT')."\").val();
+	var transportCost = $(\"#".Html::getInputId($model, 'Price_transport_pT')."\").val();
+	var basePricePerTon = weightedCost + productionCost + transportCost;
+	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val(basePricePerTon);
+	
+	return basePricePerTon;
 }
 
 
@@ -157,57 +168,49 @@ $(document).on('pjax:end', function() {
 				'model'=>$model,
 				'form'=>$form,
 			
-				'columns'=>1,
-				'attributes'=>
-					[
-					'Delivery Info' =>
-						[  
-						'label' => 'Delivery Info',
-						'labelSpan' => 2,
-						'columns' => 10,
-						'attributes' =>
-							[    
-							'Requested_Delivery_by'=>
-								[
-								'type'=>Form::INPUT_WIDGET, 
-								'widgetClass' => DateControl::classname(),
-								'options' => 
-									[
-									'type'=>DateControl::FORMAT_DATE,
-									//'type' => DatePicker::TYPE_COMPONENT_APPEND,
-									'options' =>
-										[
-										'pluginOptions' =>
-											[
-											'autoclose' => true,
-											
-											]
-										]
-									],
-								'label' => false,
-								'columnOptions'=>['colspan'=>6],
+				'columns'=>2,
+				'attributes' =>
+					[    
+					'Requested_Delivery_by'=>
+						[
+						'type'=>Form::INPUT_WIDGET, 
+						'widgetClass' => DateControl::classname(),
+						'options' => 
+							[
+							'type'=>DateControl::FORMAT_DATE,
 							
-								],
-							'Storage_Unit' => 
+							'options' =>
 								[
-								'type' => FORM::INPUT_WIDGET,
-								'widgetClass' => DepDrop::classname(), 
-								'options'=>[
-									'options' =>
-										[
-										'placeholder'=>'Select Storage Location',
-										],
-									'pluginOptions'=>
-										[
-										'depends'=>[Html::getInputId($model, 'Customer_id')],
-										'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details'),
-										'emptyMsg' => 'No Storage Available',
-										'initialize'=>true,
-										],
-									],
-								'columnOptions'=>['colspan'=>6],
+								'type' => DatePicker::TYPE_COMPONENT_APPEND,
+								//'placeholder' => "Requested Delivery Date...",
+								'pluginOptions' =>
+									[
+									'autoclose' => true,
+									'todayHighlight' => true,
+									'startDate' => date("d M Y"),
+									]
 								]
-							]
+							],
+
+					
+						],
+					'Storage_Unit' => 
+						[
+						'type' => FORM::INPUT_WIDGET,
+						'widgetClass' => DepDrop::classname(), 
+						'options'=>[
+							'options' =>
+								[
+								'placeholder'=>'Select Storage Location',
+								],
+							'pluginOptions'=>
+								[
+								'depends'=>[Html::getInputId($model, 'Customer_id')],
+								'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details'),
+								'emptyMsg' => 'No Storage Available',
+								'initialize'=>true,
+								],
+							],
 						]
 					]
 				]) ?><br>
@@ -278,12 +281,17 @@ $(document).on('pjax:end', function() {
 					],
 					[
 			    		'attribute' => 'product.List_Price_pT_Base',
-			    		'hidden' => true,
+			    		//'hidden' => true,
 			    		 'contentOptions' => ['class' => 'pricePerTon'],
 
 			    	
 			    		'pageSummary' => True,
 			    	],
+					[
+						'attribute' => 'WeightedCost',
+						'contentOptions' => ['class' => 'weightedCost'],
+						'pageSummary' => True,
+					],
 			    	[
 			    	'class' => '\kartik\grid\ActionColumn',
 			    	'template' => '{delete}',
@@ -351,7 +359,7 @@ $(document).on('pjax:end', function() {
 				'columns'=>6,
 				'attributes' => 
 					[
-					'Price_pT' => 
+					'Price_pT_Base' => 
 						[
 						'type'=>Form::INPUT_WIDGET, 
 						'widgetClass' => '\kartik\money\MaskMoney',
@@ -360,17 +368,20 @@ $(document).on('pjax:end', function() {
 						],
 					'Price_production_pT' => 
 						[
-						'type' => FORM::INPUT_TEXT,
+						'type'=>Form::INPUT_WIDGET, 
+						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
 						],
 					'Price_transport_pT' =>
 						[
-						'type' => FORM::INPUT_TEXT,
+						'type'=>Form::INPUT_WIDGET, 
+						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
 						],
 					'Price_Sub_Total' =>
 						[
-						'type' => FORM::INPUT_TEXT,
+						'type'=>Form::INPUT_WIDGET, 
+						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
 						'options' => ['readonly' => true],
 						]
