@@ -6,8 +6,15 @@ use app\models\CustomerOrders;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
+if($model->Customer_id ==  CustomerOrders::PLACEHOLDERID)
+	{
+		$title = "New Order";
+	}
+else{
+	$title = $model->Name;
+}
 
-$this->title = 'Customer Orders: ' . ' ' . ($model->Customer_id ==  CustomerOrders::PLACEHOLDERID) ? "New Order" : $model->Name;
+$this->title = 'Customer Orders: ' . ' ' . $title;
 $this->params['breadcrumbs'][] = ['label' => 'Customer Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update', 'id' => $model->Order_ID]];
 
