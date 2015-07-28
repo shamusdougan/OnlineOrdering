@@ -61,31 +61,60 @@ function getIngredientWeightedCost()
 	return weightedCost;
 }
 
-function updateOrderPricePerTonne()
+function updateOrderCosts()
 {
 	
 	var weightedCost = getIngredientWeightedCost();
 	var productionCost = $(\"#".Html::getInputId($model, 'Price_production_pT')."\").val();
 	var transportCost = $(\"#".Html::getInputId($model, 'Price_transport_pT')."\").val();
-	var basePricePerTon = weightedCost + parseFloat(productionCost) + parseFloat(transportCost);
+	var basePricePerTone = $(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val();
+	var baseDiscountPerTonne = $(\"#".Html::getInputId($model, 'Discount_pT')."\").val();
+	if(!isNaN(productionCost) && productionCost.length!=0) 
+		{
+		productionCost = parseFloat(productionCost);
+		}
+	else{
+		productionCost = 0;
+		}
+		
+	if(!isNaN(transportCost) && transportCost.length!=0) 
+		{
+		transportCost = parseFloat(transportCost);
+		}
+	else{
+		transportCost = 0;
+		}
+	
+	if(!isNaN(basePricePerTone) && basePricePerTone.length!=0) 
+		{
+		basePricePerTone = parseFloat(basePricePerTone);
+		}
+	else{
+		basePricePerTone = 0;
+		}
+		
+	if(!isNaN(baseDiscountPerTonne) && baseDiscountPerTonne.length!=0) 
+		{
+		baseDiscountPerTonne = parseFloat(baseDiscountPerTonne);
+		}
+	else{
+		baseDiscountPerTonne = 0;
+		}
+	
+	
+	var basePricePerTon = weightedCost + (productionCost) + (transportCost);
+	var discountPercent = 100 * (baseDiscountPerTonne / basePricePerTone);
+	//alert(weightedCost + '+' + productionCost + '+' + transportCost + '=' + basePricePerTon);
+	alert(discountPercent + '= 100 * (' + baseDiscountPerTonne + ' / ' + basePricePerTon +')');
 	
 	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val(basePricePerTon);
 	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."-disp\").maskMoney('mask',basePricePerTon);	
+	$(\"#".Html::getInputId($model, 'Discount_Percent')."\").val(discountPercent.toFixed(2));
 	
 	return basePricePerTon;
 }
 
-function updateDiscountPercent()
-{
-	
-	var basePricePerTone = $(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val();
-	var baseDiscountPerTonne = $(\"#".Html::getInputId($model, 'Discount_pT')."\").val();
 
-	var discountPercent = 100 * (parseFloat(baseDiscountPerTonne) / parseFloat(basePricePerTone));
-
-	$(\"#".Html::getInputId($model, 'Discount_Percent')."\").val(discountPercent.toFixed(2));
-	
-}
 
 
 ");
@@ -214,6 +243,8 @@ $this->registerJs("
 			}
 		else{
 			$('#".Html::getInputId($model, 'Discount_pT')."').prop('readonly', true);
+			$(\"#".Html::getInputId($model, 'Discount_pT')."\").val(0);
+			$(\"#".Html::getInputId($model, 'Discount_Percent')."\").val(0);
 			$('#".Html::getInputId($model, 'Discount_notation')."').prop('readonly', true);
 			
 			}
@@ -224,7 +255,7 @@ $this->registerJs("
 $this->registerJs("
 $(document).on('pjax:end', function() {
    getIngredientSum();
-   updateOrderPricePerTonne();
+   updateOrderCosts();
     });
 ");
 
@@ -233,21 +264,21 @@ $(document).on('pjax:end', function() {
 $this->registerJs("
 	$('#".Html::getInputId($model, 'Price_production_pT')."').on('change', function()
 		{
-			updateOrderPricePerTonne();
+			updateOrderCosts();
 		});
 	$('#".Html::getInputId($model, 'Price_transport_pT')."').on('change', function()
 		{
-			updateOrderPricePerTonne();
+			updateOrderCosts();
 		});	
 
 	$('#".Html::getInputId($model, 'Discount_pT')."').on('change', function()
 		{
-			updateDiscountPercent();
+			updateOrderCosts();
 		});	
 	
 	$('#".Html::getInputId($model, 'Price_Sub_Total')."').on('change', function()
 		{
-			updateDiscountPercent();
+			updateOrderCosts();
 		});	
 
 
@@ -572,7 +603,7 @@ $this->registerJs("
 						[
 						'type' => FORM::INPUT_TEXTAREA,
 						'columnOptions'=>['colspan'=>6],
-						'options' => ['readonly' => true],
+						'options' => ['readonly' => ($model->Discount_type > 1 ? False : True)],
 						]
 					],
 					

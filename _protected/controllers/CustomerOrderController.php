@@ -148,7 +148,8 @@ class CustomerOrderController extends Controller
 
         else if ($model->load(Yii::$app->request->post()) && $model->save()) 
         		{
-        	
+        		//print_r(Yii::$app->request->post());
+        		//print_r($model->getErrors());
         	
             	return $this->redirect(['update', 'id' => $model->id]);
         		} 
