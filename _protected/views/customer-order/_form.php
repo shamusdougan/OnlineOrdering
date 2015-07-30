@@ -1,5 +1,5 @@
 <?php
-$debug = true;
+$debug = false;
 use yii\helpers\Html;
 
 use app\models\Lookup;
@@ -69,6 +69,8 @@ function updateOrderCosts()
 	var transportCost = $(\"#".Html::getInputId($model, 'Price_transport_pT')."\").val();
 	var basePricePerTone = $(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val();
 	var baseDiscountPerTonne = $(\"#".Html::getInputId($model, 'Discount_pT')."\").val();
+	var OrderQty =  $(\"#".Html::getInputId($model, 'Qty_Tonnes')."\").val();
+	
 	if(!isNaN(productionCost) && productionCost.length!=0) 
 		{
 		productionCost = parseFloat(productionCost);
@@ -101,22 +103,79 @@ function updateOrderCosts()
 		baseDiscountPerTonne = 0;
 		}
 	
+	if(!isNaN(OrderQty) && OrderQty.length!=0) 
+		{
+		OrderQty = parseFloat(OrderQty);
+		}
+	else{
+		OrderQty = 0;
+		}
+	
+	
 	
 	var basePricePerTon = weightedCost + (productionCost) + (transportCost);
-	var discountPercent = 100 * (baseDiscountPerTonne / basePricePerTone);
+	if(basePricePerTone == 0)
+		{
+		var discountPercent = 0;
+		}
+	else{
+		var discountPercent = 100 * (baseDiscountPerTonne / basePricePerTone);
+		}
+	
+	var totalPricePerTon = basePricePerTon - baseDiscountPerTonne;
 	//alert(weightedCost + '+' + productionCost + '+' + transportCost + '=' + basePricePerTon);
-	alert(discountPercent + '= 100 * (' + baseDiscountPerTonne + ' / ' + basePricePerTon +')');
+	//alert(discountPercent + '= 100 * (' + baseDiscountPerTonne + ' / ' + basePricePerTon +')');
 	
 	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val(basePricePerTon);
 	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."-disp\").maskMoney('mask',basePricePerTon);	
 	$(\"#".Html::getInputId($model, 'Discount_Percent')."\").val(discountPercent.toFixed(2));
+	
+	
+	$(\"#orderdetails-basePricePT\").val(weightedCost.toFixed(2));
+	$(\"#orderdetails-productionPricePT\").val(productionCost.toFixed(2));
+	$(\"#orderdetails-transportPricePT\").val(transportCost.toFixed(2));
+	$(\"#orderdetails-discountPricePT\").val(baseDiscountPerTonne.toFixed(2) + ' (' + discountPercent.toFixed(2) + '%)');
+	$(\"#orderdetails-subPricePT\").val(totalPricePerTon.toFixed(2));
+	
+	var totalOrderCost = OrderQty * totalPricePerTon;
+	$(\"#orderdetails-totalPrice\").val(totalOrderCost.toFixed(2));
+		    		
+		    		
+		
+		    		
 	
 	return basePricePerTon;
 }
 
 
 
-
+function updateOrderDetails()
+{
+	var orderStatus = $(\"#".Html::getInputId($model, 'Status')."\").val();
+	var orderCreatedBy = $(\"#".Html::getInputId($model, 'Created_By')."\").val();
+	
+	$('#orderdetails-status').val('".Lookup::item($model->Status, "ORDER_STATUS")."');
+	$('#orderdetails-createdby').val('".$model->createdByUser->fullname."');
+	
+	 $.ajax({
+        url: '".yii\helpers\Url::toRoute("customer-order/ajax-company-details")."',
+        dataType: 'json',
+        method: 'GET',
+        data: {id: $('#customerorders-customer_id').val()},
+        success: function (data, textStatus, jqXHR) {
+           	$('#customerdetails-address').val(data.address);
+           	$('#customerdetails-nearestTown').val(data.nearestTown);
+           	$('#customerdetails-viewmore').show();
+           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/view?id=")."' + data.id);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('An error occured!');
+            alert('Error in ajax request retriving customer details' );
+        }
+    });
+	
+	
+}
 ");
 
 /**********************************************************
@@ -138,25 +197,7 @@ $this->registerJs(
 
 //This handles the change of customer details
 $this->registerJs("$('#customerorders-customer_id').on('change',function(){
-    $.ajax({
-        url: '".yii\helpers\Url::toRoute("customer-order/ajax-company-details")."',
-        dataType: 'json',
-        method: 'GET',
-        data: {id: $(this).val()},
-        success: function (data, textStatus, jqXHR) {
-            $('#customerdetails-contactname').val(data.contact);
-           	$('#customerdetails-phone').val(data.number);
-           	$('#customerdetails-status').val(data.status);
-           	$('#customerdetails-address').val(data.address);
-           	$('#customerdetails-nearestTown').val(data.nearestTown);
-           	$('#customerdetails-viewmore').show();
-           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/view?id=")."' + data.id);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log('An error occured!');
-            alert('Error in ajax request retriving customer details' );
-        }
-    });
+	updateOrderDetails();
 });"); 
 
 //Action on adding an ingredient
@@ -256,6 +297,7 @@ $this->registerJs("
 $(document).on('pjax:end', function() {
    getIngredientSum();
    updateOrderCosts();
+   updateOrderDetails();
     });
 ");
 
@@ -280,6 +322,16 @@ $this->registerJs("
 		{
 			updateOrderCosts();
 		});	
+");
+
+//Load the initial order data to the right hand Side
+$this->registerJs("
+
+$( document ).ready(function() {
+    updateOrderDetails();
+    updateOrderCosts()
+});
+
 
 
 
@@ -293,25 +345,54 @@ $this->registerJs("
 			<fieldset>
 		    
 		    		<div class='order_info'>
-		    			<b>Owner:</b> <input class='order_info_input' type='text' id='customerdetails-contactname'  readonly>
-		    			<b>Phone: </b><input type='text' id='customerdetails-phone' readonly style='border: 0px  solid'> 
+		    			<b>Order Status:</b> <input type='text' id='orderdetails-status' class='infoInput' readonly> 
+		    			<b>Created By: </b><input type='text' id='orderdetails-createdby' readonly class='infoInput'> 
 		    		</div>
-		    		<div class='order_info'><b>Status:</b> <input type='text' id='customerdetails-status' style='border: 0px  solid' readonly> </div>
-		       		<div class='order_info'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly style='width: 350px' class='order_info_input'> </div>
-		    		<div class='order_info'><b>Address: </b><input type='text' id='customerdetails-address'  style='width: 350px' class='order_info_input' readonly></div>
+		       		<div class='order_info'><b>Nearest Town:</b> <input type='text' id='customerdetails-nearestTown' readonly class='infoInputLarge'> </div>
+		    		<div class='order_info'><b>Address: </b><input type='text' id='customerdetails-address'  class='infoInputLarge' readonly></div>
 		    
 		
 		    	<div class='order_info' id='customerdetails-viewmore' style='display: none'>
-		    		<a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View More Details</a>
+		    		<a id='customerdetails-readmorelink' href='<?php echo yii\helpers\Url::toRoute("client/view?id=") ?>' target="_blank">View Customer Details</a>
 		    	</div>
 		    	<hr>
-		    	
-
+		    	<p>Order Pricing Details</p>
+		    	<table>
+		    		<tr>
+		    			<td width='200px'><b>Base Price P/T:</b></td>
+		    			<td>$<input type='text' style='text-align: right;' id='orderdetails-basePricePT' class='infoInput' readonly></td>
+		    		</tr>
+		    		<tr>
+		    			<td width='150px'><b>Production Price P/T:</b></td>
+		    			<td>$<input type='text' style='text-align: right;' id='orderdetails-productionPricePT' class='infoInput' readonly></td>
+		    		</tr>
+		    		<tr>
+		    			<td width='150px'><b>Transport Price P/T:</b></td>
+		    			<td>$<input type='text' style='text-align: right;' id='orderdetails-transportPricePT' class='infoInput' readonly></td>
+		    		</tr>
+		    			<tr>
+		    			<td width='150px'><b>Discount Price P/T:</b></td>
+		    			<td>-$<input type='text' style='text-align: right;' id='orderdetails-discountPricePT' class='infoInput' readonly></td>
+		    		</tr>
+		   			<tr>
+		    			<td width='150px'><b>Overall Price P/T:</b></td>
+		    			<td style='border-top: 1px solid ' >$<input type='text'  style='text-align: right;' id='orderdetails-subPricePT' class='infoInput' readonly></td>
+		    		</tr>
+		    	</table>
+		    	<hr>
+		    	<table>
+		    		<tr>
+		    			<td width='200px'><b>Total Order Value: </b></td>
+		    			<td>$<input type='text'  style='text-align: right;' id='orderdetails-totalPrice' class='infoInput' readonly></td>
+		    		</tr>
+		    	</table>
+		
+				
 			</fieldset>
 		</div>
 		<div class='customer-orders-form-main'>
    		
-		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL]); ?>
+		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-form']); ?>
    
 		    
 		<?php	
@@ -394,7 +475,14 @@ $this->registerJs("
 								'initialize'=>true,
 								],
 							],
-						]
+						],
+					'Order_instructions' =>
+						[
+						'type' => FORM::INPUT_TEXTAREA,
+						'columnOptions'=>['colspan'=>2],
+					
+						
+						],
 					]
 				]) ?><br>
 				
@@ -615,9 +703,13 @@ $this->registerJs("
 				if($debug)
 					{
 					echo $form->field($model, 'Order_ID')->textInput();	
+					echo $form->field($model, 'Status')->textInput();	
+					echo $form->field($model, 'Created_By')->textInput();	
 					}
 				else{
-					echo $form->field($model, 'Order_ID')->hiddenInput()->label(false) ;		
+					echo $form->field($model, 'Order_ID')->hiddenInput()->label(false) ;
+					echo $form->field($model, 'Status')->hiddenInput()->label(false);	
+					echo $form->field($model, 'Created_By')->hiddenInput()->label(false);		
 					}
 			
 		    ?>

@@ -59,9 +59,13 @@ class CustomerOrderController extends Controller
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> ['customer-order/create']];
+		
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
     }
 
@@ -84,10 +88,11 @@ class CustomerOrderController extends Controller
      */
     public function actionCreate()
     {
-        $model = new customerOrders();
+        $model = new customerOrders(['scenario' => 'createDummy']);
 		$model->Customer_id = customerOrders::PLACEHOLDERID;
     	$model->Name = "XXXXX";
     	$model->Created_On = Date('Y-m-d');
+    	$model->Created_By = Yii::$app->user->identity->id;
     	$model->Status = customerOrders::STATUS_SUBMITTED;
     	if(!$model->save())
     		{
@@ -151,7 +156,7 @@ class CustomerOrderController extends Controller
         		//print_r(Yii::$app->request->post());
         		//print_r($model->getErrors());
         	
-            	return $this->redirect(['update', 'id' => $model->id]);
+            	return $this->redirect(['index']);
         		} 
         else {
         	
@@ -159,7 +164,7 @@ class CustomerOrderController extends Controller
         	
         	
         	
-        	
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'linkOptions' => ['data-method'=>'post'], 'action'=> 'submit'];
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
@@ -167,7 +172,7 @@ class CustomerOrderController extends Controller
         				->all();
         	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
             return $this->render('update', [
-                'model' => $model, 'clientList' => $clientList
+                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems
             ]);
         }
     }
@@ -231,11 +236,18 @@ class CustomerOrderController extends Controller
 				
 				
 				$client =  Clients::findOne(['id'=>$clientID]);
-				
-				foreach($client->storage as $storage)
+				if($client)
 					{
-					$out[] = array('id' => $storage->id, 'name' => $storage->Description);
+					foreach($client->storage as $storage)
+						{
+						$out[] = array('id' => $storage->id, 'name' => $storage->Description);
+						}
+					echo Json::encode(['output'=>$out, 'selected'=>$client->storage[0]->id]);
 					}
+				else{
+					echo Json::encode(['output'=>$out]);
+				}
+				
 				
 				
 				
@@ -246,7 +258,7 @@ class CustomerOrderController extends Controller
 				//    ['id'=>'<sub-cat-id-1>', 'name'=>'<sub-cat-name1>'],
 				//    ['id'=>'<sub-cat_id_2>', 'name'=>'<sub-cat-name2>']
 				// ]
-				echo Json::encode(['output'=>$out, 'selected'=>$client->storage[0]->id]);
+			
 				return;
 			}
 		}

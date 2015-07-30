@@ -36,6 +36,8 @@ body {
     font-style: italic;
 }
 
+
+
 /*-- Sorting --*/
 
 /* add sorting icons to gridview sort links */
@@ -267,9 +269,141 @@ hr.article-devider {
 	
 }
 
+.infoInput
+{
+	border: 0px  solid;
+	width: 140px;
+}
+
+.infoInputLarge
+{
+	border: 0px  solid;
+	width: 300px;
+}
 
 .order_info_input
 {
 	border: 0px  solid; 
 	width:170px
 }
+
+
+
+
+
+.sapFieldSet
+{
+	width: 100%;
+	height: 90px;
+	border: 1px solid;
+	padding-left: 10px;
+}
+
+.sapFieldSetLegend
+{
+	margin-left: 0px;
+	padding-left: 5px;
+	font-size:1em;
+	width: 60px;
+	position: relative;
+	top: 10px;
+	border: 0px;
+}
+	
+.sapTitleBar{
+	width: 1280px;
+	font-size: 3em;
+	
+}
+
+.sapActionBar{
+	width: 1278px;
+	height: 50px;
+	border: 1px solid;
+
+	
+}
+
+
+.sapContent{
+	width: 1280px;
+	}
+	
+.sap_buttonRow{
+	width: 400px;
+	height: 40px;
+	
+	float: left;
+	
+
+	
+}
+	
+.sap_button{
+	width: 50px;
+	height: 40px;
+	float: left;
+	
+	}
+	
+.sap_button a{
+	color: #000000;
+	text-decoration: none;
+}
+	
+.sap_buttonText{
+	text-align: center;
+	}
+
+	
+.sap_icon {
+	width: 32px;
+	height: 32px;
+	margin-left:auto;
+ 	margin-right:auto;
+	}
+	
+.sap_icon:hover {
+	background-position:0px -32px;
+}
+
+.edit{
+	background-image:url('/images/icons/icon-32-edit.png');
+	}
+	
+.list{
+	background-image:url('/images/icons/icon-32-list.png');
+	}
+
+.alert{
+	background-image:url('/images/icons/icon-32-alert.png');
+}
+
+.viewButton{
+	background-image:url('/images/icons/icon-32-view.png');
+}
+	
+.cancel{
+	background-image:url('/images/icons/icon-32-cancel.png');
+	}
+	
+.save{
+	background-image:url('/images/icons/icon-32-save.png');
+	}
+
+.new{
+	background-image:url('/images/icons/icon-32-new.png');
+	}
+
+.export{
+	background-image:url('/images/icons/icon-32-export.png');
+	}
+	
+.delete{
+	background-image:url('/images/icons/icon-32-delete.png');
+	}
+	
+.back{
+	background-image:url('/images/icons/icon-32-back.png');
+	}
+

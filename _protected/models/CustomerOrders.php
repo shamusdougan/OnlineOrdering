@@ -92,7 +92,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Customer_id', 'Name', 'Created_On'], 'required'],
+            [['Customer_id', 'Name', 'Created_On', 'Qty_Tonnes', 'Requested_Delivery_by', 'Storage_Unit'], 'required'],
             [['Customer_id', 'Mix_Type', 'Qty_Tonnes', 'Billing_company', 'Billing_type', 'Created_By', 'Discount_pT', 'Discount_pT_Base', 'Discount_type', 'Feed_Days_Remaining', 'Feed_Type', 'Herd_Size', 'Modified_By', 'Order_notification', 'Owner', 'Price_Production', 'Price_Production_Base', 'Price_production_pT', 'Price_production_pT_Base', 'Price_Transport', 'Price_Transport_Base', 'Price_transport_pT', 'Price_transport_pT_Base', 'Process', 'Process_Stage', 'Product_Category', 'Second_Customer', 'Second_customer_Order_percent', 'Ship_To', 'Status', 'Storage_Unit', 'Submitted_Status', 'Submitted_Status_Description'], 'integer'],
             [['Discount_Percent', 'Date_Fulfilled', 'Date_Submitted', 'Created_On', 'Delivery_created', 'Load_Due', 'Modified_On', 'Requested_Delivery_by'], 'safe'],
             [['Feed_QOH_Tonnes', 'Feed_Rate_Kg_Day', 'Price_pT', 'Price_pT_Base', 'Price_Sub_Total', 'Price_Sub_Total_Base', 'Price_Total', 'Price_Total_Base', 'Price_Total_pT', 'Price_Total_pT_Base'], 'number'],
@@ -101,9 +101,33 @@ class CustomerOrders extends \yii\db\ActiveRecord
             [['Status_Reason'], 'string', 'max' => 50],
             [['Anticipated_Sales'], 'string', 'max' => 3],
             [['Order_instructions'], 'string', 'max' => 800],
-            [['Product_Name'], 'string', 'max' => 100]
+            [['Product_Name'], 'string', 'max' => 100],
+            
+            ['Discount_notation', 'required', 'when' => function ($model) 
+            	{
+            	return $model->Discount_type > 1;
+            	},
+            	'whenClient' => "function (attribute, value) 
+            		{
+            			return $('#customerorders-Discount_type').val() > 1;
+            		}"
+            	],
+            
+            
         ];
     }
+
+	/*
+	* Input Senarios
+	*/
+	public function scenarios()
+    {
+		$scenarios = parent::scenarios();
+        $scenarios['createDummy'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By'];//Scenario Values Only Accepted
+        return $scenarios;
+    }
+
+
 
     /**
      * @inheritdoc
@@ -183,6 +207,11 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	public function getIngredients()
 	{
 		return $this->hasMany(CustomerOrdersIngredients::className(), ['order_id' => 'id' ]);
+	}
+	
+	public function getCreatedByUser()
+	{
+		return $this->hasOne(user::className(), ['id' => 'Created_By'] );
 	}
 	
 	

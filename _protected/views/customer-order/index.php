@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use app\components\actionButtons;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\customerOrdersSearch */
@@ -9,15 +10,24 @@ use kartik\grid\GridView;
 
 $this->title = 'Customer Orders';
 $this->params['breadcrumbs'][] = $this->title;
+
+
+
 ?>
 <div class="customer-orders-index">
 
+    <?= actionButtons::widget(['items' => $actionItems]) ?>
+
     <h1><?= Html::encode($this->title) ?></h1>
+    
+    
+
+
+    
+    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Customer Orders', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
