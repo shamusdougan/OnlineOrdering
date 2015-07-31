@@ -25,6 +25,7 @@ class User extends UserIdentity
      * @var \app\rbac\models\Role
      */
     public $item_name;
+   
 
     /**
      * Returns the validation rules for attributes.
@@ -292,5 +293,17 @@ class User extends UserIdentity
     public function getFullname()
     {
 		return $this->firstname." ".$this->surname;
+	}
+	
+	public function getUserListArray()
+	{
+		$userList = user::find()->orderBy('firstname')->all();
+		$returnArray = array();
+		foreach($userList as $user)
+			{
+			$returnArray[$user->id] = $user->fullname;
+			}
+			
+		return $returnArray;
 	}
 }

@@ -37,10 +37,15 @@ class ClientsController extends Controller
     {
         $searchModel = new clientsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=>'/clients/create', ];
+		$userList = user::getUserListArray(); 
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
+            'userList' => $userList,
         ]);
     }
 
@@ -91,17 +96,26 @@ class ClientsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            
+            print_R(Yii::$app->request->post());
+            
+            //return $this->redirect(['index']);
         } else {
         	
         	$clientList = Clients::find()->select(['id', 'Company_Name'])->all();
         	$clientDropDownList = ArrayHelper::map($clientList, 'id', 'Company_Name') ;
         	
         	$userList = User::find()->all();
-        	$userDropDownList = ArrayHelper::map($userList, 'id', 'fullname') ;
+        	$userDropDownList = ArrayHelper::map($userList, 'id', 'fullname');
+        	
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'submit' => 'client_edit_form', 'confirm' => 'Save Changes to Client?' ];
+        	$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/clients/index', 'confirm' => 'Cancel changes to Client?'];
         	
             return $this->render('update', [
-                'model' => $model, 'clientList' => $clientDropDownList, 'userList' => $userDropDownList
+                'model' => $model, 
+                'clientList' => $clientDropDownList, 
+                'userList' => $userDropDownList,
+                'actionItems' => $actionItems,
             ]);
         }
     }

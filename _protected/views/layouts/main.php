@@ -46,9 +46,9 @@ AppAsset::register($this);
 				'type' => SideNav::TYPE_DEFAULT,
 				'heading' => "Menu (".$username.")",
 				'items' => [
-					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],
-					['label' => 'Customer Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order')],
-					['label' => 'Clients', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
+					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],					
+					['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
+					['label' => 'Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order')],
 					
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [

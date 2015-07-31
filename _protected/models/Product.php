@@ -75,7 +75,7 @@ class Product extends \yii\db\ActiveRecord
             'Decimals_Supported' => 'Decimals  Supported',
             'Default_Unit' => 'Default  Unit',
             'Feed_notes' => 'Feed Notes',
-            'List_Price_pT_Base' => 'List  Price P T  Base',
+            'List_Price_pT_Base' => 'Price P/T',
             'me' => 'Me',
             'Mix_Margin' => 'Mix  Margin',
             'Mix_Margin_Base' => 'Mix  Margin  Base',

@@ -89,7 +89,7 @@ use Yii;
  * @property string $Modified_On
  * @property string $Nearest_Town
  * @property integer $No_of_Employees
- * @property integer $Owner
+ * @property integer $Owner_id
  * @property string $Parent_Region
  * @property string $Payment_Terms
  * @property string $Preferred_Day
@@ -126,7 +126,7 @@ class Clients extends \yii\db\ActiveRecord
             [['id', 'Company_Name', 'Account_Number'], 'required'],
             [['id', 'Fax', 'Address_1_Address_Type', 'Address_1_Postal_Code', 'Address_2_Address_Type', 'Address_2_Postal_Code', 'Billing_contact', 'Billing_type', 'Business_Type', 'Client_Status', 'Created_By', 'Dairy_No', 'Exchange_Rate', 'Farm_Operation', 'Feed_Days_Remaining', 'Feed_QOH_Tonnes', 'Herd_Size', 'Herd_Type', 'Modified_By', 'No_of_Employees', 'Owner_id', 'Status'], 'integer'],
             [['Is_Customer', 'Is_Factory', 'Is_Supplier', 'Address1_IsBillTo', 'Address1_IsShipTo', 'Credit_Hold', 'Do_not_allow_Bulk_Emails', 'Do_not_allow_Bulk_Mails', 'Do_not_allow_Emails', 'Do_not_allow_Faxes', 'Do_not_allow_Mails', 'Do_not_allow_Phone_Calls', 'Is_Internal', 'Is_Provider'], 'boolean'],
-            [['Created_On', 'Feed_empty', 'Feed_QOH_Update', 'Modified_On'], 'safe'],
+            [['Created_On', 'Feed_empty', 'Feed_QOH_Update', 'Modified_On', 'Address_1_TownSuburb'], 'safe'],
             [['Feed_Rate_Kg_Day'], 'number'],
             [['Company_Name', 'Address_1_TownSuburb', '3rd_Party_Company', 'Address_1_CountryRegion', 'Address_1_Street_1', 'Address_1_Street_2', 'Address_1_Street_3', 'Address_2', 'Address_2_CountryRegion', 'Address_2_StateProvince', 'Address_2_Street_1', 'Address_2_Street_2', 'Address_2_Street_3', 'Address_2_TownSuburb', 'Billing_company_admin_fee', 'Billing_company_admin_fee_Base', 'Category', 'Farm_No', 'Main_Competitor', 'Mobile_Phone', 'Nearest_Town', 'Parent_Region', 'Payment_Terms', 'Preferred_Day', 'Preferred_FacilityEquipment', 'Property_Name'], 'string', 'max' => 100],
             [['Account_Number'], 'string', 'max' => 6],

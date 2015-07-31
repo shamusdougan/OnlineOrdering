@@ -12,6 +12,10 @@ use app\models\clients;
  */
 class clientsSearch extends clients
 {
+	
+	public $ownerID;
+	
+	
     /**
      * @inheritdoc
      */
@@ -19,9 +23,10 @@ class clientsSearch extends clients
     {
         return [
             [['id', 'Fax', 'Address_1_Address_Type', 'Address_1_Postal_Code', 'Address_2_Address_Type', 'Address_2_Postal_Code', 'Billing_contact', 'Billing_type', 'Business_Type', 'Client_Status', 'Created_By', 'Dairy_No', 'Exchange_Rate', 'Farm_Operation', 'Feed_Days_Remaining', 'Feed_QOH_Tonnes', 'Herd_Size', 'Herd_Type', 'Modified_By', 'No_of_Employees', 'Status'], 'integer'],
-            [['Company_Name', 'Account_Number', 'Main_Phone', '3rd_Party_Company', 'ABN', 'Address_1', 'Address_1_CountryRegion', 'Address_1_StateProvince', 'Address_1_Street_1', 'Address_1_Street_2', 'Address_1_Street_3', 'Address_1_Telephone_2', 'Address_1_Telephone_3', 'Address_2', 'Address_2_CountryRegion', 'Address_2_StateProvince', 'Address_2_Street_1', 'Address_2_Street_2', 'Address_2_Street_3', 'Address_2_Telephone_1', 'Address_2_Telephone_2', 'Address_2_Telephone_3', 'Address_2_TownSuburb', 'Address_Phone', 'Billing_company_admin_fee', 'Billing_company_admin_fee_Base', 'Category', 'Copy_addess', 'Copy_address', 'Created_On', 'Dairy_Notes', 'Delivery_Directions', 'Description', 'Email', 'Email_Address_2', 'Email_Address_3', 'Farm_Mgr', 'Farm_No', 'Feed_empty', 'Feed_QOH_Update', 'Herd_Notes', 'Main_Competitor', 'Map_Reference', 'Mobile_Phone', 'Modified_On', 'Nearest_Town', 'Parent_Region', 'Payment_Terms', 'Preferred_Day', 'Preferred_FacilityEquipment', 'Property_Name', 'Sub_Region', 'Supplies_to', 'Trading_as', 'Website'], 'safe'],
+            [['Company_Name', 'Account_Number', 'Main_Phone', '3rd_Party_Company', 'ABN', 'Address_1_TownSuburb', 'Address_1_CountryRegion', 'Address_1_StateProvince', 'Address_1_Street_1', 'Address_1_Street_2', 'Address_1_Street_3', 'Address_1_Telephone_2', 'Address_1_Telephone_3', 'Address_2', 'Address_2_CountryRegion', 'Address_2_StateProvince', 'Address_2_Street_1', 'Address_2_Street_2', 'Address_2_Street_3', 'Address_2_Telephone_1', 'Address_2_Telephone_2', 'Address_2_Telephone_3', 'Address_2_TownSuburb', 'Address_Phone', 'Billing_company_admin_fee', 'Billing_company_admin_fee_Base', 'Category', 'Copy_addess', 'Copy_address', 'Created_On', 'Dairy_Notes', 'Delivery_Directions', 'Description', 'Email', 'Email_Address_2', 'Email_Address_3', 'Farm_Mgr', 'Farm_No', 'Feed_empty', 'Feed_QOH_Update', 'Herd_Notes', 'Main_Competitor', 'Map_Reference', 'Mobile_Phone', 'Modified_On', 'Nearest_Town', 'Parent_Region', 'Payment_Terms', 'Preferred_Day', 'Preferred_FacilityEquipment', 'Property_Name', 'Sub_Region', 'Supplies_to', 'Trading_as', 'Website'], 'safe'],
             [['Is_Customer', 'Is_Factory', 'Is_Supplier', 'Address1_IsBillTo', 'Address1_IsShipTo', 'Credit_Hold', 'Do_not_allow_Bulk_Emails', 'Do_not_allow_Bulk_Mails', 'Do_not_allow_Emails', 'Do_not_allow_Faxes', 'Do_not_allow_Mails', 'Do_not_allow_Phone_Calls', 'Is_Internal', 'Is_Provider'], 'boolean'],
             [['Feed_Rate_Kg_Day'], 'number'],
+            [['Owner_id'], 'safe'],
         ];
     }
 
@@ -45,9 +50,20 @@ class clientsSearch extends clients
     {
         $query = clients::find();
 
+		$query->joinWith(['owner']);
+
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+
+		$dataProvider->sort->attributes['owner'] =
+			[
+			'asc' => ['owner.firstname' => SORT_ASC],
+			'desc' => ['owner.firstname' => SORT_DESC],
+			];
+
 
         $this->load($params);
 
@@ -63,6 +79,7 @@ class clientsSearch extends clients
             'Is_Customer' => $this->Is_Customer,
             'Is_Factory' => $this->Is_Factory,
             'Is_Supplier' => $this->Is_Supplier,
+            'Address_1_TownSuburb' => $this->Address_1_TownSuburb,
             'Address_1_Address_Type' => $this->Address_1_Address_Type,
             'Address_1_Postal_Code' => $this->Address_1_Postal_Code,
             'Address_2_Address_Type' => $this->Address_2_Address_Type,
@@ -97,8 +114,8 @@ class clientsSearch extends clients
             'Modified_By' => $this->Modified_By,
             'Modified_On' => $this->Modified_On,
             'No_of_Employees' => $this->No_of_Employees,
-            'owner' => $this->owner,
             'Status' => $this->Status,
+            'Owner_id' => $this->Owner_id,
         ]);
 
         $query->andFilterWhere(['like', 'Company_Name', $this->Company_Name])
@@ -150,7 +167,8 @@ class clientsSearch extends clients
             ->andFilterWhere(['like', 'Sub_Region', $this->Sub_Region])
             ->andFilterWhere(['like', 'Supplies_to', $this->Supplies_to])
             ->andFilterWhere(['like', 'Trading_as', $this->Trading_as])
-            ->andFilterWhere(['like', 'Website', $this->Website]);
+            ->andFilterWhere(['like', 'Website', $this->Website])
+            ->andFilterWhere(['like', 'Owner_id', $this->Owner_id]);
 
         return $dataProvider;
     }

@@ -59,7 +59,7 @@ class CustomerOrderController extends Controller
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> ['customer-order/create']];
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
 		
 
         return $this->render('index', [
@@ -93,7 +93,7 @@ class CustomerOrderController extends Controller
     	$model->Name = "XXXXX";
     	$model->Created_On = Date('Y-m-d');
     	$model->Created_By = Yii::$app->user->identity->id;
-    	$model->Status = customerOrders::STATUS_SUBMITTED;
+    	$model->Status = customerOrders::STATUS_ACTIVE;
     	if(!$model->save())
     		{
     		die("unable to create new order");
@@ -164,7 +164,8 @@ class CustomerOrderController extends Controller
         	
         	
         	
-        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'linkOptions' => ['data-method'=>'post'], 'action'=> 'submit'];
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+        	$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
@@ -210,17 +211,22 @@ class CustomerOrderController extends Controller
     
     public function actionAjaxCompanyDetails($id)
     {
-		$model=  \app\models\Clients::findOne(['id'=>$id]);
-		$storageList = ArrayHelper::map($model->storage, 'id', 'Description');
-    	return \yii\helpers\Json::encode([
-    		'contact' => $model->owner->fullname,
-	        'address'=>$model->Address_1,
-	        'phone'=>$model->Main_Phone,
-	        'status'=>Lookup::item($model->Status, 'CLIENT_STATUS'),
-	        'nearestTown'=>$model->Nearest_Town,
-	        'id'=>$model->id,
-	        'storage' => $storageList
-	    ]);
+    	if($id != Clients::DUMMY && $id != null){
+			$model=  \app\models\Clients::findOne(['id'=>$id]);
+			$storageList = ArrayHelper::map($model->storage, 'id', 'Description');
+	    	return \yii\helpers\Json::encode([
+	    		'contact' => $model->owner->fullname,
+		        'address'=>$model->Address_1,
+		        'phone'=>$model->Main_Phone,
+		        'status'=>Lookup::item($model->Status, 'CLIENT_STATUS'),
+		        'nearestTown'=>$model->Nearest_Town,
+		        'id'=>$model->id,
+		        'storage' => $storageList
+		    ]);
+		    }
+		else{
+			return True;
+		}
 
 	}
 	
@@ -242,7 +248,13 @@ class CustomerOrderController extends Controller
 						{
 						$out[] = array('id' => $storage->id, 'name' => $storage->Description);
 						}
-					echo Json::encode(['output'=>$out, 'selected'=>$client->storage[0]->id]);
+					if(count($client->storage))
+						{
+						echo Json::encode(['output'=>$out, 'selected'=>$client->storage[0]->id]);		
+						}
+					else{
+						echo Json::encode(['output'=>$out ]);		
+						}
 					}
 				else{
 					echo Json::encode(['output'=>$out]);

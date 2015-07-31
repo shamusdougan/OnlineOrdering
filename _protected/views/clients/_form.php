@@ -188,23 +188,7 @@ $companyAccounts .= Form::widget(
 * @var Contacts Page for Clients
 * 
 */
-	
-$companyContact =  Form::widget(
-		[
-		'model' => $model,
-		'form' => $form,
-		'columns' => 4,
-		'attributes' => 
-			[
-			'Do_not_allow_Bulk_Emails' => ['type'=>Form::INPUT_CHECKBOX, 'label' => 'No Bulk Emails' ], 
-			'Do_not_allow_Bulk_Mails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Bulk Mail'],
-			'Do_not_allow_Emails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Emails'],
-			'Do_not_allow_Faxes' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Faxes'],
-			'Do_not_allow_Mails' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'No Mail'],
-			'Do_not_allow_Phone_Calls' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'no Phone'],
-			]
-		]);
-	
+
 	
 
 
@@ -303,6 +287,7 @@ $items =
 		[			
 		'label'=>'<i class="glyphicon glyphicon-home"></i> Company',
 		'content'=>$companyInfo,
+		'active'=>true
 		],
 		
 		[
@@ -321,7 +306,12 @@ $items =
 		[
 		'label'=>'<i class="glyphicon glyphicon-download-alt"></i> Storage',
 		'content'=>$this->render("_storageGrid", ['model' => $model, 'form' => $form]),
-		'active'=>true
+		
+		],
+		[
+		'label'=>'<i class="glyphicon glyphicon-list-alt"></i> Orders',
+		'content'=>"This will contain the customers current and previous orders",
+		
 		],
 		
 		
@@ -341,10 +331,6 @@ echo TabsX::widget([
 
 
 
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 
