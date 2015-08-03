@@ -173,8 +173,177 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		}
     
     
+    public function importTrucksCRM($importArray)
+		{
+		
+		//array to tell us wich coluns of the csv file correspond to which attributes of the model
+		$mapping = [
+			'registration' => 0,
+			'mobile' => 1,
+			'description' => 2,
+			'Special_Instruction' => 7,
+			'Status' => 8,
+			'Auger' => 9,
+			'Blower' => 10,
+  			'Tipper' => 11,
+			];
+			
+			
+		$truck = new trucks();
+		
+		//iterate through each of the mapping fields and assign that attirbute the value from the csv. Any 
+		//unique mappings for an attribute are specfied using the if statement, finally if there are none matched then just map the field
+		//straight across.
+		foreach($mapping as $attribute => $csvColNum)
+			{
+			if($attribute == "Status")
+				{
+				$truck->Status = ($importArray[$csvColNum] == "Active" ? 1 : 0);
+				}
+			elseif($attribute == "Auger" || $attribute == "Blower" || $attribute == "Tipper")
+				{
+				$truck->$attribute = ($importArray[$csvColNum] == "No" ? 0 : 1);
+				}
+			else{
+				$truck->$attribute = $importArray[$csvColNum];	
+				}
+			}
+		$truck->CreatedBy = 1;
+			
+			
+			
+		if(strcmp($importArray[0], "Truck Registration") === 0){
+			$this->progress .= "Header Field found skipping line\n";
+			}
+		elseif($truck->save())
+			{
+			$this->recordsImported++;	
+			}
+		else{
+			foreach($truck->getErrors() as $errorField => $error)
+				{
+				$this->progress .= "error importing field ".$errorField." error: ".$error[0]."\n";
+				}
+			$this->recordsFailed++;	
+			}
+		}
+		
+		
+		
+	 public function importTrailersCRM($importArray)
+		{
+		
+		//array to tell us wich coluns of the csv file correspond to which attributes of the model
+		$mapping = [
+			'Registration' => 0,
+			'Description' => 1,
+			'Max_Capacity' => 2,
+			'NumBins' => 3,
+			'Auger' => 4,
+			'Blower' => 5,
+  			'Tipper' => 6,
+			'Status' => 7,
+			];
+			
+			
+		$truck = new trailers();
+		
+		//iterate through each of the mapping fields and assign that attirbute the value from the csv. Any 
+		//unique mappings for an attribute are specfied using the if statement, finally if there are none matched then just map the field
+		//straight across.
+		foreach($mapping as $attribute => $csvColNum)
+			{
+			if($attribute == "Status")
+				{
+				$truck->Status = ($importArray[$csvColNum] == "Active" ? 1 : 0);
+				}
+			elseif($attribute == "Auger" || $attribute == "Blower" || $attribute == "Tipper")
+				{
+				$truck->$attribute = ($importArray[$csvColNum] == "No" ? 0 : 1);
+				}
+			else{
+				$truck->$attribute = $importArray[$csvColNum];	
+				}
+			}
+			
+			
+			
+		if(strcmp($importArray[0], "Trailer Rego") === 0){
+			$this->progress .= "Header Field found skipping line\n";
+			}
+		elseif($truck->save())
+			{
+			$this->recordsImported++;	
+			}
+		else{
+			foreach($truck->getErrors() as $errorField => $error)
+				{
+				$this->progress .= "error importing field ".$errorField." error: ".$error[0]."\n";
+				}
+			$this->recordsFailed++;	
+			}
+		}
     
-    
+	
+	 public function importTrailerBinsCRM($importArray)
+		{
+		
+		//array to tell us wich coluns of the csv file correspond to which attributes of the model
+		$mapping = [
+			'trailer_id' => 0,
+			'BinNo' => 1,
+			'MaxCapacity' => 2,
+			'Status' => 5,
+			];
+			
+			
+		$trailerBin = new TrailerBins();
+		
+		//iterate through each of the mapping fields and assign that attirbute the value from the csv. Any 
+		//unique mappings for an attribute are specfied using the if statement, finally if there are none matched then just map the field
+		//straight across.
+		foreach($mapping as $attribute => $csvColNum)
+			{
+			if($attribute == "Status")
+				{
+				$trailerBin->Status = ($importArray[$csvColNum] == "Active" ? 1 : 0);
+				}
+			elseif($attribute == "trailer_id" )
+				{
+				$trailer = Trailers::find()->where(['Registration' => $importArray[$mapping['trailer_id']]])->one();
+				if(isset($trailer->id))
+					{
+						$trailerBin->trailer_id = $trailer->id;
+					}
+				else{
+					$this->progress .= "Unable to locate trailer that this bin belongs 2 BinNo: ".$trailerBin->BinNo."\n";
+					}
+				}
+			else{
+				$trailerBin->$attribute = $importArray[$csvColNum];	
+				}
+			}
+			
+			
+			
+		if(strcmp($importArray[0], "Trailer") === 0){
+			$this->progress .= "Header Field found skipping line\n";
+			}
+		elseif($trailerBin->save())
+			{
+			$this->recordsImported++;	
+			}
+		else{
+			foreach($trailerBin->getErrors() as $errorField => $error)
+				{
+				$this->progress .= "error importing field ".$errorField." error: ".$error[0]."\n";
+				}
+			$this->recordsFailed++;	
+			}
+		}
+	
+	
+	
     function exceltoepoch($whackyexceltime) {
 			// intify 
 			$int_portion = (int)$whackyexceltime;	
@@ -205,3 +374,4 @@ class ImportFunctions extends \yii\db\ActiveRecord
     
     
    }
+

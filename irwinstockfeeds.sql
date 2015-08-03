@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.1.6
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2015 at 04:25 PM
+-- Generation Time: Aug 03, 2015 at 07:07 AM
 -- Server version: 5.6.16
--- PHP Version: 5.5.11
+-- PHP Version: 5.5.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1828,17 +1828,15 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=210 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=213 ;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
 INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_created`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
-(206, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(207, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(208, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(209, 'ORDXXXX', 666, 'XXXXX', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(211, 'ORD3211', 217, 'Dean Jerkins Mix - Custom 5T', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2015-07-26', NULL, NULL, 3, NULL, '', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '508.75', '382.51', NULL, NULL, 7, NULL, '413.51', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 24, NULL, NULL, NULL, 2, NULL, '2015-08-05', NULL, NULL, NULL, 2, 1100, NULL, NULL, NULL),
+(212, 'ORD3212', 4, 'A J & AG Lamb- Lamb 2 Commodity 5T', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-02', NULL, '4.46', 20, NULL, 'hello qorld', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '388.00', NULL, NULL, 10, NULL, '448.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, 1, NULL, '2015-08-20', NULL, NULL, NULL, 1, 24, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1855,7 +1853,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1864,9 +1862,13 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
 INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, `ingredient_percent`, `modified_by`, `modified_on`, `order_id`) VALUES
 (66, '2015-07-17', 3, '50', NULL, NULL, 206),
 (85, '2015-07-17', 3, '50', NULL, NULL, 206),
-(89, '2015-07-23', 2, '48', NULL, NULL, 209),
-(99, '2015-07-24', 10, '43', NULL, NULL, 209),
-(100, '2015-07-24', 15, '9', NULL, NULL, 209);
+(103, '2015-07-25', 3, '100', NULL, NULL, 210),
+(104, '2015-07-25', 13, '5', NULL, NULL, 210),
+(105, '2015-07-25', 3, '100', NULL, NULL, 209),
+(106, '2015-07-25', 2, '0', NULL, NULL, 209),
+(108, '2015-07-26', 4, '45', NULL, NULL, 211),
+(109, '2015-07-26', 6, '46', NULL, NULL, 211),
+(110, '2015-08-02', 3, '100', NULL, NULL, 212);
 
 -- --------------------------------------------------------
 
@@ -1879,14 +1881,17 @@ CREATE TABLE IF NOT EXISTS `import_functions` (
   `name` varchar(100) DEFAULT NULL,
   `function` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `import_functions`
 --
 
 INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
-(1, 'Import Customer Orders From Microsoft CRM', 'importCustomerOrdersCRM');
+(1, 'Import Customer Orders From Microsoft CRM', 'importCustomerOrdersCRM'),
+(2, 'Import Trucks', 'importTrucksCRM'),
+(3, 'Import Trailers', 'importTrailersCRM'),
+(4, 'Import Trailer Bins', 'importTrailerBinsCRM');
 
 -- --------------------------------------------------------
 
@@ -3349,6 +3354,256 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 (1236, 'Witchell farm Silo 1', '28.00', 334, b'1', b'1', 'Witchells Farm- Shane Kennedys old farm Jacksons Track Labertouche. any truck only silo at dairy', '', 2, 'Jacksons track', '', b'0'),
 (1237, 'Witchells Farm Silo 1', '28.00', 501, b'1', b'1', 'Witchells Farm- Shane Kennedys old farm Jacksons Track Labertouche. any truck only silo at dairy', '', 1, 'Jacksons Trk', '', b'0'),
 (1238, 'Yellow Silo @ Piggery', '4.00', 857, b'0', b'1', 'blower truck. once you have entered the front gates to property, the piggery is on the LHS. there are concrete water tanks on the LHS and piggery is behind them. Yellow silo is there. please call Chris to confirm you are at the right silo 0437 583 386', '3818', 1, '510 Gardner-Holeman Road', 'DROUIN', b'0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trailers`
+--
+
+CREATE TABLE IF NOT EXISTS `trailers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Registration` varchar(200) NOT NULL,
+  `Description` varchar(200) NOT NULL,
+  `Max_Capacity` int(30) NOT NULL,
+  `NumBins` int(10) NOT NULL,
+  `Auger` tinyint(1) NOT NULL,
+  `Blower` tinyint(1) NOT NULL,
+  `Tipper` tinyint(1) NOT NULL,
+  `Status` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+
+--
+-- Dumping data for table `trailers`
+--
+
+INSERT INTO `trailers` (`id`, `Registration`, `Description`, `Max_Capacity`, `NumBins`, `Auger`, `Blower`, `Tipper`, `Status`) VALUES
+(1, 'Benmic Auger (LT Auger)-23818-S', 'Benmic Auger (LT Auger)', 23, 6, 1, 0, 0, 1),
+(2, 'C/VAC B-DOUBLE BLOWER (BRAD)', 'C/VAC B-DOUBLE BLOWER (BRAD)', 44, 2, 0, 1, 0, 1),
+(3, 'C/VAC Auger/Blower', 'C/VAC Auger/Blower', 22, 7, 1, 1, 0, 1),
+(4, 'C/VAC B-DOUBLE -BRAD 2', 'C/VAC - BLOWER/STINGER', 44, 4, 1, 1, 0, 1),
+(5, 'C/VAC Blower (Silver)', 'C/VAC Blower (Silver)', 28, 8, 0, 1, 0, 1),
+(6, 'C/VAC CHOOK BIN A TRAILER BLOWER -', 'C/VAC CHOOK BIN A TRAILER', 18, 1, 0, 1, 0, 0),
+(7, 'C/VAC CHOOK BIN B TRAILER BLOWER', 'C/VAC CHOOK BIN B TRAILER', 28, 2, 0, 1, 0, 0),
+(8, 'C/VAC Chook Bin Blue Tarp', 'Chook Bin Blue Tarp', 28, 2, 0, 1, 0, 1),
+(9, 'C/VAC Chook BIN-75166-S', 'C/VAC Chook BIN-75166-S', 30, 1, 0, 1, 0, 1),
+(10, 'C/VAC Single Axle Blower', 'C/VAC Blower (Lt Blower)', 20, 6, 0, 1, 0, 1),
+(11, 'Container', 'Container', 20, 1, 0, 0, 1, 1),
+(12, 'CVAC A Trailer Blower/Stinger-78867-S/78868-S', 'CVAC A Trailer Blower/Stinger', 24, 6, 1, 1, 0, 1),
+(13, 'CVAC Auger-59220-S', 'CVAC Auger', 32, 8, 1, 0, 0, 1),
+(14, 'CVAC Blower/Stinger-72982-S', 'CVAC Blower/Stinger', 32, 8, 1, 1, 0, 1),
+(15, 'CVAC Blower/Stinger-73242-S', 'CVAC Blower/Stinger', 32, 8, 1, 1, 0, 1),
+(16, 'CVAC Blower/Stinger-84194-S', 'CVAC Blower/Stinger', 32, 8, 1, 1, 0, 1),
+(17, 'CVAC Chook Bin B-Double', 'C/VAC Chook Bin Blower', 42, 3, 0, 1, 0, 1),
+(18, 'EX WORKS TRAILERS', 'EX WORKS TRAILERS', 44, 2, 0, 0, 1, 1),
+(19, 'Hamelex Red-85671-S 85672-S', 'Hamelex Red B-Double', 42, 2, 0, 0, 1, 1),
+(20, 'Hamelex Single (tipper)-73656-S', 'Hamelex Single (tipper)', 28, 1, 0, 0, 1, 1),
+(21, 'Hamelex Trailer-82052-S/84167-S', 'Hamelex Trailer', 16, 1, 0, 1, 1, 1),
+(22, 'Ivan B Trailer-75884-S', 'Ivan Tipper/Blower', 28, 1, 0, 1, 1, 1),
+(23, 'Ivan B-Double-75884-S 85819-S', 'Tipper', 42, 1, 0, 0, 1, 1),
+(24, 'Kockums Boogie Blower-41175-S', 'Kockums Boogie Blower', 23, 5, 0, 1, 0, 1),
+(25, 'Kockums Boogie Blower-47201-S', 'Kockums Boogie Blower', 23, 5, 0, 1, 0, 1),
+(26, 'Kockums Tri Axle Blower-52978-S HATZ HL41C', 'Kockums Tri Axle Blower', 27, 5, 0, 1, 0, 1),
+(27, 'Moore A Trailer-71265-S', 'Moore A Trailer', 16, 1, 0, 0, 1, 1),
+(28, 'Moore B Trailer-51785-S', 'Moore B Trailer', 26, 1, 0, 0, 1, 1),
+(29, 'NEW CHOOK BIN', 'NEW CHOOK BIN', 28, 3, 1, 1, 0, 1),
+(30, 'PICK UP EX SHED', 'EX SHED', 44, 1, 1, 1, 1, 1),
+(31, 'test trailer', 'do not use', 12, 3, 1, 1, 1, 1),
+(32, 'TOM HARWOOD', 'SINGLE TIPPER', 30, 1, 0, 0, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trailer_bins`
+--
+
+CREATE TABLE IF NOT EXISTS `trailer_bins` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `trailer_id` int(10) NOT NULL,
+  `BinNo` varchar(100) NOT NULL,
+  `MaxCapacity` float NOT NULL,
+  `Status` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=489 ;
+
+--
+-- Dumping data for table `trailer_bins`
+--
+
+INSERT INTO `trailer_bins` (`id`, `trailer_id`, `BinNo`, `MaxCapacity`, `Status`) VALUES
+(365, 1, '1 (2T)', 2, 1),
+(366, 1, '2 (3T)', 3, 1),
+(367, 1, '3 (2T)', 2, 1),
+(368, 1, '4 (2T)', 2, 1),
+(369, 1, '5 (3T)', 3, 1),
+(370, 1, '6 (2T)', 2, 1),
+(371, 2, 'A (16T)', 16, 1),
+(372, 2, 'B (28T)', 28, 1),
+(373, 3, '1 (3T)', 3, 1),
+(374, 3, '2 (3T)', 3, 1),
+(375, 3, '3 (4T)', 4, 1),
+(376, 3, '4 (3T)', 3, 1),
+(377, 3, '5 (3T)', 3, 1),
+(378, 3, '6 (4T)', 4, 1),
+(379, 3, '7 (4T)', 4, 1),
+(380, 4, 'A1', 16, 1),
+(381, 4, 'B1', 8, 1),
+(382, 4, 'B2', 16, 1),
+(383, 4, 'B3', 4, 1),
+(384, 5, '1 (4T)', 4, 1),
+(385, 5, '2 (4T)', 4, 1),
+(386, 5, '3 (4T)', 4, 1),
+(387, 5, '4 (4T)', 4, 1),
+(388, 5, '5 (4T)', 4, 1),
+(389, 5, '6 (4T)', 4, 1),
+(390, 5, '7 (4T)', 4, 1),
+(391, 5, '8 (4T)', 4, 1),
+(392, 6, '1', 18, 1),
+(393, 7, '1', 8, 1),
+(394, 7, '2', 20, 1),
+(395, 8, 'BIN 1 (8t)', 8, 1),
+(396, 8, 'BIN 2 (20t)', 20, 1),
+(397, 9, 'A1', 28, 1),
+(398, 10, '1(4.5T)', 4.5, 1),
+(399, 10, '2 (3T)', 3, 1),
+(400, 10, '3 (3T)', 3, 1),
+(401, 10, '4 (3T)', 3, 1),
+(402, 10, '5 (3T)', 3, 1),
+(403, 10, '6 (3.5T)', 3.5, 1),
+(404, 11, 'BIN 1', 20, 1),
+(405, 12, 'A1 (2.5T)', 2.5, 1),
+(406, 12, 'A2 (4T)', 4, 1),
+(407, 12, 'A3 (4T)', 4, 1),
+(408, 12, 'A4 (4T)', 4, 1),
+(409, 12, 'A5 (4T)', 4, 1),
+(410, 12, 'A6 (2.5T)', 2.5, 1),
+(411, 12, 'B1 (4T)', 4, 1),
+(412, 12, 'B2 (4T)', 4, 1),
+(413, 12, 'B3 (4T)', 4, 1),
+(414, 12, 'B4 (4T)', 4, 1),
+(415, 12, 'B5 (4T)', 4, 1),
+(416, 12, 'B6 (4T)', 4, 1),
+(417, 12, 'B7 (4)', 4, 1),
+(418, 12, 'B8 (4T)', 4, 1),
+(419, 13, '1 (4T)', 4, 1),
+(420, 13, '2 (4T)', 4, 1),
+(421, 13, '3 (4T)', 4, 1),
+(422, 13, '4 (4T)', 4, 1),
+(423, 13, '5 (4T)', 4, 1),
+(424, 13, '6 (4T)', 4, 1),
+(425, 13, '7 (4T)', 4, 1),
+(426, 13, '8 (4T)', 4, 1),
+(427, 14, '1 (4T)', 4, 1),
+(428, 14, '2 (4T)', 4, 1),
+(429, 14, '3 (4T)', 4, 1),
+(430, 14, '4 (4T)', 4, 1),
+(431, 14, '5 (4T)', 4, 1),
+(432, 14, '6 (4T)', 4, 1),
+(433, 14, '7 (4T)', 4, 1),
+(434, 14, '8 (4T)', 4, 1),
+(435, 15, '1 (4T)', 4, 1),
+(436, 15, '2 (4T)', 4, 1),
+(437, 15, '3 (4T)', 4, 1),
+(438, 15, '4 (4T)', 4, 1),
+(439, 15, '5 (4T)', 4, 1),
+(440, 15, '6 (4T)', 4, 1),
+(441, 15, '7 (4T)', 4, 1),
+(442, 15, '8 (4T)', 4, 1),
+(443, 16, '1 (4T)', 4, 1),
+(444, 16, '2 (4T)', 4, 1),
+(445, 16, '3 (4T)', 4, 1),
+(446, 16, '4 (4T)', 4, 1),
+(447, 16, '5 (4T)', 4, 1),
+(448, 16, '6 (4T)', 4, 1),
+(449, 16, '7 (4T)', 4, 1),
+(450, 16, '8 (4T)', 4, 1),
+(451, 17, 'A (16T)', 16, 1),
+(452, 17, 'B1 (8T)', 8, 1),
+(453, 17, 'B2 (20T)', 20, 1),
+(454, 18, 'A 1', 16, 1),
+(455, 18, 'B 1', 28, 1),
+(456, 19, 'A -1', 16, 1),
+(457, 19, 'B -2', 28, 1),
+(458, 20, '1 (28T)', 28, 1),
+(459, 21, 'A1 (16T)', 16, 1),
+(460, 21, 'B1 (26T)', 26, 1),
+(461, 22, 'B1 (28T)', 28, 1),
+(462, 23, 'A1 (16T)', 16, 1),
+(463, 23, 'B1 (28T)', 28, 1),
+(464, 24, '1 (2T)', 2, 1),
+(465, 24, '2 (2T)', 2, 1),
+(466, 24, '3 (7T)', 7, 1),
+(467, 24, '4 (7T)', 7, 1),
+(468, 24, '5 (5T)', 5, 1),
+(469, 25, '1 (2T)', 2, 1),
+(470, 25, '2 (2T)', 2, 1),
+(471, 25, '3 (7T)', 7, 1),
+(472, 25, '4 (7T)', 7, 1),
+(473, 25, '5 (5T)', 5, 1),
+(474, 26, '1(4T)', 4, 1),
+(475, 26, '2 (8T)', 8, 1),
+(476, 26, '3 (8T)', 8, 1),
+(477, 26, '4 (6T)', 6, 1),
+(478, 26, '5 (4T)', 4, 1),
+(479, 27, 'A1 (16T)', 16, 1),
+(480, 27, 'B1 (26T)', 26, 1),
+(481, 28, 'A1 (16T)', 16, 1),
+(482, 28, 'B1 (26T)', 26, 1),
+(483, 29, '1 (8T)', 8, 1),
+(484, 29, '2 (16T)', 16, 1),
+(485, 29, '3 (4T)', 4, 1),
+(486, 31, '1', 4, 1),
+(487, 31, '2', 4, 1),
+(488, 31, '3', 4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trucks`
+--
+
+CREATE TABLE IF NOT EXISTS `trucks` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `registration` varchar(200) NOT NULL,
+  `mobile` varchar(20) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `CreatedBy` int(10) NOT NULL,
+  `defaultTrailer` int(10) DEFAULT NULL,
+  `Special_Instruction` varchar(500) DEFAULT NULL,
+  `Status` int(5) NOT NULL,
+  `Auger` tinyint(1) NOT NULL,
+  `Blower` tinyint(1) NOT NULL,
+  `Tipper` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
+
+--
+-- Dumping data for table `trucks`
+--
+
+INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`, `defaultTrailer`, `Special_Instruction`, `Status`, `Auger`, `Blower`, `Tipper`) VALUES
+(90, 'Container', '0400 000 000', 'Container', 1, NULL, '', 1, 0, 0, 0),
+(91, 'EX WORKS TRUCKS', '0000000000', 'EX WORKS TRUCKS', 1, NULL, '', 1, 0, 0, 0),
+(92, 'ISF 480', '0488 566 489', 'Scania 480', 1, NULL, '', 1, 0, 0, 0),
+(93, 'ISF 540', 'TBA', 'VOLVO 540', 1, NULL, 'NO POWER PACK OR BLOWER - TIPPER ONLY', 1, 0, 0, 0),
+(94, 'ISX 908', '0407 908 555', 'TIPPER/BLOWER', 1, NULL, 'TIPPER/BLOWER', 1, 0, 0, 0),
+(95, 'QQJ 669', '0409 566 098', 'KEOGH AUGER (OLD AUGER)', 1, NULL, '', 1, 1, 1, 0),
+(96, 'RVL 465', '0409 566 057', 'C/VAC AUGER/BLOWER', 1, NULL, '', 1, 1, 1, 0),
+(97, 'SIP 819', '0409 566 058', 'HAMELEX SINGLE TIPPER', 1, NULL, '', 1, 1, 0, 0),
+(98, 'TOM HARWOOD', '0427017769', 'SINGLE TIPPER', 1, NULL, '', 1, 0, 0, 0),
+(99, 'TWV 765', '0417 566 089', 'C/VAC CHOOK BIN', 1, NULL, '', 1, 0, 1, 0),
+(100, 'ULZ 544', '0417 566 607', 'Truck is a write off - needs to be deleted', 1, NULL, '', 0, 0, 0, 1),
+(101, 'USZ 620', '0409 566 802', 'KOCKUMS TRI AXLE BLOWER', 1, NULL, '', 1, 0, 0, 1),
+(102, 'XQP 945', '0438 851 867', 'CVAC B-DOUBLE', 1, NULL, '', 1, 0, 0, 0),
+(103, 'YBV 974', '0409 566 333', 'CVAC BLOWER - Blue Tarp', 1, NULL, '', 1, 0, 0, 0),
+(104, 'YBV 987', '0409 566 044', 'CVAC BLOWER (SILVER)', 1, NULL, '', 1, 0, 0, 0),
+(105, 'YGW 955', '0409 566 098', 'CVAC BLOWER/STINGER-72982-S', 1, NULL, '', 1, 0, 0, 0),
+(106, 'YXU 596', '0417 566 607', 'MOORE B-BOUBLE', 1, NULL, '', 1, 0, 0, 0),
+(107, 'ZBW 257', '0488 566 008', 'HAMELEX B-DOUBLE', 1, NULL, '', 1, 0, 0, 0),
+(108, 'ZHR 591', '0409 566 078', 'C/VAC AUGER (ROLLOVER)', 1, NULL, '', 1, 0, 0, 0),
+(109, 'ZPV 911', '0488 566 030', 'C/VAC BLOWER/STINGER', 1, NULL, 'Michael Phillips', 1, 0, 0, 0),
+(110, 'ZWY 945', '0488 566 089', 'C/VAC B-DOUBLE CHOOK BIN', 1, NULL, '', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 

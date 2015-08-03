@@ -150,20 +150,15 @@ class ImportFunctionsController extends Controller
                     $model->file = Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension;
                     $handle = fopen($model->file, "r");
 					
-					//Initialise the couters for the import
+					//Initialise the counters for the import
 					$model->initImport();
+					
+					//iterate through each line of the csv file with and apply the import function to it.
+					//The import function will save the data.
                     while (($fileLine = fgetcsv($handle, ",")) !== false) 
 						{
-						
-						
-						//Check to see if the first line imported is the header, if so skip
-						if($fileLine[0] != "Order ID"){
-							$functionName = $model->function;
-							$importedObject = $model->$functionName($fileLine);
-							// print_r($fileop);exit();
-							//$sql = "INSERT INTO details(name, age, location) VALUES ('$name', '$age', '$location')";
-							//$query = Yii::$app->db->createCommand($sql)->execute();
-							}
+						$functionName = $model->function;
+						$model->$functionName($fileLine);
 						}
 					$model->closeImport();
 
