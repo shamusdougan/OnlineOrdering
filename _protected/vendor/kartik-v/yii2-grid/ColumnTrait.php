@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.4
+ * @version   3.0.6
  */
 
 namespace kartik\grid;
@@ -12,6 +12,8 @@ namespace kartik\grid;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Json;
+use \Closure;
 
 /**
  * Trait for all column widgets in yii2-grid
@@ -32,6 +34,7 @@ trait ColumnTrait
             $this->headerOptions['rowspan'] = 2;
             Html::addCssClass($this->headerOptions, 'kv-merged-header');
         }
+        $this->headerOptions['data-col-seq'] = array_search($this, $this->grid->columns);
         return parent::renderHeaderCell();
     }
 
@@ -48,6 +51,7 @@ trait ColumnTrait
         if (isset($this->filterType) && $this->filterType === GridView::FILTER_SELECT2 && empty($this->filterWidgetOptions['pluginOptions']['width'])) {
             $this->filterWidgetOptions['pluginOptions']['width'] = 'resolve';
         }
+        $this->headerOptions['data-col-seq'] = array_search($this, $this->grid->columns);
         return parent::renderFilterCell();
     }
 
@@ -141,6 +145,99 @@ trait ColumnTrait
         if (isset($this->filterType)) {
             \kartik\base\Config::validateInputWidget($this->filterType, 'for filtering the grid as per your setup');
         }
+    }
+
+    /**
+     * Gets Default Excel Cell Format
+     *
+     * @return string
+     */
+    public function getDefaultExcelFormat()
+    {
+        if (!isset($this->format)) {
+            return '';
+        }
+        
+    }
+    
+    /**
+     * Parses Excel Cell Formats for export
+     *
+     * @return string
+     */
+    public function parseExcelFormats(&$options, $model, $key, $index)
+    {
+        $autoFormat = $this->grid->autoXlFormat;
+        if (!isset($this->xlsFormat) && !$autoFormat) {
+            return;
+        }
+        $fmt = '';
+        $format = is_array($this->format) ? $this->format[0] : $this->format;
+        $formatter = $this->grid->formatter;
+        if (isset($this->xlFormat)) {
+            $fmt = $this->xlFormat;
+        } elseif ($autoFormat && isset($this->format)) {
+            $tSep = isset($formatter->thousandSeparator) ? $formatter->thousandSeparator : ',';
+            $dSep = isset($formatter->decimalSeparator) ? $formatter->decimalSeparator : '.';
+            switch ($format) {
+                case 'text':
+                case 'html':
+                case 'raw':
+                case 'ntext':
+                case 'paragraphs':
+                case 'spellout':
+                case 'boolean':
+                case 'relativeTime':
+                    $fmt = '\@';
+                    break;
+                case 'integer':
+                    $fmt = "\\#\\{$tSep}\\#\\#0";
+                    break;
+                case 'decimal':
+                case 'percent':
+                case 'scientific':
+                    $decimals = is_array($this->format) && isset($this->format[1]) ? $this->format[1] : 2;
+                    $append = $decimals > 0 ? "\\{$dSep}" . str_repeat('0', $decimals) : '';
+                    if ($format == 'percent') {
+                        $append .= '%';
+                    }
+                    $fmt = ($format == 'scientific') ? "0{$append}E+00" : "\\#\\{$tSep}\\#\\#0" . $append;
+                    break;
+                case 'currency':
+                    $curr = is_array($this->format) && isset($this->format[1]) ? $this->format[1] : 
+                        isset($formatter->currencyCode) ? $formatter->currencyCode . ' ' : '';
+                    $fmt = "{$curr}\\#\\{$tSep}\\#\\#0{$dSep}00";
+                    break;
+                case 'date':
+                case 'time':
+                    $fmt = 'Short ' . ucfirst($format);
+                    break;
+                case 'datetime':
+                    $fmt = 'yyyy\-MM\-dd HH\:mm\:ss';
+                    break;
+                default:
+                    $fmt = '';
+                    break;
+            }
+        }        
+        if ($format === 'date' || $format === 'datetime' || $format === 'time') { 
+            $rawValue = $this->getDataCellValue($model, $key, $index);
+            switch ($format) {
+                case 'date':
+                    $rawVal = $formatter->format($rawValue, ['date', 'php:Y-m-d']);
+                    break;
+                case 'datetime':
+                    $rawVal = $formatter->format($rawValue, ['date', 'php:Y-m-d H:i:s']);
+                    break;
+                case 'time':
+                    $rawVal = $formatter->format($rawValue, ['date', 'php:H:i:s']);
+                    break;
+            }
+            $options['data-raw-value'] = $rawVal;
+        } elseif ($format === 'integer' || $format === 'decimal' || $format === 'percent' || $format === 'scientific') { 
+            $options['data-raw-value'] = $this->getDataCellValue($model, $key, $index);
+        }
+        Html::addCssStyle($options, ['mso-number-format' => '"' . $fmt . '"']);
     }
 
     /**
@@ -270,6 +367,7 @@ trait ColumnTrait
         if (trim($this->width) != '') {
             Html::addCssStyle($options, "width:{$this->width};");
         }
+        $options['data-col-seq'] = array_search($this, $this->grid->columns);
         return $options;
     }
 
@@ -317,10 +415,90 @@ trait ColumnTrait
             return;
         }
         $cont = 'jQuery("#' . $this->grid->pjaxSettings['options']['id'] . '")';
-        $grid = $this->grid->options['id'];
         $view = $this->grid->getView();
-        $view->registerJs(
-            "{$cont}.on('pjax:complete', function(){{$script}});"
-        );
+        $event = 'pjax:complete.' . hash('crc32', $script);
+        $view->registerJs("{$cont}.off('{$event}').on('{$event}', function(){{$script}});");
+    }
+
+    /**
+     * Parses a value if Closure and returns the right value
+     */
+    protected function parseVal($var, $model, $key, $index)
+    {
+        return $var instanceof Closure ? 
+            call_user_func($var, $model, $key, $index, $this) : 
+            $var;
+    }
+    
+    /**
+     * Initializes grid grouping
+     *
+     * @return void
+     */
+    protected function initGrouping()
+    {
+        if (empty($this->group)) {
+            return;
+        }
+        $view = $this->grid->getView();
+        $this->_columnKey = $this->getColumnKey();
+        Html::addCssClass($this->headerOptions, 'kv-grid-group-header');
+        Html::addCssClass($this->filterOptions, 'kv-grid-group-filter');
+        $this->headerOptions['data-group-key'] = $this->filterOptions['data-group-key'] = $this->_columnKey;
+        GridGroupAsset::register($view);
+        $id = $this->grid->options['id'];
+        $this->_clientScript = "kvGridGroup('{$id}');";
+        $view->registerJs($this->_clientScript);
+    }
+
+    /**
+     * Parses grid grouping and sets data attributes
+     *
+     * @return void
+     */
+    protected function parseGrouping(&$options, $model, $key, $index)
+    {
+        if (empty($this->group)) {
+            return;
+        }
+        Html::addCssClass($options, 'kv-grid-group');
+        $options['data-group-key'] = $this->_columnKey;
+        if (!empty($this->groupOddCssClass)) {
+            $options['data-odd-css'] = $this->parseVal($this->groupOddCssClass, $model, $key, $index);
+        }
+        if (!empty($this->groupEvenCssClass)) {
+            $options['data-even-css'] = $this->parseVal($this->groupEvenCssClass, $model, $key, $index);
+        }
+        if (isset($this->subGroupOf)) {
+            $options['data-sub-group-of'] = $this->parseVal($this->subGroupOf, $model, $key, $index);
+        }
+        if (isset($this->groupedRow)) {
+            $options['data-grouped-row'] = $this->parseVal($this->groupedRow, $model, $key, $index);
+        }
+        if (!empty($this->groupHeader)) {
+            $options['data-group-header'] = Json::encode($this->parseVal($this->groupHeader, $model, $key, $index));
+        }
+        if (!empty($this->groupFooter)) {
+            $options['data-group-footer'] = Json::encode($this->parseVal($this->groupFooter, $model, $key, $index));
+        }
+    }
+
+    /**
+     * Generate an unique column key
+     *
+     * @return mixed
+     */
+    protected function getColumnKey()
+    {
+        if (!empty($this->attribute)) {
+            $key = $this->attribute;
+        } elseif (!empty($this->label)) {
+            $key = $this->label;
+        } elseif (!empty($this->header)) {
+            $key = $this->header;
+        } else {
+            $key = get_class($this);
+        } 
+        return hash('crc32', $key);
     }
 }

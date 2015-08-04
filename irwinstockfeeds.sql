@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.6
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 03, 2015 at 07:07 AM
+-- Generation Time: Aug 04, 2015 at 04:26 PM
 -- Server version: 5.6.16
--- PHP Version: 5.5.9
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1828,15 +1828,18 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=213 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=219 ;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
 INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_created`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
-(211, 'ORD3211', 217, 'Dean Jerkins Mix - Custom 5T', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2015-07-26', NULL, NULL, 3, NULL, '', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '508.75', '382.51', NULL, NULL, 7, NULL, '413.51', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 24, NULL, NULL, NULL, 2, NULL, '2015-08-05', NULL, NULL, NULL, 2, 1100, NULL, NULL, NULL),
-(212, 'ORD3212', 4, 'A J & AG Lamb- Lamb 2 Commodity 5T', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-02', NULL, '4.46', 20, NULL, 'hello qorld', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '388.00', NULL, NULL, 10, NULL, '448.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, 1, NULL, '2015-08-20', NULL, NULL, NULL, 1, 24, NULL, NULL, NULL);
+(213, 'ORD3213', 4, 'A J & AG Lamb- Lamb 2 Commodity 5T', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'lbah blah', NULL, NULL, NULL, '389.00', NULL, NULL, NULL, NULL, '389.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-08-21', NULL, NULL, NULL, 1, 24, NULL, NULL, 100),
+(214, 'ORD3214', 64, 'Andrew Lamers Mix - Custom 1T', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '3.39', 14, NULL, 'hello', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'adsfasdfafsd', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-08-26', NULL, NULL, NULL, 1, 143, NULL, NULL, 100),
+(215, 'ORD3215', 6, 'A. Bezzina Commodity 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '385.90', NULL, NULL, NULL, NULL, '385.90', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-08-28', NULL, NULL, NULL, 1, 103, NULL, NULL, 100),
+(217, 'ORD3217', 604, 'Munden Farms Pty Ltd Commodity 44T', NULL, 44, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '389.74', NULL, NULL, 50, NULL, '454.74', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, 1, NULL, '2015-08-26', NULL, NULL, NULL, 1, 8, NULL, NULL, 100),
+(218, 'ORD3218', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1853,7 +1856,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=119 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1868,7 +1871,48 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (106, '2015-07-25', 2, '0', NULL, NULL, 209),
 (108, '2015-07-26', 4, '45', NULL, NULL, 211),
 (109, '2015-07-26', 6, '46', NULL, NULL, 211),
-(110, '2015-08-02', 3, '100', NULL, NULL, 212);
+(110, '2015-08-02', 3, '100', NULL, NULL, 212),
+(111, '2015-08-04', 4, '100', NULL, NULL, 213),
+(112, '2015-08-04', 58, '100', NULL, NULL, 214),
+(113, '2015-08-04', 3, '86', NULL, NULL, 215),
+(114, '2015-08-04', 2, '14', NULL, NULL, 215),
+(115, '2015-08-04', 4, '50', NULL, NULL, 216),
+(116, '2015-08-04', 5, '93', NULL, NULL, 217),
+(117, '2015-08-04', 2, '7', NULL, NULL, 217),
+(118, '2015-08-04', 4, '100', NULL, NULL, 218);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery`
+--
+
+CREATE TABLE IF NOT EXISTS `delivery` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `weigh_bridge_ticket` varchar(100) DEFAULT NULL,
+  `weighed_by` varchar(100) DEFAULT NULL,
+  `delivery_qty` float DEFAULT NULL,
+  `delivery_on` date DEFAULT NULL,
+  `delivery_completed_on` date DEFAULT NULL,
+  `order_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery_load`
+--
+
+CREATE TABLE IF NOT EXISTS `delivery_load` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `delivery_id` int(10) NOT NULL,
+  `load_qty` float NOT NULL,
+  `trailer_bin_id` int(10) NOT NULL,
+  `delivery_on` date DEFAULT NULL,
+  `delivery_completed_on` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

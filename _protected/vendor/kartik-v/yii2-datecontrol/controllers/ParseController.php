@@ -4,21 +4,20 @@
  * @package   yii2-datecontrol
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   1.9.2
+ * @version   1.9.4
  */
 
 namespace kartik\datecontrol\controllers;
 
-use DateTime;
 use DateTimeZone;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use kartik\datecontrol\Module;
+use kartik\datecontrol\DateControl;
 
 class ParseController extends \yii\web\Controller
 {
-
     /**
      * Convert display date for saving to model
      *
@@ -30,25 +29,12 @@ class ParseController extends \yii\web\Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $post = Yii::$app->request->post();
         if (isset($post['displayDate'])) {
-            $type = empty($post['type']) ? Module::FORMAT_DATE : $post['type'];
             $saveFormat = ArrayHelper::getValue($post, 'saveFormat');
             $dispFormat = ArrayHelper::getValue($post, 'dispFormat');
             $dispTimezone = ArrayHelper::getValue($post, 'dispTimezone');
             $saveTimezone = ArrayHelper::getValue($post, 'saveTimezone');
-            $dispDate = $post['displayDate'];
-            /**
-             * Fix to prevent DateTime defaulting the time
-             * part to current time, for FORMAT_DATE
-             */
-            if ($type == Module::FORMAT_DATE) {
-                $dispDate .= " 00:00:00";
-                $dispFormat .= " H:i:s";
-            }
-            if ($dispTimezone != null) {
-                $date = DateTime::createFromFormat($dispFormat, $dispDate, new DateTimeZone($dispTimezone));
-            } else {
-                $date = DateTime::createFromFormat($dispFormat, $dispDate);
-            }
+            $settings = ArrayHelper::getValue($post, 'settings', []);
+            $date = DateControl::getTimestamp($post['displayDate'], $dispFormat, $dispTimezone, $settings);
             if (empty($date) || !$date) {
                 $value = '';
             } elseif ($saveTimezone != null) {
@@ -61,5 +47,4 @@ class ParseController extends \yii\web\Controller
             return ['status' => 'error', 'output' => 'No display date found'];
         }
     }
-
 }
