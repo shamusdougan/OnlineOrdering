@@ -154,9 +154,19 @@ class CustomerOrderController extends Controller
         else if ($model->load(Yii::$app->request->post()) && $model->save()) 
         		{
         		//print_r(Yii::$app->request->post());
+        		//print_r(Yii::$app->request->get());
+        		
+        		
         		//print_r($model->getErrors());
-        	
-            	return $this->redirect(['index']);
+        		$get = Yii::$app->request->get();
+        		if(isset($get['exit']) && $get['exit'] == 'false' )
+        			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
+            	//
         		} 
         else {
         	
@@ -164,8 +174,11 @@ class CustomerOrderController extends Controller
         	
         	
         	
-        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+        	$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
         	$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+        	$actionItems[] = ['label'=>'Create Delivery', 'button' => 'truck', 'url'=>'/delivery/create?order_id='.$id, 'confirm' => 'Create Delivery?'];
+        	
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])

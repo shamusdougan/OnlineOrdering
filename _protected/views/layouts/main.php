@@ -49,6 +49,7 @@ AppAsset::register($this);
 					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],					
 					['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
 					['label' => 'Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order')],
+					['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>($currentItem == 'delivery')],
 					
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\components\actionButtons;
+use app\models\Lookup;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\customerOrdersSearch */
@@ -154,7 +155,11 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'Source_Campaign',
             // 'Standard_Cost_pT',
             // 'Standard_Cost_pT_Base',
-             'Status',
+             [
+             	'attribute' => 'Status',
+             	'filter' => Lookup::items("ORDER_STATUS"),
+             	'value' => function ($data){return Lookup::item($data->Status, "ORDER_STATUS");},
+             ],
             // 'Storage_Unit',
             // 'Submitted_Status',
             // 'Submitted_Status_Description',

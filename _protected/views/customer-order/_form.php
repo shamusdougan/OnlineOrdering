@@ -394,7 +394,7 @@ $( document ).ready(function() {
    		
 		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-form']); ?>
    
-		    
+		  	 <?= $form->errorSummary($model); ?>  
 		<?php	
 		
 		
@@ -517,7 +517,11 @@ $( document ).ready(function() {
 						'type' => FORM::INPUT_HIDDEN,
 						'columnOptions'=>['colspan'=>2],
 						'label' => false,
-						'hidden' => true
+						'hidden' => true,
+						'options' =>
+							[
+							'template' => '{input}',
+							]
 						]
 					],
 					
