@@ -593,7 +593,7 @@ $( document ).ready(function() {
 				'id' => 'ingredients',
 				'panel'=>[
 		        		'type'=>GridView::TYPE_PRIMARY,
-		        		'heading'=>"Ingredients order (".$model->id.")",
+		        		'heading'=>"Order Ingredients",
 		   		 ],
 				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 				'toolbar'=> 
