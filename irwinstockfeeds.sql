@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2015 at 04:26 PM
+-- Generation Time: Aug 05, 2015 at 08:51 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1828,7 +1828,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=219 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=221 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -1839,7 +1839,7 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (214, 'ORD3214', 64, 'Andrew Lamers Mix - Custom 1T', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '3.39', 14, NULL, 'hello', 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'adsfasdfafsd', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-08-26', NULL, NULL, NULL, 1, 143, NULL, NULL, 100),
 (215, 'ORD3215', 6, 'A. Bezzina Commodity 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '385.90', NULL, NULL, NULL, NULL, '385.90', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-08-28', NULL, NULL, NULL, 1, 103, NULL, NULL, 100),
 (217, 'ORD3217', 604, 'Munden Farms Pty Ltd Commodity 44T', NULL, 44, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '389.74', NULL, NULL, 50, NULL, '454.74', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, 1, NULL, '2015-08-26', NULL, NULL, NULL, 1, 8, NULL, NULL, 100),
-(218, 'ORD3218', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(220, 'ORD3220', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-08-05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1856,7 +1856,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=119 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=120 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1879,7 +1879,8 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (115, '2015-08-04', 4, '50', NULL, NULL, 216),
 (116, '2015-08-04', 5, '93', NULL, NULL, 217),
 (117, '2015-08-04', 2, '7', NULL, NULL, 217),
-(118, '2015-08-04', 4, '100', NULL, NULL, 218);
+(118, '2015-08-04', 4, '100', NULL, NULL, 218),
+(119, '2015-08-05', 3, '100', NULL, NULL, 219);
 
 -- --------------------------------------------------------
 
