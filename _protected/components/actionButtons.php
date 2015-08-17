@@ -59,7 +59,14 @@ public function run()
      	//If the submit and confirmation are speficied add both via jquery
      	if(isset($actionItem['confirm']) && isset($actionItem['submit']))
      		{
-			$returnString .= " onclick='if(confirm(\"".$actionItem['confirm']."\")){ $(\"form#".$actionItem['submit']."\").submit();}' ";
+     		if(isset($actionItem['overrideAction']))
+     			{
+				$returnString .= " onclick='if(confirm(\"".$actionItem['confirm']."\")){ $(\"form#".$actionItem['submit']."\").attr(\"action\", \"".$actionItem['overrideAction']."\"); $(\"form#".$actionItem['submit']."\").submit();}' ";
+				}
+			else{
+				$returnString .= " onclick='if(confirm(\"".$actionItem['confirm']."\")){ $(\"form#".$actionItem['submit']."\").submit();}' ";	
+			}
+			
 			}
 			
 		//If just the confirm is specifed add the confirmation via jquery

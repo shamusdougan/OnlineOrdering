@@ -24,9 +24,9 @@ AppAsset::register($this);
 <body>
     <?php $this->beginBody() ?>
     
-    <div class='sapient_wrap'>
+    <div class='sapient_login_wrapper'>
     	
-    	<div class='sapient_login'>
+    	<div class='sapient_login_content'>
     
        		<?= $content ?>
     	</div>

@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.4
+ * @version   3.0.6
  */
 
 namespace kartik\grid;
@@ -28,7 +28,7 @@ use kartik\base\Config;
  * specific enhancements.
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
- * @since 1.0
+ * @since  1.0
  */
 class GridView extends \yii\grid\GridView
 {
@@ -103,11 +103,11 @@ class GridView extends \yii\grid\GridView
     /**
      * Summary Functions
      */
-    const F_COUNT = 'count';
-    const F_SUM = 'sum';
-    const F_MAX = 'max';
-    const F_MIN = 'min';
-    const F_AVG = 'avg';
+    const F_COUNT = 'f_count';
+    const F_SUM = 'f_sum';
+    const F_MAX = 'f_max';
+    const F_MIN = 'f_min';
+    const F_AVG = 'f_avg';
 
     /**
      * Grid Export Formats
@@ -350,7 +350,7 @@ HTML;
     public $pjaxSettings = [];
 
     /**
-     * @var boolean whether to allow resizing of columns 
+     * @var boolean whether to allow resizing of columns
      */
     public $resizableColumns = true;
 
@@ -365,12 +365,12 @@ HTML;
      * it will default to Yii::$app->user->id.
      */
     public $resizeStorageKey;
-    
+
     /**
      * @var boolean whether the grid view will have Bootstrap table styling.
      */
     public $bootstrap = true;
-    
+
     /**
      * @var boolean whether the grid table will have a `bordered` style.
      * Applicable only if `bootstrap` is `true`. Defaults to `true`.
@@ -490,13 +490,13 @@ HTML;
     public $toggleDataOptions = [];
 
     /**
-     * @var array the HTML attributes for the toggle data button group container. By default 
+     * @var array the HTML attributes for the toggle data button group container. By default
      * this will always have the `class = btn-group` automatically added.
      */
     public $toggleDataContainer = [];
-    
+
     /**
-     * @var array the HTML attributes for the export button group container. By default 
+     * @var array the HTML attributes for the export button group container. By default
      * this will always have the `class = btn-group` automatically added.
      */
     public $exportContainer = [];
@@ -612,6 +612,13 @@ HTML;
     public $exportConversions = [];
 
     /**
+     * @var boolean, applicable for EXCEL export content only. This determines whether the exported EXCEL cell data
+     * will be automatically guessed and formatted based on `DataColumn::format` property. You can override this 
+     * behavior and change the auto-derived format mask by setting `DataColumn::xlFormat`.
+     */
+    public $autoXlFormat = false;
+
+    /**
      * @var array|boolean the HTML attributes for the grid container. The grid table items
      * will be wrapped in a `div` container with the configured HTML attributes. The ID for
      * the container will be auto generated.
@@ -658,7 +665,7 @@ HTML;
         }
         return $config;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -692,7 +699,9 @@ HTML;
             \kartik\base\Config::checkDependency(
                 'mpdf\Pdf',
                 'yii2-mpdf',
-                "for PDF export functionality. To include PDF export, follow the install steps below. If you do not need PDF export functionality, do not include 'PDF' as a format in the 'export' property. You can otherwise set 'export' to 'false' to disable all export functionality"
+                "for PDF export functionality. To include PDF export, follow the install steps below. If you do not " .
+                "need PDF export functionality, do not include 'PDF' as a format in the 'export' property. You can ".
+                "otherwise set 'export' to 'false' to disable all export functionality"
             );
         }
         $this->initHeader();
@@ -738,7 +747,7 @@ HTML;
         }
         return $content;
     }
-    
+
     /**
      * Renders the toggle data button
      *
@@ -749,7 +758,7 @@ HTML;
         if (!$this->toggleData) {
             return '';
         }
-        
+
         $tag = $this->_isShowAll ? 'page' : 'all';
         $label = ArrayHelper::remove($this->toggleDataOptions[$tag], 'label', '');
         $url = Url::current([$this->_toggleDataKey => $tag]);
@@ -850,13 +859,13 @@ HTML;
         } elseif ($this->filterPosition == self::FILTER_POS_BODY) {
             $content .= $this->renderFilters();
         }
-        return "<thead>\n" . 
-            $this->generateRows($this->beforeHeader) . "\n" .
-            $content . "\n" .
-            $this->generateRows($this->afterHeader) . "\n" .
-            "</thead>";
+        return "<thead>\n" .
+        $this->generateRows($this->beforeHeader) . "\n" .
+        $content . "\n" .
+        $this->generateRows($this->afterHeader) . "\n" .
+        "</thead>";
     }
-    
+
     /**
      * Renders the table footer.
      *
@@ -1166,7 +1175,7 @@ HTML;
         }
         if ($this->responsiveWrap) {
             Html::addCssClass($this->tableOptions, 'kv-table-wrap');
-        } 
+        }
     }
 
     /**
@@ -1248,7 +1257,8 @@ HTML;
             $postPjaxJs .= "{$grid}.removeClass('{$loadingCss}');";
         }
         if (!empty($postPjaxJs)) {
-            $js .= ".on('pjax:complete', function(){{$postPjaxJs}})";
+            $event = 'pjax:complete.' . hash('crc32', $postPjaxJs);
+            $js .= ".off('{$event}').on('{$event}', function(){{$postPjaxJs}})";
         }
         if ($js != $container) {
             $view->registerJs("{$js};");

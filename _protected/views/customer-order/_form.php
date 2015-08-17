@@ -423,7 +423,7 @@ $( document ).ready(function() {
    		
 		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-form']); ?>
    
-		    
+		  	 <?= $form->errorSummary($model); ?>  
 		<?php	
 		
 		
@@ -546,7 +546,11 @@ $( document ).ready(function() {
 						'type' => FORM::INPUT_HIDDEN,
 						'columnOptions'=>['colspan'=>2],
 						'label' => false,
-						'hidden' => true
+						'hidden' => true,
+						'options' =>
+							[
+							'template' => '{input}',
+							]
 						]
 					],
 					
@@ -610,7 +614,7 @@ $( document ).ready(function() {
 				'id' => 'ingredients',
 				'panel'=>[
 		        		'type'=>GridView::TYPE_PRIMARY,
-		        		'heading'=>"Ingredients order (".$model->id.")",
+		        		'heading'=>"Order Ingredients",
 		   		 ],
 				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 				'toolbar'=> 
@@ -740,7 +744,7 @@ $( document ).ready(function() {
     
 
 		
-			<? //Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+			
 
 	<?php ActiveForm::end(); ?>
 	
