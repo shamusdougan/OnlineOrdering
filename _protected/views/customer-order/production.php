@@ -39,11 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'client.Company_Name',
             'Name',
             'Qty_Tonnes',
-
+  
             'Price_Total',
-
+  
              'Status',
-
+  
 
             [
 				'class' => 'yii\grid\ActionColumn',

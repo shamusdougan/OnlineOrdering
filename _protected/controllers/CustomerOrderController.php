@@ -56,6 +56,7 @@ class CustomerOrderController extends Controller
      */
     public function actionIndex()
     {
+		 $this->view->params['menuItem'] = 'customer-order-sales';
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -68,6 +69,30 @@ class CustomerOrderController extends Controller
             'actionItems' => $actionItems,
         ]);
     }
+
+
+ /**
+     * Lists all customerOrders models.
+     * @return mixed
+     */
+    public function actionProductionList()
+    {
+		 $this->view->params['menuItem'] = 'customer-order-production';
+        $searchModel = new customerOrdersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
+		$actionItems[] = ['label'=>'Submit', 'button' => 'truck', 'url'=> '/customer-order/create'];
+		
+
+        return $this->render('production', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
+        ]);
+    }
+
+
 
     /**
      * Displays a single customerOrders model.
@@ -165,6 +190,8 @@ class CustomerOrderController extends Controller
         	
         	
         	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
+			$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
         	$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
         	
         	$clientObjects = Clients::find()
@@ -328,5 +355,42 @@ class CustomerOrderController extends Controller
 			return $this->renderAjax("/customer-orders-ingredients/_orderAdd", ['model' => $orderIngredient, 'productList' => $productList]);
 			}
 		}
+	
+
+
+
+	public function actionAjaxUpdateIngredient($id)
+		{
+	
+		$orderIngredient = CustomerOrdersIngredients::findOne($id);
+		if ($orderIngredient->load(Yii::$app->request->post()))
+			{
+			if($orderIngredient->save()) 
+				{
+				return print_r($orderIngredient);
+				}
+			//form was submitted but failed to save correctly, resend the form through to be rendered
+			else{
+				return print_r($orderIngredient->getErrors());
+				}
+			}
+		
+		if (($model = customerOrdersIngredients::findOne($id)) == null) 
+			{
+            return "Ingredient not found, id given: ".$id."<br>";
+        	}
+		else{
+			$products = [$model->ingredient_id => $model->product->Name];
+			
+			
+			
+			return $this->renderAjax("/customer-orders-ingredients/_orderUpdate", ['model' => $model, 'productList' => $products]);
+			}
+		
+		
+		
+		
+		}
+	
 	
 }

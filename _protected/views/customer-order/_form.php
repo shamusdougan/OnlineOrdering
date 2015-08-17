@@ -1,5 +1,5 @@
 <?php
-$debug = false;
+$debug = true;
 use yii\helpers\Html;
 
 use app\models\Lookup;
@@ -33,7 +33,7 @@ function getIngredientSum()
 {
 	
 	var sum = 0
-	$(\".kv-editable-value\").each(function() 
+	$(\".sap_edit_ingredient_link\").each(function() 
  		{
 		if(!isNaN($(this).text()) && $(this).text().length!=0) 
 			{
@@ -139,7 +139,8 @@ function updateOrderCosts()
 	
 	var totalOrderCost = OrderQty * totalPricePerTon;
 	$(\"#orderdetails-totalPrice\").val(totalOrderCost.toFixed(2));
-		    		
+	
+	$(\"#".Html::getInputId($model, 'Price_Total')."\").val(totalOrderCost.toFixed(2));    		
 		    		
 		
 		    		
@@ -225,6 +226,34 @@ $this->registerJs(
    );
 
 
+//action on clicking the ingredient percentage amount link in the grid
+$this->registerJs(
+    "$(document).on('click', \".sap_edit_ingredient_link\", function() 
+    	{
+    	var ingredientID = ($(this).attr('ingredientId'));
+		$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("customer-order/ajax-update-ingredient")."',
+		data: {id: ingredientID},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('#activity-modal').modal();
+			$('.modal-body').html(data);
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+		
+		
+	});"
+   );
+
+
+
+
 //action on submiting the ingredient add form
 $this->registerJs("
 $('body').on('beforeSubmit', 'form#ingredient_add', function () {
@@ -241,8 +270,8 @@ $('body').on('beforeSubmit', 'form#ingredient_add', function () {
           success: function (response) 
           		{
           		$('#activity-modal').modal('hide');
-          		var url = '".yii\helpers\Url::toRoute("customer-order/update")."&id=".$model->id."';
-          		$.pjax.reload({url: url, container:'#order_ingredient_grid'});
+          		
+          		$.pjax.reload({container:'#order_ingredient_grid'});
 				}
 		  });	
      return false;
@@ -531,22 +560,14 @@ $( document ).ready(function() {
 			    	],
 			    
 			    	[
-			    		'class' => 'kartik\grid\EditableColumn',
-        				'attribute' => 'ingredient_percent',
+						'attribute' => 'ingredient_percent',
         				'pageSummary'=>True,
-        				'editableOptions'=>
-        					[
-        					'header' => "%",
-        					'inputType' => \kartik\editable\Editable::INPUT_SPIN,
-        					'options' =>
-        						[
-								'pluginOptions'=>['min'=>0, 'max'=>100],
-        						],
-        					'pluginEvents' =>
-	        					[
-	        					'editableSuccess'=>"function(event, val, form, data) { $.pjax.reload({container:'#order_ingredient_grid'});  }"
-	        					],
-        					],
+						'format'=>'raw',
+						'value'=>function ($model, $key, $index, $widget) {
+        					return "<a class='sap_edit_ingredient_link' ingredientId='".$model->id."'>" . $model->ingredient_percent . '</A>';
+    						},
+
+
         				
         				
 					],
@@ -705,11 +726,13 @@ $( document ).ready(function() {
 					echo $form->field($model, 'Order_ID')->textInput();	
 					echo $form->field($model, 'Status')->textInput();	
 					echo $form->field($model, 'Created_By')->textInput();	
+					echo $form->field($model, 'Price_Total')->textInput();
 					}
 				else{
 					echo $form->field($model, 'Order_ID')->hiddenInput()->label(false) ;
 					echo $form->field($model, 'Status')->hiddenInput()->label(false);	
-					echo $form->field($model, 'Created_By')->hiddenInput()->label(false);		
+					echo $form->field($model, 'Created_By')->hiddenInput()->label(false);	
+					echo $form->field($model, 'Price_Total')->hiddenInput()->label(false);	
 					}
 			
 		    ?>

@@ -349,6 +349,7 @@ hr.article-devider {
 	
 .sap_buttonText{
 	text-align: center;
+	line-height: 85%;
 	}
 
 	
@@ -402,5 +403,9 @@ hr.article-devider {
 	
 .sap_back{
 	background-image:url('/images/icons_action/icon-32-back.png');
+	}
+
+.sap_truck{
+	background-image:url('/images/icons_action/icon-32-truck.png');
 	}
 

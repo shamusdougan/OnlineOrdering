@@ -31,7 +31,7 @@ use kartik\builder\Form;
 		    					],
 		    				'columnOptions'=>['colspan'=>2],
 		    				'label' => false,
-							
+							'readonly' => true,
 						],	
 		    		'ingredient_percent' => 
 		    			[
@@ -56,7 +56,7 @@ use kartik\builder\Form;
 		    		 'actions'=>
 		    		 	[
 		    		 	'type'=>Form::INPUT_RAW, 
-		    		 	'value'=>Html::submitButton('Add', ['class'=>'btn btn-primary'])
+		    		 	'value'=>Html::submitButton('Save', ['class'=>'btn btn-primary'])
 		    		 	]
 		    		]
 		    	]);
