@@ -313,6 +313,40 @@ hr.article-devider {
 	border: 0px;
 }
 	
+
+
+.sapient_login_wrapper
+{
+	width: 100%;
+	height: 100%;
+	background-image: url("/images/login_background.jpg");
+	background-size:cover;
+}
+
+.sapient_login_content
+{
+	width: 400px;
+	margin-right: auto;
+	margin-left: auto;
+
+}
+
+.sapient_home_title_wrapper
+{
+	width: 100%;
+	height: 120px;
+	
+}
+
+.sapient_home_title
+{
+	width: 742px;
+	height: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url("/images/header.gif");
+}
+
 .sapTitleBar{
 	width: 1280px;
 	font-size: 3em;
@@ -408,4 +442,6 @@ hr.article-devider {
 .sap_truck{
 	background-image:url('/images/icons_action/icon-32-truck.png');
 	}
+
+
 

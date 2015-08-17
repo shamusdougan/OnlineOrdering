@@ -219,11 +219,25 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	{
 		return "ORD".(3000 + $this->id);
 	}
+   
+   
+	public function getStorage()
+	{
+		return $this->hasOne(storage::className(), ['id' => 'Storage_Unit'] );
+	}
+   
+   
     
    public function generateOrderName()
    {
    	return $this->client->Company_Name." ".Lookup::item($this->Product_Category, "ORDER_CATEGORY" )." ".$this->Qty_Tonnes."T";
    }
+   
+   
+   
+   
+   
+   
    
    public function calculatePricePT()
    {

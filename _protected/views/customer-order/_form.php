@@ -1,5 +1,5 @@
 <?php
-$debug = true;
+$debug = false;
 use yii\helpers\Html;
 
 use app\models\Lookup;
@@ -487,22 +487,21 @@ $( document ).ready(function() {
 
 					
 						],
-					'Storage_Unit' => 
+					'storage' => 
 						[
 						'type' => FORM::INPUT_WIDGET,
 						'widgetClass' => DepDrop::classname(), 
 						'options'=>[
-							'options' =>
-								[
-								'placeholder'=>'Select Storage Location',
-								],
 							'pluginOptions'=>
 								[
+								'placeholder'=>'Select Storage Location.....',
 								'depends'=>[Html::getInputId($model, 'Customer_id')],
 								'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details'),
 								'emptyMsg' => 'No Storage Available',
-								'initialize'=>true,
+								'initialize'=>false,
+								
 								],
+							'data' => [$model->Storage_Unit => $model->storage->Description],
 							],
 						],
 					'Order_instructions' =>

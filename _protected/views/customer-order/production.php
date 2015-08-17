@@ -42,9 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
   
             'Price_Total',
   
-             'Status',
-  
-
+            'Status',
+            [
+  			'class' => '\kartik\grid\CheckboxColumn',
+			],
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{update} {delete}',
