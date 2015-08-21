@@ -235,7 +235,10 @@ class CustomerOrders extends \yii\db\ActiveRecord
    
    
    
-   
+   public function isDummyClient()
+   {
+   	return $this->Customer_id == Clients::DUMMY;
+   }
    
    
    

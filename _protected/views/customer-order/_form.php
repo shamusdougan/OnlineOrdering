@@ -16,6 +16,8 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 
 
+
+
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
 /* @var $form yii\widgets\ActiveForm */
@@ -487,7 +489,7 @@ $( document ).ready(function() {
 
 					
 						],
-					'storage' => 
+					'Storage_Unit' => 
 						[
 						'type' => FORM::INPUT_WIDGET,
 						'widgetClass' => DepDrop::classname(), 
@@ -501,7 +503,7 @@ $( document ).ready(function() {
 								'initialize'=>false,
 								
 								],
-							'data' => [$model->Storage_Unit => $model->storage->Description],
+							'data' => $storageList,
 							],
 						],
 					'Order_instructions' =>
@@ -515,7 +517,7 @@ $( document ).ready(function() {
 				]) ?><br>
 				
 				
-				
+			
 		
 		<div class='customer_order_subheading'>Order Details</div>
 		

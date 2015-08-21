@@ -142,46 +142,20 @@ class CustomerOrderController extends Controller
     {
         $model = $this->findModel($id);
 
-
-		//Section for the eidtable content of the Form
-		if (Yii::$app->request->post('hasEditable')) 
-			{
-			$ingredientID = Yii::$app->request->post('editableKey');
-        	$model = CustomerOrdersIngredients::findOne($ingredientID);
-        
-        
-			$out = Json::encode(['output'=>'', 'message'=>'']);
-        	 
-        	 
-        	//get the array information from the POST vairable. in the post the value is seens as
-        	//$_POST[CustomerOrdersIngredients][1][ingredient_percent] = XX
-			$post = [];
-	        $posted = current($_POST['CustomerOrdersIngredients']);
-	       	$post['CustomerOrdersIngredients'] = $posted;
-        	 
-        	 if ($model->load($post)) 
-        	 	{
-        	 	$model->save();
-        	 	$output = '';
-        	 	
-				$out = Json::encode(['output'=>$output, 'message'=>'']);
-        	 	
-        	 	
-        	 	
-        	 	}
-        	 
-			echo $out;
-			return;
-				
-				
-			}
-
-        else if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
         		{
-        		//print_r(Yii::$app->request->post());
-        		//print_r($model->getErrors());
-        	
-            	return $this->redirect(['index']);
+        		
+        		$get = Yii::$app->request->get();
+	    		if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
+        		
+        		
+        		
         		} 
         else {
         	
@@ -189,7 +163,7 @@ class CustomerOrderController extends Controller
         	
         	
         	
-        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 			$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
         	$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
@@ -199,8 +173,28 @@ class CustomerOrderController extends Controller
         				->select(['id', 'Company_Name'])
         				->all();
         	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
+        	
+        	
+        	//generate the list of storage option available, this will be over written by ajax if the client changes
+        	if(!$model->isDummyClient())
+        		{
+				$storageList = 	ArrayHelper::map($model->client->storage, 'id', 'Description');
+				
+				if(array_key_exists($model->Storage_Unit, $storageList))
+					{
+						
+						unset($storageList[$model->Storage_Unit]);
+						$storageList[$model->Storage_Unit] = $model->storage->Description;
+						$storageList = array_reverse($storageList, true);
+					}
+				
+				}
+			else{
+				$storageList = 	array();
+				}
+        	
             return $this->render('update', [
-                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems
+                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems, 'storageList' => $storageList
             ]);
         }
     }
