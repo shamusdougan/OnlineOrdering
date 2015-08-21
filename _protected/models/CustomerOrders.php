@@ -102,7 +102,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             [['Anticipated_Sales'], 'string', 'max' => 3],
             [['Order_instructions'], 'string', 'max' => 800],
             [['Product_Name'], 'string', 'max' => 100],
-            
+			[['Percent_ingredients'], 'number', 'min' => 100, 'max' => 100],
             ['Discount_notation', 'required', 'when' => function ($model) 
             	{
             	return $model->Discount_type > 1;

@@ -43,6 +43,8 @@ function getIngredientSum()
        		}
 		});
 	$(\"#".Html::getInputId($model, 'Percent_ingredients')."\").val(sum);
+	$('tfoot td:eq(1)').text(sum);
+	
 	
 	return sum;
 }
@@ -360,7 +362,8 @@ $this->registerJs("
 
 $( document ).ready(function() {
     updateOrderDetails();
-    updateOrderCosts()
+    updateOrderCosts();
+	getIngredientSum();
 });
 
 
@@ -565,11 +568,12 @@ $( document ).ready(function() {
 			    	],
 			    
 			    	[
-						'attribute' => 'ingredient_percent',
-        				'pageSummary'=>True,
+						'attribute' => 'Percent_ingredients',
+        				'pageSummary'=>true,
 						'format'=>'raw',
 						'value'=>function ($model, $key, $index, $widget) {
-        					return "<a class='sap_edit_ingredient_link' ingredientId='".$model->id."'>" . $model->ingredient_percent . '</A>';
+        					//return $model->ingredient_percent;
+        					return "<a class='sap_edit_ingredient_link' ingredientId='".$model->id."'>" . $model->ingredient_percent . '</a>';
     						},
 
 
