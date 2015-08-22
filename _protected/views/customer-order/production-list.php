@@ -36,6 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'export' => false,
         'columns' => [
+			
+			[
+  			'class' => '\kartik\grid\CheckboxColumn',
+			],
 
             'Order_ID',
             [
@@ -65,8 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'value' => function($data) {
 					return Lookup::item($data->Status, "ORDER_STATUS");
 					},
-			'filter' => Lookup::items("ORDER_STATUS"),
-			 'hAlign'=>'center', 
+			'filter' => false,
+			'hAlign'=>'center', 
 			],
 
             [
@@ -75,5 +79,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
         ],
     ]); ?>
+
+</div>
+
+         
 
 </div>

@@ -138,7 +138,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'id' => 'ID',
             'Order_ID' => 'Order  ID',
             'Customer_id' => 'Customer ID',
-            'Name' => 'Name',
+            'Name' => 'Order',
             'Mix_Type' => 'Mix  Type',
             'Qty_Tonnes' => 'Qty  Tonnes',
             'Nearest_Town' => 'Nearest  Town',
@@ -226,6 +226,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		return $this->hasOne(storage::className(), ['id' => 'Storage_Unit'] );
 	}
    
+  
    
     
    public function generateOrderName()

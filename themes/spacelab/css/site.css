@@ -370,7 +370,7 @@ hr.article-devider {
 
 	
 .sap_button{
-	width: 50px;
+	width: 55px;
 	height: 40px;
 	float: left;
 		
@@ -443,5 +443,8 @@ hr.article-devider {
 	background-image:url('/images/icons_action/icon-32-truck.png');
 	}
 
-
+.sap_edit_ingredient_link:hover
+{
+	cursor: pointer;
+}
 

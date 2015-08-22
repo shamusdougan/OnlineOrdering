@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use kartik\widgets\SideNav;
 use yii\widgets\Breadcrumbs;
+use app\models\CustomerOrders;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -50,12 +51,13 @@ AppAsset::register($this);
 					['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
 					['label' => 'Sales', 'icon' => 'user', 'items' => 
 						[
-						['label' => 'Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order'), 'active'=>($currentItem == 'customer-order-sales')],
+						['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order', 'CustomerOrdersSearch[Status]' => CustomerOrders::STATUS_ACTIVE]), 'active'=>($currentItem == 'customer-order-sales')],
 						
 						]],
 					['label' => 'Production', 'icon' => 'user', 'items' => 
 						[
-						['label' => 'Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-list'), 'active'=>($currentItem == 'customer-order-production')],
+						['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>($currentItem == 'customer-order-production-active')],
+						['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>($currentItem == 'customer-order-production-submitted')],
 						
 						]],	
 				

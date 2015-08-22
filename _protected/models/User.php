@@ -290,10 +290,7 @@ class User extends UserIdentity
         $this->account_activation_token = null;
     }
     
-    public function getFullname()
-    {
-		return $this->firstname." ".$this->surname;
-	}
+   
 	
 	public function getUserListArray()
 	{
@@ -306,4 +303,18 @@ class User extends UserIdentity
 			
 		return $returnArray;
 	}
+	
+	public function getUserFilterArray()
+	{
+		$userList = user::find()->orderBy('firstname')->all();
+		$returnArray = array();
+		foreach($userList as $user)
+			{
+			$returnArray[$user->fullname] = $user->fullname;
+			}
+			
+		return $returnArray;
+	}
+	
+	
 }

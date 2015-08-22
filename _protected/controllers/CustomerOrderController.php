@@ -56,7 +56,7 @@ class CustomerOrderController extends Controller
      */
     public function actionIndex()
     {
-		 $this->view->params['menuItem'] = 'customer-order-sales';
+		$this->view->params['menuItem'] = 'customer-order-sales';
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -75,22 +75,50 @@ class CustomerOrderController extends Controller
      * Lists all customerOrders models.
      * @return mixed
      */
-    public function actionProductionList()
+    public function actionProductionActiveList()
     {
-		 $this->view->params['menuItem'] = 'customer-order-production';
+		$this->view->params['menuItem'] = 'customer-order-production-active';
+		
+		
+		
+		
         $searchModel = new customerOrdersSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->getActiveOrders(Yii::$app->request->queryParams);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
-		$actionItems[] = ['label'=>'Submit', 'button' => 'truck', 'url'=> '/customer-order/create'];
+		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'url'=> '/customer-order/create'];
 		
 
-        return $this->render('production', [
+        return $this->render('production-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
         ]);
     }
+
+
+
+	public function actionProductionSubmittedList()
+    {
+		$this->view->params['menuItem'] = 'customer-order-production-submitted';
+		
+		
+		
+		
+        $searchModel = new customerOrdersSearch();
+        $dataProvider = $searchModel->getSubmittedOrders(Yii::$app->request->queryParams);
+
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
+		
+
+        return $this->render('production-list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
+        ]);
+    }
+
+
 
 
 
@@ -144,8 +172,13 @@ class CustomerOrderController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         		{
-        		
         		$get = Yii::$app->request->get();
+        		if(isset($get['submitOrder']) && $get['submitOrder'] == true)
+        			{
+					$model->Status = CustomerOrders::STATUS_SUBMITTED;
+					$model->save();
+					}
+        		   		
 	    		if(isset($get['exit']) && $get['exit'] == 'false' )
 	    			{
 					return $this->redirect(['update', 'id' => $model->id]);
@@ -153,20 +186,18 @@ class CustomerOrderController extends Controller
 				else{
 					return $this->redirect(['index']);
 					}
-        		
-        		
-        		
         		} 
-        else {
-        	
-        	
-        	
-        	
-        	
+        else {   	
         	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
-        	$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+			if($model->Status == CustomerOrders::STATUS_ACTIVE){
+				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				}
+			if($model->Status == CustomerOrders::STATUS_SUBMITTED){
+				$actionItems[] = ['label'=>'Create Delivery', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&createProdution=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				}
+        	
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
@@ -187,7 +218,6 @@ class CustomerOrderController extends Controller
 						$storageList[$model->Storage_Unit] = $model->storage->Description;
 						$storageList = array_reverse($storageList, true);
 					}
-				
 				}
 			else{
 				$storageList = 	array();
@@ -198,6 +228,77 @@ class CustomerOrderController extends Controller
             ]);
         }
     }
+
+
+	 /**
+     * Updates an existing customerOrders model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionUpdateProdcutionActive($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        		{
+        		$get = Yii::$app->request->get();
+        		if(isset($get['submitOrder']) && $get['submitOrder'] == true)
+        			{
+					$model->Status = CustomerOrders::STATUS_SUBMITTED;
+					$model->save();
+					}
+        		   		
+	    		if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
+        		} 
+        else {   	
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
+			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+			if($model->Status == CustomerOrders::STATUS_ACTIVE){
+				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				}
+			if($model->Status == CustomerOrders::STATUS_SUBMITTED){
+				$actionItems[] = ['label'=>'Create Delivery', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&createProdution=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				}
+        	
+        	
+        	$clientObjects = Clients::find()
+        				->where('id != :id', ['id'=>Clients::DUMMY])
+        				->select(['id', 'Company_Name'])
+        				->all();
+        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
+        	
+        	
+        	//generate the list of storage option available, this will be over written by ajax if the client changes
+        	if(!$model->isDummyClient())
+        		{
+				$storageList = 	ArrayHelper::map($model->client->storage, 'id', 'Description');
+				
+				if(array_key_exists($model->Storage_Unit, $storageList))
+					{
+						
+						unset($storageList[$model->Storage_Unit]);
+						$storageList[$model->Storage_Unit] = $model->storage->Description;
+						$storageList = array_reverse($storageList, true);
+					}
+				}
+			else{
+				$storageList = 	array();
+				}
+        	
+            return $this->render('update', [
+                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems, 'storageList' => $storageList
+            ]);
+        }
+    }
+
 
     /**
      * Deletes an existing customerOrders model.
