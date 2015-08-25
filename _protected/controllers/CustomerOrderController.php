@@ -89,7 +89,7 @@ class CustomerOrderController extends Controller
 		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'url'=> '/customer-order/create'];
 		
 
-        return $this->render('production-list', [
+        return $this->render('production-active-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
@@ -111,7 +111,7 @@ class CustomerOrderController extends Controller
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
 		
 
-        return $this->render('production-list', [
+        return $this->render('production-submitted-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
@@ -236,7 +236,7 @@ class CustomerOrderController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionUpdateProdcutionActive($id)
+    public function actionUpdateProductionActive($id)
     {
         $model = $this->findModel($id);
 
@@ -251,22 +251,18 @@ class CustomerOrderController extends Controller
         		   		
 	    		if(isset($get['exit']) && $get['exit'] == 'false' )
 	    			{
-					return $this->redirect(['update', 'id' => $model->id]);
+					return $this->redirect(['update-production-active', 'id' => $model->id]);
 					}
 				else{
-					return $this->redirect(['index']);
+					return $this->redirect(['production-active-list']);
 					}
         		} 
         else {   	
-        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update-production-active?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
-			if($model->Status == CustomerOrders::STATUS_ACTIVE){
-				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
-				}
-			if($model->Status == CustomerOrders::STATUS_SUBMITTED){
-				$actionItems[] = ['label'=>'Create Delivery', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&createProdution=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
-				}
+			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/production-active-list', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-active?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				
         	
         	
         	$clientObjects = Clients::find()
@@ -298,6 +294,74 @@ class CustomerOrderController extends Controller
             ]);
         }
     }
+
+
+ /**
+     * Updates an existing customerOrders model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionUpdateProductionSubmitted($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        		{
+        		$get = Yii::$app->request->get();
+        		if(isset($get['processOrder']) && $get['processOrder'] == true)
+        			{
+					$model->Status = CustomerOrders::STATUS_PROCESSING;
+					$model->save();
+					}
+        		   		
+	    		if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update-production-submitted', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['production-submitted-list']);
+					}
+        		} 
+        else {   	
+        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
+			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/production-submitted-list', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Save & Process', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id.'&processOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Produce?'];
+				
+        	
+        	
+        	$clientObjects = Clients::find()
+        				->where('id != :id', ['id'=>Clients::DUMMY])
+        				->select(['id', 'Company_Name'])
+        				->all();
+        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
+        	
+        	
+        	//generate the list of storage option available, this will be over written by ajax if the client changes
+        	if(!$model->isDummyClient())
+        		{
+				$storageList = 	ArrayHelper::map($model->client->storage, 'id', 'Description');
+				
+				if(array_key_exists($model->Storage_Unit, $storageList))
+					{
+						
+						unset($storageList[$model->Storage_Unit]);
+						$storageList[$model->Storage_Unit] = $model->storage->Description;
+						$storageList = array_reverse($storageList, true);
+					}
+				}
+			else{
+				$storageList = 	array();
+				}
+        	
+            return $this->render('update', [
+                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems, 'storageList' => $storageList
+            ]);
+        }
+    }
+
+
 
 
     /**

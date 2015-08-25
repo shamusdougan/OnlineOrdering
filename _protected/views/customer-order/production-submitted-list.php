@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use yii\helpers\Url;
 use app\components\actionButtons;
 use app\models\Lookup;
 use app\models\User;
@@ -76,6 +77,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
 				'class' => 'kartik\grid\ActionColumn',
 				'template' => '{update} {delete}',
+				'buttons' =>
+					[
+					'update' => function ($url, $model)
+						{
+							return html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['update-production-submitted', 'id' => $model->id]), [
+                                        'title' => 'Update',
+                                        ]);
+
+						}
+					]
 			],
         ],
     ]); ?>
@@ -85,3 +96,6 @@ $this->params['breadcrumbs'][] = $this->title;
          
 
 </div>
+<?php
+
+?>
