@@ -26,7 +26,7 @@ class CustomerOrderController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['get', 'post'],
                     'customerdetails' => ['get', 'post']
                 ],
             ],
@@ -202,17 +202,26 @@ class CustomerOrderController extends Controller
 					return $this->redirect(['update', 'id' => $model->id]);
 					}
 				else{
-					return $this->redirect(['index']);
+					return $this->redirect(['index', 'CustomerOrdersSearch[Status]' => 1]);
 					}
         		} 
-        else {   	
-        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+        else {
+        	$readOnly = false;
+        	
 			if($model->Status == CustomerOrders::STATUS_ACTIVE){
+				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index?CustomerOrdersSearch[Status]=1', 'confirm' => 'Cancel Changes?'];
+				$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+				$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
 				}
-			
+			elseif($model->Status == CustomerOrders::STATUS_SUBMITTED)
+        		{
+   				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index?CustomerOrdersSearch[Status]=1'];
+   				$readOnly = True;
+				}
+			else{
+				$readOnly = True;
+				}
         	
         	
         	$clientObjects = Clients::find()
@@ -244,6 +253,7 @@ class CustomerOrderController extends Controller
                 'clientList' => $clientList, 
                 'actionItems' => $actionItems, 
                 'storageList' => $storageList,
+                'readOnly' => $readOnly,
                 
             ]);
         }
@@ -394,8 +404,18 @@ class CustomerOrderController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'CustomerOrdersSearch[Status]' => 1]);
     }
+    
+    
+     public function actionDeleteActiveList($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['production-active-list']);
+    }
+    
+    
 
     /**
      * Finds the customerOrders model based on its primary key value.

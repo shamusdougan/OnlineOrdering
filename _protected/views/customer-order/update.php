@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update
 
 
     <?= $this->render('_form', [
-        'model' => $model, 'clientList' => $clientList, 'storageList' => $storageList
+        'model' => $model, 'clientList' => $clientList, 'storageList' => $storageList, 'readOnly' => $readOnly
     ]) ?>
 
 </div>

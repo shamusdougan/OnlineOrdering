@@ -86,6 +86,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'title' => 'Update',
                                         ]);
 
+						},
+					'delete' => function ($url, $model)
+						{
+							return html::a('<span class="glyphicon glyphicon-trash"></span>', Url::toRoute(['delete-active-list', 'id' => $model->id]), [
+                                        'title' => 'Update',
+                                        ]);
+
 						}
 					]
 			],

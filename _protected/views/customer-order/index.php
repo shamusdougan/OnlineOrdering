@@ -5,6 +5,8 @@ use kartik\grid\GridView;
 use app\components\actionButtons;
 use app\models\Lookup;
 use app\models\User;
+use app\models\CustomerOrders;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\customerOrdersSearch */
@@ -31,7 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     
 
-    <?= GridView::widget([
+    <?= 
+    
+    
+    
+    
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'export' => false,
@@ -71,7 +78,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
 				'class' => 'kartik\grid\ActionColumn',
-				'template' => '{update} {delete}',
+				'template' =>  '{update}{delete}',
+				'buttons' =>
+					[
+					'delete' => function ($url, $model)
+						{
+							return $model->Status == CustomerOrders::STATUS_ACTIVE ? html::a('<span class="glyphicon glyphicon-trash"></span>', Url::toRoute(['delete', 'id' => $model->id]), [
+                                        'title' => 'Delete Order',
+                                        ]) : '';
+
+						}
+					]
+				
 			],
         ],
     ]); ?>
