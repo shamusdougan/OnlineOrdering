@@ -16,7 +16,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 
 
-
+$readOnly = True;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
@@ -35,7 +35,7 @@ function getIngredientSum()
 {
 	
 	var sum = 0
-	$(\".sap_edit_ingredient_link\").each(function() 
+	$(\".ingredient_percent\").each(function() 
  		{
 		if(!isNaN($(this).text()) && $(this).text().length!=0) 
 			{
@@ -446,10 +446,10 @@ $( document ).ready(function() {
 		    				'options'=>
 		    					[
 		    					'data'=>$clientList,
-		    					
-		    					'options' => ['placeholder' => 'Select Client....', 'selected' => null,]
+		    					'options' => ['placeholder' => 'Select Client....', 'selected' => null,],
+		    					'disabled' => $readOnly,
 		    					],
-
+							
 		    			],			 
 		      	]
 		    ]);
@@ -476,7 +476,7 @@ $( document ).ready(function() {
 						'options' => 
 							[
 							'type'=>DateControl::FORMAT_DATE,
-							
+							'disabled' => $readOnly,
 							'options' =>
 								[
 								'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -497,6 +497,7 @@ $( document ).ready(function() {
 						'type' => FORM::INPUT_WIDGET,
 						'widgetClass' => DepDrop::classname(), 
 						'options'=>[
+							'disabled' => $readOnly,
 							'pluginOptions'=>
 								[
 								'placeholder'=>'Select Storage Location.....',
@@ -504,7 +505,6 @@ $( document ).ready(function() {
 								'url'=>yii\helpers\Url::toRoute('/customer-order/ajax-storage-details'),
 								'emptyMsg' => 'No Storage Available',
 								'initialize'=>false,
-								
 								],
 							'data' => $storageList,
 							],
@@ -513,7 +513,10 @@ $( document ).ready(function() {
 						[
 						'type' => FORM::INPUT_TEXTAREA,
 						'columnOptions'=>['colspan'=>2],
-					
+						'options' =>
+							[
+							'disabled' => $readOnly,
+							],
 						
 						],
 					]
@@ -538,12 +541,20 @@ $( document ).ready(function() {
 						[
 						'type' => FORM::INPUT_TEXT,
 						'columnOptions'=>['colspan'=>2],
+						'options' => 
+							[
+							'disabled' => $readOnly,
+							]
 						],
 					'Product_Category' => 
 						[
 						'type' => FORM::INPUT_DROPDOWN_LIST,
 						'items' => Lookup::items("ORDER_CATEGORY"),
 						'columnOptions'=>['colspan'=>2],
+						'options' => 
+							[
+							'disabled' => $readOnly,
+							]
 						],
 					'Percent_ingredients' =>
 						[
@@ -554,12 +565,16 @@ $( document ).ready(function() {
 						'options' =>
 							[
 							'template' => '{input}',
+							'disabled' => $readOnly,
 							]
 						]
 					],
 					
 				]);
-
+				
+			
+			
+			
 		    $gridColumns = 
 		    	[
 			    	[
@@ -571,9 +586,16 @@ $( document ).ready(function() {
 						'attribute' => 'Percent_ingredients',
         				'pageSummary'=>true,
 						'format'=>'raw',
-						'value'=>function ($model, $key, $index, $widget) {
+						'value'=>function ($model) use ($readOnly) {
         					//return $model->ingredient_percent;
-        					return "<a class='sap_edit_ingredient_link' ingredientId='".$model->id."'>" . $model->ingredient_percent . '</a>';
+        					if($readOnly)
+        						{
+								return  "<span class='ingredient_percent'>".$model->ingredient_percent."</span>";
+								}
+							else{
+								return "<a class='sap_edit_ingredient_link' ingredientId='".$model->id."'><span class='ingredient_percent'>" . $model->ingredient_percent . '</span></a>';	
+								}
+        					
     						},
 
 
@@ -596,6 +618,7 @@ $( document ).ready(function() {
 			    	[
 			    	'class' => '\kartik\grid\ActionColumn',
 			    	'template' => '{delete}',
+			    	'hidden' => $readOnly,
 					'buttons' =>
 						[
 						'delete' => function ($url, $model, $key) 

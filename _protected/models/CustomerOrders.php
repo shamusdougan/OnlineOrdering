@@ -278,5 +278,14 @@ class CustomerOrders extends \yii\db\ActiveRecord
     	}
 	}
    
+   
+   public function submitOrder()
+   {
+   	$this->Status = CustomerOrders::STATUS_SUBMITTED;
+   	$this->save();
+   	
+   	
+   	
+   }
     
 }

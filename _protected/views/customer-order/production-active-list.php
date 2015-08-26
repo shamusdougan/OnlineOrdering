@@ -6,6 +6,7 @@ use kartik\grid\GridView;
 use app\components\actionButtons;
 use app\models\Lookup;
 use app\models\User;
+use kartik\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\customerOrdersSearch */
@@ -28,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     
     
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+  <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-active-list-form']); ?>
 
     
 
@@ -94,5 +95,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
          
+<?php ActiveForm::end(); ?>
 
 </div>

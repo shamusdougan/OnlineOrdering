@@ -80,13 +80,31 @@ class CustomerOrderController extends Controller
 		$this->view->params['menuItem'] = 'customer-order-production-active';
 		
 		
+		//if an order has been selected and the "Submit orders" button is pressed
+		$checkArray = Yii::$app->request->post('selection'); 
+		if($checkArray)
+			{
+			foreach($checkArray as $orderId)
+				{
+				if (($order = customerOrders::findOne($orderId)) !== null) 
+					{
+            		$order->submitOrder();
+        			}
+        		else {
+            		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
+        			}
+				}
+			}
+		
+		 
+		
 		
 		
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->getActiveOrders(Yii::$app->request->queryParams);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
-		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'url'=> '/customer-order/create'];
+		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'submit' => 'customer-order-active-list-form', 'url'=> null];
 		
 
         return $this->render('production-active-list', [
@@ -194,9 +212,7 @@ class CustomerOrderController extends Controller
 			if($model->Status == CustomerOrders::STATUS_ACTIVE){
 				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
 				}
-			if($model->Status == CustomerOrders::STATUS_SUBMITTED){
-				$actionItems[] = ['label'=>'Create Delivery', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&createProdution=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
-				}
+			
         	
         	
         	$clientObjects = Clients::find()
@@ -224,7 +240,11 @@ class CustomerOrderController extends Controller
 				}
         	
             return $this->render('update', [
-                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems, 'storageList' => $storageList
+                'model' => $model, 
+                'clientList' => $clientList, 
+                'actionItems' => $actionItems, 
+                'storageList' => $storageList,
+                
             ]);
         }
     }
