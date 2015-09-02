@@ -51,13 +51,14 @@ AppAsset::register($this);
 					['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
 					['label' => 'Sales', 'icon' => 'user', 'items' => 
 						[
-						['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order', 'CustomerOrdersSearch[Status]' => CustomerOrders::STATUS_ACTIVE]), 'active'=>($currentItem == 'customer-order-sales')],
+						['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order']), 'active'=>($currentItem == 'customer-order-sales')],
 						
 						]],
 					['label' => 'Production', 'icon' => 'user', 'items' => 
 						[
 						['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>($currentItem == 'customer-order-production-active')],
 						['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>($currentItem == 'customer-order-production-submitted')],
+						['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>($currentItem == 'delivery')],
 						
 						]],	
 				

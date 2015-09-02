@@ -26,7 +26,7 @@ class CustomerOrderController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['post', 'get'],
                     'customerdetails' => ['get', 'post']
                 ],
             ],
@@ -58,7 +58,7 @@ class CustomerOrderController extends Controller
     {
 		$this->view->params['menuItem'] = 'customer-order-sales';
         $searchModel = new customerOrdersSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->getAllOrders(Yii::$app->request->queryParams);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
 		
@@ -71,70 +71,8 @@ class CustomerOrderController extends Controller
     }
 
 
- /**
-     * Lists all customerOrders models.
-     * @return mixed
-     */
-    public function actionProductionActiveList()
-    {
-		$this->view->params['menuItem'] = 'customer-order-production-active';
-		
-		
-		//if an order has been selected and the "Submit orders" button is pressed
-		$checkArray = Yii::$app->request->post('selection'); 
-		if($checkArray)
-			{
-			foreach($checkArray as $orderId)
-				{
-				if (($order = customerOrders::findOne($orderId)) !== null) 
-					{
-            		$order->submitOrder();
-        			}
-        		else {
-            		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
-        			}
-				}
-			}
-		
-		 
-		
-		
-		
-        $searchModel = new customerOrdersSearch();
-        $dataProvider = $searchModel->getActiveOrders(Yii::$app->request->queryParams);
+ 
 
-		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
-		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'submit' => 'customer-order-active-list-form', 'url'=> null];
-		
-
-        return $this->render('production-active-list', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'actionItems' => $actionItems,
-        ]);
-    }
-
-
-
-	public function actionProductionSubmittedList()
-    {
-		$this->view->params['menuItem'] = 'customer-order-production-submitted';
-		
-		
-		
-		
-        $searchModel = new customerOrdersSearch();
-        $dataProvider = $searchModel->getSubmittedOrders(Yii::$app->request->queryParams);
-
-		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
-		
-
-        return $this->render('production-submitted-list', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'actionItems' => $actionItems,
-        ]);
-    }
 
 
 
@@ -157,7 +95,7 @@ class CustomerOrderController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($redirectTo = 'update')
     {
         $model = new customerOrders(['scenario' => 'createDummy']);
 		$model->Customer_id = customerOrders::PLACEHOLDERID;
@@ -171,7 +109,7 @@ class CustomerOrderController extends Controller
         	}
 		$model->Order_ID = $model->getOrderNumber();
 		$model->save();
-		return $this->redirect(['update', 'id' => $model->id]);
+		return $this->redirect([$redirectTo, 'id' => $model->id]);
         
 
         
@@ -206,9 +144,10 @@ class CustomerOrderController extends Controller
 					}
         		} 
         else {   	
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
         	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+			
 			if($model->Status == CustomerOrders::STATUS_ACTIVE){
 				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
 				}
@@ -250,6 +189,67 @@ class CustomerOrderController extends Controller
     }
 
 
+ /**
+ * 
+ * 			Controller Action for the the Production List pages
+ * 
+ * 
+ * 
+ * 			Need to have this seperate for the sumission process to come back to the correct list
+ * 
+ * 
+ * 
+ * 
+ * 
+ **/
+ 
+ /**
+     * Lists all customerOrders models.
+     * @return mixed
+     */
+    public function actionProductionActiveList()
+    {
+		$this->view->params['menuItem'] = 'customer-order-production-active';
+		
+		
+		//if an order has been selected and the "Submit orders" button is pressed
+		$checkArray = Yii::$app->request->post('selection'); 
+		if($checkArray)
+			{
+			foreach($checkArray as $orderId)
+				{
+				if (($order = customerOrders::findOne($orderId)) !== null) 
+					{
+            		$order->submitOrder();
+        			}
+        		else {
+            		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
+        			}
+				}
+			}
+		
+		 
+		
+		
+		
+        $searchModel = new customerOrdersSearch();
+        $dataProvider = $searchModel->getActiveOrders(Yii::$app->request->queryParams);
+
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create?redirectTo=update-production-active'];
+		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'submit' => 'customer-order-active-list-form', 'url'=> null];
+		
+
+        return $this->render('production-active-list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
+        ]);
+    }
+
+
+ 
+ 
+ 
 	 /**
      * Updates an existing customerOrders model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -278,9 +278,9 @@ class CustomerOrderController extends Controller
 					}
         		} 
         else {   	
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/production-active-list', 'confirm' => 'Cancel Changes?'];
         	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update-production-active?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/production-active-list', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'overrideAction' =>'/customer-order/update-production-active?id='.$model->id, 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 			$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-active?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
 				
         	
@@ -316,7 +316,63 @@ class CustomerOrderController extends Controller
     }
 
 
- /**
+
+
+
+
+
+/**
+ * 
+ * 			Controller Action for the the Production List pages
+ * 
+ * 
+ * 
+ * 			Need to have this seperate for the sumission process to come back to the correct list
+ * 
+ * 
+ * 
+ * 
+ * 
+ **/
+ 
+ 
+	public function actionProductionSubmittedList()
+    {
+		$this->view->params['menuItem'] = 'customer-order-production-submitted';
+		
+		//if an order has been selected and the "Submit orders" button is pressed
+		$checkArray = Yii::$app->request->post('selection'); 
+		if($checkArray)
+			{
+			foreach($checkArray as $orderId)
+				{
+				if (($order = customerOrders::findOne($orderId)) !== null) 
+					{
+            		$order->unSubmitOrder();
+        			}
+        		else {
+            		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
+        			}
+				}
+			}
+		
+		
+        $searchModel = new customerOrdersSearch();
+        $dataProvider = $searchModel->getSubmittedOrders(Yii::$app->request->queryParams);
+
+		$actionItems[] = ['label'=>'Unsubmit Order(s)', 'button' => 'reversetruck', 'submit' => 'customer-order-submitted-list-form', 'url'=> null];
+		
+
+
+        return $this->render('production-submitted-list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
+        ]);
+    }
+
+ 
+  /**
      * Updates an existing customerOrders model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
@@ -344,9 +400,9 @@ class CustomerOrderController extends Controller
 					}
         		} 
         else {   	
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/production-submitted-list', 'confirm' => 'Exit with out Saving?'];
         	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			$actionItems[] = ['label'=>'Cancel', 'button' => 'cancel', 'url'=>'/customer-order/production-submitted-list', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 			$actionItems[] = ['label'=>'Save & Process', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id.'&processOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Produce?'];
 				
         	
@@ -390,11 +446,11 @@ class CustomerOrderController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $redirectTo = 'index')
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect([$redirectTo]);
     }
 
     /**

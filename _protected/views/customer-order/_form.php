@@ -16,7 +16,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 
 
-$readOnly = True;
+if(!isset($readOnly)){ $readOnly = False;};
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
@@ -426,11 +426,15 @@ $( document ).ready(function() {
 		</div>
 		<div class='customer-orders-form-main'>
    		
-		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-form']); ?>
+		<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-form']);
+		
+		
+		 ?>
    
 		  	 <?= $form->errorSummary($model); ?>  
 		<?php	
 		
+			
 		
 		
 		    //Customer Select options
@@ -520,7 +524,11 @@ $( document ).ready(function() {
 						
 						],
 					]
-				]) ?><br>
+				])
+				
+				
+				
+				?><br>
 				
 				
 			
@@ -556,22 +564,11 @@ $( document ).ready(function() {
 							'disabled' => $readOnly,
 							]
 						],
-					'Percent_ingredients' =>
-						[
-						'type' => FORM::INPUT_HIDDEN,
-						'columnOptions'=>['colspan'=>2],
-						'label' => false,
-						'hidden' => true,
-						'options' =>
-							[
-							'template' => '{input}',
-							'disabled' => $readOnly,
-							]
-						]
+					
 					],
 					
 				]);
-				
+			echo   $form->field($model, 'Percent_ingredients', ['template' => '{input}'])->hiddenInput()->label(false);	
 			
 			
 			

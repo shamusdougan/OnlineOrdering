@@ -50,4 +50,15 @@ class Delivery extends \yii\db\ActiveRecord
             'delivery_completed_on' => 'Delivery Completed On',
         ];
     }
+    
+    
+    public function getCustomerOrder()
+    	{
+			return $this->hasOne(CustomerOrders::className(), ['id' => 'order_id'] );
+		}
+		
+		
+	
+		
+		
 }

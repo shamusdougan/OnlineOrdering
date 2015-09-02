@@ -29,7 +29,7 @@ class CustomerOrdersSearch extends CustomerOrders
     {
         return [
             [['id', 'Customer_id', 'Mix_Type', 'Qty_Tonnes', 'Billing_company', 'Billing_type', 'Created_By', 'Discount_pT', 'Discount_pT_Base', 'Discount_type', 'Feed_Days_Remaining', 'Feed_Type', 'Herd_Size', 'Modified_By', 'Order_notification', 'Owner', 'Price_Production', 'Price_Production_Base', 'Price_production_pT', 'Price_production_pT_Base', 'Price_Transport', 'Price_Transport_Base', 'Price_transport_pT', 'Price_transport_pT_Base', 'Process', 'Process_Stage', 'Product_Category', 'Second_Customer', 'Second_customer_Order_percent', 'Ship_To', 'Status', 'Storage_Unit', 'Submitted_Status', 'Submitted_Status_Description'], 'integer'],
-            [['Order_ID', 'Name', 'Nearest_Town', 'Date_Fulfilled', 'Date_Submitted', 'Status_Reason', 'Anticipated_Sales', 'Created_On', 'Delivery_created', 'Discount_notation', 'Load_Due', 'Modified_On', 'Order_instructions', 'Product_Name', 'Requested_Delivery_by'], 'safe'],
+            [['Order_ID', 'Name', 'Nearest_Town', 'Date_Fulfilled', 'Date_Submitted', 'Status_Reason', 'Anticipated_Sales', 'Created_On', 'Discount_notation', 'Load_Due', 'Modified_On', 'Order_instructions', 'Product_Name', 'Requested_Delivery_by'], 'safe'],
             [['Discount_Percent', 'Feed_QOH_Tonnes', 'Feed_Rate_Kg_Day', 'Price_pT', 'Price_pT_Base', 'Price_Sub_Total', 'Price_Sub_Total_Base', 'Price_Total', 'Price_Total_Base', 'Price_Total_pT', 'Price_Total_pT_Base'], 'number'],
             [['client.Company_Name', 'createdByUser.fullname'], 'safe']
         ];
@@ -91,7 +91,6 @@ class CustomerOrdersSearch extends CustomerOrders
             'Billing_type' => $this->Billing_type,
             'Created_By' => $this->Created_By,
             'Created_On' => $this->Created_On,
-            'Delivery_created' => $this->Delivery_created,
             'Discount_Percent' => $this->Discount_Percent,
             'Discount_pT' => $this->Discount_pT,
             'Discount_pT_Base' => $this->Discount_pT_Base,
@@ -152,7 +151,9 @@ class CustomerOrdersSearch extends CustomerOrders
     
     public function getActiveOrders($params)
     {
-        $query = CustomerOrders::find()->Where('customer_orders.Status = '.CustomerOrders::STATUS_ACTIVE);
+        $query = CustomerOrders::find()
+        	->Where('customer_orders.Status = '.CustomerOrders::STATUS_ACTIVE)
+        	->andWhere('Customer_id != :id', ['id'=>Clients::DUMMY]);
 
 		return $this->dataQuery($params, $query);
 	}
@@ -160,12 +161,19 @@ class CustomerOrdersSearch extends CustomerOrders
 	
 	 public function getSubmittedOrders($params)
     {
-        $query = CustomerOrders::find()->Where('customer_orders.Status = '.CustomerOrders::STATUS_SUBMITTED);
+        $query = CustomerOrders::find()
+        	->Where('customer_orders.Status = '.CustomerOrders::STATUS_SUBMITTED)
+        	->andWhere('Customer_id != :id', ['id'=>Clients::DUMMY]);
 
 		return $this->dataQuery($params, $query);
 	}
 	
-	
+	public function getAllOrders($params)
+	{
+		$query = CustomerOrders::find()->where('Customer_id != :id', ['id'=>Clients::DUMMY]);
+		return $this->dataQuery($params, $query);
+		
+	}
 	
 	
 	
@@ -209,7 +217,6 @@ public function dataQuery($params, $query)
             'Billing_type' => $this->Billing_type,
             'Created_By' => $this->Created_By,
             'Created_On' => $this->Created_On,
-            'Delivery_created' => $this->Delivery_created,
             'Discount_Percent' => $this->Discount_Percent,
             'Discount_pT' => $this->Discount_pT,
             'Discount_pT_Base' => $this->Discount_pT_Base,

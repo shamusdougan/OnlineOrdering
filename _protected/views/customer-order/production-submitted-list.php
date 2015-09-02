@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use app\components\actionButtons;
 use app\models\Lookup;
 use app\models\User;
+use kartik\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\customerOrdersSearch */
@@ -30,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    
+      <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-submitted-list-form']); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -76,13 +77,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
 				'class' => 'kartik\grid\ActionColumn',
-				'template' => '{update} {delete}',
+				'template' => '{update} {delivery}',
 				'buttons' =>
 					[
 					'update' => function ($url, $model)
 						{
 							return html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::toRoute(['update-production-submitted', 'id' => $model->id]), [
                                         'title' => 'Update',
+                                        ]);
+
+						},
+					'delivery' => function ($url, $model)
+						{
+							return html::a('<span class="glyphicon glyphicon-road"></span>', Url::toRoute(['/delivery/create', 'order_id' => $model->id]), [
+                                        'title' => 'Create Delivery',
                                         ]);
 
 						}
@@ -93,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 
-         
+     <?php ActiveForm::end(); ?>    
 
 </div>
 <?php

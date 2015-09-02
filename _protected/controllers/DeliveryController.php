@@ -9,6 +9,7 @@ use app\models\CustomerOrders;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
@@ -27,6 +28,37 @@ class DeliveryController extends Controller
         ];
     }
 
+
+
+	public function beforeAction($action)
+	{
+	    if (!parent::beforeAction($action)) {
+	        return false;
+	    }
+
+	    $this->view->params['menuItem'] = 'delivery';
+
+	    return true; // or false to not run the action
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Lists all Delivery models.
      * @return mixed
@@ -35,10 +67,13 @@ class DeliveryController extends Controller
     {
         $searchModel = new DeliverySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/delivery/create'];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
     }
 
@@ -63,39 +98,59 @@ class DeliveryController extends Controller
     {
         $model = new Delivery();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-        	
-        	
-        	//before we create the delivery first check that the order id has been supplied and the order is correct
-        	if (($order = CustomerOrders::findOne(Yii::$app->request->get("order_id"))) !== null) 
-        		{
-        		if($order->checkOrderForDelivery())
-        			{
-        			return $this->render('create', [
-                		'model' => $model,
-                		"order" => $order,
-           				]);
-        			}
-        		else{
-					return $this->redirect(['/customer-order/update', 'id' => $order->id]);
-				}
-        			
-        			
-        			
+
+		//form has been submitted save the form accordingly
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+            return $this->redirect(['index']);
+        	} 
+       
+       	//If the order has been seleted already, clicked the link from within the order
+       	$order = new CustomerOrders();
+       	if(($order_id = Yii::$app->request->get("order_id")) != null)
+	       	{
+	       
+	       	//check that the order is a real order, if not throw an error
+	       	 if (($order = customerOrders::findOne($order_id)) !== null) 
+	       	 	{
+	       	 		
+	       	 	//if the order alread has a delivery created use that in the form
+	       	 	if($order->hasDelivery())
+	       	 		{
+	       	 		$model = $order->delivery;
+					}
+					
+				//prepopulate the field in the model
+				else{
+					$model->order_id = $order_id;
+					}
+       			} 
+       		else{
+            	throw new NotFoundHttpException('The requested page does not exist.');
         		}
-        	else{
-				return $this->redirect(['/customer-order/index']);
 			}
-        	
-        	
-        	
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
+
+			
+		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'override' => '/delivery/update?id'.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+		
+		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
+		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name') ;
+		
+
+		
+		return $this->render('create', [ 
+			'model' => $model,
+			'actionItems' => $actionItems,
+			'submittedOrders' => $submittedOrderArray,
+			'order' => $order
+			]);
+	}
+	
+       	
+       	
+       
 
     /**
      * Updates an existing Delivery model.
