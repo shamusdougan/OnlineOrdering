@@ -15,8 +15,16 @@ use yii\bootstrap\Modal;
 
 use yii\helpers\Url;
 
+if(!isset($readOnly))
+	{
+	$readOnly = False;
+	}
 
+
+<<<<<<< HEAD
 if(!isset($readOnly)){ $readOnly = False;};
+=======
+>>>>>>> origin/master
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
@@ -645,7 +653,7 @@ $( document ).ready(function() {
 				'toolbar'=> 
 					[
 						['content'=>
-							Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success']) . ' '.
+							($readOnly ? ' ' : Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success'])). ' '.
 							Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh', 'id' => 'refresh_ingredients_grid', 'class'=>'btn btn-success'])
 						],
 					],
@@ -692,12 +700,14 @@ $( document ).ready(function() {
 						'type'=>Form::INPUT_WIDGET, 
 						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
+						'options' => ['readonly' => $readOnly],
 						],
 					'Price_transport_pT' =>
 						[
 						'type'=>Form::INPUT_WIDGET, 
 						'widgetClass' => '\kartik\money\MaskMoney',
 						'columnOptions'=>['colspan'=>2],
+						'options' => ['readonly' => $readOnly],
 						],
 					'Price_Sub_Total' =>
 						[
@@ -724,6 +734,7 @@ $( document ).ready(function() {
 						'type' => FORM::INPUT_DROPDOWN_LIST,
 						'items' => Lookup::items("DISCOUNT_TYPE"),
 						'columnOptions'=>['colspan'=>2],
+						'options' => ['disabled' => $readOnly],
 						],
 					'Discount_pT' =>
 						[
