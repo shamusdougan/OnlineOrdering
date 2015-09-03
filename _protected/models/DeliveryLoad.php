@@ -51,4 +51,16 @@ class DeliveryLoad extends \yii\db\ActiveRecord
             'delivery_completed_on' => 'Delivery Completed On',
         ];
     }
+    
+    
+    public function getDelivery()
+    {
+		return $this->hasOne(Delivery::className(), ['id' => 'delivery_id'] );
+	}
+	
+	public function getDeliveryLoadBin()
+	{
+		return $this->hasMany(DeliveryLoadBin::className(), ['delivery_load_id' => 'id'] );
+	}
+    
 }

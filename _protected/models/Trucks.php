@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -20,6 +21,11 @@ use Yii;
  */
 class Trucks extends \yii\db\ActiveRecord
 {
+    
+    
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 1;
+    
     /**
      * @inheritdoc
      */
@@ -59,4 +65,39 @@ class Trucks extends \yii\db\ActiveRecord
             'Tipper' => 'Tipper',
         ];
     }
+    
+    /**
+	* 
+	* 
+	* DEscription: this function reutrns a list of trucks that are available on given date
+	* 
+	* @return
+	*/
+    public function getAvailable($requestedDate)
+    	{
+		
+	
+		$deliveries = DeliveryLoad::find()
+						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
+						->all();
+		
+		$trucks = Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
+		$trucksArray = ArrayHelper::map($trucks, 'id', 'registration') ;
+		
+		//iternate through the lists of Deliveries, and remove trucks if they are in the delivery
+		foreach($deliveries as $delivery)
+			{
+			if(array_key_exists($delivery->truck_id, $trucksArray))
+				{
+				unset($trucksArray[$delivery->tuck_id]);		
+				}
+			
+			
+			}
+		
+		return $trucksArray;
+		}
+    
+    
+    
 }

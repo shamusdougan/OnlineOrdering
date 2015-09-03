@@ -309,6 +309,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	{
 		return CustomerOrders::find()
 						->where(['Delivery_id'  => null])
+						->andWhere('Customer_id != :id', ['id'=>Clients::DUMMY])
         				->select(['id', 'Name'])
         				->all();
         				

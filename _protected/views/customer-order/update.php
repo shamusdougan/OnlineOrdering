@@ -7,6 +7,7 @@ use app\components\actionButtons;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */
+if(!isset($readOnly)){ $readOnly = False;}
 if($model->Customer_id ==  CustomerOrders::PLACEHOLDERID)
 	{
 		$title = "New Order";

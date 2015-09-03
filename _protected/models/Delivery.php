@@ -57,8 +57,15 @@ class Delivery extends \yii\db\ActiveRecord
 			return $this->hasOne(CustomerOrders::className(), ['id' => 'order_id'] );
 		}
 		
-		
 	
-		
+	public function getDeliveryLoad()	
+		{
+			return $this->hasMany(DeliveryLoad::className(), ['delivery_id' => 'id'] );
+		}
+	
+	public function getTruck()
+		{
+			return $this->hasOne(Trucks::className(), ['id', 'truck_id']);
+		}
 		
 }

@@ -15,16 +15,12 @@ use yii\bootstrap\Modal;
 
 use yii\helpers\Url;
 
-if(!isset($readOnly))
-	{
-	$readOnly = False;
-	}
 
 
-<<<<<<< HEAD
-if(!isset($readOnly)){ $readOnly = False;};
-=======
->>>>>>> origin/master
+
+
+if(!isset($readOnly)){ $readOnly = False;}
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\customerOrders */

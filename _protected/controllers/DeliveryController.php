@@ -6,10 +6,12 @@ use Yii;
 use app\models\Delivery;
 use app\models\DeliverySearch;
 use app\models\CustomerOrders;
+use app\models\Trucks;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
@@ -138,7 +140,7 @@ class DeliveryController extends Controller
 		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
 		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name') ;
 		
-
+		
 		
 		return $this->render('create', [ 
 			'model' => $model,
@@ -199,4 +201,63 @@ class DeliveryController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    /**
+	* Function ajax-order-details
+	* @Description: return the order details given the order id in ajax
+	*/
+     public function actionAjaxOrderDetails($id)
+    {
+    	if($id != null){
+			$order =  CustomerOrders::findOne(['id'=>$id]);
+			
+	    	return \yii\helpers\Json::encode([
+	    		'orderID' => $order->Order_ID,
+		        'customer'=>$order->client->Company_Name,
+		        'owner'=>$order->createdByUser->fullname,
+		        'deliveryDate'=>date("D d-M-Y", strtotime($order->Requested_Delivery_by)),
+		        'storage'=>$order->storage->Description,
+		        'instructions'=>$order->Order_instructions,
+		        'orderQTY'=>$order->Qty_Tonnes,
+		        
+		    ]);
+		    }
+		else{
+			return True;
+		}
+
+	}
+    
+    
+    /**
+	* 
+	* 	Function ajax-available-trucks
+	* 	Descriptions: returns a list of available trucks based on the given date string
+	* 
+	* 
+	*/
+    public function actionAjaxAvailableTrucks()
+	    {
+	    $out = [];
+		if (isset($_POST['depdrop_parents'])) 
+			{	
+			$requestedDate = strtotime($_POST['depdrop_parents'][0]);
+			if($requestedDate)
+				{
+				$trucksAvailable = Trucks::getAvailable($requestedDate);
+				
+				foreach($trucksAvailable as $truckID => $truckRego){
+					$out[] = array('id' => $truckID, 'name' => $truckRego);
+					}
+				
+				
+				echo Json::encode(['output'=>$out ]);	
+				}	
+			else{
+				return False;
+				}
+			}
+		}
+    
 }
