@@ -66,6 +66,11 @@ class Trucks extends \yii\db\ActiveRecord
         ];
     }
     
+    
+    
+   
+    
+    
     /**
 	* 
 	* 
@@ -85,15 +90,15 @@ class Trucks extends \yii\db\ActiveRecord
 		$trucksArray = ArrayHelper::map($trucks, 'id', 'registration') ;
 		
 		//iternate through the lists of Deliveries, and remove trucks if they are in the delivery
-		foreach($deliveries as $delivery)
-			{
-			if(array_key_exists($delivery->truck_id, $trucksArray))
-				{
-				unset($trucksArray[$delivery->tuck_id]);		
-				}
+		//foreach($deliveries as $delivery)
+		//	{
+		//	if(array_key_exists($delivery->truck_id, $trucksArray))
+		//		{
+		//		unset($trucksArray[$delivery->tuck_id]);		
+		//		}
 			
 			
-			}
+		//	}
 		
 		return $trucksArray;
 		}

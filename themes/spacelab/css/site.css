@@ -402,12 +402,24 @@ hr.article-devider {
 	height: 32px;
 	margin-left:auto;
  	margin-right:auto;
- 
-	}
+ 	}
 	
 .sap_icon:hover {
 	background-position:0px -32px;
 }
+
+.sap_icon_small {
+	width: 20px;
+	height: 20px;
+	margin-left:auto;
+ 	margin-right:auto;
+ 	}
+	
+.sap_icon_small:hover {
+	background-position:0px -20px;
+}
+
+
 
 .sap_edit{
 	background-image:url('/images/icons_action/icon-32-edit.png');
@@ -455,6 +467,11 @@ hr.article-devider {
 	
 .sap_reversetruck{
 	background-image:url('/images/icons_action/icon-32-reversetruck.png');
+	}
+	
+	
+.sap_cross_small{
+	background-image:url('/images/icons_action/icon-16-cross.png');
 	}
 
 .sap_edit_ingredient_link:hover

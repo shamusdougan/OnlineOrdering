@@ -79,8 +79,52 @@ $this->registerJs("$('#".Html::getInputId($model, 'order_id')."').on('change',fu
 });");
 
 
+$this->registerJs("$('#add_truck_button').click(function(event)
+	{
+		event.preventDefault(); 
+		truck_id = $('#truck_selection').val();
+		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
+		
+		if(jQuery('#truck_allocate_' + truck_id).length)
+			{
+			alert('Truck has already been allocated to this delivery')	;
+			}
+		else if(truck_id == null )
+			{
+			alert('Select a Delivery Date before you select a Truck');
+			}
+		else if (truck_id == '')
+			{
+			alert('Please Select a Truck for the Delivery');
+			}
+		else
+			{
+			$.ajax
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-truck")."',
+				data: {truck_id: truck_id, requestedDate: requestedDate},
+				success: function (data, textStatus, jqXHR) 
+					{
+					$('#truck_display_start').append(data);
+					},
+		        error: function (jqXHR, textStatus, errorThrown) 
+		        	{
+		            console.log('An error occured!');
+		            alert('Error in ajax request' );
+		        	}
+				});
+			}
+		
+		
+	});
+");
 
 
+ $this->registerJs("$(document).on('click', '.close_allocation_link', function() 
+	{
+		$('#truck_allocate_' + $(this).attr('truck_id')).remove();
+	});
+");
  
 
 
@@ -150,71 +194,69 @@ $this->registerJs("$('#".Html::getInputId($model, 'order_id')."').on('change',fu
 	</fieldset>
     </div>
     <br>
-    <?
+  
     
-    echo Form::widget([
-    	'model'=>$model,
-    	'form'=>$form,
-    	'columns'=>6,
-    	'attributes'=>[
-    		'delivery_on' =>
-    			[
-				'type'=>Form::INPUT_WIDGET, 
-				'widgetClass' => DateControl::classname(),
-				'options' => 
-					[
-					'type'=>DateControl::FORMAT_DATE,
-					'disabled' => $readOnly,
-					'options' =>
-						[
-						'type' => DatePicker::TYPE_COMPONENT_APPEND,
-						//'placeholder' => "Requested Delivery Date...",
-						'pluginOptions' =>
-							[
-							'autoclose' => true,
-							'todayHighlight' => true,
-							'startDate' => date("d M Y"),
-							]
-						]
-					],
-    			],		
+    
+    <div width='100%' style='height: 100px;'>
+    	<div style='wdith: 300px; float: left'>
     		
-      		]
-    	]);
-    
-    ?>
-    
-    
-    <div width='100%'>
-    	<div style='width: 100px; float: left'>Select Truck To Add</div>
-		<div style='width: 200px; float: left'>
-	    <?= DepDrop::widget([
-	    	'name' => 'TruckSelect',
-			'type'=>DepDrop::TYPE_SELECT2,
-			'id' => 'truck_selection',
-		   
-		    'select2Options'=>
-		    	
-		    	['pluginOptions'=>
-		    		[
-		    		'allowClear'=>true,
-		    		
-		    		
-		    		]
-		    	],
-			'pluginOptions'=>[
-				'depends'=>[Html::getInputId($model, 'delivery_on')],
-				'url'=>Url::to(['/delivery/ajax-available-trucks']),
-				'placeholder'=>'Select Truck to add....',
-				],
-			]);	
-			
-		?>	
-		</div>
-		<div style='width: 200px'>
-			<button value='Add'>Add</button>
-			
-		</div>
+    		<div style='width: 100%;'>
+    			<?=  $form->field($model, 'delivery_on')->widget(DateControl::classname(), 
+    					[
+						'type'=>DateControl::FORMAT_DATE,
+						'disabled' => $readOnly,
+						'options' =>
+							[
+							'type' => DatePicker::TYPE_COMPONENT_APPEND,
+							//'placeholder' => "Requested Delivery Date...",
+							'pluginOptions' =>
+								[
+								'autoclose' => true,
+								'todayHighlight' => true,
+								'startDate' => date("d M Y"),
+								]
+							]
+						]);
+    			?>
+    		</div>
+    	</div>
+    	<div style='padding-left: 10px; width: 400px; float: left'>
+    		<div style='width: 100%;'><b>Truck</b></div>
+			<div style='width: 100%; padding-top: 5px;'>
+		    <?= DepDrop::widget([
+		    	'name' => 'TruckSelect',
+				'type'=>DepDrop::TYPE_SELECT2,
+				'id' => 'truck_selection',
+			    'select2Options'=>
+			    	[
+			    	'pluginOptions'=>
+			    		[
+			    		'allowClear'=>true,
+			    		]
+			    	],
+				'pluginOptions'=>[
+					'depends'=>[Html::getInputId($model, 'delivery_on')],
+					'url'=>Url::to(['/delivery/ajax-available-trucks']),
+					'placeholder'=>'Select Truck to add....',
+					],
+				]);	
+			?>	
+			</div> 
+    	</div>
+    	<div style='padding-left: 10px; width: 400px; float: left'>
+    		<div style='width: 100%;'>&nbsp</div>
+			<div style='width: 100%; padding-top: 5px;'>
+		   		<button id='add_truck_button' style='height: 40px; width: 75px'>Add</button>
+			</div> 
+    	</div>
+	</div>
+	
+	
+	
+	<div id='truck_display'>
+		<div id='truck_display_start'></div>
+	
+	
 	</div>
 	
 	

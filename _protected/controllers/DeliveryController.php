@@ -7,6 +7,7 @@ use app\models\Delivery;
 use app\models\DeliverySearch;
 use app\models\CustomerOrders;
 use app\models\Trucks;
+use app\models\Trailers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -259,5 +260,35 @@ class DeliveryController extends Controller
 				}
 			}
 		}
-    
+		
+	/**
+	* 
+	*  Function add Truck
+	* Description: this action returns the truck display entries
+	* 
+	* 
+	* @param undefined $truck_id
+	* 
+	* @return
+	*/	
+	public function actionAjaxAddTruck($truck_id, $requestedDate)
+	{
+		
+	$truck = Trucks::findOne($truck_id);
+	if($truck === null)
+		{
+		return "Unable to locate Required Truck";
+		}
+	else{
+	
+	
+		$requestedDate = strtotime($requestedDate);
+		$trailerList = Trailers::getAvailable($requestedDate);
+	
+		return $this->renderPartial("/trucks/_allocation", [
+								'truck' => $truck,
+								'trailerList' => $trailerList,
+								]);
+		}
+    }
 }

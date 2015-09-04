@@ -46,7 +46,7 @@ class Delivery extends \yii\db\ActiveRecord
             'weigh_bridge_ticket' => 'Weigh Bridge Ticket',
             'weighed_by' => 'Weighed By',
             'delivery_qty' => 'Delivery Qty',
-            'delivery_on' => 'Delivery On',
+            'delivery_on' => 'Delivery Date',
             'delivery_completed_on' => 'Delivery Completed On',
         ];
     }

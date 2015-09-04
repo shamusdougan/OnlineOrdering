@@ -56,4 +56,44 @@ class Trailers extends \yii\db\ActiveRecord
             'Status' => 'Status',
         ];
     }
+    
+    
+    
+      /**
+	* 
+	* 
+	* DEscription: this function reutrns a list of trucks that are available on given date
+	* 
+	* @return
+	*/
+    public function getAvailable($requestedDate)
+    	{
+		
+	
+		$deliveries = DeliveryLoad::find()
+						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
+						->all();
+		
+		$trailers = Trailers::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
+		$trailersArray = ArrayHelper::map($trailers, 'id', 'registration') ;
+		
+		//iternate through the lists of Deliveries, and remove trucks if they are in the delivery
+		//foreach($deliveries as $delivery)
+		//	{
+		//	if(array_key_exists($delivery->truck_id, $trailersArray))
+		//		{
+		//		unset($trailersArray[$delivery->tuck_id]);		
+		//		}
+			
+			
+		//	}
+		
+		return $trailersArray;
+		}
+    
+    
+    
+    
+    
+    
 }
