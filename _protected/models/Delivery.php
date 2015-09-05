@@ -68,4 +68,21 @@ class Delivery extends \yii\db\ActiveRecord
 			return $this->hasOne(Trucks::className(), ['id', 'truck_id']);
 		}
 		
+	
+	/**
+	* 
+	* 
+	* checkIfTruckhasSpace()
+	* 
+	* This takes the truckObject and check to see if there is space on the truck for more room
+	* 
+	* Iterates through the deliveryLoads and checks if the load has the truck, and if it does then check the trailers to see if there is room
+	* 
+	* @return
+	*/
+	public function checkTruckCapacity($truck)
+		{
+			
+		} 
+		
 }

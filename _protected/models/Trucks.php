@@ -76,6 +76,14 @@ class Trucks extends \yii\db\ActiveRecord
 	* 
 	* DEscription: this function reutrns a list of trucks that are available on given date
 	* 
+	* Truck availability Rules
+	* 
+	* Get full list of the trucks and a full list of deliveries for that day
+	* Go through the list of deliveries
+	* 		if the given truck has been assigned to a delivery
+	* 			if it has then check - if it has a trailer that has bins free -> Allow
+	* 			if it doesn't have any free bins remove it from the array
+	*		if it hasn't been assigned then allow 
 	* @return
 	*/
     public function getAvailable($requestedDate)
@@ -94,6 +102,7 @@ class Trucks extends \yii\db\ActiveRecord
 		//	{
 		//	if(array_key_exists($delivery->truck_id, $trucksArray))
 		//		{
+				
 		//		unset($trucksArray[$delivery->tuck_id]);		
 		//		}
 			
