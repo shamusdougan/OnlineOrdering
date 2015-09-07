@@ -90,24 +90,27 @@ class Trucks extends \yii\db\ActiveRecord
     	{
 		
 	
-		$deliveries = DeliveryLoad::find()
+		$deliveryLoad = DeliveryLoad::find()
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
 						->all();
 		
 		$trucks = Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
 		$trucksArray = ArrayHelper::map($trucks, 'id', 'registration') ;
 		
-		//iternate through the lists of Deliveries, and remove trucks if they are in the delivery
-		//foreach($deliveries as $delivery)
-		//	{
-		//	if(array_key_exists($delivery->truck_id, $trucksArray))
-		//		{
-				
-		//		unset($trucksArray[$delivery->tuck_id]);		
-		//		}
-			
-			
-		//	}
+		//iternate through the lists of Deliveries, and remove trucks if they are in the delivery if they dont have any spare capacity
+		foreach($deliveryLoad as $deliveryLoad)
+			{
+			//Truck has a delivery already for this date
+			if(array_key_exists($deliveryLoad->truck_id, $trucksArray))
+				{
+				//check to see if the truck has any room left, if not remove the truck from list
+				if(!$deliveryLoad->hasAdditionalCapacity())
+					{
+					unset($trucksArray[$delivery->truck_id]);	
+					}
+				}
+
+			}
 		
 		return $trucksArray;
 		}

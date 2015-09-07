@@ -62,5 +62,36 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	{
 		return $this->hasMany(DeliveryLoadBin::className(), ['delivery_load_id' => 'id'] );
 	}
+	
+	
+	/**
+	* 
+	* 
+	* checkTruckCapacity()
+	* 
+	* This takes the truckObject and check to see if there is space on the truck for more room
+	* 
+	* Iterates through the deliveryLoads and checks if the load has the truck, and if it does then check the trailers to see if there is room
+	* 
+	* @return
+	*/
+	public function hasAdditionalCapacity()
+		{
+		if($this->trailer ===null)
+			{
+			die("checking capacity on deliveryload that has no trailer attached to it");
+			}
+		$availableBins = $this->trailer->NumBins;
+		$usedBins = count($delivery->deliveryLoadBin);
+		if($availableBins > $usedBins)
+			{
+			return true;
+			}
+		else{
+			return false;
+			}
+		}
+	
+			
     
 }
