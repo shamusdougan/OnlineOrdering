@@ -9,6 +9,7 @@ use kartik\widgets\select2;
 use kartik\widgets\DepDrop;
 use app\models\Trucks;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 
 
 /* @var $this yii\web\View */
@@ -126,8 +127,28 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 	});
 ");
  
-
-
+ $this->registerJs("$(document).on('click', '.trailer_select_link', function() 
+	{
+	truck_id = $(this).attr('truck_id');
+	requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
+	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
+		data: {truck_id: truck_id, requested_date: requestedDate},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('#trailer-select-modal').modal();
+			$('.modal-body').html(data);
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+	});
+");
+ 
 ?>
 
 
@@ -262,5 +283,28 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 	
 	
     <?php ActiveForm::end(); ?>
+
+	
+
+
+<div>
+	<?php		
+		Modal::begin([
+		    'id' => 'trailer-select-modal',
+		    'header' => '<h4 class="modal-title">Select Trailers</h4>',
+		    'size' => 'modal-lg',
+		    'options' =>
+		    	[
+				'tabindex' => false,
+				]
+
+		]);		?>
+
+
+		<div id="modal_content">dd</div>
+
+	<?php Modal::end(); ?>
+</div>
+
 
 </div>

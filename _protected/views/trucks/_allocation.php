@@ -10,13 +10,12 @@ use yii\helpers\Html;
 		<div class='sap_icon_small sap_cross_small close_allocation_link' style='float: right' truck_id='<?= $truck->id ?>'></div>
 	</div>
 	<div style='width: 100%; height: 195px;'>
-		<div style='width: 300px; padding-left: 5px; float: left'>
-			<img src='../../images/truck_outline.png' height='180px'>	
-		</div>
-		<div style='width: 300px; height: 179px; float: left; overflow-y: scroll;'>
-			<?= Html::checkboxList('truck_trailer_select_'.$truck->id, null, $trailerList, array('template'=>'<tr><td >{label}</td><td>{input}</td></tr>')); ?>
+		<div style='width: 350px; padding-left: 5px; float: left'>
+			<img src='../../images/truck_outline.png' height='150px'><br>
+			Trailer: <A class='trailer_select_link' truck_id='<?= $truck->id ?>'><?= $selectedTrailer ? $selectedTrailer->Registration : "Select Trailer...." ?></A>
 			
 		</div>
+		
 		
 	</div>
 </div>

@@ -57,7 +57,7 @@ class Trucks extends \yii\db\ActiveRecord
             'registration' => 'Registration',
             'description' => 'Description',
             'CreatedBy' => 'Created By',
-            'defaultTrailer' => 'Default Trailer',
+            'defaultTrailer_id' => 'Default Trailer',
             'Special_Instruction' => 'Special Instruction',
             'Status' => 'Status',
             'Auger' => 'Auger',
@@ -67,6 +67,10 @@ class Trucks extends \yii\db\ActiveRecord
     }
     
     
+    public function getDefaultTrailer()
+    	{
+			return $this->hasOne(trailers::className(), ['id' => 'defaultTrailer_id'] );
+		}
     
    
     

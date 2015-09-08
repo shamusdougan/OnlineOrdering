@@ -68,15 +68,17 @@ class Trailers extends \yii\db\ActiveRecord
       /**
 	* 
 	* 
-	* DEscription: this function reutrns a list of trucks that are available on given date
+	* DEscription: this function reutrns a list of Trailers being used on that date 
 	* 
-	* @return
+	* @return a list of trailers that are being used on that day. The array returned looks like
+	* 
+	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", remaining_space => 5T])
 	*/
-    public function getAvailable($requestedDate)
+    public function getTrailerUsed($requestedDate)
     	{
 		
 	
-		$deliveryLoad = DeliveryLoad::find()
+		$deliveryLoads = DeliveryLoad::find()
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
 						->all();
 		
@@ -84,7 +86,7 @@ class Trailers extends \yii\db\ActiveRecord
 		$trailersArray = ArrayHelper::map($trailers, 'id', 'Registration') ;
 		
 		//iternate through the lists of Deliveries, and remove trailers if they are in the delivery
-		foreach($deliveryLoad as $deliveryLoad)
+		foreach($deliveryLoads as $deliveryLoad)
 			{
 			if(array_key_exists($delivery->trailer_id, $trailersArray))
 				{
@@ -102,6 +104,39 @@ class Trailers extends \yii\db\ActiveRecord
 		}
     
     
+    
+      /**
+	* 
+	* 
+	* DEscription: this function reutrns a bool if the trailer is avilable on the given date
+	* 
+	* @return bool
+	*/
+    public function checkAvailable($trailer, $requestedDate)
+    	{
+    		
+    	
+    	//if the default trailer has not been specified then return false
+    	if($trailer === null)
+    		{
+			return False;
+			}
+    		
+    	
+		$deliveryLoads = DeliveryLoad::find()
+						->where(['delivery_on' => date("Y-m-d", $requestedDate ), 'trailer_id' => $trailer->id])
+						->all();	
+		$isAvailable = true;	
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			if(!$deliveryLoad->hasAdditionalCapacity())
+				{
+				$isAvailable = false;
+				}	
+			}
+			
+		return $isAvailable;
+		}
     
     
     

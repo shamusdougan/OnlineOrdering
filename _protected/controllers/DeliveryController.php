@@ -283,12 +283,38 @@ class DeliveryController extends Controller
 	
 	
 		$requestedDate = strtotime($requestedDate);
-		$trailerList = Trailers::getAvailable($requestedDate);
+		$selectedTrailer = false;
+		if(Trailers::checkAvailable($truck->defaultTrailer, $requestedDate))
+			{
+			$selectedTrailer = $truck->defaultTrailer;		
+			}
+		
 	
 		return $this->renderPartial("/trucks/_allocation", [
 								'truck' => $truck,
-								'trailerList' => $trailerList,
+								'selectedTrailer' => $selectedTrailer,
 								]);
 		}
     }
+    
+    /**
+	* 
+	*  Function Select Trailers
+	* Description: this action returns the display code to select a given trailer
+	* 
+	* 
+	* @param undefined $truck_id
+	* 
+	* @return
+	*/	
+    public function actionAjaxSelectTrailers($truck_id, $requested_date)
+    	{
+			return $truck_id." on the ".$requested_date."<Br>";
+		}
+    
+    
+    
+    
+    
+    
 }
