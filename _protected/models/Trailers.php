@@ -74,7 +74,7 @@ class Trailers extends \yii\db\ActiveRecord
 	* 
 	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", remaining_space => 5T])
 	*/
-    public function getTrailerUsed($requestedDate)
+    public function getTrailersUsed($requestedDate)
     	{
 		
 	
@@ -82,25 +82,8 @@ class Trailers extends \yii\db\ActiveRecord
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
 						->all();
 		
-		$trailers = Trailers::find()->where(['Status' => Trailers::STATUS_ACTIVE])->all();
-		$trailersArray = ArrayHelper::map($trailers, 'id', 'Registration') ;
 		
-		//iternate through the lists of Deliveries, and remove trailers if they are in the delivery
-		foreach($deliveryLoads as $deliveryLoad)
-			{
-			if(array_key_exists($delivery->trailer_id, $trailersArray))
-				{
-				//check to see if the trailer has any room left, if not remove the trailer from list
-				if(!$deliveryLoad->hasAdditionalCapacity())
-					{
-					unset($trailersArray[$delivery->trailer_id]);	
-					}		
-				}
-			
-			
-			}
-		
-		return $trailersArray;
+		return array();
 		}
     
     
@@ -138,7 +121,20 @@ class Trailers extends \yii\db\ActiveRecord
 		return $isAvailable;
 		}
     
-    
+    /**
+	* Function getAll Activetrailers
+	* Derscription: returns a list of all the active trailer objects
+	* 
+	* @return
+	*/
+    public function getAllActiveTrailers()
+    	{
+		$trailerList = Trailers::find()
+						->where(['Status' => Trailers::STATUS_ACTIVE])
+						->all();
+						
+		return $trailerList;
+		}
     
     
 }

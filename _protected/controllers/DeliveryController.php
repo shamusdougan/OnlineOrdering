@@ -307,9 +307,18 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-    public function actionAjaxSelectTrailers($truck_id, $requested_date)
+    public function actionAjaxSelectTrailers($requested_date)
     	{
-			return $truck_id." on the ".$requested_date."<Br>";
+		$trailerList = Trailers::getAllActiveTrailers();
+		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
+		
+		return $this->renderPartial("/trailers/_trailerList", [
+			'trailerList' => $trailerList,
+			'trailersUsed' => $trailersUsed,
+		
+		
+			]);
+			
 		}
     
     

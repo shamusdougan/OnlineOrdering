@@ -134,7 +134,7 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 	$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-		data: {truck_id: truck_id, requested_date: requestedDate},
+		data: {requested_date: requestedDate},
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('#trailer-select-modal').modal();
