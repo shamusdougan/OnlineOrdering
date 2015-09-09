@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2015 at 04:18 PM
+-- Generation Time: Sep 09, 2015 at 04:21 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1875,6 +1875,7 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 
 CREATE TABLE IF NOT EXISTS `delivery` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(10) NOT NULL,
   `weigh_bridge_ticket` varchar(100) DEFAULT NULL,
   `weighed_by` varchar(100) DEFAULT NULL,
   `delivery_qty` float DEFAULT NULL,
@@ -1911,6 +1912,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `delivery_load_id` int(11) NOT NULL,
   `trailer_bin_id` int(11) NOT NULL,
+  `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -3652,6 +3654,27 @@ INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`
 (108, 'ZHR 591', '0409 566 078', 'C/VAC AUGER (ROLLOVER)', 1, NULL, '', 1, 0, 0, 0),
 (109, 'ZPV 911', '0488 566 030', 'C/VAC BLOWER/STINGER', 1, NULL, 'Michael Phillips', 1, 0, 0, 0),
 (110, 'ZWY 945', '0488 566 089', 'C/VAC B-DOUBLE CHOOK BIN', 1, NULL, '', 1, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trucks_default_trailers`
+--
+
+CREATE TABLE IF NOT EXISTS `trucks_default_trailers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `truck_id` int(10) NOT NULL,
+  `trailer_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `trucks_default_trailers`
+--
+
+INSERT INTO `trucks_default_trailers` (`id`, `truck_id`, `trailer_id`) VALUES
+(1, 92, 3),
+(2, 92, 4);
 
 -- --------------------------------------------------------
 

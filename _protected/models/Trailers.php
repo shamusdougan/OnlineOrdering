@@ -72,7 +72,7 @@ class Trailers extends \yii\db\ActiveRecord
 	* 
 	* @return a list of trailers that are being used on that day. The array returned looks like
 	* 
-	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", remaining_space => 5T])
+	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", used_space => 5T])
 	*/
     public function getTrailersUsed($requestedDate)
     	{
@@ -82,8 +82,24 @@ class Trailers extends \yii\db\ActiveRecord
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
 						->all();
 		
+		$deliverySummary = array();
 		
-		return array();
+		//iterate through each delivery and collect the info as required
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			if(array_key_exists($deliveryLoad->trailer_id))
+				{
+				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] .=  ", ".$deliveryLoad->delivery->Name;
+				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] += $deliveryLoad->getLoadTotal();
+				}
+			else{
+				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] = $deliveryLoad->delivery->Name;
+				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] = $deliveryLoad->getLoadTotal();
+				}
+			}
+		
+		
+		return $deliverySummary;
 		}
     
     
@@ -135,6 +151,10 @@ class Trailers extends \yii\db\ActiveRecord
 						
 		return $trailerList;
 		}
+    
+    
+    
+    
     
     
 }

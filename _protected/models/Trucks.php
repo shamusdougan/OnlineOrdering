@@ -67,9 +67,9 @@ class Trucks extends \yii\db\ActiveRecord
     }
     
     
-    public function getDefaultTrailer()
+    public function getDefaultTrailers()
     	{
-			return $this->hasOne(trailers::className(), ['id' => 'defaultTrailer_id'] );
+			return $this->hasMany(TrucksDefaultTrailers::className(), ['truck_id' => 'id'] );
 		}
     
    

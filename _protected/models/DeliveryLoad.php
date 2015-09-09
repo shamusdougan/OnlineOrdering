@@ -92,6 +92,22 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 			}
 		}
 	
+		
+	/**
+	* 
+	* Function get load total
+	* 
+	* description: return the load carried in this delivery as a float
+	*/	
+	public function getLoadTotal()
+	{
+		$total = 0;
+		foreach($this->deliveryLoadBin as $bin)
+			{
+			$total += $bin->bin_load;
+			}
 			
+		return $total;
+	}
     
 }

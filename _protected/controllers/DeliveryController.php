@@ -283,16 +283,20 @@ class DeliveryController extends Controller
 	
 	
 		$requestedDate = strtotime($requestedDate);
-		$selectedTrailer = false;
-		if(Trailers::checkAvailable($truck->defaultTrailer, $requestedDate))
+		$selectedTrailers = array();
+		foreach($truck->defaultTrailers as $defaultTrailer)
 			{
-			$selectedTrailer = $truck->defaultTrailer;		
+			if(Trailers::checkAvailable($defaultTrailer->trailer, $requestedDate))
+				{
+					$selectedTrailers[] = $defaultTrailer->trailer;
+				}
 			}
+		
 		
 	
 		return $this->renderPartial("/trucks/_allocation", [
 								'truck' => $truck,
-								'selectedTrailer' => $selectedTrailer,
+								'selectedTrailers' => $selectedTrailers,
 								]);
 		}
     }
@@ -307,7 +311,7 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-    public function actionAjaxSelectTrailers($requested_date)
+    public function actionAjaxSelectTrailers($requested_date, $selected_trailers, $truck_id)
     	{
 		$trailerList = Trailers::getAllActiveTrailers();
 		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
@@ -315,6 +319,8 @@ class DeliveryController extends Controller
 		return $this->renderPartial("/trailers/_trailerList", [
 			'trailerList' => $trailerList,
 			'trailersUsed' => $trailersUsed,
+			'selected_trailers' => explode(",", $selected_trailers),
+			'truck_id' => $truck_id,
 		
 		
 			]);

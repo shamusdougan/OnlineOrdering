@@ -84,6 +84,10 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 	{
 		event.preventDefault(); 
 		truck_id = $('#truck_selection').val();
+	
+		
+
+		
 		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 		
 		if(jQuery('#truck_allocate_' + truck_id).length)
@@ -129,12 +133,15 @@ $this->registerJs("$('#add_truck_button').click(function(event)
  
  $this->registerJs("$(document).on('click', '.trailer_select_link', function() 
 	{
-	truck_id = $(this).attr('truck_id');
+	selected_trailers = $(this).attr('selected_trailers');
 	requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
+	truck_id = $(this).attr('truck_id');
+	
+	
 	$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-		data: {requested_date: requestedDate},
+		data: {requested_date: requestedDate, selected_trailers: selected_trailers, truck_id: truck_id},
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('#trailer-select-modal').modal();
@@ -146,6 +153,19 @@ $this->registerJs("$('#add_truck_button').click(function(event)
             alert('Error in ajax request' );
         	}
 		});
+	});
+");
+ 
+ 
+ 
+ $this->registerJs("$(document).on('click', '.select_trailers_button', function() 
+	{
+		truck_id = $(this).attr('truck_id');
+		selected_trailers = $('.trailer_select_' + truck_id).map(function() {
+    			return this.value;
+				}).get();
+		
+		$('#truck_allocate_' + truck_id).html(selected_trailers );
 	});
 ");
  
@@ -270,6 +290,7 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 		   		<button id='add_truck_button' style='height: 40px; width: 75px'>Add</button>
 			</div> 
     	</div>
+    	
 	</div>
 	
 	
@@ -292,7 +313,7 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 		Modal::begin([
 		    'id' => 'trailer-select-modal',
 		    'header' => '<h4 class="modal-title">Select Trailers</h4>',
-		    'size' => 'modal-lg',
+		    'size' => 'modal-md',
 		    'options' =>
 		    	[
 				'tabindex' => false,
