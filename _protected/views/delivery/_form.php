@@ -161,11 +161,32 @@ $this->registerJs("$('#add_truck_button').click(function(event)
  $this->registerJs("$(document).on('click', '.select_trailers_button', function() 
 	{
 		truck_id = $(this).attr('truck_id');
-		selected_trailers = $('.trailer_select_' + truck_id).map(function() {
-    			return this.value;
-				}).get();
+		selected_trailers  = [];
+		$('.trailer_select_' + truck_id).each(function() {
+    			if(this.checked)
+    				{
+					selected_trailers.push($(this).val());
+					}
+				});
 		
-		$('#truck_allocate_' + truck_id).html(selected_trailers );
+		
+		$.ajax
+	  		({
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-update_trailers")."',
+			data: {truck_id: truck_id, selected_trailers: selected_trailers},
+			success: function (data, textStatus, jqXHR) 
+				{
+				$('#truck_allocate_' + truck_id).html(data );
+				},
+	        error: function (jqXHR, textStatus, errorThrown) 
+	        	{
+	            console.log('An error occured!');
+	            alert('Error in ajax request' );
+	        	}
+			});
+		
+		
+		
 	});
 ");
  
