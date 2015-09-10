@@ -63,7 +63,15 @@ class Trailers extends \yii\db\ActiveRecord
         ];
     }
     
-    
+    /**
+	* Relationships
+	* 
+	* 
+	*/
+    public function getTrailerBins()
+    {
+		return $this->hasMany(TrailerBins::className(), ['trailer_id' => 'id'] );
+	}
     
       /**
 	* 
@@ -153,8 +161,7 @@ class Trailers extends \yii\db\ActiveRecord
 		}
     
     
-    
-    
+   
     
     
 }

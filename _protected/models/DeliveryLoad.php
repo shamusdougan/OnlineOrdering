@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\DeliveryLoadBin;
 
 /**
  * This is the model class for table "delivery_load".
@@ -30,8 +31,8 @@ class DeliveryLoad extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['delivery_id', 'load_qty', 'trailer_bin_id'], 'required'],
-            [['delivery_id', 'trailer_bin_id'], 'integer'],
+            [['delivery_id'], 'required'],
+            [['delivery_id', ], 'integer'],
             [['load_qty'], 'number'],
             [['delivery_on', 'delivery_completed_on'], 'safe']
         ];
@@ -46,7 +47,6 @@ class DeliveryLoad extends \yii\db\ActiveRecord
             'id' => 'ID',
             'delivery_id' => 'Delivery ID',
             'load_qty' => 'Load Qty',
-            'trailer_bin_id' => 'Trailer Bin ID',
             'delivery_on' => 'Delivery On',
             'delivery_completed_on' => 'Delivery Completed On',
         ];
@@ -61,6 +61,11 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	public function getDeliveryLoadBin()
 	{
 		return $this->hasMany(DeliveryLoadBin::className(), ['delivery_load_id' => 'id'] );
+	}
+	
+	public function getTruck()
+	{
+		return $this->hasOne(Trucks::className(), ['id' => 'truck_id'] );
 	}
 	
 	
@@ -109,5 +114,19 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 			
 		return $total;
 	}
+	
+	
+	public function getLoadTrailerArray()
+	{
+		
+		$trailerArray = array();
+		foreach($this->deliveryLoadBin as $loadBin)
+			{
+			$trailerArray[$loadBin->trailer_bin_id] = $loadBin->trailerBin->trailer;
+			}
+		
+		return $trailerArray;
+	}
+	
     
 }

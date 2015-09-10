@@ -491,3 +491,24 @@ hr.article-devider {
 	border: 1px;
 	background-color: white;
 }
+
+.sap_trailer_empty
+{
+	background-image: url('/images/trailerbinbg_empty.png');
+	background-repeat: repeat-x;
+	background-size: 5px 100%;
+}
+
+.sap_trailer_full
+{
+	background-image: url('/images/trailerbinbg_full.png');
+	background-repeat: repeat-x;
+	background-size: 5px 100%;;
+}
+
+.sap_trailer_partial
+{
+	background-image: url('/images/trailerbinbg_partial.png');
+	background-repeat: repeat-x;
+		background-size: 5px 100%;
+}

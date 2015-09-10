@@ -37,7 +37,6 @@ use kartik\widgets\select2;
 				{
 				$checked = "CHECKED";
 				}
-		
 			
 			echo "<tr>";
 			echo "<td>".substr($trailer->Registration, 0, 35)."</td>";
@@ -46,53 +45,11 @@ use kartik\widgets\select2;
 			echo "<td align='center'><input type='checkbox' class='trailer_select_".$truck_id."' value='".$trailer->id."' ".$checked." ></td>";
 			echo "</tr>";
 		}	
-		
-		
 	?>	
 	</tbody>
-	
-
-
-
-
-
 </table>
 
 </div>
-
-<?
-
-
-/*
-$dataProvider = new ArrayDataProvider([
-        'key'=>'id',
-        'allModels' => $trailerList,
-        ]);
-
-
-
-
-
-
-echo GridView::widget([
-	'dataProvider'=>$dataProvider,
-	'bordered'=>true,
-    'striped'=>true,
-    'columns'=>
-    	[
-    	['attribute'=>'Registration'],
-    	
-    	
-    	
-    	
-    	
-    	
-    	],
-    'export' => false,
-    'pjax' => true,
-    'hover' => true,
-	]);
-	
-	
-	*/
-?>
+<div style='float: right'>
+	<button class='select_trailers_button' truck_id='<?= $truck_id ?>'>Use Selected</button>
+</div>

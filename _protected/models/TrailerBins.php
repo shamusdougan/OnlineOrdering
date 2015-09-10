@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Trailers;
 
 /**
  * This is the model class for table "trailer_bins".
@@ -49,4 +50,9 @@ class TrailerBins extends \yii\db\ActiveRecord
             'Status' => 'Status',
         ];
     }
+    
+    public function getTrailer()
+    {
+		return $this->hasOne(Trailers::className(), ['id' => 'trailer_id'] );	
+	}
 }

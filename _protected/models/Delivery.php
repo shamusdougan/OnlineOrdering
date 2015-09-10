@@ -30,7 +30,7 @@ class Delivery extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['delivery_qty'], 'number'],
+            [['delivery_qty', 'order_id'], 'number'],
             [['delivery_on', 'delivery_completed_on'], 'safe'],
             [['weigh_bridge_ticket', 'weighed_by'], 'string', 'max' => 100]
         ];
@@ -67,7 +67,27 @@ class Delivery extends \yii\db\ActiveRecord
 		{
 			return $this->hasOne(Trucks::className(), ['id', 'truck_id']);
 		}
+
+
+
 		
+	public function getBinLoad($trailerBin_id)
+		{
+			foreach($this->deliveryLoad as $deliveryLoad)
+				{
+					foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBin)
+						{
+						if($trailerBin_id == $deliveryLoadBin->trailer_bin_id)
+							{
+								return $deliveryLoadBin->bin_load;
+							}
+						}
+				}
+			
+			return 0;
+			
+			
+		}
 	
 	
 		

@@ -46,7 +46,7 @@ class DeliveryLoadBin extends \yii\db\ActiveRecord
     
     public function getTrailerBin()
     {
-	return $this->hasOne(TrailerBins::className(), ['id' => 'trailer_bin_id'] );	
+		return $this->hasOne(TrailerBins::className(), ['id' => 'trailer_bin_id'] );	
 	}
     
     

@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Delivery;
+use app\models\DeliveryLoad;
+use app\models\DeliveryLoadBin;
 use app\models\DeliverySearch;
 use app\models\CustomerOrders;
 use app\models\Trucks;
@@ -105,7 +107,59 @@ class DeliveryController extends Controller
 		//form has been submitted save the form accordingly
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-            return $this->redirect(['index']);
+        	//create the Delivery Name
+        	$model->Name = "DEL".str_pad($model->id, 5, "0", STR_PAD_LEFT);  
+        	$model->save();
+        		
+        		
+			//this array contains all of the data about where the order has been loaded into.        		
+        	$loadOutArray = Yii::$app->request->post("truck_load");
+        	
+        	//Foreach truck in the delivery. 
+        	foreach($loadOutArray as $truck_id => $trailer_bins_array)
+        		{
+        		$deliveryLoad = new DeliveryLoad();
+        		$deliveryLoad->delivery_id = $model->id;
+        		$deliveryLoad->truck_id = $truck_id;
+        		if(!$deliveryLoad->save())
+        			{
+        			foreach($deliveryLoad->getErrors() as $message)
+        				{
+							echo $message[0]."<br>";
+						}
+        			die("failed to Create Delivery Load Record");
+        			}
+        		
+        		$deliveryLoad->load_qty = 0;
+        		
+        		//Go through each bin loaded in the order
+				foreach($trailer_bins_array as $trailerBin_id => $trailer_load_amount)
+					{
+					$deliveryLoadBin = new DeliveryLoadBin();
+					$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
+					$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
+					$deliveryLoadBin->bin_load = $trailer_load_amount[0];
+					$deliveryLoad->load_qty += $trailer_load_amount[0];
+					if(!$deliveryLoadBin->save())
+	        			{
+	        			foreach($deliveryLoad->getErrors() as $message)
+	        				{
+								echo $message[0]."<br>";
+							}
+	        			die("failed to Create Delivery Load Record");
+	        			}
+	        		$deliveryLoad->save();
+					}
+				}
+        	
+        	
+        		
+        		
+        	
+        		
+            //return $this->redirect(['index']);
+            
+          	return;
         	} 
        
        	//If the order has been seleted already, clicked the link from within the order
@@ -163,15 +217,38 @@ class DeliveryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+    $model = $this->findModel($id);
+    
+    
+    
+    
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+    if ($model->load(Yii::$app->request->post()) && $model->save()) 
+    	{
+        return $this->redirect(['view', 'id' => $model->id]);
+    	}
+    else{
+    	
+    	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'override' => '/delivery/update?id'.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+		
+		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
+		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name') ;
+	
+	
+	
+		return $this->render('update', [ 
+			'model' => $model,
+			'actionItems' => $actionItems,
+			'submittedOrders' => $submittedOrderArray,
+			'order' => $model->customerOrder,
+			]);
+    	
+    	
+    	
+       
+    	}
     }
 
     /**
@@ -271,7 +348,7 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-	public function actionAjaxAddTruck($truck_id, $requestedDate)
+	public function actionAjaxAddDeliveryLoad($truck_id, $requestedDate)
 	{
 		
 	$truck = Trucks::findOne($truck_id);
@@ -282,6 +359,7 @@ class DeliveryController extends Controller
 	else{
 	
 	
+		//check to see if the default trailers are free, if so allocate them to the load
 		$requestedDate = strtotime($requestedDate);
 		$selectedTrailers = array();
 		foreach($truck->defaultTrailers as $defaultTrailer)
@@ -297,9 +375,40 @@ class DeliveryController extends Controller
 		return $this->renderPartial("/trucks/_allocation", [
 								'truck' => $truck,
 								'selectedTrailers' => $selectedTrailers,
+								'delivery' => null,
 								]);
 		}
     }
+    
+    
+    public function actionAjaxUpdateDeliveryLoad($truck_id, $selected_trailers)
+    	{
+    		
+    		
+    		$truck = Trucks::findOne($truck_id);
+			if($truck === null)
+				{
+				return "Unable to locate Required Truck";
+				}
+    		$selectedTrailerObjects = array();
+    		
+    		$selected_trailers = json_decode($selected_trailers);
+    		
+
+			foreach($selected_trailers as $trailer_id)
+				{
+				$selectedTrailerObjects[] = Trailers::find()->where(['id' => $trailer_id])->one();
+				}
+				
+			return $this->renderPartial("/trucks/_allocationInner", [
+								'truck' => $truck,
+								'selectedTrailers' => $selectedTrailerObjects,
+								]);		
+		}
+    
+    
+    
+    
     
     /**
 	* 
@@ -321,8 +430,6 @@ class DeliveryController extends Controller
 			'trailersUsed' => $trailersUsed,
 			'selected_trailers' => explode(",", $selected_trailers),
 			'truck_id' => $truck_id,
-		
-		
 			]);
 			
 		}
