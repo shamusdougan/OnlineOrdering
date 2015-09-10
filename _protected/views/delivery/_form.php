@@ -17,8 +17,8 @@ use yii\bootstrap\Modal;
 /* @var $form yii\widgets\ActiveForm */
 
 
-if(!isset($readOnly)){ $readOnly = False;};
-if(!isset($truckList)){ $truckList = array();};
+if(!isset($readOnly)){ $readOnly = False;}
+if(!isset($truckList)){ $truckList = array();}
 
 
 
