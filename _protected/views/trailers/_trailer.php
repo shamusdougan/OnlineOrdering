@@ -26,7 +26,7 @@
 					
 		
 				
-				if(($binLoad = $delivery->getBinLoad($trailerBin->id)) > 0)
+				if($delivery != null && ($binLoad = $delivery->getBinLoad($trailerBin->id)) > 0)
 					{
 					if($binLoad < $trailerBin->MaxCapacity)
 						{

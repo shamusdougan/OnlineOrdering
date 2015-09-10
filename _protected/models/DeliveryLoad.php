@@ -122,7 +122,7 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		$trailerArray = array();
 		foreach($this->deliveryLoadBin as $loadBin)
 			{
-			$trailerArray[$loadBin->trailer_bin_id] = $loadBin->trailerBin->trailer;
+			$trailerArray[$loadBin->trailerBin->trailer->id] = $loadBin->trailerBin->trailer;
 			}
 		
 		return $trailerArray;

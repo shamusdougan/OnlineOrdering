@@ -18,9 +18,10 @@ use yii\bootstrap\Modal;
 
 
 if(!isset($readOnly)){ $readOnly = False;};
+if(!isset($truckList)){ $truckList = array();};
 
 
-$trucks = Trucks::getAvailable(time());
+
 
 /**
 * 
@@ -433,7 +434,7 @@ $this->registerJs("
 					'url'=>Url::to(['/delivery/ajax-available-trucks']),
 					'placeholder'=>'Select Truck to add....',
 					],
-				//'data' => array(0 => 'hello'),
+				'data' => $truckList,
 				]);	
 			?>	
 			</div> 

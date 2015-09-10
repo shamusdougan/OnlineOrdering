@@ -90,5 +90,16 @@ class Delivery extends \yii\db\ActiveRecord
 		}
 	
 	
+	public function removeAllLoads()
+	{
+		foreach($this->deliveryLoad as $deliveryLoad)
+    		{
+				foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBin)
+					{
+						$deliveryLoadBin->delete();
+					}
+				$deliveryLoad->delete();
+			}
+	}
 		
 }

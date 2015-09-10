@@ -30,9 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'customerOrder.Name',
             'customerOrder.Requested_Delivery_by',
             'customerOrder.Qty_Tonnes',
-            'customerOrder.Owner',
             'delivery_qty',
-            ['class' => 'kartik\grid\ActionColumn'],
+             [
+				'class' => 'kartik\grid\ActionColumn',
+				'template' => '{update} {delete}',
+			],
         ],
     ]); ?>
 

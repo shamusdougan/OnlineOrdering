@@ -112,10 +112,11 @@ class DeliveryController extends Controller
         	$model->save();
         		
         		
-			//this array contains all of the data about where the order has been loaded into.        		
-        	$loadOutArray = Yii::$app->request->post("truck_load");
+			$model->delivery_qty = 0;
+        	
         	
         	//Foreach truck in the delivery. 
+        	$loadOutArray = Yii::$app->request->post("truck_load");
         	foreach($loadOutArray as $truck_id => $trailer_bins_array)
         		{
         		$deliveryLoad = new DeliveryLoad();
@@ -150,16 +151,23 @@ class DeliveryController extends Controller
 	        			}
 	        		$deliveryLoad->save();
 					}
+					
+				$model->delivery_qty += $deliveryLoad->load_qty;
 				}
-        	
-        	
-        		
-        		
+        	$model->save();
         	
         		
-            //return $this->redirect(['index']);
-            
-          	return;
+        		
+        	
+        		
+            //Once save, either stay on the page or exit. Controlled via the actiob buttons
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
         	} 
        
        	//If the order has been seleted already, clicked the link from within the order
@@ -222,20 +230,105 @@ class DeliveryController extends Controller
     
     
     
-
+	//form has been submitted save the form accordingly
     if ($model->load(Yii::$app->request->post()) && $model->save()) 
     	{
-        return $this->redirect(['view', 'id' => $model->id]);
-    	}
+        
+		
+		
+    	
+    	//remove the old loading data and create the new, even if it is the Same
+    	$model->removeAllLoads();
+    	$model->delivery_qty = 0;
+    	
+    	//this array contains all of the data about where the order has been loaded into.        		
+    	$loadOutArray = Yii::$app->request->post("truck_load");
+    	if($loadOutArray === null)
+    		{
+				$loadOutArray = array();
+			}
+    	
+    	
+    	foreach($loadOutArray as $truck_id => $trailer_bins_array)
+    		{
+    		$deliveryLoad = new DeliveryLoad();
+    		$deliveryLoad->delivery_id = $model->id;
+    		$deliveryLoad->truck_id = $truck_id;
+    		if(!$deliveryLoad->save())
+    			{
+    			foreach($deliveryLoad->getErrors() as $message)
+    				{
+						echo $message[0]."<br>";
+					}
+    			die("failed to Create Delivery Load Record");
+    			}
+    		
+    		$deliveryLoad->load_qty = 0;
+    		
+    		//Go through each bin loaded in the order
+			foreach($trailer_bins_array as $trailerBin_id => $trailer_load_amount)
+				{
+				$deliveryLoadBin = new DeliveryLoadBin();
+				$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
+				$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
+				$deliveryLoadBin->bin_load = $trailer_load_amount[0];
+				$deliveryLoad->load_qty += $trailer_load_amount[0];
+				if(!$deliveryLoadBin->save())
+        			{
+        			foreach($deliveryLoad->getErrors() as $message)
+        				{
+							echo $message[0]."<br>";
+						}
+        			die("failed to Create Delivery Load Record");
+        			}
+        		$deliveryLoad->save();
+				}
+				
+			$model->delivery_qty += $deliveryLoad->load_qty;
+			}
+    	$model->save();
+    	
+    		
+        		
+        	
+        	//Once save, either stay on the page or exit. Controlled via the actiob buttons
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
+            
+   
+    	} 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
     else{
     	
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'override' => '/delivery/update?id'.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'override' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
 		
 		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
-		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name') ;
-	
+		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name');
+		
+		//echo $model->delivery_on."<br>";
+		$trucksAvailable = Trucks::getAvailable(strtotime($model->delivery_on));
+		
+		
 	
 	
 		return $this->render('update', [ 
@@ -243,6 +336,7 @@ class DeliveryController extends Controller
 			'actionItems' => $actionItems,
 			'submittedOrders' => $submittedOrderArray,
 			'order' => $model->customerOrder,
+			'truckList' => $trucksAvailable,
 			]);
     	
     	
@@ -259,7 +353,9 @@ class DeliveryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->removeAllLoads();
+        $model->delete();
 
         return $this->redirect(['index']);
     }

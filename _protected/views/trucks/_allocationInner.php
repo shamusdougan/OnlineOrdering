@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 
 
 $selectedTrailersIDs = ArrayHelper::map($selectedTrailers, 'id', 'id') ;
+if(!isset($delivery)){ $delivery = null;};
 ?>
 
 
