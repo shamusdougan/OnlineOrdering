@@ -116,7 +116,11 @@ class DeliveryController extends Controller
         	
         	
         	//Foreach truck in the delivery. 
-        	$loadOutArray = Yii::$app->request->post("truck_load");
+        	if(($loadOutArray = Yii::$app->request->post("truck_load")) === null)
+        		{
+        		$loadOutArray = array();
+				}
+        	
         	foreach($loadOutArray as $truck_id => $trailer_bins_array)
         		{
         		$deliveryLoad = new DeliveryLoad();
@@ -156,11 +160,13 @@ class DeliveryController extends Controller
 				}
         	$model->save();
         	
-        		
-        		
+        	//update the Customer Order as well
+        	$model->customerOrder->setStatusDelivery($model->id);
+
         	
         		
             //Once save, either stay on the page or exit. Controlled via the actiob buttons
+            $get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
 	    			{
 					return $this->redirect(['update', 'id' => $model->id]);
@@ -292,6 +298,7 @@ class DeliveryController extends Controller
         		
         	
         	//Once save, either stay on the page or exit. Controlled via the actiob buttons
+        	$get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
 	    			{
 					return $this->redirect(['update', 'id' => $model->id]);
@@ -356,6 +363,8 @@ class DeliveryController extends Controller
         $model = $this->findModel($id);
         $model->removeAllLoads();
         $model->delete();
+        
+        $model->customerOrder->unsetStatusDelivery();
 
         return $this->redirect(['index']);
     }

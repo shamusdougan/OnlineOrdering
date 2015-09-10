@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'export' => false,
         'columns' => [
+        	'Name',
             'delivery_on',
             'customerOrder.Name',
             'customerOrder.Requested_Delivery_by',

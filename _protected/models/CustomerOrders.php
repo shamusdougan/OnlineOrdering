@@ -300,7 +300,20 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	public function hasDelivery()
 	{
 		return ($this->delivery !== null);
-
+	}
+	
+	public function setStatusDelivery($deliveryID)
+	{
+		$this->Delivery_id = $deliveryID;
+		$this->Status = CustomerOrders::STATUS_DELIVERY;
+		$this->save();
+	}
+	
+	public function unsetStatusDelivery()
+	{
+		$this->Delivery_id = null;
+		$this->Status = CustomerOrders::STATUS_SUBMITTED;
+		$this->save();
 	}
 	
 	
