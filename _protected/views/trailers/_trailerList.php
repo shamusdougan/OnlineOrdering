@@ -33,16 +33,21 @@ use kartik\widgets\select2;
 				}
 		
 			$checked = "";
+			$disabled = "";
 			if(array_search($trailer->id, $selected_trailers) !== false)
 				{
 				$checked = "CHECKED";
+				}
+			elseif(array_search($trailer->id, $used_trailers) !== false)
+				{
+				$disabled = "DISABLED";
 				}
 			
 			echo "<tr>";
 			echo "<td>".substr($trailer->Registration, 0, 35)."</td>";
 			echo "<td>".$deliveries."</td>";
 			echo "<td align='center'>".$remainingSpace."</td>";
-			echo "<td align='center'><input type='checkbox' class='trailer_select_".$truck_id."' value='".$trailer->id."' ".$checked." ></td>";
+			echo "<td align='center'><input type='checkbox' class='trailer_select_".$truck_id."' value='".$trailer->id."' ".$checked." ".$disabled."></td>";
 			echo "</tr>";
 		}	
 	?>	

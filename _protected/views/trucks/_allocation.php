@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
 								'truck' => $truck,
 								'selectedTrailers' => $selectedTrailers,
 								'delivery' => $delivery,
+								'usedTrailerBins' => $usedTrailerBins,
 								]);
 	?>
 </div>

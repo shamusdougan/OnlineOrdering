@@ -30,6 +30,7 @@ if(!isset($delivery)){ $delivery = null;};
 				'trailer' => $trailer,
 				'truck_id' => $truck->id,
 				'delivery' => $delivery,
+				'usedTrailerBins' => $usedTrailerBins,
 				
 				]);
 			}

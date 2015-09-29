@@ -10,6 +10,7 @@ use app\models\DeliverySearch;
 use app\models\CustomerOrders;
 use app\models\Trucks;
 use app\models\Trailers;
+use app\models\TrailerBins;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -334,7 +335,7 @@ class DeliveryController extends Controller
 		
 		//echo $model->delivery_on."<br>";
 		$trucksAvailable = Trucks::getAvailable(strtotime($model->delivery_on));
-		
+		$usedTrailerBins = TrailerBins::getUsedBins(strtotime($model->delivery_on))	;
 		
 	
 	
@@ -344,6 +345,7 @@ class DeliveryController extends Controller
 			'submittedOrders' => $submittedOrderArray,
 			'order' => $model->customerOrder,
 			'truckList' => $trucksAvailable,
+			'usedTrailerBins' => $usedTrailerBins,
 			]);
     	
     	
@@ -476,17 +478,21 @@ class DeliveryController extends Controller
 			}
 		
 		
+		//check to see if any of the trailerbins are already being used on the requested date
+		$usedTrailerBins = TrailerBins::getUsedBins($requestedDate)	;
+	
 	
 		return $this->renderPartial("/trucks/_allocation", [
 								'truck' => $truck,
 								'selectedTrailers' => $selectedTrailers,
 								'delivery' => null,
+								'usedTrailerBins' => $usedTrailerBins,
 								]);
 		}
     }
     
     
-    public function actionAjaxUpdateDeliveryLoad($truck_id, $selected_trailers)
+    public function actionAjaxUpdateDeliveryLoad($truck_id, $selected_trailers, $requestedDate)
     	{
     		
     		
@@ -498,16 +504,19 @@ class DeliveryController extends Controller
     		$selectedTrailerObjects = array();
     		
     		$selected_trailers = json_decode($selected_trailers);
-    		
-
 			foreach($selected_trailers as $trailer_id)
 				{
 				$selectedTrailerObjects[] = Trailers::find()->where(['id' => $trailer_id])->one();
 				}
+
+
+			//check to see if any of the trailerbins are already being used on the requested date
+			$usedTrailerBins = TrailerBins::getUsedBins($requestedDate)	;
 				
 			return $this->renderPartial("/trucks/_allocationInner", [
 								'truck' => $truck,
 								'selectedTrailers' => $selectedTrailerObjects,
+								'usedTrailerBins' => $usedTrailerBins,
 								]);		
 		}
     
@@ -525,16 +534,18 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-    public function actionAjaxSelectTrailers($requested_date, $selected_trailers, $truck_id)
+    public function actionAjaxSelectTrailers($requested_date, $selected_trailers, $truck_id, $all_trailers)
     	{
 		$trailerList = Trailers::getAllActiveTrailers();
 		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
+		$used_trailers = explode(",", $all_trailers);
 		
 		return $this->renderPartial("/trailers/_trailerList", [
 			'trailerList' => $trailerList,
 			'trailersUsed' => $trailersUsed,
 			'selected_trailers' => explode(",", $selected_trailers),
 			'truck_id' => $truck_id,
+			'used_trailers' => $used_trailers,
 			]);
 			
 		}

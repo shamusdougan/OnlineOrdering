@@ -170,7 +170,16 @@ $this->registerJs("$('#add_truck_button').click(function(event)
  
 $this->registerJs("$(document).on('click', '.trailer_select_link', function() 
 	{
+		
+	//This will list the currently selected trailers for this truck
 	selected_trailers = $(this).attr('selected_trailers');
+	
+	//This will list all of the selected trailers for this entire order
+	all_trailers = '';
+	$('.trailer_select_link').each(function(){
+		all_trailers += ',' + ($(this).attr('selected_trailers'));
+		});
+		
 	requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 	truck_id = $(this).attr('truck_id');
 	
@@ -178,7 +187,7 @@ $this->registerJs("$(document).on('click', '.trailer_select_link', function()
 	$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-		data: {requested_date: requestedDate, selected_trailers: selected_trailers, truck_id: truck_id},
+		data: {requested_date: requestedDate, selected_trailers: selected_trailers, truck_id: truck_id, all_trailers: all_trailers},
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('#trailer-select-modal').modal();
@@ -206,11 +215,12 @@ $this->registerJs("$(document).on('click', '.select_trailers_button', function()
 					}
 				});
 		
+		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 		
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-update-delivery-load")."',
-			data: {truck_id: truck_id, selected_trailers: JSON.stringify(selected_trailers)},
+			data: {truck_id: truck_id, selected_trailers: JSON.stringify(selected_trailers), requestedDate: requestedDate},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#truck_allocate_' + truck_id).html(data);
@@ -392,7 +402,7 @@ $this->registerJs("
 	</div>
 	<br>
     
-    <div width='100%' style='height: 100px;'>
+    <div width='100%' style='height: 80px;'>
     	<div style='wdith: 300px; float: left'>
     		
     		<div style='width: 100%;'>
@@ -448,7 +458,13 @@ $this->registerJs("
     	
 	</div>
 	
-
+	<div style='width: 100%; border: 1px solid; height: 30px; padding-left: 10px; padding-top: 2px;'>
+		Select Fill Method 
+		<select id='fill_method'>
+			<option>Fill Bin On Selection</option>
+			<option>Select Bins First then Allocate</option>
+		</select>
+	</div>
 
 	
 	
@@ -461,6 +477,7 @@ $this->registerJs("
 								'truck' => $deliveryLoad->truck,
 								'selectedTrailers' => $selectedTrailers,
 								'delivery' => $model,
+								'usedTrailerBins' => $usedTrailerBins,
 								]);
 				}
 			?>

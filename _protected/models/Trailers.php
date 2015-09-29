@@ -145,6 +145,11 @@ class Trailers extends \yii\db\ActiveRecord
 		return $isAvailable;
 		}
     
+   
+    
+    
+    
+    
     /**
 	* Function getAll Activetrailers
 	* Derscription: returns a list of all the active trailer objects

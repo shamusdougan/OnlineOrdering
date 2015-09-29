@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'submittedOrders' => $submittedOrders,
         'order' => $order,
         'truckList' => $truckList,
+        'usedTrailerBins' => $usedTrailerBins,
     ]) ?>
 
 </div>

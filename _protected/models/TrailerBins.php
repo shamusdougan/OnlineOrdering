@@ -55,4 +55,24 @@ class TrailerBins extends \yii\db\ActiveRecord
     {
 		return $this->hasOne(Trailers::className(), ['id' => 'trailer_id'] );	
 	}
+	
+	
+	
+	
+	
+	public function getUsedBins($requestedDate)
+		{
+			
+		$usedTrailerBins = DeliveryLoadBin::find()
+								->innerJoinWith('deliveryLoad')
+								->where(['delivery_on' => $requestedDate])
+								->all();
+								
+	 	print_r($usedTrailerBins);
+			
+			
+			
+		return array();
+		}
+	
 }
