@@ -63,11 +63,14 @@ class TrailerBins extends \yii\db\ActiveRecord
 	public function getUsedBins($requestedDate)
 		{
 			
+		
 		$usedTrailerBins = DeliveryLoadBin::find()
-								->innerJoinWith('deliveryLoad')
-								->where(['delivery_on' => $requestedDate])
+								->innerJoinWith('deliveryLoad', false)
+								->where(['delivery_load.delivery_on' => date("Y-m-d", $requestedDate )])
 								->all();
-								
+				
+		echo $usedTrailerBins->createCommand()->getRawSql();
+		print_r(date("Y-m-d", $requestedDate ))	;			
 	 	print_r($usedTrailerBins);
 			
 			

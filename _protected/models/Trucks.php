@@ -94,26 +94,53 @@ class Trucks extends \yii\db\ActiveRecord
     	{
 		
 	
-		$deliveryLoad = DeliveryLoad::find()
+		$deliveryLoadsOnDate = DeliveryLoad::find()
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
 						->all();
 		
 		$trucks = Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
 		$trucksArray = ArrayHelper::map($trucks, 'id', 'registration') ;
 		
-		//iternate through the lists of Deliveries, and remove trucks if they are in the delivery if they dont have any spare capacity
-		foreach($deliveryLoad as $deliveryLoad)
+		//iternate through the lists of Deliveries, collect an array of trucks used so far
+		$usedTrucks = array();
+		foreach($deliveryLoadsOnDate as $deliveryLoad)
 			{
-			//Truck has a delivery already for this date
-			if(array_key_exists($deliveryLoad->truck_id, $trucksArray))
+			$truckID = $deliveryLoad->truck_id;
+			$usedTrucks[$truckID] = array();
+			
+			//for each delivery work go through and list the number of trailerbins being used
+			//We should end up with an array looking like array([truck_id] -> array(trailer_id => number_of_bins_used))
+			foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBin)
 				{
-				//check to see if the truck has any room left, if not remove the truck from list
-				if(!$deliveryLoad->hasAdditionalCapacity())
+				$trailerID = $deliveryLoadBin->trailerBin->trailer_id;
+				if(array_key_exists($trailerID, $usedTrucks[$truckID]))
 					{
-					unset($trucksArray[$delivery->truck_id]);	
+					$usedTrucks[$truckID][$trailerID] += 1;
+					}
+				else{
+					$usedTrucks[$truckID][$trailerID] = 1;
 					}
 				}
+			}
 
+		
+		//Go through each of the trucks->trailers and check that if the number of trailer bins being used matches The
+		// number of trailerbin available. If they dont match then with bins free the truck and trailers can have a delivery added to it.
+		foreach($usedTrucks as $truckID => $trailersArray)
+			{
+			$trailersFull = true;
+			foreach($trailersArray as $trailerID => $trailerBinCount)
+				{
+				if(Trailers::getTrailerBinCount($trailerID) != $trailerBinCount)
+					{
+					$trailersFull = false;
+					}
+				}
+				
+			if($trailersFull)
+				{
+				unset($trucksArray[$truckID]);
+				}
 			}
 		
 		return $trucksArray;

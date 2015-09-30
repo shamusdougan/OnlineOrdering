@@ -73,79 +73,8 @@ class Trailers extends \yii\db\ActiveRecord
 		return $this->hasMany(TrailerBins::className(), ['trailer_id' => 'id'] );
 	}
     
-      /**
-	* 
-	* 
-	* DEscription: this function reutrns a list of Trailers being used on that date 
-	* 
-	* @return a list of trailers that are being used on that day. The array returned looks like
-	* 
-	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", used_space => 5T])
-	*/
-    public function getTrailersUsed($requestedDate)
-    	{
-		
-	
-		$deliveryLoads = DeliveryLoad::find()
-						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
-						->all();
-		
-		$deliverySummary = array();
-		
-		//iterate through each delivery and collect the info as required
-		foreach($deliveryLoads as $deliveryLoad)
-			{
-			if(array_key_exists($deliveryLoad->trailer_id))
-				{
-				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] .=  ", ".$deliveryLoad->delivery->Name;
-				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] += $deliveryLoad->getLoadTotal();
-				}
-			else{
-				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] = $deliveryLoad->delivery->Name;
-				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] = $deliveryLoad->getLoadTotal();
-				}
-			}
-		
-		
-		return $deliverySummary;
-		}
-    
-    
-    
-      /**
-	* 
-	* 
-	* DEscription: this function reutrns a bool if the trailer is avilable on the given date
-	* 
-	* @return bool
-	*/
-    public function checkAvailable($trailer, $requestedDate)
-    	{
-    		
-    	
-    	//if the default trailer has not been specified then return false
-    	if($trailer === null)
-    		{
-			return False;
-			}
-    		
-    	
-		$deliveryLoads = DeliveryLoad::find()
-						->where(['delivery_on' => date("Y-m-d", $requestedDate ), 'trailer_id' => $trailer->id])
-						->all();	
-		$isAvailable = true;	
-		foreach($deliveryLoads as $deliveryLoad)
-			{
-			if(!$deliveryLoad->hasAdditionalCapacity())
-				{
-				$isAvailable = false;
-				}	
-			}
-			
-		return $isAvailable;
-		}
-    
    
+    
     
     
     
@@ -166,7 +95,17 @@ class Trailers extends \yii\db\ActiveRecord
 		}
     
     
-   
+   /**
+   * 
+   * Function getTrailerBinCount
+   * 
+   **
+   */
+   public function getTrailerBinCount($trailerID)
+   	{
+	$trailer = Trailers::findOne($trailerID);
+	return $trailer->NumBins;
+	}
     
     
 }

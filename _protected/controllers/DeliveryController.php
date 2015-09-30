@@ -127,6 +127,7 @@ class DeliveryController extends Controller
         		$deliveryLoad = new DeliveryLoad();
         		$deliveryLoad->delivery_id = $model->id;
         		$deliveryLoad->truck_id = $truck_id;
+        		$deliveryLoad->delivery_on = $model->delivery_on;
         		if(!$deliveryLoad->save())
         			{
         			foreach($deliveryLoad->getErrors() as $message)
@@ -261,6 +262,7 @@ class DeliveryController extends Controller
     		$deliveryLoad = new DeliveryLoad();
     		$deliveryLoad->delivery_id = $model->id;
     		$deliveryLoad->truck_id = $truck_id;
+    		$deliveryLoad->delivery_on = $model->delivery_on;
     		if(!$deliveryLoad->save())
     			{
     			foreach($deliveryLoad->getErrors() as $message)
