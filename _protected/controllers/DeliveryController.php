@@ -468,7 +468,7 @@ class DeliveryController extends Controller
 	else{
 	
 	
-		//check to see if the default trailers are free, if so allocate them to the load
+		//check to see if the truck already has a load, if so allocate the trailers already assigned, if not assign the default trailers.
 		$requestedDate = strtotime($requestedDate);
 		$selectedTrailers = array();
 		foreach($truck->defaultTrailers as $defaultTrailer)

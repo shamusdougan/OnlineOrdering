@@ -146,7 +146,14 @@ class Trucks extends \yii\db\ActiveRecord
 		return $trucksArray;
 		}
     
-    
+    /**
+	* 
+	* Function: isTruckAssigned($requestedDate)
+	* Description: checks to see if the truck has been assigned on the requested date. If it has then return an array of the trailers assigned for that date
+	* 
+	* 
+	* @return
+	*/
     function  isTruckAssigned($requestedDate)
     	{
 			
