@@ -25,7 +25,7 @@ print_r($usedTrailerBins);
 			foreach($trailer->trailerBins as $index => $trailerBin)
 				{
 					
-					
+				
 		
 				//This checks to see if the Bin has been used in this order, if so mark as used and allow modification
 				if($delivery != null && ($binLoad = $delivery->getBinLoad($trailerBin->id)) > 0)
@@ -36,7 +36,7 @@ print_r($usedTrailerBins);
 						}
 					else{
 						$class = 'sap_trailer_full';
-						}
+						}	
 						
 						
 					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
@@ -44,7 +44,13 @@ print_r($usedTrailerBins);
 					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' />";		
 					}
 					
-				//If the trailer bin has been used in another order disable the control
+				elseif(array_key_exists($trailerBin->id, $usedTrailerBins))
+					{
+					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
+					echo $trailerBin->BinNo."<br>";						
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' disabled/>";		
+						
+					}
 				
 					
 				//Trailer bin hasn't been used in this delivery or any other delviery.

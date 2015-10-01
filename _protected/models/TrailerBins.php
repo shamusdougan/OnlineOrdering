@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use app\models\Trailers;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * This is the model class for table "trailer_bins".
@@ -67,15 +69,16 @@ class TrailerBins extends \yii\db\ActiveRecord
 		$usedTrailerBins = DeliveryLoadBin::find()
 								->innerJoinWith('deliveryLoad', false)
 								->where(['delivery_load.delivery_on' => date("Y-m-d", $requestedDate )])
+								->asArray()
 								->all();
 				
-		echo $usedTrailerBins->createCommand()->getRawSql();
-		print_r(date("Y-m-d", $requestedDate ))	;			
-	 	print_r($usedTrailerBins);
+		//echo $usedTrailerBins->createCommand()->getRawSql();
 			
+	 	$usedTrailerBins = arrayHelper::map($usedTrailerBins, 'id', 'delivery_load_id');
 			
+
 			
-		return array();
+		return $usedTrailerBins;
 		}
 	
 }

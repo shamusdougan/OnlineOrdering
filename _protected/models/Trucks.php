@@ -147,5 +147,10 @@ class Trucks extends \yii\db\ActiveRecord
 		}
     
     
+    function  isTruckAssigned($requestedDate)
+    	{
+			
+		}
+    
     
 }
