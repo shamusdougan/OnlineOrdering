@@ -161,7 +161,10 @@ $this->registerJs("$('#add_truck_button').click(function(event)
  $this->registerJs("$(document).on('click', '.close_allocation_link', function() 
 	{
 		$('#truck_allocate_' + $(this).attr('truck_id')).remove();
-		updateOrderRemaining();	
+		updateOrderRemaining();
+		
+		$('form#delivery-form').attr('action', '/delivery/update?id=63&exit=false');
+		$('form#delivery-form').submit();
 	});
 ");
  

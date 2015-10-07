@@ -107,5 +107,33 @@ class Trailers extends \yii\db\ActiveRecord
 	return $trailer->NumBins;
 	}
     
+    /**
+	* 
+	* Function isAlreadyAssigned($requestedDate)
+	* Description: is will return the booleen if this trailer has already been assigned to a truck on that day.
+	* @return
+	*/
+    public function isAlreadyAssigned($requestedDate)
+    {
+		$usedTrailerList = DeliveryLoadTrailer::find()
+						->innerJoinWith('deliveryLoad', false)
+						->where(['delivery_load.delivery_on' => date("Y-m-d", $requestedDate )])
+						->all();
+	
+	
+		
+		
+		$assigned = false;
+		foreach($usedTrailerList as $usedTrailer)
+			{
+			if($this->id == $usedTrailer->id)
+				{
+				$assigned = true;
+				}
+			}
+		return $assigned;
+						
+						
+	}
     
 }

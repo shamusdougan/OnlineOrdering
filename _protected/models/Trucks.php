@@ -156,8 +156,39 @@ class Trucks extends \yii\db\ActiveRecord
 	*/
     function  isTruckAssigned($requestedDate)
     	{
+		
+		$deliveryLoads = DeliveryLoad::find()
+						->where(['delivery_load.delivery_on' => date("Y-m-d", $requestedDate ), 'truck_id' => $this->id])
+						->all();
+	
+	
+		
+		
+		$assigned = false;
+		$trailersAssignedArray = array();
+		
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			if($this->id == $deliveryLoad->truck_id)
+				{
+				$assigned = true;
+				foreach($deliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailer)
+					{
+					$trailersAssignedArray[$deliveryLoadTrailer->trailer->id] = $deliveryLoadTrailer->trailer;
+					}
+				}
+			}
 			
-		}
+		if($assigned)
+			{
+			return $trailersAssignedArray;
+			}
+		return false;
+						
+						
+	}
+    
+
     
     
 }

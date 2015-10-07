@@ -6,6 +6,7 @@ use Yii;
 use app\models\Delivery;
 use app\models\DeliveryLoad;
 use app\models\DeliveryLoadBin;
+use app\models\DeliveryLoadTrailer;
 use app\models\DeliverySearch;
 use app\models\CustomerOrders;
 use app\models\Trucks;
@@ -108,21 +109,26 @@ class DeliveryController extends Controller
 		//form has been submitted save the form accordingly
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-        	//create the Delivery Name
-        	$model->Name = "DEL".str_pad($model->id, 5, "0", STR_PAD_LEFT);  
-        	$model->save();
-        		
-        		
-			$model->delivery_qty = 0;
+
+        	//create the Delivery Name other attributes already loaded such as the delivery date
+        	$model->Name = Delivery::generateName($model->id); 
+        	$model->delivery_qty = 0;
+        	$model->save();			//save so we cna access the object id
+			
+
+			//Record the trailers assigned for this delivery
+		
+	
         	
-        	
-        	//Foreach truck in the delivery. 
+
+        	//Foreach truck in the delivery. if no truck was selected pass on the dummy variable
         	if(($loadOutArray = Yii::$app->request->post("truck_load")) === null)
         		{
         		$loadOutArray = array();
 				}
-        	
-        	foreach($loadOutArray as $truck_id => $trailer_bins_array)
+				
+			//Ok the load out array is kinda complex
+        	foreach($loadOutArray as $truck_id => $trailer_array)
         		{
         		$deliveryLoad = new DeliveryLoad();
         		$deliveryLoad->delivery_id = $model->id;
@@ -139,34 +145,65 @@ class DeliveryController extends Controller
         		
         		$deliveryLoad->load_qty = 0;
         		
-        		//Go through each bin loaded in the order
-				foreach($trailer_bins_array as $trailerBin_id => $trailer_load_amount)
+        		//allocate the selected trailers to the delivery load.
+        		//The selected trailers array should look like trailers[truck_id][trailer_id]
+        		if(($trailersSelected = Yii::$app->request->post("trailer")) === null)
 					{
-					$deliveryLoadBin = new DeliveryLoadBin();
-					$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
-					$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
-					$deliveryLoadBin->bin_load = $trailer_load_amount[0];
-					$deliveryLoad->load_qty += $trailer_load_amount[0];
-					if(!$deliveryLoadBin->save())
+						$trailersSelected = array();
+					}
+					
+
+				foreach($trailersSelected[$truck_id] as $trailer_id => $value)
+					{
+					$deliveryLoadTrailer = new DeliveryLoadTrailer();
+	        		$deliveryLoadTrailer->delivery_load_id = $deliveryLoad->id;
+	        		$deliveryLoadTrailer->trailer_id = $trailer_id;
+					if(!$deliveryLoadTrailer->save())
 	        			{
-	        			foreach($deliveryLoad->getErrors() as $message)
+	        			foreach($deliveryLoadTrailer->getErrors() as $message)
 	        				{
 								echo $message[0]."<br>";
 							}
-	        			die("failed to Create Delivery Load Record");
-	        			}
-	        		$deliveryLoad->save();
+	        			die("failed to Create Delivery Load Trailer Record");
+	        			}	
 					}
-					
-				$model->delivery_qty += $deliveryLoad->load_qty;
+        		
+        		
+        		
+	        	foreach($trailer_array as $trailer_id => $trailer_bins_array)
+	        		{
+	        		
+
+	        		
+	        		//Go through each bin loaded in the order
+					foreach($trailer_bins_array as $trailerBin_id => $trailer_load_amount)
+						{
+						
+						$deliveryLoadBin = new DeliveryLoadBin();
+						$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
+						$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
+						$deliveryLoadBin->bin_load = $trailer_load_amount[0];
+						$deliveryLoad->load_qty += $trailer_load_amount[0];
+						if(!$deliveryLoadBin->save())
+		        			{
+		        			foreach($deliveryLoad->getErrors() as $message)
+		        				{
+									echo $message[0]."<br>";
+								}
+		        			die("failed to Create Delivery Load Record");
+		        			}
+		        		$deliveryLoad->save();
+						}
+						
+					$model->delivery_qty += $deliveryLoad->load_qty;
+					}
 				}
         	$model->save();
         	
         	//update the Customer Order as well
         	$model->customerOrder->setStatusDelivery($model->id);
 
-        	
-        		
+      
             //Once save, either stay on the page or exit. Controlled via the actiob buttons
             $get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
@@ -257,7 +294,7 @@ class DeliveryController extends Controller
 			}
     	
     	
-    	foreach($loadOutArray as $truck_id => $trailer_bins_array)
+    	foreach($loadOutArray as $truck_id => $trailer_array)
     		{
     		$deliveryLoad = new DeliveryLoad();
     		$deliveryLoad->delivery_id = $model->id;
@@ -274,26 +311,58 @@ class DeliveryController extends Controller
     		
     		$deliveryLoad->load_qty = 0;
     		
-    		//Go through each bin loaded in the order
-			foreach($trailer_bins_array as $trailerBin_id => $trailer_load_amount)
+    		//allocate the selected trailers to the delivery load.
+    		//The selected trailers array should look like trailers[truck_id][trailer_id]
+    		if(($trailersSelected = Yii::$app->request->post("trailer")) === null)
 				{
-				$deliveryLoadBin = new DeliveryLoadBin();
-				$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
-				$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
-				$deliveryLoadBin->bin_load = $trailer_load_amount[0];
-				$deliveryLoad->load_qty += $trailer_load_amount[0];
-				if(!$deliveryLoadBin->save())
+					$trailersSelected = array();
+				}
+				
+
+			foreach($trailersSelected[$truck_id] as $trailer_id => $value)
+				{
+				$deliveryLoadTrailer = new DeliveryLoadTrailer();
+        		$deliveryLoadTrailer->delivery_load_id = $deliveryLoad->id;
+        		$deliveryLoadTrailer->trailer_id = $trailer_id;
+				if(!$deliveryLoadTrailer->save())
         			{
-        			foreach($deliveryLoad->getErrors() as $message)
+        			foreach($deliveryLoadTrailer->getErrors() as $message)
         				{
 							echo $message[0]."<br>";
 						}
-        			die("failed to Create Delivery Load Record");
-        			}
-        		$deliveryLoad->save();
+        			die("failed to Create Delivery Load Trailer Record");
+        			}	
 				}
-				
-			$model->delivery_qty += $deliveryLoad->load_qty;
+    		
+    		
+    		
+        	foreach($trailer_array as $trailer_id => $trailer_bins_array)
+        		{
+        		
+
+        		
+        		//Go through each bin loaded in the order
+				foreach($trailer_bins_array as $trailerBin_id => $trailer_load_amount)
+					{
+					
+					$deliveryLoadBin = new DeliveryLoadBin();
+					$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
+					$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
+					$deliveryLoadBin->bin_load = $trailer_load_amount[0];
+					$deliveryLoad->load_qty += $trailer_load_amount[0];
+					if(!$deliveryLoadBin->save())
+	        			{
+	        			foreach($deliveryLoad->getErrors() as $message)
+	        				{
+								echo $message[0]."<br>";
+							}
+	        			die("failed to Create Delivery Load Record");
+	        			}
+	        		$deliveryLoad->save();
+					}
+					
+				$model->delivery_qty += $deliveryLoad->load_qty;
+				}
 			}
     	$model->save();
     	
@@ -329,7 +398,7 @@ class DeliveryController extends Controller
     else{
     	
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'override' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
 		
 		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
@@ -366,9 +435,8 @@ class DeliveryController extends Controller
     {
         $model = $this->findModel($id);
         $model->removeAllLoads();
-        $model->delete();
-        
         $model->customerOrder->unsetStatusDelivery();
+  		$model->delete();
 
         return $this->redirect(['index']);
     }
@@ -470,19 +538,33 @@ class DeliveryController extends Controller
 	
 		//check to see if the truck already has a load, if so allocate the trailers already assigned, if not assign the default trailers.
 		$requestedDate = strtotime($requestedDate);
-		$selectedTrailers = array();
-		foreach($truck->defaultTrailers as $defaultTrailer)
+	
+		$selectedTrailers = $truck->isTruckAssigned($requestedDate);	
+
+		//If the selected truck hasn't yet been assigned then grab the default trailers for that truck if available
+		if(!$selectedTrailers)
 			{
-			if(Trailers::checkAvailable($defaultTrailer->trailer, $requestedDate))
+			foreach($truck->defaultTrailers as $defaultTrailer)
 				{
-					$selectedTrailers[] = $defaultTrailer->trailer;
-				}
-			}
+				if(!$defaultTrailer->trailer->isAlreadyAssigned($requestedDate))
+					{
+						$selectedTrailers[] = $defaultTrailer->trailer;
+					}
+				}	
+			$selectedTrailers = array();
+			}	
+		
+		
+		
+		
+		
+		
 		
 		
 		//check to see if any of the trailerbins are already being used on the requested date
 		$usedTrailerBins = TrailerBins::getUsedBins($requestedDate)	;
 	
+
 	
 		return $this->renderPartial("/trucks/_allocation", [
 								'truck' => $truck,

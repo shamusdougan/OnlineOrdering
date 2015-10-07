@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\models\DeliveryLoadBin;
+use app\models\DeliveryLoadTrailer;
 
 /**
  * This is the model class for table "delivery_load".
@@ -68,7 +69,10 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		return $this->hasOne(Trucks::className(), ['id' => 'truck_id'] );
 	}
 	
-	
+	public function getDeliveryLoadTrailer()
+	{
+		return $this->hasMany(DeliveryLoadTrailer::className(), ['delivery_load_id' => 'id'] );
+	}
 	
 	
 		
@@ -94,9 +98,9 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	{
 		
 		$trailerArray = array();
-		foreach($this->deliveryLoadBin as $loadBin)
+		foreach($this->deliveryLoadTrailer as $loadTrailer)
 			{
-			$trailerArray[$loadBin->trailerBin->trailer->id] = $loadBin->trailerBin->trailer;
+			$trailerArray[$loadTrailer->id] = $loadTrailer->trailer;
 			}
 		
 		return $trailerArray;

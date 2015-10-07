@@ -66,16 +66,19 @@ class TrailerBins extends \yii\db\ActiveRecord
 		{
 			
 		
-		$usedTrailerBins = DeliveryLoadBin::find()
+		$deliveryLoadBins = DeliveryLoadBin::find()
 								->innerJoinWith('deliveryLoad', false)
 								->where(['delivery_load.delivery_on' => date("Y-m-d", $requestedDate )])
-								->asArray()
 								->all();
 				
 		//echo $usedTrailerBins->createCommand()->getRawSql();
+		$usedTrailerBins = array();
+		foreach($deliveryLoadBins as $deliveryLoad)
+			{
+			$usedTrailerBins[$deliveryLoad->trailerBin->id] = $deliveryLoad->delivery_load_id;
+			}
 			
-	 	$usedTrailerBins = arrayHelper::map($usedTrailerBins, 'id', 'delivery_load_id');
-			
+	
 
 			
 		return $usedTrailerBins;

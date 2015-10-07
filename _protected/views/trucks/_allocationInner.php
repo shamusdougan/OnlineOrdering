@@ -4,7 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 
 
+
 $selectedTrailersIDs = ArrayHelper::map($selectedTrailers, 'id', 'id') ;
+
+
+
+
+
 if(!isset($delivery)){ $delivery = null;};
 ?>
 
@@ -23,7 +29,7 @@ if(!isset($delivery)){ $delivery = null;};
 		</div>
 		
 		<? 
-		
+	
 		foreach($selectedTrailers as $trailer)
 			{ 
 			echo $this->render("/Trailers/_trailer", [

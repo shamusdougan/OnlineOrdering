@@ -512,3 +512,9 @@ hr.article-devider {
 	background-repeat: repeat-x;
 		background-size: 5px 100%;
 }
+
+
+.sap_trailer_used
+{
+	background-color: red;
+}

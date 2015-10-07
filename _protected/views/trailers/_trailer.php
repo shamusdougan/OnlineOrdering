@@ -1,8 +1,3 @@
-<?php
-
-print_r($usedTrailerBins);
-
-?>
 
 
 <div style='width: 350px; margin-right: 30px; float:left;'>
@@ -19,12 +14,13 @@ print_r($usedTrailerBins);
 		
 		</div>
 		<div style='width: 75%; height: 100%; float: left'>
+			<input type='hidden' name='trailer[<?= $truck_id ?>][<?= $trailer->id ?>]' value='1'>
 			<?
 			
 			$binDivWidth = 100/$trailer->NumBins;
 			foreach($trailer->trailerBins as $index => $trailerBin)
 				{
-					
+				
 				
 		
 				//This checks to see if the Bin has been used in this order, if so mark as used and allow modification
@@ -41,15 +37,13 @@ print_r($usedTrailerBins);
 						
 					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo $trailerBin->BinNo."<br>";						
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' />";		
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' />";		
 					}
 					
 				elseif(array_key_exists($trailerBin->id, $usedTrailerBins))
 					{
-					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
-					echo $trailerBin->BinNo."<br>";						
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' disabled/>";		
-						
+					echo "<div class='sap_trailer_used' style='background-color: grey; width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
+					echo $trailerBin->BinNo."<br>";
 					}
 				
 					
@@ -57,7 +51,7 @@ print_r($usedTrailerBins);
 				else{
 					echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo $trailerBin->BinNo."<br>";
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
 					}
 				
 				echo "</div>";

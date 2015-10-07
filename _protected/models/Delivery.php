@@ -98,8 +98,17 @@ class Delivery extends \yii\db\ActiveRecord
 					{
 						$deliveryLoadBin->delete();
 					}
+				foreach($deliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailer)
+					{
+						$deliveryLoadTrailer->delete();
+					}
 				$deliveryLoad->delete();
 			}
 	}
 		
+		
+	public function generateName($index)
+	{
+		return "DEL".str_pad($index, 5, "0", STR_PAD_LEFT);
+	}
 }
