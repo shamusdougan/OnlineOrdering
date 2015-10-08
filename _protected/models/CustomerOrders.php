@@ -321,7 +321,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	public function getSubmittedOrdersWithoutDelivery()
 	{
 		return CustomerOrders::find()
-						->where(['Delivery_id'  => null])
+						->where(['Status' => CustomerOrders::STATUS_SUBMITTED])
 						->andWhere('Customer_id != :id', ['id'=>Clients::DUMMY])
         				->select(['id', 'Name'])
         				->all();

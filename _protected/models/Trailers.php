@@ -101,7 +101,7 @@ class Trailers extends \yii\db\ActiveRecord
    * 
    **
    */
-   public function getTrailerBinCount($trailerID)
+public function getTrailerBinCount($trailerID)
    	{
 	$trailer = Trailers::findOne($trailerID);
 	return $trailer->NumBins;
@@ -113,7 +113,7 @@ class Trailers extends \yii\db\ActiveRecord
 	* Description: is will return the booleen if this trailer has already been assigned to a truck on that day.
 	* @return
 	*/
-    public function isAlreadyAssigned($requestedDate)
+public function isAlreadyAssigned($requestedDate)
     {
 		$usedTrailerList = DeliveryLoadTrailer::find()
 						->innerJoinWith('deliveryLoad', false)
@@ -132,8 +132,42 @@ class Trailers extends \yii\db\ActiveRecord
 				}
 			}
 		return $assigned;
-						
-						
 	}
     
+  /**
+	* 
+	* 
+	* DEscription: this function reutrns a list of Trailers being used on that date 
+	* 
+	* @return a list of trailers that are being used on that day. The array returned looks like
+	* 
+	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", used_space => 5T])
+	*/
+    public function getTrailersUsed($requestedDate)
+    	{
+		
+	
+		$deliveryLoads = DeliveryLoad::find()
+						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
+						->all();
+		
+		$deliverySummary = array();
+		
+		//iterate through each delivery and collect the info as required
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			if(array_key_exists($deliveryLoad->trailer_id))
+				{
+				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] .=  ", ".$deliveryLoad->delivery->Name;
+				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] += $deliveryLoad->getLoadTotal();
+				}
+			else{
+				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] = $deliveryLoad->delivery->Name;
+				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] = $deliveryLoad->getLoadTotal();
+				}
+			}
+		
+		
+		return $deliverySummary;
+		}
 }

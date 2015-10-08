@@ -242,7 +242,7 @@ class DeliveryController extends Controller
 
 			
 		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'override' => '/delivery/update?id'.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/create?exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
 		
 		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
@@ -544,16 +544,15 @@ class DeliveryController extends Controller
 		//If the selected truck hasn't yet been assigned then grab the default trailers for that truck if available
 		if(!$selectedTrailers)
 			{
+			$selectedTrailers = array();	
 			foreach($truck->defaultTrailers as $defaultTrailer)
 				{
 				if(!$defaultTrailer->trailer->isAlreadyAssigned($requestedDate))
 					{
-						$selectedTrailers[] = $defaultTrailer->trailer;
+					$selectedTrailers[] = $defaultTrailer->trailer;
 					}
 				}	
-			$selectedTrailers = array();
 			}	
-		
 		
 		
 		

@@ -157,14 +157,16 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 	});
 ");
 
-
+//need to add ajax here to remove any bins that have been allocated to the order
  $this->registerJs("$(document).on('click', '.close_allocation_link', function() 
 	{
+		
+		
+		
 		$('#truck_allocate_' + $(this).attr('truck_id')).remove();
 		updateOrderRemaining();
 		
-		$('form#delivery-form').attr('action', '/delivery/update?id=63&exit=false');
-		$('form#delivery-form').submit();
+
 	});
 ");
  
