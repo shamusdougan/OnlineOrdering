@@ -1,5 +1,4 @@
 
-
 <div style='width: 350px; margin-right: 30px; float:left;'>
 	<div style='width: 100%'>
 		Trailer: <b><?= $trailer->Registration ?> </b>

@@ -17,7 +17,7 @@ if(!isset($delivery)){ $delivery = null;};
 
 <div style='width: 100%; text-align: right '>
 
-		<div class='sap_icon_small sap_cross_small close_allocation_link' style='float: right' truck_id='<?= $truck->id ?>'></div>
+		<div class='sap_icon_small sap_cross_small close_allocation_link' style='float: right' delivery_id='<?= $delivery == null ? "" : $delivery->id ?>' truck_id='<?= $truck->id ?>'></div>
 	</div>
 	<div style='width: 100%; height: 195px;'>
 		<div style='width: 250px; padding-left: 5px; float: left'>

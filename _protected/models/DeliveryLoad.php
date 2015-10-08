@@ -106,5 +106,17 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		return $trailerArray;
 	}
 	
+	public function removeAllLoads()
+	{
+		foreach($this->deliveryLoadBin as $deliveryLoadBin)	
+			{
+			$deliveryLoadBin->delete();
+			}
+		foreach($this->deliveryLoadTrailer as $deliveryLoadTrailer)
+			{
+			$deliveryLoadTrailer->delete();
+			}
+		$this->delete();
+	}
     
 }

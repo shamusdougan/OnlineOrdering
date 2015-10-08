@@ -633,8 +633,31 @@ class DeliveryController extends Controller
 			
 		}
     
-    
-    
+    /**
+	* 
+	* Function actionAjaxRemoveDeliveryLoad
+	* 
+	* 
+	*/
+    public function actionAjaxRemoveDeliveryLoad($truck_id, $delivery_id)
+    {
+    	$response_array['status'] = 'success';
+		if (($delivery = Delivery::findOne($delivery_id)) == null)
+		 	{
+	 	  	$response_array['status'] = 'error';  
+		 	}
+		
+		
+		foreach($delivery->deliveryLoad as $delivery_load)
+			{
+			if($delivery_load->truck_id == $truck_id)
+				{
+					$delivery_load->removeAllLoads();
+				}
+			}
+		
+		echo json_encode($response_array);;
+	}
     
     
     

@@ -162,6 +162,24 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 	{
 		
 		
+		truck_id = $(this).attr('truck_id');
+		delivery_id = $(this).attr('delivery_id');
+		
+		if(delivery_id != '')
+			{
+			$.ajax
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-remove-delivery-load")."',
+				data: {truck_id: truck_id, delivery_id: delivery_id},
+
+		        error: function (jqXHR, textStatus, errorThrown) 
+		        	{
+		            console.log('An error occured!');
+		            alert('Error in ajax request' );
+		        	}
+				});
+			}
+		
 		
 		$('#truck_allocate_' + $(this).attr('truck_id')).remove();
 		updateOrderRemaining();
