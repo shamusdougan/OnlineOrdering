@@ -73,9 +73,9 @@ class TrailerBins extends \yii\db\ActiveRecord
 				
 		//echo $usedTrailerBins->createCommand()->getRawSql();
 		$usedTrailerBins = array();
-		foreach($deliveryLoadBins as $deliveryLoad)
+		foreach($deliveryLoadBins as $deliveryLoadBin)
 			{
-			$usedTrailerBins[$deliveryLoad->trailerBin->id] = $deliveryLoad->delivery_load_id;
+			$usedTrailerBins[$deliveryLoadBin->trailer_bin_id] = $deliveryLoadBin;
 			}
 			
 	

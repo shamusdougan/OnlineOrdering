@@ -353,6 +353,29 @@ $this->registerJs("
 		});
 	");
  
+ 
+ 
+$this->registerJs("$(document).on('click', '.remove_trailer_link', function() 
+	{
+	delivery_id = $(this).attr('delivery_id');
+	trailer_id = $(this).attr('trailer_id');
+		
+	binsUsed = 0;
+	$('.trailer_cb_id_'+trailer_id).each(function() {
+    			if(this.value > 0)
+    				{
+					binsUsed = binsUsed + 1;	
+					}
+				});
+	if(binsUsed > 0)
+		{
+		alert('Please remove all existing orders from the trailer first');
+		}	
+	
+	
+ 	});
+ 	
+ ");
 ?>
 
 

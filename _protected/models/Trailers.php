@@ -73,8 +73,17 @@ class Trailers extends \yii\db\ActiveRecord
 		return $this->hasMany(TrailerBins::className(), ['trailer_id' => 'id'] );
 	}
     
-   
-    
+   	/**
+	   * Function: hasAllocatedBins
+	   * Description: returns trye/false depnding if any of the bins on this trailer have been used for anything.
+	   * 
+	   * 
+	   * @return
+	   */
+    public function hasAllocatedBins($requestedDate)
+    {
+		
+	}
     
     
     

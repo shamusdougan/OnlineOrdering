@@ -513,8 +513,7 @@ hr.article-devider {
 		background-size: 5px 100%;
 }
 
-
-.sap_trailer_used
+.remove_trailer_link:hover
 {
-	background-color: red;
+	cursor: pointer;
 }

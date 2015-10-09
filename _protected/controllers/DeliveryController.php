@@ -589,7 +589,7 @@ class DeliveryController extends Controller
     		$selected_trailers = json_decode($selected_trailers);
 			foreach($selected_trailers as $trailer_id)
 				{
-				$selectedTrailerObjects[] = Trailers::find()->where(['id' => $trailer_id])->one();
+				$selectedTrailerObjects[] = Trailers::findOne($trailer_id);
 				}
 
 
