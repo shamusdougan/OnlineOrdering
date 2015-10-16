@@ -51,7 +51,6 @@ namespace app\models;
 				elseif(array_key_exists($trailerBin->id, $usedTrailerBins))
 					{
 					$delivery_load_bin = $usedTrailerBins[$trailerBin->id];
-					$delivery = $delivery_load_bin->deliveryLoad->delivery;
 					echo "<div class='sap_trailer_used' style='background-color: grey; width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "<input type='hidden' class='trailer_cb_id_".$trailer->id."' value='1'>";
 					echo $trailerBin->BinNo."<br>";
