@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2015 at 04:21 PM
+-- Generation Time: Oct 19, 2015 at 10:52 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1835,8 +1835,8 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
 --
 
 INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
-(232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 2, 103, NULL, NULL, 100),
-(235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 2, 394, NULL, NULL, 100),
+(232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 69, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 4, 103, NULL, NULL, 100),
+(235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100),
 (237, 'ORD3237', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (238, 'ORD3238', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
@@ -1883,7 +1883,15 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `delivery_completed_on` date DEFAULT NULL,
   `order_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=71 ;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`) VALUES
+(69, 'DEL00069', NULL, NULL, 2, '2015-10-20', NULL, 232),
+(70, 'DEL00070', NULL, NULL, 11, '2015-10-20', NULL, 235);
 
 -- --------------------------------------------------------
 
@@ -1900,7 +1908,15 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=72 ;
+
+--
+-- Dumping data for table `delivery_load`
+--
+
+INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `trailer_id`, `delivery_on`, `delivery_completed_on`, `truck_id`) VALUES
+(70, 69, 2, 0, '2015-10-20', NULL, 92),
+(71, 70, 11, 0, '2015-10-20', NULL, 92);
 
 -- --------------------------------------------------------
 
@@ -1914,7 +1930,41 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=128 ;
+
+--
+-- Dumping data for table `delivery_load_bin`
+--
+
+INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
+(123, 70, 373, 2),
+(124, 71, 375, 4),
+(125, 71, 376, 3),
+(126, 71, 377, 3),
+(127, 71, 378, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery_load_trailer`
+--
+
+CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `delivery_load_id` int(10) NOT NULL,
+  `trailer_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+
+--
+-- Dumping data for table `delivery_load_trailer`
+--
+
+INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
+(47, 70, 3),
+(48, 70, 4),
+(49, 71, 3),
+(50, 71, 4);
 
 -- --------------------------------------------------------
 
@@ -1965,7 +2015,7 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (4, 'Sole Trader', 2, 'BUSINESS_TYPE', 2),
 (5, 'Pty Ltd', 3, 'BUSINESS_TYPE', 3),
 (6, 'Current', 1, 'CLIENT_STATUS', 1),
-(7, 'Swinger', 2, 'CLIENT_STATUS', 2),
+(7, 'Intermittant', 2, 'CLIENT_STATUS', 2),
 (8, 'Lost', 3, 'CLIENT_STATUS', 3),
 (9, 'Owned', 1, 'FARM_OPERATION', 1),
 (10, 'Lease', 2, 'FARM_OPERATION', 2),
@@ -3497,10 +3547,10 @@ INSERT INTO `trailer_bins` (`id`, `trailer_id`, `BinNo`, `MaxCapacity`, `Status`
 (377, 3, '5 (3T)', 3, 1),
 (378, 3, '6 (4T)', 4, 1),
 (379, 3, '7 (4T)', 4, 1),
-(380, 4, 'A1', 16, 1),
-(381, 4, 'B1', 8, 1),
-(382, 4, 'B2', 16, 1),
-(383, 4, 'B3', 4, 1),
+(380, 4, 'A1 (16T)', 16, 1),
+(381, 4, 'B1 (8T)', 8, 1),
+(382, 4, 'B2 (16T)', 16, 1),
+(383, 4, 'B3 (4T)', 4, 1),
 (384, 5, '1 (4T)', 4, 1),
 (385, 5, '2 (4T)', 4, 1),
 (386, 5, '3 (4T)', 4, 1),
