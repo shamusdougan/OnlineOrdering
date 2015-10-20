@@ -94,7 +94,15 @@ function updateOrderRemaining()
 	
 }
 
-
+function clearBinSelection()
+{
+	$('.trailer_bin_checkbox').each(function() {
+		$(this).attr('checked', false);
+		$(this).attr('value', 0);
+		$(this).parent().attr('class', 'sap_trailer_empty');
+		});
+	updateOrderRemaining();
+}
 
 
 ");
@@ -269,7 +277,7 @@ $this->registerJs("$(document).on('click', '.trailer_bin_checkbox', function()
 		capacity = parseFloat($(this).attr('capacity'));
 		fillMethod = $('#fill_method').val();
 
-		if(fillMethod == 0)
+		if(fillMethod == 'fill_on_selection')
 			{
 				
 			
@@ -284,12 +292,23 @@ $this->registerJs("$(document).on('click', '.trailer_bin_checkbox', function()
 					$(this).attr('value', capacity);
 					$(this).parent().attr('class', 'sap_trailer_full');
 					}
+				updateOrderRemaining();
 				}
 			else{
 				$(this).attr('value', 0);
 				$(this).parent().attr('class', 'sap_trailer_empty');
+				updateOrderRemaining();
 				}
-				
+			}
+			
+		if(fillMethod == 'select_first')
+			{
+			if(this.checked == false)
+				{
+				$(this).attr('value', 0);
+				$(this).parent().attr('class', 'sap_trailer_empty');
+				updateOrderRemaining();	
+				}
 			}
 		});
 		
@@ -308,7 +327,7 @@ $this->registerJs("$(document).on('click', '.trailer_bin_select_all', function()
 			fillMethod = $('#fill_method').val();
 			
 			//Fill bin on selection - select the bins from left to right until the entire order has been allocated
-			if(fillMethod == 0)
+			if(fillMethod == 'fill_on_selection')
 				{
 				remainingQty = parseFloat($('#remaining_tonnes').html());
 				$('.trailer_cb_id_'+trailer_id).each(function() {
@@ -343,13 +362,15 @@ $this->registerJs("$(document).on('click', '.trailer_bin_select_all', function()
 				
 				
 			//Select the bins first then allocate the load eveningly across the bins
-			else if(fillMethod == 1)
+			else if(fillMethod == 'select_first')
 				{
-				
-				
-				
-				
-				
+				$('.trailer_cb_id_'+trailer_id).each(function() 
+					{
+					if($(this).is(':disabled') == false)
+						{
+						this.checked = true;		
+						}
+					});
 				}
 			
 		}
@@ -388,7 +409,17 @@ $this->registerJs("$(document).on('click', '.trailer_bin_select_all', function()
 
 $this->registerJs("$('#fill_method').on('change', function()
 		{
-		alert('change');
+		if(this.value == 'fill_on_selection')
+			{
+			$('#fill_selected_bins').hide();
+			clearBinSelection();
+			}
+		else if(this.value == 'select_first')
+			{
+			$('#fill_selected_bins').show();
+			clearBinSelection();
+			}
+		
 		});
 	");
 
@@ -398,14 +429,44 @@ $this->registerJs("$('#fill_method').on('change', function()
 $this->registerJs("$(document).on('click', '#fill_selected_bins', function(event) 
 		{
 			event.preventDefault(); 
-			$('.trailer_bin_checkbox').each(function() 
-				{
-				capacity = parseFloat($(this).attr('capacity'));
-				alert(capacity);
-				
+			
+			//Get the order amount in the order
+			orderQty = parseFloat($('#orderdetails-orderQTY').val());
+			
+			//go through each of the checkboxes and check how much has been allocated, need to make sure that
+			// there is enough room for the order. If there is more room then needed then it will spread the order out across
+			// all of the selected bins.	
+			selectedBinCapacity = 0;		
+			$('.trailer_bin_checkbox').each(function() {
+    			if(this.checked)
+    				{
+					selectedBinCapacity = selectedBinCapacity + parseFloat($(this).attr('capacity'));
+					}
 				});
 			
-			alert('filling webins');
+			//check to see enough bins have been selected
+			if (selectedBinCapacity < orderQty)
+				{
+				alert('Not enough bins selected for Order, only enough bins selected for ' + selectedBinCapacity + ' tonnes');
+				}
+			else
+				{
+					
+				//work out the percentage of each bin
+				fillPercent = 	orderQty/selectedBinCapacity;
+				$('.trailer_bin_checkbox').each(function() {
+	    			if(this.checked)
+	    				{
+	    				binCapacity = $(this).attr('capacity');
+						$(this).attr('value', fillPercent * binCapacity);
+						$(this).parent().attr('class', 'sap_trailer_partial');
+						}
+					});	
+					
+				updateOrderRemaining();		
+				}
+			
+			
 		});
 
 
@@ -577,10 +638,10 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 	<div style='width: 100%; border: 1px solid; height: 30px; padding-left: 10px; padding-top: 2px;'>
 		Select Fill Method 
 		<select id='fill_method'>
-			<option value='0'>Fill Bin On Selection</option>
-			<option value='1'>Select Bins First then Allocate</option>
+			<option value='fill_on_selection'>Fill Bin On Selection</option>
+			<option value='select_first'>Select Bins First then Allocate</option>
 		</select>
-		<button id='fill_selected_bins' >Fill</button>
+		<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
 	</div>
 
 	
