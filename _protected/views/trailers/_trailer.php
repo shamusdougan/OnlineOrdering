@@ -2,7 +2,7 @@
 namespace app\models;
 
 ?>
-<div style='width: 350px; margin-right: 30px; float:left;'>
+<div style='width: 400px; margin-right: 30px; float:left;'>
 	<div style='width: 100%'>
 		Trailer: <b><?= $trailer->Registration ?> 
 		
@@ -44,7 +44,7 @@ namespace app\models;
 						
 						
 					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
-					echo $trailerBin->BinNo."<br>";						
+					echo "Bin: ".$trailerBin->BinNo."<br>";						
 					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' />";		
 					}
 					
@@ -53,14 +53,14 @@ namespace app\models;
 					$delivery_load_bin = $usedTrailerBins[$trailerBin->id];
 					echo "<div class='sap_trailer_used' style='background-color: grey; width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "<input type='hidden' class='trailer_cb_id_".$trailer->id."' value='1'>";
-					echo $trailerBin->BinNo."<br>";
+					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity.")";
 					}
 				
 					
 				//Trailer bin hasn't been used in this delivery or any other delviery.
 				else{
 					echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
-					echo $trailerBin->BinNo."<br>";
+					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity.")";
 					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
 					}
 				

@@ -71,7 +71,7 @@ function updateOrderRemaining()
 					}
 				});
 				
-	remainingQty = 	orderQty - allocatedQty;
+	remainingQty = 	Math.round(orderQty - allocatedQty);
 	$('#remaining_tonnes').html(remainingQty);
 	
 	
