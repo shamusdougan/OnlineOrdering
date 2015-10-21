@@ -119,4 +119,56 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		$this->delete();
 	}
     
+    
+    /**
+	* 
+	* @param undefined $trailer_id
+	* 
+	* @description: removes any trailers from the load that match the given trailer id. return false if there is an error
+	*/
+    public function removeTrailer($trailer_id)
+    {
+		
+		//look through the list of trailer assigned to this delivery, if there are any matches then remove the deliveryLoadTrailer
+		foreach($this->deliveryLoadTrailer as $deliveryLoadTrailer)
+		{
+			if($deliveryLoadTrailer->trailer_id == $trailer_id)
+			{
+			//Check first that there arnt any assigned bins to this trailer on that date, if there are return false
+			foreach($this->deliveryLoadBin as $deliveryLoadBin)
+				{
+				if($deliveryLoadBin->trailerBin->trailer_id == $trailer_id)
+					{
+					return false;
+					}
+				}
+			$deliveryLoadTrailer->delete()	;
+			}
+		}
+		return true;		
+		
+		
+			
+		
+	
+	}
+    
+    
+    
+    
+    /**
+	* 
+	* @param undefined $requestedDate
+	* 
+	* @return the list of delivery loads on the specified date
+	*/
+    public function getAllDeliveryLoadsOn($requestedDate)
+    {
+		$deliveryLoads = DeliveryLoad::find()
+			->where(['delivery_on' => date("Y-m-d", $requestedDate )])
+			->all();
+		
+		return $deliveryLoads;
+	}
+    
 }

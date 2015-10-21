@@ -578,7 +578,7 @@ class DeliveryController extends Controller
     public function actionAjaxUpdateDeliveryLoad($truck_id, $selected_trailers, $requestedDate)
     	{
     		
-    		
+    		$requestedDate = strtotime($requestedDate);
     		$truck = Trucks::findOne($truck_id);
 			if($truck === null)
 				{
@@ -603,7 +603,78 @@ class DeliveryController extends Controller
 								]);		
 		}
     
+    /**
+	* 
+	* @param undefined $truck_id
+	* @param undefined $selected_trailers
+	* @param undefined $requestedDate
+	* 
+	* @return
+	*/
+     public function actionAjaxRemoveTrailer($truck_id, $trailer_id, $delivery_id)
+    	{
+    		
+    		$delivery = Delivery::findOne($delivery_id);
+    		$truck = Trucks::findOne($truck_id);
+			if($truck === null)
+				{
+				return "Unable to locate Required Truck";
+				}
+    		$selectedTrailerObjects = array();
+    		
+    		
+    		//remove the trailer bins from this order first 
+    		$delivery->removeLoadFromTrailer($trailer_id);
+    		
+    		
+    		//need to check to make sure that no other dleiveries have bin on this trailer/tuck,
+    		$deliveryLoads = DeliveryLoad::getAllDeliveryLoadsOn($delivery->getPhpDeliveryOnDate());
+    		foreach($deliveryLoads as $deliveryLoad)
+    			{
+				$result = $deliveryLoad->removeTrailer($trailer_id);
+				if(!$result)
+					{
+					die("unable to delete trailer found a load attached to it");
+					}
+				}
+
+			//check to see if any of the trailerbins are already being used on the requested date
+			$usedTrailerBins = TrailerBins::getUsedBins($delivery->getPhpDeliveryOnDate())	;
+				
+			return $this->renderPartial("/trucks/_allocationInner", [
+								'truck' => $truck,
+								'selectedTrailers' => $selectedTrailerObjects,
+								'usedTrailerBins' => $usedTrailerBins,
+								]);		
+		}
     
+    
+    /**
+	* 
+	* @param undefined $requested_date
+	* @param undefined $currentlySelectedTrailers -> array of trailer_ids
+	* @param undefined $truck_id
+	* 
+	* @return
+	*/
+    public function actionAjaxAddTrailers($requested_date, $selected_trailers, $truck_id)
+    {
+		
+		
+		
+		$trailerList = Trailers::getAllActiveTrailers();
+		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
+		$trailersSelectedOnForm = explode(",", $selected_trailers);
+		
+		return $this->renderPartial("/trailers/_trailerList", [
+			'trailerList' => $trailerList,
+			'trailersUsed' => $trailersUsed,
+			'selected_trailers' => $trailersSelectedOnForm,
+			'truck_id' => $truck_id,
+			]);
+		
+		
+	}
     
     
     

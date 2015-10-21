@@ -30,6 +30,12 @@ if(!isset($truckList)){ $truckList = array();}
 * 
 */
 
+//Used to initalize the tooltips in the form
+$this->registerJs("$(function () { 
+    $(\"[data-toggle='tooltip']\").tooltip(); 
+	});
+");
+
 $this->registerJs("
 
 function updateOrderDetails()
@@ -105,7 +111,69 @@ function clearBinSelection()
 }
 
 
+
+function clearAllTrucksTrailers()
+{
+	$('.truck_allocation_section').each(function ()
+		{
+		this.remove();
+		updateSelectedTrailersInput();
+		updateOrderRemaining();
+		});
+}
+
+function updateSelectedTrailersInput()
+{
+	var selectedTrailers = new Array();
+	$('.remove_trailer_link').each(function() 
+		{
+		selectedTrailers.push($(this).attr('trailer_id'));
+		});
+	$('#selected_trailers').val(selectedTrailers.join(',')) ;
+}
+
+
+function updateTrailerAddLink()
+{
+	
+	//Go through and check each deliveryload area to see if more then 2 trucks have been added
+	var truckList = new Array();
+	$('.remove_trailer_link').each(function() 
+		{
+		truck_id = $(this).attr('truck_id');
+		if(truck_id in truckList)
+			{
+			truckList[truck_id] = truckList[truck_id] + 1;
+			}
+		else {
+			truckList[truck_id] = 1;
+			}
+		});
+		
+	//if there are more then 2 trailers assigned disable the link
+	$('.trailer_add_link_id').each(function()
+		{
+		truck_id = $(this).attr('truck_id');
+		if(truckList[truck_id] >= 2)
+			{
+			$(this).text('Maximum Trailers');
+			$(this).attr('class', 'trailer_add_link_id');
+			}
+		else{
+			$(this).text('Add Trailer(s)');
+			$(this).attr('class', 'trailer_add_link trailer_add_link_id');
+			}
+		});
+
+		
+		
+}
+
 ");
+
+
+
+
 
 
 /**
@@ -152,6 +220,8 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 				success: function (data, textStatus, jqXHR) 
 					{
 					$('#truck_display_start').append(data);
+					updateSelectedTrailersInput();
+					updateTrailerAddLink();
 					},
 		        error: function (jqXHR, textStatus, errorThrown) 
 		        	{
@@ -159,6 +229,10 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 		            alert('Error in ajax request' );
 		        	}
 				});
+				
+			
+				
+				
 			}
 		
 		
@@ -190,6 +264,7 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 		
 		
 		$('#truck_allocate_' + $(this).attr('truck_id')).remove();
+		updateSelectedTrailersInput();
 		updateOrderRemaining();
 		
 
@@ -199,26 +274,19 @@ $this->registerJs("$('#add_truck_button').click(function(event)
  
  
  
-$this->registerJs("$(document).on('click', '.trailer_select_link', function() 
+$this->registerJs("$(document).on('click', '.trailer_add_link', function() 
 	{
 		
 	//This will list the currently selected trailers for this truck
-	selected_trailers = $(this).attr('selected_trailers');
-	
-	//This will list all of the selected trailers for this entire order
-	all_trailers = '';
-	$('.trailer_select_link').each(function(){
-		all_trailers += ',' + ($(this).attr('selected_trailers'));
-		});
-		
+	selected_trailers = $('#selected_trailers').val();
 	requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 	truck_id = $(this).attr('truck_id');
 	
 	
 	$.ajax
   		({
-  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-		data: {requested_date: requestedDate, selected_trailers: selected_trailers, truck_id: truck_id, all_trailers: all_trailers},
+  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-trailers")."',
+		data: {requested_date: requestedDate, selected_trailers: selected_trailers, truck_id: truck_id},
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('#trailer-select-modal').modal();
@@ -230,33 +298,34 @@ $this->registerJs("$(document).on('click', '.trailer_select_link', function()
             alert('Error in ajax request' );
         	}
 		});
+	
+	
 	});
 ");
  
  
  
-$this->registerJs("$(document).on('click', '.select_trailers_button', function() 
+$this->registerJs("$(document).on('click', '.add_trailer_button', function() 
 	{
 		truck_id = $(this).attr('truck_id');
-		selected_trailers  = [];
-		$('.trailer_select_' + truck_id).each(function() {
-    			if(this.checked)
-    				{
-					selected_trailers.push($(this).val());
-					}
-				});
 		
-		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
+		
+	
+		
+		
+		selected_trailers = ($('#add_trailer_select').val());
+		
 		
 		$.ajax
 	  		({
-	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-update-delivery-load")."',
-			data: {truck_id: truck_id, selected_trailers: JSON.stringify(selected_trailers), requestedDate: requestedDate},
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-append-trailer")."',
+			data: {truck_id: addto_truck_id, selected_trailers: JSON.stringify(selected_trailers), requestedDate: requestedDate, delivery_id: delivery_id},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#truck_allocate_' + truck_id).html(data);
 				$('#trailer-select-modal').modal('hide');
 				updateOrderRemaining();	
+				updateSelectedTrailersInput();
 				},
 	        error: function (jqXHR, textStatus, errorThrown) 
 	        	{
@@ -486,6 +555,7 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 	{
 	delivery_id = $(this).attr('delivery_id');
 	trailer_id = $(this).attr('trailer_id');
+	truck_id = $(this).attr('truck_id');
 		
 	binsUsed = 0;
 	$('.trailer_cb_id_'+trailer_id).each(function() {
@@ -498,7 +568,39 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 		{
 		alert('Please remove all existing orders from the trailer first');
 		}	
-	
+	else{
+		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
+		
+		//Need to check if this is a delivery that has already been saved.
+		//if the delivery_id is blank then this is a new order and the trailer can simply be removed from the interface
+		if(delivery_id == '')
+			{
+			$('.trailer_display_' + trailer_id).remove();	
+			updateSelectedTrailersInput();
+			updateTrailerAddLink();
+			}
+		else{
+			
+		
+		
+			$.ajax
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-remove-trailer")."',
+				data: {truck_id: truck_id, trailer_id: trailer_id, delivery_id: delivery_id},
+				success: function (data, textStatus, jqXHR) 
+					{
+					$('#truck_allocate_' + truck_id).html(data);
+					updateSelectedTrailersInput();
+					updateTrailerAddLink();
+					},
+		        error: function (jqXHR, textStatus, errorThrown) 
+		        	{
+		            console.log('An error occured!');
+		            alert('Error in ajax request' );
+		        	}
+				});
+			}
+		}
 	
  	});
  	
@@ -596,7 +698,14 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 								'autoclose' => true,
 								'todayHighlight' => true,
 								'startDate' => date("d M Y"),
+								],
+							'pluginEvents' =>
+								[
+								'changeDate' => "function(e) { clearAllTrucksTrailers(); }",
+								
+								
 								]
+								
 							]
 						]);
     			?>
@@ -644,7 +753,7 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 		<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
 	</div>
 
-	
+	<input type='text' id='selected_trailers' value='<?= $model->getTrailersUsedArrayString() ?>'>
 	
 	<div id='truck_display'>
 		<div id='truck_display_start'>
@@ -665,8 +774,7 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 			
 		</div>
 	</div>
-	
-	
+
 	
     <?php ActiveForm::end(); ?>
 

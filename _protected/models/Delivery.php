@@ -97,10 +97,57 @@ class Delivery extends \yii\db\ActiveRecord
 			$deliveryLoad->removeAllLoads();
 			}
 	}
+	/**
+	* 
+	* @param undefined $trailer_id
+	* 
+	* @return
+	*/	
+	public function removeLoadFromTrailer($trailer_id)
+	{
+		foreach($this->deliveryLoad as $deliveryLoad)
+			{
+			foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBin)	
+				{
+				if($deliveryLoadBin->trailerBin->trailer_id == $trailer_id)
+					{
+					$deliveryLoadBin->delete();
+					}		
+				}
+			}
+	}
 		
 		
 	public function generateName($index)
 	{
 		return "DEL".str_pad($index, 5, "0", STR_PAD_LEFT);
 	}
+	
+	public function getPhpDeliveryOnDate()
+	{
+		return strtotime($this->delivery_on);
+	}
+	
+	
+	/**
+	* 
+	* 
+	* @returns an array of trailer id that have been used in this delivery so far
+	*/
+	public function getTrailersUsedArrayString()
+	{
+		$trailers = array();
+		foreach($this->deliveryLoad as $deliveryLoad)
+			{
+			foreach($deliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailer)
+				{
+				$trailers[] = $deliveryLoadTrailer->trailer_id;
+				}
+			}
+		
+		return implode(",", $trailers);
+		
+	}
+	
+	
 }

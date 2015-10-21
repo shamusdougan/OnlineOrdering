@@ -513,7 +513,8 @@ hr.article-devider {
 		background-size: 5px 100%;
 }
 
-.remove_trailer_link:hover
+.remove_trailer_link:hover, .trailer_add_link:hover
 {
 	cursor: pointer;
 }
+
