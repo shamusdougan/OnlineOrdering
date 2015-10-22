@@ -24,7 +24,7 @@ if(!isset($delivery)){ $delivery = null;};
 			<img src='../../images/truck_outline.png' height='150px'><br>			
 			
 		</div>
-		
+		<div id='trailer_start_<?= $truck->id?>'>
 		<? 
 	
 		foreach($selectedTrailers as $trailer)
@@ -38,7 +38,7 @@ if(!isset($delivery)){ $delivery = null;};
 				]);
 			}
 		?>
-		
+		</div>
 		
 	</div>	
 		

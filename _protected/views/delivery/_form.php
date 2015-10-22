@@ -308,21 +308,16 @@ $this->registerJs("$(document).on('click', '.trailer_add_link', function()
 $this->registerJs("$(document).on('click', '.add_trailer_button', function() 
 	{
 		truck_id = $(this).attr('truck_id');
-		
-		
-	
-		
-		
-		selected_trailers = ($('#add_trailer_select').val());
-		
+		selected_trailer_id = ($('#add_trailer_select').val());
+		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 		
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-append-trailer")."',
-			data: {truck_id: addto_truck_id, selected_trailers: JSON.stringify(selected_trailers), requestedDate: requestedDate, delivery_id: delivery_id},
+			data: {truck_id: truck_id, selected_trailer_id: selected_trailer_id, requested_date: requestedDate},
 			success: function (data, textStatus, jqXHR) 
 				{
-				$('#truck_allocate_' + truck_id).html(data);
+				$('#trailer_start_' + truck_id).append(data);
 				$('#trailer-select-modal').modal('hide');
 				updateOrderRemaining();	
 				updateSelectedTrailersInput();
@@ -333,6 +328,10 @@ $this->registerJs("$(document).on('click', '.add_trailer_button', function()
 	            alert('Error in ajax request' );
 	        	}
 			});
+		
+		
+		
+	
 		
 		
 		
@@ -753,7 +752,7 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 		<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
 	</div>
 
-	<input type='text' id='selected_trailers' value='<?= $model->getTrailersUsedArrayString() ?>'>
+	<input type='hidden' id='selected_trailers' value='<?= $model->getTrailersUsedArrayString() ?>'>
 	
 	<div id='truck_display'>
 		<div id='truck_display_start'>

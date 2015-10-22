@@ -26,13 +26,47 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'export' => false,
         'columns' => [
-        	'Name',
-            'delivery_on',
+        	[
+    		'attribute' => 'Name',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return html::a($data->Name, "/delivery/update?id=".$data->id);
+				},
+    		],
+    		[
+    		'attribute' => 'customerOrder.Requested_Delivery_by',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return date("D - d M Y", strtotime($data->customerOrder->Requested_Delivery_by));
+				},
+    		],
+    		
             'customerOrder.Name',
-            'customerOrder.Requested_Delivery_by',
+           
             'customerOrder.Qty_Tonnes',
-            'delivery_qty',
-             [
+            [
+    		'attribute' => 'delivery_on',
+    		'label' => 'Delivery Scheduled On',
+    		'filterType'=> GridView::FILTER_DATE_RANGE,
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return date("D - d M Y", strtotime($data->delivery_on));
+				},
+    		],
+    		[
+    		'attribute' => 'delivery_qty',
+    		'label' => 'Qty Unallocated',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return ($data->customerOrder->Qty_Tonnes - $data->delivery_qty);
+				},
+    		],
+            
+            [
 				'class' => 'kartik\grid\ActionColumn',
 				'template' => '{update} {delete}',
 			],

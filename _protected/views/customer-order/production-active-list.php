@@ -42,8 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
   			'class' => '\kartik\grid\CheckboxColumn',
 			],
-
-            'Order_ID',
+			[
+    		'attribute' => 'Order_ID',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return html::a($data->Order_ID, "/customer-order/update-production-active?id=".$data->id);
+				},
+    		],
             [
             'attribute' => 'client.Company_Name',
             'label' => "Customer",
@@ -52,6 +58,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
             'attribute' => 'Qty_Tonnes',
             'hAlign'=>'right', 
+			],
+			[
+			'attribute' => 'Requested_Delivery_by',
+			'label' => 'Requested By Date',
+			'value' => function($data)
+            	{
+					return date("D - d M Y", strtotime($data->Requested_Delivery_by));
+				},
 			],
 			[
 			'attribute' => 'createdByUser.fullname',

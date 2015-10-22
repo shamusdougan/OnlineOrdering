@@ -128,6 +128,19 @@ class Delivery extends \yii\db\ActiveRecord
 		return strtotime($this->delivery_on);
 	}
 	
+	/**
+	* Recalculates the qty allocated in the delivery. Goes through and calculates the overall qty from each of the DeliveryLoads
+	* 
+	* @return
+	*/
+	public function updateDeliveryQty()
+	{
+	$this->delivery_qty = 0;
+	foreach($this->deliveryLoad as $deliveryLoad)
+		{
+		$this->delivery_qty += $deliveryLoad->load_qty;
+		}
+	}
 	
 	/**
 	* 

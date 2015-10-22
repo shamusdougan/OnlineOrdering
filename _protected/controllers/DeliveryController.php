@@ -290,7 +290,7 @@ class DeliveryController extends Controller
     	$loadOutArray = Yii::$app->request->post("truck_load");
     	if($loadOutArray === null)
     		{
-				$loadOutArray = array();
+			$loadOutArray = array();
 			}
     	
     	
@@ -315,7 +315,7 @@ class DeliveryController extends Controller
     		//The selected trailers array should look like trailers[truck_id][trailer_id]
     		if(($trailersSelected = Yii::$app->request->post("trailer")) === null)
 				{
-					$trailersSelected = array();
+				$trailersSelected = array();
 				}
 				
 
@@ -361,14 +361,12 @@ class DeliveryController extends Controller
 	        		$deliveryLoad->save();
 					}
 					
-				$model->delivery_qty += $deliveryLoad->load_qty;
+				
 				}
 			}
-    	$model->save();
+			$model->updateDeliveryQty();
+    		$model->save();
     	
-    		
-        		
-        	
         	//Once save, either stay on the page or exit. Controlled via the actiob buttons
         	$get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
@@ -676,7 +674,19 @@ class DeliveryController extends Controller
 		
 	}
     
-    
+    public function actionAjaxAppendTrailer($truck_id, $selected_trailer_id, $requested_date)
+    {
+		
+		$usedTrailerBins = TrailerBins::getUsedBins(strtotime($requested_date));
+		$trailer = Trailers::findOne($selected_trailer_id);
+		return $this->renderPartial("/trailers/_trailer", [
+			'trailer' => $trailer,
+			'truck_id' => $truck_id,
+			'usedTrailerBins' => $usedTrailerBins,
+			'delivery' => null,
+			]);
+		
+	}
     
     /**
 	* 
