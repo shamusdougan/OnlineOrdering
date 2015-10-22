@@ -18,7 +18,7 @@ use yii\helpers\Html;
 			<?= $trailer->Auger ? "Auger<br>" : "" ?>
 			<?= $trailer->Blower ? "Blower<br>" : "" ?>
 			<?= $trailer->Tipper ? "Tipper<br>" : "" ?>
-			Select All <input class='trailer_bin_select_all' trailer_id='<?= $trailer->id ?>' type='checkbox'>
+			Select All <input id='trailer_bin_select_all_<?= $trailer->id ?>' class='trailer_bin_select_all' trailer_id='<?= $trailer->id ?>' type='checkbox'>
 		
 		</div>
 		<div style='width: 75%; height: 100%; float: left'>
@@ -46,7 +46,7 @@ use yii\helpers\Html;
 						
 					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";					
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' />";		
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='".$binLoad."' checked type='checkbox' />";		
 					echo "</div>";
 					}
 					
@@ -71,7 +71,7 @@ use yii\helpers\Html;
 				else{
 					echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$truck_id."][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
 					echo "</div>";
 					}
 				

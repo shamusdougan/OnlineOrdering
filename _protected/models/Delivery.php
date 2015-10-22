@@ -16,6 +16,13 @@ use Yii;
  */
 class Delivery extends \yii\db\ActiveRecord
 {
+	
+	const STATUS_INPROGRESS = 1;
+	const STATUS_LOADED = 2;
+	const STATUS_COMPLETED = 3;
+	
+	
+	
     /**
      * @inheritdoc
      */
@@ -31,7 +38,7 @@ class Delivery extends \yii\db\ActiveRecord
     {
         return [
             [['delivery_qty', 'order_id'], 'number'],
-            [['delivery_on', 'delivery_completed_on'], 'safe'],
+            [['delivery_on', 'delivery_completed_on', 'status'], 'safe'],
             [['weigh_bridge_ticket', 'weighed_by'], 'string', 'max' => 100]
         ];
     }
@@ -138,8 +145,10 @@ class Delivery extends \yii\db\ActiveRecord
 	$this->delivery_qty = 0;
 	foreach($this->deliveryLoad as $deliveryLoad)
 		{
-		$this->delivery_qty += $deliveryLoad->load_qty;
+		$this->delivery_qty += $deliveryLoad->getLoadTotal();
 		}
+		
+	
 	}
 	
 	/**

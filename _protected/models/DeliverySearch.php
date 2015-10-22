@@ -19,7 +19,7 @@ class DeliverySearch extends Delivery
     {
         return [
             [['id'], 'integer'],
-            [['weigh_bridge_ticket', 'weighed_by', 'delivery_on', 'delivery_completed_on'], 'safe'],
+            [['weigh_bridge_ticket', 'weighed_by', 'delivery_on', 'delivery_completed_on', 'status'], 'safe'],
             [['delivery_qty'], 'number'],
         ];
     }
@@ -56,11 +56,20 @@ class DeliverySearch extends Delivery
             return $dataProvider;
         }
 
+
+		//change the filter date tot the correct format fort he SQL execution statement
+		$filterDeliveryOnDate = "";
+		if($this->delivery_on != "")
+			{
+			$filterDeliveryOnDate = date("Y-m-d", strtotime($this->delivery_on));
+			}
+
         $query->andFilterWhere([
             'id' => $this->id,
             'delivery_qty' => $this->delivery_qty,
-            'delivery_on' => $this->delivery_on,
+            'delivery_on' => $filterDeliveryOnDate,
             'delivery_completed_on' => $this->delivery_completed_on,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'weigh_bridge_ticket', $this->weigh_bridge_ticket])

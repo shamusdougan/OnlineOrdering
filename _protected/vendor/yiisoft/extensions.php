@@ -345,4 +345,13 @@ return array (
       '@kartik/datecontrol' => $vendorDir . '/kartik-v/yii2-datecontrol',
     ),
   ),
+  'kartik-v/yii2-date-range' => 
+  array (
+    'name' => 'kartik-v/yii2-date-range',
+    'version' => '1.6.4.0',
+    'alias' => 
+    array (
+      '@kartik/daterange' => $vendorDir . '/kartik-v/yii2-date-range',
+    ),
+  ),
 );

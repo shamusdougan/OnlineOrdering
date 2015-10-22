@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2015 at 04:34 PM
+-- Generation Time: Oct 22, 2015 at 04:29 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1828,7 +1828,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=239 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=240 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -1838,7 +1838,8 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 69, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 4, 103, NULL, NULL, 100),
 (235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100),
 (237, 'ORD3237', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(238, 'ORD3238', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(238, 'ORD3238', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 71, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 3, 1018, NULL, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -1855,7 +1856,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=128 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=129 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1865,7 +1866,8 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (124, '2015-09-02', 2, '100', NULL, NULL, 230),
 (125, '2015-09-02', 12, '100', NULL, NULL, 232),
 (126, '2015-09-02', 71, '100', NULL, NULL, 234),
-(127, '2015-09-02', 12, '100', NULL, NULL, 235);
+(127, '2015-09-02', 12, '100', NULL, NULL, 235),
+(128, '2015-10-22', 54, '100', NULL, NULL, 239);
 
 -- --------------------------------------------------------
 
@@ -1882,16 +1884,18 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `delivery_on` date DEFAULT NULL,
   `delivery_completed_on` date DEFAULT NULL,
   `order_id` int(10) NOT NULL,
+  `status` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=71 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=72 ;
 
 --
 -- Dumping data for table `delivery`
 --
 
-INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`) VALUES
-(69, 'DEL00069', NULL, NULL, 2, '2015-10-22', NULL, 232),
-(70, 'DEL00070', NULL, NULL, 11, '2015-10-20', NULL, 235);
+INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`) VALUES
+(69, 'DEL00069', NULL, NULL, 2, '2015-10-22', NULL, 232, 1),
+(70, 'DEL00070', NULL, NULL, 11, '2015-10-22', NULL, 235, 1),
+(71, 'DEL00071', NULL, NULL, 55, '2015-10-23', NULL, 239, 1);
 
 -- --------------------------------------------------------
 
@@ -1908,14 +1912,16 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
 
 --
 -- Dumping data for table `delivery_load`
 --
 
 INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `trailer_id`, `delivery_on`, `delivery_completed_on`, `truck_id`) VALUES
-(73, 70, 11, 0, '2015-10-20', NULL, 92);
+(76, 69, 2, 0, '2015-10-22', NULL, 92),
+(82, 70, 11, 0, '2015-10-22', NULL, 92),
+(99, 71, 0, 0, '2015-10-23', NULL, 92);
 
 -- --------------------------------------------------------
 
@@ -1929,17 +1935,25 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=133 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=269 ;
 
 --
 -- Dumping data for table `delivery_load_bin`
 --
 
 INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
-(129, 73, 373, 3),
-(130, 73, 374, 3),
-(131, 73, 375, 4),
-(132, 73, 376, 1);
+(140, 76, 373, 2),
+(161, 82, 374, 3),
+(162, 82, 377, 3),
+(163, 82, 378, 1),
+(164, 82, 450, 4),
+(262, 99, 373, 3),
+(263, 99, 374, 3),
+(264, 99, 375, 4),
+(265, 99, 376, 1),
+(266, 99, 380, 16),
+(267, 99, 381, 8),
+(268, 99, 382, 16);
 
 -- --------------------------------------------------------
 
@@ -1952,14 +1966,19 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=105 ;
 
 --
 -- Dumping data for table `delivery_load_trailer`
 --
 
 INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
-(52, 73, 3);
+(57, 76, 3),
+(58, 76, 16),
+(69, 82, 3),
+(70, 82, 16),
+(103, 99, 3),
+(104, 99, 4);
 
 -- --------------------------------------------------------
 
@@ -1997,7 +2016,7 @@ CREATE TABLE IF NOT EXISTS `lookup` (
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `lookup`
@@ -2041,7 +2060,11 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (35, 'Active', 1, 'ORDER_STATUS', 1),
 (36, 'Submitted', 2, 'ORDER_STATUS', 2),
 (37, 'In Production', 3, 'ORDER_STATUS', 3),
-(38, 'Delivery Created', 4, 'ORDER_STATUS', 4);
+(38, 'Dispatched', 4, 'ORDER_STATUS', 4),
+(39, 'IN_PROGRESS', 1, 'DELIVERY_STATUS', 1),
+(40, 'LOADED', 2, 'DELIVERY_STATUS', 2),
+(41, 'COMPLETED', 3, 'DELIVERY_STATUS', 3),
+(42, 'Completed', 5, 'ORDER_STATUS', 5);
 
 -- --------------------------------------------------------
 

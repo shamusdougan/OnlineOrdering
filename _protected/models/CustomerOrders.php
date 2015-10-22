@@ -74,8 +74,9 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	const PLACEHOLDERID = 666;
 	const STATUS_ACTIVE = 1;
 	const STATUS_SUBMITTED = 2;
-	const STATUS_PROCESSING = 3;
-	const STATUS_DELIVERY = 4;
+	const STATUS_INPRODUCTION = 3;
+	const STATUS_DISPATCHED = 4;
+	const STATUS_COMPLETED = 4;
 	
     /**
      * @inheritdoc
@@ -305,7 +306,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	public function setStatusDelivery($deliveryID)
 	{
 		$this->Delivery_id = $deliveryID;
-		$this->Status = CustomerOrders::STATUS_DELIVERY;
+		$this->Status = CustomerOrders::STATUS_INPRODUCTION;
 		$this->save();
 	}
 	

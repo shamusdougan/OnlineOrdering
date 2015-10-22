@@ -81,7 +81,7 @@ function updateOrderRemaining()
 	$('#remaining_tonnes').html(remainingQty);
 	
 	
-	
+	//if there is no more to allocate to the trailers then disable all the remaining checkboxes
 	if(remainingQty <= 0)
 		{
 		$('.trailer_bin_checkbox').each(function() {
@@ -89,8 +89,16 @@ function updateOrderRemaining()
 				{
 				$(this).attr('disabled', true);
 				}
+				
+			//make sure the select all is ticketed if there are any bins ticketed
+			else{
+				trailer_id = $(this).attr('trailer_id');
+				$('#trailer_bin_select_all_' + trailer_id).attr('checked', true);
+				}
 			});
 		}
+		
+	//If there is an ammount to allocate make sure that the other checkboxes can be used
 	else{
 		$('.trailer_bin_checkbox').each(function() {
 			$(this).removeAttr('disabled');
@@ -426,6 +434,7 @@ $this->registerJs("$(document).on('click', '.trailer_bin_select_all', function()
 							}
 						}
 					});
+				updateOrderRemaining();
 				}
 				
 				
@@ -439,6 +448,7 @@ $this->registerJs("$(document).on('click', '.trailer_bin_select_all', function()
 						this.checked = true;		
 						}
 					});
+				updateOrderRemaining();
 				}
 			
 		}

@@ -112,6 +112,7 @@ class DeliveryController extends Controller
 
         	//create the Delivery Name other attributes already loaded such as the delivery date
         	$model->Name = Delivery::generateName($model->id); 
+        	$model->status = Delivery::STATUS_INPROGRESS;
         	$model->delivery_qty = 0;
         	$model->save();			//save so we cna access the object id
 			
@@ -194,10 +195,9 @@ class DeliveryController extends Controller
 		        			}
 		        		$deliveryLoad->save();
 						}
-						
-					$model->delivery_qty += $deliveryLoad->load_qty;
 					}
 				}
+			$model->updateDeliveryQty();
         	$model->save();
         	
         	//update the Customer Order as well
@@ -215,7 +215,14 @@ class DeliveryController extends Controller
 					}
         	} 
        
-       	//If the order has been seleted already, clicked the link from within the order
+       
+       
+       	/**
+		   * 
+		   * New Order processing
+		   * 
+		   */
+       	//If the order has been selected already, clicked the link from within the order
        	$order = new CustomerOrders();
        	if(($order_id = Yii::$app->request->get("order_id")) != null)
 	       	{
@@ -224,7 +231,7 @@ class DeliveryController extends Controller
 	       	 if (($order = customerOrders::findOne($order_id)) !== null) 
 	       	 	{
 	       	 		
-	       	 	//if the order alread has a delivery created use that in the form
+	       	 	//if the order alreadY has a delivery created use that in the form
 	       	 	if($order->hasDelivery())
 	       	 		{
 	       	 		$model = $order->delivery;
@@ -349,7 +356,6 @@ class DeliveryController extends Controller
 					$deliveryLoadBin->delivery_load_id = $deliveryLoad->id;
 					$deliveryLoadBin->trailer_bin_id = $trailerBin_id;
 					$deliveryLoadBin->bin_load = $trailer_load_amount[0];
-					$deliveryLoad->load_qty += $trailer_load_amount[0];
 					if(!$deliveryLoadBin->save())
 	        			{
 	        			foreach($deliveryLoad->getErrors() as $message)
@@ -358,12 +364,14 @@ class DeliveryController extends Controller
 							}
 	        			die("failed to Create Delivery Load Record");
 	        			}
-	        		$deliveryLoad->save();
 					}
 					
 				
 				}
 			}
+			
+			
+			
 			$model->updateDeliveryQty();
     		$model->save();
     	
