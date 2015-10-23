@@ -59,6 +59,7 @@ AppAsset::register($this);
 						['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>($currentItem == 'customer-order-production-active')],
 						['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>($currentItem == 'customer-order-production-submitted')],
 						['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>($currentItem == 'delivery')],
+						['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'weighbridge')],
 						
 						]],	
 				

@@ -99,10 +99,17 @@ class Delivery extends \yii\db\ActiveRecord
 	
 	public function removeAllLoads()
 	{
+		
+		
 		foreach($this->deliveryLoad as $deliveryLoad)
     		{
 			$deliveryLoad->removeAllLoads();
+			$deliveryLoad->delete();
+			
 			}
+	
+
+		
 	}
 	/**
 	* 
@@ -143,11 +150,18 @@ class Delivery extends \yii\db\ActiveRecord
 	public function updateDeliveryQty()
 	{
 	$this->delivery_qty = 0;
+	
+	echo "updating delivery Load <br>";
+		
 	foreach($this->deliveryLoad as $deliveryLoad)
 		{
-		$this->delivery_qty += $deliveryLoad->getLoadTotal();
-		}
+		$deliveryLoad->updateLoadQty();
+		echo "Delivery Load: ".$deliveryLoad->id." = ".$deliveryLoad->load_qty."<br>";
 		
+		$this->delivery_qty += $deliveryLoad->load_qty;
+		}
+	
+	$this->save();
 	
 	}
 	

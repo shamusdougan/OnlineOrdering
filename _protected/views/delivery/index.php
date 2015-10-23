@@ -3,8 +3,8 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\models\Lookup;
-
 use app\components\actionButtons;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\DeliverySearch */
@@ -97,8 +97,18 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
 				'class' => 'kartik\grid\ActionColumn',
-				'template' => '{update} {delete}',
+				'template' => '{update} {delete} {weighbridge}',
 				'width' => '5%',
+				'buttons' =>
+					[
+					'weighbridge' => function ($url, $model)
+						{
+							return html::a('<span class="glyphicon glyphicon-tags"></span>', Url::toRoute(['/weighbridge-ticket/create', 'delivery_id' => $model->id]), [
+                                        'title' => 'Create Weighbridge Ticket',
+                                        ]);
+
+						}
+					]
 			],
         ],
     ]); ?>

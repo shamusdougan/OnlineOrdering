@@ -288,11 +288,13 @@ class DeliveryController extends Controller
         
 		
 		
-    	
+
     	//remove the old loading data and create the new, even if it is the Same
     	$model->removeAllLoads();
-    	$model->delivery_qty = 0;
     	
+    	$model = Delivery::findOne($model->id);
+    	
+
     	//this array contains all of the data about where the order has been loaded into.        		
     	$loadOutArray = Yii::$app->request->post("truck_load");
     	if($loadOutArray === null)
@@ -300,6 +302,9 @@ class DeliveryController extends Controller
 			$loadOutArray = array();
 			}
     	
+    	
+ 
+
     	
     	foreach($loadOutArray as $truck_id => $trailer_array)
     		{
@@ -315,8 +320,7 @@ class DeliveryController extends Controller
 					}
     			die("failed to Create Delivery Load Record");
     			}
-    		
-    		$deliveryLoad->load_qty = 0;
+    		 
     		
     		//allocate the selected trailers to the delivery load.
     		//The selected trailers array should look like trailers[truck_id][trailer_id]
@@ -365,15 +369,15 @@ class DeliveryController extends Controller
 	        			die("failed to Create Delivery Load Record");
 	        			}
 					}
-					
-				
 				}
+				
+				
+				
+    		  		
 			}
-			
-			
-			
+			$model->save();
 			$model->updateDeliveryQty();
-    		$model->save();
+    	
     	
         	//Once save, either stay on the page or exit. Controlled via the actiob buttons
         	$get = Yii::$app->request->get();

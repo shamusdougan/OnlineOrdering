@@ -82,15 +82,15 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	* 
 	* description: return the load carried in this delivery as a float
 	*/	
-	public function getLoadTotal()
+	public function updateLoadQty()
 	{
-		$total = 0;
+		$this->load_qty = 0;
 		foreach($this->deliveryLoadBin as $bin)
 			{
-			$total += $bin->bin_load;
+			$this->load_qty += $bin->bin_load;
 			}
 			
-		return $total;
+		$this->save();
 	}
 	
 	
@@ -116,7 +116,6 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 			{
 			$deliveryLoadTrailer->delete();
 			}
-		$this->delete();
 	}
     
     

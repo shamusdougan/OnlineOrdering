@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2015 at 04:29 PM
+-- Generation Time: Oct 23, 2015 at 04:26 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1839,7 +1839,7 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100),
 (237, 'ORD3237', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (238, 'ORD3238', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 71, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 3, 1018, NULL, NULL, 100);
+(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 72, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 3, 1018, NULL, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -1886,16 +1886,14 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `order_id` int(10) NOT NULL,
   `status` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=72 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=73 ;
 
 --
 -- Dumping data for table `delivery`
 --
 
 INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`) VALUES
-(69, 'DEL00069', NULL, NULL, 2, '2015-10-22', NULL, 232, 1),
-(70, 'DEL00070', NULL, NULL, 11, '2015-10-22', NULL, 235, 1),
-(71, 'DEL00071', NULL, NULL, 55, '2015-10-23', NULL, 239, 1);
+(72, 'DEL00072', NULL, NULL, 55, '2015-10-28', NULL, 239, 1);
 
 -- --------------------------------------------------------
 
@@ -1912,16 +1910,14 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=100 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=180 ;
 
 --
 -- Dumping data for table `delivery_load`
 --
 
 INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `trailer_id`, `delivery_on`, `delivery_completed_on`, `truck_id`) VALUES
-(76, 69, 2, 0, '2015-10-22', NULL, 92),
-(82, 70, 11, 0, '2015-10-22', NULL, 92),
-(99, 71, 0, 0, '2015-10-23', NULL, 92);
+(179, 72, 55, 0, '2015-10-28', NULL, 92);
 
 -- --------------------------------------------------------
 
@@ -1935,25 +1931,21 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=269 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=721 ;
 
 --
 -- Dumping data for table `delivery_load_bin`
 --
 
 INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
-(140, 76, 373, 2),
-(161, 82, 374, 3),
-(162, 82, 377, 3),
-(163, 82, 378, 1),
-(164, 82, 450, 4),
-(262, 99, 373, 3),
-(263, 99, 374, 3),
-(264, 99, 375, 4),
-(265, 99, 376, 1),
-(266, 99, 380, 16),
-(267, 99, 381, 8),
-(268, 99, 382, 16);
+(713, 179, 373, 3),
+(714, 179, 374, 3),
+(715, 179, 375, 4),
+(716, 179, 376, 1),
+(717, 179, 380, 16),
+(718, 179, 381, 8),
+(719, 179, 382, 16),
+(720, 179, 383, 4);
 
 -- --------------------------------------------------------
 
@@ -1966,19 +1958,15 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=105 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=263 ;
 
 --
 -- Dumping data for table `delivery_load_trailer`
 --
 
 INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
-(57, 76, 3),
-(58, 76, 16),
-(69, 82, 3),
-(70, 82, 16),
-(103, 99, 3),
-(104, 99, 4);
+(261, 179, 3),
+(262, 179, 4);
 
 -- --------------------------------------------------------
 
@@ -3799,6 +3787,30 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `fullname`, `email
 (26, 'crmoln@microsoft.com', 'Support', 'User', NULL, 'crmoln@microsoft.com', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
 (28, 'trevor@irwinstockfeeds.com.au', 'Trevor', 'Paul', NULL, 'trevor@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
 (29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', NULL, 'vicky@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weighbridge_ticket`
+--
+
+CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `ticket_number` int(50) NOT NULL,
+  `delivery_id` int(10) NOT NULL,
+  `truck_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `driver` varchar(200) NOT NULL,
+  `gross` float NOT NULL,
+  `tare` float NOT NULL,
+  `net` float NOT NULL,
+  `Notes` varchar(500) NOT NULL,
+  `Moisture` float NOT NULL,
+  `Protein` float NOT NULL,
+  `testWeight` float NOT NULL,
+  `screenings` float NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
