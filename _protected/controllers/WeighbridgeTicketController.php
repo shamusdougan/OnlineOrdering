@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use mPDF;
+
 /**
  * WeighbridgeTicketController implements the CRUD actions for WeighbridgeTicket model.
  */
@@ -119,6 +121,17 @@ class WeighbridgeTicketController extends Controller
 
         return $this->redirect(['index']);
     }
+
+
+
+	public function actionPdf()
+	{
+		$mpdf = new mPDF;
+        $mpdf->WriteHTML('<p>Hallo World</p>');
+        $mpdf->Output();
+        exit;
+
+	}
 
     /**
      * Finds the WeighbridgeTicket model based on its primary key value.
