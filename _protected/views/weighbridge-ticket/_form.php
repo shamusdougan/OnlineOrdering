@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\WeighbridgeTicket */
@@ -10,9 +12,42 @@ use yii\widgets\ActiveForm;
 
 <div class="weighbridge-ticket-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+       <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'weighbridge-form']); ?>
+    
+    
+    <? 
+    //if the delivery has already been set then just hide the input field for the delivery otherwise display the selet widget to choose the Delivery
+    if ($delivery != null)
+    	{
+		echo   $form->field($model, 'delivery_id', ['template' => '{input}'])->hiddenInput()->label(false);		
+		}
+    else{
+		
+		echo Form::widget([
+	    	'model'=>$model,
+	    	'form'=>$form,
+	    	'columns'=>6,
+	    	'attributes'=>[
+	    		'delivery_id' =>
+	    			[
+	    				'type' => Form::INPUT_WIDGET,
+	    				'label' => 'Order',
+	    				'widgetClass' => '\kartik\widgets\Select2',
+	    				'columnOptions'=>['colspan'=>2],
+	    				'options'=>
+	    					[
+	    					'data'=>$deliveryList,
+	    					'options' => ['placeholder' => 'Select from deliveies....', 'selected' => null,],
+	    					
+	    					],
+						
+	    			],		
+	      		]
+	    	]);
+	
+		}
 
-    <?= $form->field($model, 'delivery_id')->textInput() ?>
+   ?>
 
     <?= $form->field($model, 'truck_id')->textInput() ?>
 

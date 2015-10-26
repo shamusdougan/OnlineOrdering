@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\WeighbridgeTicket;
 use app\models\WeighbridgeTicketSearch;
+use app\models\Delivery;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 use mPDF;
 
@@ -77,17 +79,36 @@ class WeighbridgeTicketController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($delivery_id = null)
     {
         $model = new WeighbridgeTicket();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        	} 
+        else {
+        	
+        	$delivery = null;
+        	$deliveryList = array();
+        	if($delivery_id != null)
+        		{
+				$delivery = Delivery::findOne($delivery_id);
+				}
+			else{
+				$deliveries = Delivery::getUnloadedDeliveries();
+				$deliveryList =  ArrayHelper::map($deliveries, 'id', 'Name') ;
+			}
+        	
             return $this->render('create', [
                 'model' => $model,
+                'delivery' => $delivery,
+                'deliveryList' => $deliveryList,
             ]);
-        }
+        	}
     }
 
     /**
@@ -127,7 +148,11 @@ class WeighbridgeTicketController extends Controller
 	public function actionPdf()
 	{
 		$mpdf = new mPDF;
-        $mpdf->WriteHTML('<p>Hallo World</p>');
+		
+		$html = "<table border='1'><tr><td width='150px' height='150px'>hello world</td></Tr></table>";
+		
+		
+        $mpdf->WriteHTML($html);
         $mpdf->Output();
         exit;
 

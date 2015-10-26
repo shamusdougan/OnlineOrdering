@@ -185,5 +185,19 @@ class Delivery extends \yii\db\ActiveRecord
 		
 	}
 	
+	/**
+	* getUnloaded Deliveries
+	* 
+	* @return a list of deliveies that havent yet been loaded
+	*/
+	public function getUnloadedDeliveries()
+	{
+		$deliveries = Delivery::find()
+							->where(['status' => Delivery::STATUS_INPROGRESS])
+							->all();
+							
+		return $deliveries;
+	}
+	
 	
 }
