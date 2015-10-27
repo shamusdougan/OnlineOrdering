@@ -22,13 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'export' => false,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+			'date',
+			'truck.registration',
+            'ticket_number',
             'delivery_id',
-            'truck_id',
-            'date',
-            'driver',
+          
+            
             // 'gross',
             // 'tare',
             // 'net',

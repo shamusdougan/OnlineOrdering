@@ -85,11 +85,41 @@ class WeighbridgeTicketController extends Controller
 
 		
 
-
+		/**
+		* 
+		* @var Saving the Weigh Bridge Object
+		* 
+		*/
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-            return $this->redirect(['view', 'id' => $model->id]);
+        		
+        		
+        	//model saved correctly make sure the delivery is updated as well
+        	$model->delivery->setStatusLoaded();
+        	$model->delivery->customerOrder->setStatusDispatched();	
+        		
+        		
+			//Once save, either stay on the page or exit. Controlled via the actiob buttons
+            $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}        		
+        		
+           
         	} 
+        	
+        	
+        	
+        	
+       	/**
+		   * 
+		   * @var Creting the Weigh bRidge object
+		   * 
+		   */
         else {
         	
         	$delivery = null;
@@ -97,16 +127,30 @@ class WeighbridgeTicketController extends Controller
         	if($delivery_id != null)
         		{
 				$delivery = Delivery::findOne($delivery_id);
+				$model->delivery_id = $delivery->id;
+				$model->date = $delivery->delivery_on;
 				}
 			else{
 				$deliveries = Delivery::getUnloadedDeliveries();
 				$deliveryList =  ArrayHelper::map($deliveries, 'id', 'Name') ;
-			}
+				}
+        	
+        	
+        	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge_ticket/create?exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'weighbridge-form', 'confirm' => 'Save and Exit Delivery?']; 
+			
+			
+			
+        	$model->ticket_number = WeighbridgeTicket::generateTicketNumber();
+        	
+        	
         	
             return $this->render('create', [
                 'model' => $model,
                 'delivery' => $delivery,
                 'deliveryList' => $deliveryList,
+                'actionItems' => $actionItems,
             ]);
         	}
     }
@@ -138,7 +182,12 @@ class WeighbridgeTicketController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+    	
+    	$weighbridgeTicket = $this->findModel($id);
+    	$weighbridgeTicket->delivery->setStatusInprogress();
+    	$weighbridgeTicket->delivery->customerOrder->setStatusInProduction();
+       	$weighbridgeTicket->delete();
+        
 
         return $this->redirect(['index']);
     }
@@ -156,6 +205,35 @@ class WeighbridgeTicketController extends Controller
         $mpdf->Output();
         exit;
 
+	}
+	
+	/**
+	* 
+	* @Function Delivery Details - fetch the delivery details from to display in the weight bridge ticket
+	* 
+	* @return
+	*/
+	public function actionAjaxDeliveryDetails($delivery_id)
+	{
+		if($delivery_id != null){
+			$delivery =  Delivery::findOne(['id'=>$delivery_id]);
+			
+		
+			
+	    	return \yii\helpers\Json::encode([
+	    		'date' => $delivery->delivery_on,
+		        'truck'=> $delivery->deliveryLoad[0]->truck->registration,
+		        'truck_id'=> $delivery->deliveryLoad[0]->truck->id,
+		       	'address' => $delivery->customerOrder->client->Address_1,
+		       	'orderinfo' => $delivery->customerOrder->Order_instructions,
+		       	'nearest_town' => $delivery->customerOrder->client->Nearest_Town,
+		       	'delivery_directions' => $delivery->customerOrder->client->Delivery_Directions,
+		        
+		    ]);
+		    }
+		else{
+			return True;
+		}
 	}
 
     /**

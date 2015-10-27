@@ -200,4 +200,25 @@ class Delivery extends \yii\db\ActiveRecord
 	}
 	
 	
+	
+	
+	public function setStatusInprogress()
+	{
+		$this->status = Delivery::STATUS_INPROGRESS;
+		$this->save();
+	}
+	
+	public function setStatusLoaded()
+	{
+		$this->status = Delivery::STATUS_LOADED;
+		$this->save();
+	}
+	
+	
+	public  function setStatusCompleted()
+	{
+		$this->status = Delivey::STATUS_COMPLETED;
+		$this->save();
+	}
+	
 }

@@ -37,9 +37,9 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['delivery_id', 'truck_id', 'date', 'driver', 'gross', 'tare', 'net', 'Notes', 'Moisture', 'Protein', 'testWeight', 'screenings'], 'required'],
+            [['delivery_id', 'gross', 'tare', 'net', 'ticket_number'], 'required'],
             [['delivery_id', 'truck_id'], 'integer'],
-            [['date'], 'safe'],
+            [['date', 'ticket_number'], 'safe'],
             [['gross', 'tare', 'net', 'Moisture', 'Protein', 'testWeight', 'screenings'], 'number'],
             [['driver'], 'string', 'max' => 200],
             [['Notes'], 'string', 'max' => 500]
@@ -67,4 +67,29 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
             'screenings' => 'Screenings',
         ];
     }
+    
+    
+    
+    public function generateTicketNumber()
+    {
+		$temp = WeighbridgeTicket::find()->orderBy(['ticket_number' => SORT_DESC])->one();
+		if(isset($temp)){
+			return "WB". str_pad(($temp->ticket_number)+1, 5, '0', STR_PAD_LEFT);
+			}
+		else{
+			return "WB000001";
+		}
+	}
+	
+	
+	
+	public function getDelivery()
+    	{
+			return $this->hasOne(Delivery::className(), ['id' => 'delivery_id'] );
+		}
+		
+	public function getTruck()
+    	{
+			return $this->hasOne(Trucks::className(), ['id' => 'truck_id'] );
+		}
 }

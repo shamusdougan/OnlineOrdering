@@ -330,6 +330,16 @@ class CustomerOrders extends \yii\db\ActiveRecord
         
 	}
 	
+	public function setStatusDispatched()
+	{
+		$this->Status = CustomerOrders::STATUS_DISPATCHED;
+		$this->save();
+	}
 	
+	public function setStatusInProduction()
+	{
+		$this->Status = CustomerOrders::STATUS_INPRODUCTION;
+		$this->save();
+	}
   
 }

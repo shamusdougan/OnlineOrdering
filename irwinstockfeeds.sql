@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2015 at 04:26 PM
+-- Generation Time: Oct 27, 2015 at 04:02 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1828,7 +1828,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=240 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=241 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -1839,7 +1839,8 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100),
 (237, 'ORD3237', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (238, 'ORD3238', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 72, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 3, 1018, NULL, NULL, 100);
+(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 73, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 4, 1018, NULL, NULL, 100),
+(240, 'ORD3240', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1856,7 +1857,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=129 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=130 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1867,7 +1868,8 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (125, '2015-09-02', 12, '100', NULL, NULL, 232),
 (126, '2015-09-02', 71, '100', NULL, NULL, 234),
 (127, '2015-09-02', 12, '100', NULL, NULL, 235),
-(128, '2015-10-22', 54, '100', NULL, NULL, 239);
+(128, '2015-10-22', 54, '100', NULL, NULL, 239),
+(129, '2015-10-27', 53, '100', NULL, NULL, 240);
 
 -- --------------------------------------------------------
 
@@ -1886,14 +1888,14 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `order_id` int(10) NOT NULL,
   `status` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=73 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=74 ;
 
 --
 -- Dumping data for table `delivery`
 --
 
 INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`) VALUES
-(72, 'DEL00072', NULL, NULL, 55, '2015-10-28', NULL, 239, 1);
+(73, 'DEL00073', NULL, NULL, 55, '2015-10-28', NULL, 239, 2);
 
 -- --------------------------------------------------------
 
@@ -1910,14 +1912,14 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=180 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=181 ;
 
 --
 -- Dumping data for table `delivery_load`
 --
 
 INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `trailer_id`, `delivery_on`, `delivery_completed_on`, `truck_id`) VALUES
-(179, 72, 55, 0, '2015-10-28', NULL, 92);
+(180, 73, 55, 0, '2015-10-28', NULL, 92);
 
 -- --------------------------------------------------------
 
@@ -1931,21 +1933,23 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=721 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=731 ;
 
 --
 -- Dumping data for table `delivery_load_bin`
 --
 
 INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
-(713, 179, 373, 3),
-(714, 179, 374, 3),
-(715, 179, 375, 4),
-(716, 179, 376, 1),
-(717, 179, 380, 16),
-(718, 179, 381, 8),
-(719, 179, 382, 16),
-(720, 179, 383, 4);
+(721, 180, 373, 3),
+(722, 180, 374, 3),
+(723, 180, 375, 4),
+(724, 180, 376, 3),
+(725, 180, 377, 3),
+(726, 180, 378, 4),
+(727, 180, 379, 4),
+(728, 180, 380, 16),
+(729, 180, 381, 8),
+(730, 180, 382, 7);
 
 -- --------------------------------------------------------
 
@@ -1958,15 +1962,15 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=263 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=265 ;
 
 --
 -- Dumping data for table `delivery_load_trailer`
 --
 
 INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
-(261, 179, 3),
-(262, 179, 4);
+(263, 180, 3),
+(264, 180, 4);
 
 -- --------------------------------------------------------
 
@@ -3796,7 +3800,7 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `fullname`, `email
 
 CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `ticket_number` int(50) NOT NULL,
+  `ticket_number` varchar(50) NOT NULL,
   `delivery_id` int(10) NOT NULL,
   `truck_id` int(11) NOT NULL,
   `date` date NOT NULL,
@@ -3805,12 +3809,19 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `tare` float NOT NULL,
   `net` float NOT NULL,
   `Notes` varchar(500) NOT NULL,
-  `Moisture` float NOT NULL,
-  `Protein` float NOT NULL,
-  `testWeight` float NOT NULL,
-  `screenings` float NOT NULL,
+  `Moisture` float DEFAULT NULL,
+  `Protein` float DEFAULT NULL,
+  `testWeight` float DEFAULT NULL,
+  `screenings` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `weighbridge_ticket`
+--
+
+INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_id`, `date`, `driver`, `gross`, `tare`, `net`, `Notes`, `Moisture`, `Protein`, `testWeight`, `screenings`) VALUES
+(9, 'WB000001', 73, 92, '2015-10-28', '', 1, 2, 4, '', NULL, NULL, NULL, NULL);
 
 --
 -- Constraints for dumped tables

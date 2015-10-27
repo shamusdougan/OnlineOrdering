@@ -189,6 +189,7 @@ class Trucks extends \yii\db\ActiveRecord
 	}
     
 
+	
     
     
 }
