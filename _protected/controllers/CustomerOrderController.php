@@ -59,6 +59,7 @@ class CustomerOrderController extends Controller
 		$this->view->params['menuItem'] = 'customer-order-sales';
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->getAllOrders(Yii::$app->request->queryParams);
+        $dataProvider->setSort(['defaultOrder' => ['Created_On'=>SORT_DESC]]);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
 		
@@ -144,15 +145,21 @@ class CustomerOrderController extends Controller
 					}
         		} 
         else {   	
-        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
+        	
  			$readOnly = true;
  			
 			if($model->isActive()){
+				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
 				$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
 				$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
 				$readOnly = false;
 				}
+			else{
+				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index'];
+				$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
+			}
 			
         	
         	
@@ -624,11 +631,39 @@ class CustomerOrderController extends Controller
 			
 			return $this->renderAjax("/customer-orders-ingredients/_orderUpdate", ['model' => $model, 'productList' => $products]);
 			}
-		
-		
-		
-		
 		}
 	
+
+	public function actionAjaxCopy($id)
+		{
+		$order = CustomerOrders::findOne($id);
+		if($order == null)
+			{
+			return false;
+			}
+		else{
+			$newOrder = $order->copy();
+			
+			
+			
+			}
+		}
+
+	public function actionCopy($id)
+		{
+		$order = CustomerOrders::findOne($id);
+		if($order == null)
+			{
+			return false;
+			}
+		else{
+			$newOrder = $order->copy();
+			
+			return $this->redirect(['update', 'id' => $newOrder->id]);
+			
+			
+			}
+		}
+
 	
 }

@@ -33,9 +33,28 @@ $this->registerJs(
 $this->registerJs(
     "$(document).on('click', '.order-copy-link', function() 
     	{
+    		
+    	
     	order_id = $(this).closest('tr').data('key')	
     	
-    	alert('copying order ' + order_id);
+    	
+    	
+    	//create a copy of the order and then navigate to that page
+		$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("customer-order/ajax-copy")."',
+		data: {id: order_id},
+		success: function (data, textStatus, jqXHR) 
+			{
+			alert('copied the order');
+           
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
     	
     	
 		
@@ -48,26 +67,14 @@ $this->registerJs(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $gridColumns = [
+	[
+	'attribute' => 'Created_On',
+	'value' => function ($data)
+	    			{
+					return date("D d-M-Y", strtotime($data->Created_On));
+					},
+	],
 	['attribute' => 'Name'],
 	['attribute' => 'Qty_Tonnes'],
 	
@@ -130,7 +137,9 @@ echo GridView::widget(
 					Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh Orders', 'id' => 'refresh_order_grid', 'class'=>'btn btn-success'])
 				],
 			],
-		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getOrders()]),
+		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getOrders(),
+															'sort'=> ['defaultOrder' => ['Created_On'=>SORT_DESC]]
+															]),
 		//'filterModel'=>$searchModel,
 		'columns'=>$gridColumns,
 		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false

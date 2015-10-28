@@ -276,5 +276,6 @@ class Clients extends \yii\db\ActiveRecord
     {
 		 return $this->hasMany(CustomerOrders::className(), ['Customer_id' => 'id']);
 	}
+
 	
 }

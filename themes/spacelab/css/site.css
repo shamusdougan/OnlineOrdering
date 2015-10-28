@@ -430,6 +430,10 @@ hr.article-devider {
 	background-image:url('/images/icons_action/icon-32-edit.png');
 	}
 	
+.sap_copy{
+	background-image:url('/images/icons_action/icon-32-invadd.png');
+	}
+	
 .sap_list{
 	background-image:url('/images/icons_action/icon-32-list.png');
 	}

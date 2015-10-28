@@ -350,5 +350,37 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		$this->Status = CustomerOrders::STATUS_INPRODUCTION;
 		$this->save();
 	}
-  
+	
+	
+	
+	
+	/**
+	* Function copy, takes the current order and returns a duplicate of that order
+	* 
+	* @return
+	*/
+	public function copy()
+	{
+		//create a copy of the order and save it to the database
+		$newOrder = new CustomerOrders();
+		$newOrder->attributes = $this->attributes;
+		$newOrder->Status = CustomerOrders::STATUS_ACTIVE;
+		$newOrder->Created_On = date("Y-m-d");
+		$newOrder->Requested_Delivery_by = date("Y-m-d");
+		$newOrder->save();
+		
+		//create a copy of all of the rder ingredients and save them to the database
+		foreach($this->ingredients as $ingredient)
+			{
+			$newIngredient = new CustomerOrdersIngredients();
+			$newIngredient->attributes = $ingredient->attributes;
+			$newIngredient->order_id = $newOrder->id;
+			$newIngredient->save();
+			}
+		
+		return $newOrder;
+		
+		
+	}
+	  
 }

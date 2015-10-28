@@ -18,7 +18,10 @@ if(!isset($delivery)){ $delivery = null;};
 			<input type='hidden' name='truck_id[]' value='<?= $truck->id ?>'/>
 			<b>Truck: <?= $truck->registration." (".$truck->description.")" ?></b><br>
 			
-			Trailer(s): <A class='trailer_add_link trailer_add_link_id' delivery_id='<?= $delivery != null ? $delivery->id : "" ?>' truck_id='<?= $truck->id ?>' >Add Trailer(s)</A>
+		
+			Trailer(s): <A class='trailer_add_link trailer_add_link_id' delivery_id='<?= $delivery != null ? $delivery->id : "" ?>' truck_id='<?= $truck->id ?>' >Add Trailer(s)</A>		
+		
+				
 	
 			
 			<img src='../../images/truck_outline.png' height='150px'><br>			

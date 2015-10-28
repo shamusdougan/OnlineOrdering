@@ -86,9 +86,9 @@ use yii\helpers\Html;
 			?>
 		</div>
 	</div>
-	<div style='wdith: 100%; height: 35px'>
+	<div style='width: 100%; height: 35px'>
 		
-		<img src='../../images/trailer_outline.png' width='349px'><br>		
+		<img src='../../images/trailer_outline.png' width='400px'><br>		
 	</div>			
 			
 			

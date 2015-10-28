@@ -49,27 +49,34 @@ AppAsset::register($this);
 				'items' => [
 					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],					
 					['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
-					['label' => 'Sales', 'icon' => 'user', 'items' => 
+					['label' => 'Sales', 'icon' => 'usd', 'items' => 
 						[
 						['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order']), 'active'=>($currentItem == 'customer-order-sales')],
 						
 						]],
-					['label' => 'Production', 'icon' => 'user', 'items' => 
+					['label' => 'Production', 'icon' => 'star', 'items' => 
 						[
 						['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>($currentItem == 'customer-order-production-active')],
 						['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>($currentItem == 'customer-order-production-submitted')],
 						['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>($currentItem == 'delivery')],
 						['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'weighbridge')],
 						
+						
+						]],	
+					['label' => 'Admin', 'icon' => 'list-alt', 'items' => 
+						[
+						['label' => 'Trucks', 'icon' => 'th-list', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'trucks')],
+						['label' => 'Trailers', 'icon' => 'inbox', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'trailers')],
+						['label' => 'Customer Storage',  'url' => Url::toRoute('/storage'), 'active'=>($currentItem == 'storage')],
+						['label' => 'Customer Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
+						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
 						]],	
 				
 					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
-						['label' => 'Storage',  'url' => Url::toRoute('/storage'), 'active'=>($currentItem == 'storage')],
-						['label' => 'Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
-						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
+						
+						
 						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')], 
 						['label' => 'Products', 'url' => Url::toRoute('/product'), 'active'=>($currentItem == 'product')],
-						['label' => 'Order Ingredients', 'url' => Url::toRoute('/customer-orders-ingredients'), 'active'=>($currentItem == 'customer-order-ingredients')],
 						['label' => 'Import Data (remove Later)', 'url' => Url::toRoute('/import-functions'), 'active'=>($currentItem == 'import')],
 						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]
 					

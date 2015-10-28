@@ -168,11 +168,11 @@ public function isAlreadyAssigned($requestedDate)
 			if(array_key_exists($deliveryLoad->trailer_id, $deliverySummary))
 				{
 				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] .=  ", ".$deliveryLoad->delivery->Name;
-				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] += $deliveryLoad->getLoadTotal();
+				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] += $deliveryLoad->load_qty;
 				}
 			else{
 				$deliverySummary[$deliveryLoad->trailer_id]['deliveries'] = $deliveryLoad->delivery->Name;
-				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] = $deliveryLoad->getLoadTotal();
+				$deliverySummary[$deliveryLoad->trailer_id]['used_space'] = $deliveryLoad->load_qty;
 				}
 			}
 		

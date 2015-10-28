@@ -555,6 +555,7 @@ $this->registerJs("$(document).on('click', '#fill_selected_bins', function(event
 $this->registerJs("
 	$( document ).ready(function() {
     	updateOrderRemaining();	
+    	updateTrailerAddLink();
 		});
 	");
  
@@ -598,7 +599,7 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 				data: {truck_id: truck_id, trailer_id: trailer_id, delivery_id: delivery_id},
 				success: function (data, textStatus, jqXHR) 
 					{
-					$('#truck_allocate_' + truck_id).html(data);
+					$('.trailer_display_' + trailer_id).remove();	
 					updateSelectedTrailersInput();
 					updateTrailerAddLink();
 					},
