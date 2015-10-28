@@ -145,11 +145,13 @@ class CustomerOrderController extends Controller
         		} 
         else {   	
         	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index', 'confirm' => 'Cancel Changes?'];
-        	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
-			
-			if($model->Status == CustomerOrders::STATUS_ACTIVE){
+ 			$readOnly = true;
+ 			
+			if($model->isActive()){
+				$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
+				$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
+				$readOnly = false;
 				}
 			
         	
@@ -183,6 +185,7 @@ class CustomerOrderController extends Controller
                 'clientList' => $clientList, 
                 'actionItems' => $actionItems, 
                 'storageList' => $storageList,
+                'readOnly' => $readOnly,
                 
             ]);
         }

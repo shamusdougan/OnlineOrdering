@@ -296,6 +296,15 @@ class CustomerOrders extends \yii\db\ActiveRecord
    	$this->Status = CustomerOrders::STATUS_ACTIVE;
    	$this->save();
 	}  
+	
+	public function isActive()
+	{
+		if($this->Status == CustomerOrders::STATUS_ACTIVE)
+		{
+			return True;
+		}
+		return false;
+	}
     
     
 	public function hasDelivery()

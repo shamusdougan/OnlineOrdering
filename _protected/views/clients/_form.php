@@ -282,40 +282,36 @@ $companyHerd .= Form::widget(
 		]
 	]);
 
-$items = 
-	[
-		[			
-		'label'=>'<i class="glyphicon glyphicon-home"></i> Company',
-		'content'=>$companyInfo,
-		'active'=>true
-		],
-		
-		[
-		'label'=>'<i class="glyphicon glyphicon-tags"></i> Herd Info',
-		'content'=>$companyHerd,
-		],
-		[
+$items[] = [			
+			'label'=>'<i class="glyphicon glyphicon-home"></i> Company',
+			'content'=>$companyInfo,
+			'active'=>true
+			];
+$items[] =	[
 			'label'=>'<i class="glyphicon glyphicon-user"></i> Contacts',
 			'content'=>$this->render("_contactGrid", ['model' => $model, 'form' => $form]),
+			];
+$items[] =	[
+			'label'=>'<i class="glyphicon glyphicon-list-alt"></i> Accounts',
+			'content'=>$companyAccounts,
+			];
 
-		],
-		[
-		'label'=>'<i class="glyphicon glyphicon-list-alt"></i> Accounts',
-		'content'=>$companyAccounts,
-		],
-		[
+if($model->isCustomer())
+	{
+	$items[] =	[
+		'label'=>'<i class="glyphicon glyphicon-tags"></i> Herd Info',
+		'content'=>$companyHerd,
+		];	
+	$items[] =	[
 		'label'=>'<i class="glyphicon glyphicon-download-alt"></i> Storage',
 		'content'=>$this->render("_storageGrid", ['model' => $model, 'form' => $form]),
-		
-		],
-		[
+		];
+	$items[] =	[
 		'label'=>'<i class="glyphicon glyphicon-list-alt"></i> Orders',
-		'content'=>"This will contain the customers current and previous orders",
+		'content'=>$this->render("_ordersGrid", ['model' => $model, 'form' => $form]),
+		];			
+	}		
 		
-		],
-		
-		
-	];
 	
 	
 

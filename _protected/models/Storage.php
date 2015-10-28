@@ -23,6 +23,14 @@ use app\models\Clients;
  */
 class Storage extends \yii\db\ActiveRecord
 {
+	
+	const STATUS_ACTIVE = 1;
+	const STATUS_INACTIVE = 2;
+	
+	
+	
+	
+	
     /**
      * @inheritdoc
      */
@@ -38,7 +46,7 @@ class Storage extends \yii\db\ActiveRecord
     {
         return [
             [['Capacity'], 'number'],
-            [['company_id', 'Delivery_Instructions', 'Status'], 'required'],
+            [['company_id', 'Description', 'Capacity', 'Status'], 'required'],
             [['company_id', 'Status'], 'integer'],
             [['Auger', 'Blower', 'Tipper'], 'boolean'],
             [['Description', 'Delivery_Instructions'], 'string', 'max' => 600],

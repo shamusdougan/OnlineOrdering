@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use app\models\CustomerOrders;
 use app\components\actionButtons;
+use app\models\Lookup;
 
 
 /* @var $this yii\web\View */
@@ -17,7 +18,7 @@ else{
 }
 
 
-$this->title = 'Customer Orders: ' . ' ' . $title;
+$this->title = 'Customer Order: ' . ' ' . $title . ($model->isActive() ? "" : "(". Lookup::item($model->Status, "ORDER_STATUS").") ");
 $this->params['breadcrumbs'][] = ['label' => 'Customer Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update', 'id' => $model->id]];
 
@@ -31,7 +32,10 @@ $this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update
 
 
     <?= $this->render('_form', [
-        'model' => $model, 'clientList' => $clientList, 'storageList' => $storageList, 'readOnly' => $readOnly
+        'model' => $model, 
+        'clientList' => $clientList, 
+        'storageList' => $storageList, 
+        'readOnly' => $readOnly
     ]) ?>
 
 </div>

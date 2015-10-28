@@ -139,4 +139,79 @@ class StorageController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    
+    
+    
+    
+ 
+ 	public function actionAjaxCreate($client_id)
+ 	{
+ 	
+ 	$model = new Storage();
+ 	
+ 	
+ 	$client = Clients::findOne($client_id);
+	if($client == null)
+		{
+		die("Unable to find specified client from client id: ".$client_id);
+		}
+		
+	$post = Yii::$app->request->post(); 
+	if ($model->load($post) && $model->save()) 
+		{
+		return "saved Storage";
+		}
+
+	else{
+	
+		$model->company_id = $client->id;
+		$model->Status = Storage::STATUS_ACTIVE;
+		$model->Street_1 = $client->Address_1_Street_1;
+		$model->SuburbTown = $client->Address_1_TownSuburb;
+		$model->Postcode = $client->Address_1_Postal_Code;
+		
+			
+		return $this->renderAjax('_ajaxForm', ['model' => $model]);	
+		}
+	}
+	
+	
+	public function actionAjaxUpdate($id)
+    {
+		$model = $this->findModel($id);	
+		if($model == null)
+			{
+			die("Uanble to find the Contact from contract id: ".$id);
+			}
+		
+		$post = Yii::$app->request->post(); 
+		if ($model->load($post) && $model->save()) 
+			{
+        	Yii::$app->session->setFlash('kv-detail-success', 'Details Saved');
+			}
+		else{
+			return $this->renderAjax('_ajaxForm', ['model' => $model]);
+			}
+		
+		
+	}
+    
+    
+    public function actionAjaxDelete($id)
+    {
+		$model = $this->findModel($id);	
+		if($model == null)
+			{
+			die("Unable to find the Contact from contract id: ".$id);
+			}
+		$model->delete();
+		
+		
+		
+	}
+    
+    
+    
 }

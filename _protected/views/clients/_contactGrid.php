@@ -5,61 +5,23 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 
-$gridColumns = [
-	[ 'attribute' => 'fullname'],
-	['attribute' => 'Mobile_Phone'],
 	
-	['attribute' => 'Business_Phone'],
 	
-	['attribute' => 'Email'],
-	[
-	    'class'=>'kartik\grid\ActionColumn',
-		'template' => '{view} {update} {delete}',
-		'contentOptions' => ['class' => 'padding-left-5px'],
-
-	   	'buttons' => 
-	   		[
-	   		'view' => function ($url, $model, $key) 
-	   			{
-                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>','#', 
-                	[
-                    'class' => 'activity-view-link',
-                    'title' => 'View',
-                    'data-toggle' => 'modal',
-                    'data-target' => '#activity-modal',
-                   // 'data-id' => $key,
-                   // 'data-pjax' => '0',
-					]);
-				},
-			'update' => function ($url, $model, $key) 
-	   			{
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>','#', 
-                	[
-                    'class' => 'activity-update-link',
-                    'title' => 'Update',
-                  	'data-toggle' => 'modal',
-                  	'data-target' => '#activity-modal',
-                  //  'data-id' => $key,
-                  //  'data-pjax' => '0',
-					]);
-				},
-			],
-	    'headerOptions'=>['class'=>'kartik-sheet-style'],
-	],
 	
-	];
-		
 $this->registerJs(
-    "$(document).on('click', '.activity-view-link', function()  
-    {
-  	$.ajax
+	"$(document).on('click', '#add_contact_button', function()
+		{
+			
+		client_id = $(this).attr('client_id');
+		
+		$.ajax
   		({
-  		url: '".yii\helpers\Url::toRoute("contacts/modal")."',
-		data: {id: $(this).closest('tr').data('key'), mode: 'view'},
+  		url: '".yii\helpers\Url::toRoute("contacts/ajax-create")."',
+		data: {client_id: client_id},
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('.modal-body').removeData('bs.modal').find('.modal-content').empty();
-			//$('#activity-modal').modal();
+			$('#activity-modal').modal();
 			$('.modal-body').html(data);
            
 			},
@@ -69,23 +31,54 @@ $this->registerJs(
             alert('Error in ajax request' );
         	}
 		});
-   	});"
-   );
-  
+   	});
+");
+
+
+$this->registerJs("
+$('body').on('beforeSubmit', 'form#create_contact_form', function () {
+     var form = $(this);
+     // return false if form still have some validation errors
+     if (form.find('.has-error').length) {
+          return false;
+     }
+     // submit form
+     $.ajax({
+          url: form.attr('action'),
+          type: 'post',
+          data: form.serialize(),
+          success: function (response) 
+          		{
+          		$('#activity-modal').modal('hide');
+          		$.pjax.reload({container:'#client-contact-grid'});
+				}
+		  });	
+     return false;
+	});
+	");
+
+ 
+ $this->registerJs(
+    "$(document).on('click', \"#refresh_contacts_grid\", function() 
+    	{
+    	$.pjax.reload({container:\"#client-contact-grid\"});
+		});"
+   );	
+ 
  
   $this->registerJs(
-    "$(document).on('click', '.activity-update-link', function() 
+    "$(document).on('click', '.contact-update-link', function() 
     	{
 		$.ajax
   		({
-  		url: '".yii\helpers\Url::toRoute("contacts/modal")."',
+  		url: '".yii\helpers\Url::toRoute("contacts/ajax-update")."',
 		data: {id: $(this).closest('tr').data('key')},
 		success: function (data, textStatus, jqXHR) 
 			{
 			$('.modal-body').removeData('bs.modal').find('.modal-content').empty();
-			//$('#activity-modal').modal();
+			
 			$('.modal-body').html(data);
-          
+         	$('#activity-modal').modal();
 
 			},
         error: function (jqXHR, textStatus, errorThrown) 
@@ -98,19 +91,27 @@ $this->registerJs(
 	"
    );
  
-/*	
-$this->registerJs(
-      "$('.activity-update-link').click(function() 
-    {
- 	 $('#activity-modal').modal('show').find('#modal_content').load('".yii\helpers\Url::toRoute(["contacts/modal", 'id' => '1' ])."');
-
-
- 	alert('clicly clicky');
- 	
-   	});"
+ $this->registerJs(
+    "$(document).on('click', '.contact-delete-link', function() 
+    	{
+		$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("contacts/ajax-delete")."',
+		data: {id: $(this).closest('tr').data('key')},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$.pjax.reload({container:\"#client-contact-grid\"});
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+		});
+	"
    );
-  */ 
-   
+
  
 $this->registerJs("
 $('body').on('beforeSubmit', 'form#contact-form', function () {
@@ -140,18 +141,41 @@ $('body').on('beforeSubmit', 'form#contact-form', function () {
 
 
 
+$gridColumns = [
+	[ 'attribute' => 'fullname'],
+	['attribute' => 'Mobile_Phone'],
+	
+	['attribute' => 'Business_Phone'],
+	
+	['attribute' => 'Email'],
+	[
+	    'class'=>'kartik\grid\ActionColumn',
+		'template' => '{update} {delete}',
+		'contentOptions' => ['class' => 'padding-left-5px'],
 
-/*
-$this->registerJs("
-
-$('body').on('hidden.bs.modal', '.modal', function () {
-  	$(this).removeData('bs.modal');
-});
-
-
-");
-*/
-		
+	   	'buttons' => 
+	   		[
+	   		'delete' => function ($url, $model, $key) 
+	   			{
+                return Html::a('<span class="glyphicon glyphicon-trash"></span>','#', 
+                	[
+                    'class' => 'contact-delete-link',
+                    'title' => 'Delete',
+					]);
+				},
+			'update' => function ($url, $model, $key) 
+	   			{
+                return Html::a('<span class="glyphicon glyphicon-pencil"></span>','#', 
+                	[
+                    'class' => 'contact-update-link',
+                    'title' => 'Update',
+					]);
+				},
+			],
+	    'headerOptions'=>['class'=>'kartik-sheet-style'],
+	],
+	
+	];		
 	
 echo Form::widget(
 		[
@@ -170,7 +194,7 @@ echo Form::widget(
 		]);		
 		
 		
-//Pjax::begin(['id' => '123client-contact-grid']); 
+ 
 echo GridView::widget(
 		[
 		'id' => 'client_contact-grid',
@@ -179,13 +203,13 @@ echo GridView::widget(
         		'heading'=>"Company Contacts",
    		 ],
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
-//		'toolbar'=> 
-//			[
-//				['content'=>
-//					Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Contact', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-//					Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
-//				],
-//			],
+		'toolbar'=> 
+			[
+				['content'=>
+					Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Contact', 'class'=>'btn btn-success', 'client_id' => $model->id, 'id' => 'add_contact_button' ]) . ' '.
+					Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh', 'id' => 'refresh_contacts_grid', 'class'=>'btn btn-success'])
+				],
+			],
 		'dataProvider'=> new yii\data\ActiveDataProvider(['query' => $model->getContacts()]),
 		//'filterModel'=>$searchModel,
 		'columns'=>$gridColumns,
@@ -196,7 +220,7 @@ echo GridView::widget(
 		'pjaxSettings' =>
 			[
 			'neverTimeout'=>true,
-			'options' =>['id' => '123client-contact-grid'],
+			'options' =>['id' => 'client-contact-grid'],
 			
 			],
  		'export' => false,
@@ -205,6 +229,6 @@ echo GridView::widget(
 
 	
 		
-//Pjax::end(); 	
+
 
 ?>

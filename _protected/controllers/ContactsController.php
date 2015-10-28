@@ -152,7 +152,72 @@ class ContactsController extends Controller
     }
     
  
+ 
+ 	public function actionAjaxCreate($client_id)
+ 	{
+ 	
+ 	$contact = new Contacts();
+ 	
+ 	
+ 	$client = Clients::findOne($client_id);
+	if($client == null)
+		{
+		die("Unable to find specified client from client id: ".$client_id);
+		}
+		
+	$post = Yii::$app->request->post(); 
+	if ($contact->load($post) && $contact->save()) 
+		{
+		return "saved Contact";
+		}
+
+	else{
+		$contact = new Contacts();
+		$contact->Company_id = $client->id;
+		$contact->Address_1_Street_1 = $client->Address_1_Street_1;
+		$contact->Address_1_Street_2 = $client->Address_1_Street_2;
+		$contact->Address_1_TownSuburbCity = $client->Address_1_TownSuburb;
+		$contact->Address_1_Postal_Code = $client->Address_1_Postal_Code;
+		$contact->Business_Phone = $client->Main_Phone;
+			
+		return $this->renderAjax('_ajaxForm', ['model' => $contact]);	
+		}
+	}
+	
+	
+	public function actionAjaxUpdate($id)
+    {
+		$model = $this->findModel($id);	
+		if($model == null)
+			{
+			die("Uanble to find the Contact from contract id: ".$id);
+			}
+		
+		$post = Yii::$app->request->post(); 
+		if ($model->load($post) && $model->save()) 
+			{
+        	Yii::$app->session->setFlash('kv-detail-success', 'Details Saved');
+			}
+		else{
+			return $this->renderAjax('_ajaxForm', ['model' => $model]);
+			}
+		
+		
+	}
     
+    
+    public function actionAjaxDelete($id)
+    {
+		$model = $this->findModel($id);	
+		if($model == null)
+			{
+			die("Unable to find the Contact from contract id: ".$id);
+			}
+		$model->delete();
+		
+		
+		
+	}
     
     
     public function actionDetail($id = null, $mode = 'view') 

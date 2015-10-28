@@ -8,7 +8,7 @@ use app\components\actionButtons;
 /* @var $model app\models\clients */
 
 $this->title = $model->Company_Name;
-$this->params['breadcrumbs'][] = ['label' => 'Client List', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Clients', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->Company_Name];
 ?>
 <div class="clients-update">

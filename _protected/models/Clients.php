@@ -263,5 +263,18 @@ class Clients extends \yii\db\ActiveRecord
 	}
 	
 	
+	public function isCustomer()
+	{
+		if($this->Is_Customer == 1)
+			{
+			return true;
+			}
+		return false;
+	}
+	
+	public function getOrders()
+    {
+		 return $this->hasMany(CustomerOrders::className(), ['Customer_id' => 'id']);
+	}
 	
 }
