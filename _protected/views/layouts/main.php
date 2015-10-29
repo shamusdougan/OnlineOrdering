@@ -65,8 +65,8 @@ AppAsset::register($this);
 						]],	
 					['label' => 'Admin', 'icon' => 'list-alt', 'items' => 
 						[
-						['label' => 'Trucks', 'icon' => 'th-list', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'trucks')],
-						['label' => 'Trailers', 'icon' => 'inbox', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'trailers')],
+						['label' => 'Trucks', 'icon' => 'th-list', 'url' => Url::toRoute('/trucks'), 'active'=>($currentItem == 'trucks')],
+						['label' => 'Trailers', 'icon' => 'inbox', 'url' => Url::toRoute('/trailers'), 'active'=>($currentItem == 'trailers')],
 						['label' => 'Customer Storage',  'url' => Url::toRoute('/storage'), 'active'=>($currentItem == 'storage')],
 						['label' => 'Customer Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
 						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
