@@ -411,7 +411,6 @@ class DeliveryController extends Controller
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
 		
-		
 		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
 		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name');
 		

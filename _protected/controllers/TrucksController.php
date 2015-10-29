@@ -4,13 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\models\trucks;
-use app\models\trailers;
 use app\models\trucksSearch;
-use app\models\trucksDefaultTrailers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 
 /**
  * TrucksController implements the CRUD actions for trucks model.
@@ -29,19 +26,6 @@ class TrucksController extends Controller
         ];
     }
 
-
-	public function beforeAction($action)
-	{
-	    if (!parent::beforeAction($action)) {
-	        return false;
-	    }
-
-	    $this->view->params['menuItem'] = 'trucks';
-
-	    return true; // or false to not run the action
-	}
-
-
     /**
      * Lists all trucks models.
      * @return mixed
@@ -50,14 +34,10 @@ class TrucksController extends Controller
     {
         $searchModel = new trucksSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-          $dataProvider->setSort(['defaultOrder' => ['registration'=>SORT_ASC]]);
-        
-        $actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/trucks/create'];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'actionItems' => $actionItems,
         ]);
     }
 
@@ -82,52 +62,11 @@ class TrucksController extends Controller
     {
         $model = new trucks();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) 
-        	{
-           
-           
-           	//assign the default trailers
-        	$defaultTrailerList = Yii::$app->request->post("trailer_select");
-        	if(isset($defaultTrailerList))
-        		{
-	            foreach($defaultTrailerList as $trailer_id)
-	            	{
-					$defaultTrailer = new TrucksDefaultTrailers();
-					$defaultTrailer->truck_id = $model->id;
-					$defaultTrailer->trailer_id = $trailer_id;
-					$defaultTrailer->save();
-					}
-					
-				}
-        	
-        	 //Once save, either stay on the page or exit. Controlled via the actiob buttons
-            $get = Yii::$app->request->get();
-            if(isset($get['exit']) && $get['exit'] == 'false' )
-	    			{
-					return $this->redirect(['update', 'id' => $model->id]);
-					}
-				else{
-					return $this->redirect(['index']);
-					}
-        	
-        	} 
-        else {
-        	
-        	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/trucks/create?exit=false', 'submit' => 'truck-form', 'confirm' => 'Save Truck?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'truck-form', 'confirm' => 'Save and Exit Truck?']; 
-			
-			
-			$trailerObjects = Trailers::getAllActiveTrailers();
-        	$trailerList = ArrayHelper::map($trailerObjects, 'id', 'Registration') ;
-
-			
-			
-        	$model->Status = TRUCKS::STATUS_ACTIVE;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
             return $this->render('create', [
                 'model' => $model,
-                'actionItems' => $actionItems,
-                'trailerList' => $trailerList,
             ]);
         }
     }
@@ -142,62 +81,11 @@ class TrucksController extends Controller
     {
         $model = $this->findModel($id);
 
-
-
-		
-        if ($model->load(Yii::$app->request->post()) && $model->save()) 
-        	{
-           
-            
-            
-            //clear any existing default trailers and add the new ones
-            $model = $model->removeDefaultTrailers();
-            $defaultTrailerList = Yii::$app->request->post("trailer_select");
-          	if(isset($defaultTrailerList))
-        		{
-	            foreach($defaultTrailerList as $trailer_id)
-	            	{
-					$defaultTrailer = new TrucksDefaultTrailers();
-					$defaultTrailer->truck_id = $model->id;
-					$defaultTrailer->trailer_id = $trailer_id;
-					$defaultTrailer->save();
-					}
-					
-				}
-           
-            
-            
-           
-            
-            $get = Yii::$app->request->get();
-            if(isset($get['exit']) && $get['exit'] == 'false' )
-	    			{
-					return $this->redirect(['update', 'id' => $model->id]);
-					}
-				else{
-					return $this->redirect(['index']);
-					}
-        	} 
-        	
-        	
-        	
-        	
-        	
-        else {
-        	
-        	
-        	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/trucks/update?id='.$model->id.'&exit=false', 'submit' => 'truck-form', 'confirm' => 'Save Truck?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'truck-form', 'confirm' => 'Save and Exit Truck?']; 
-			
-        	$trailerObjects = Trailers::getAllActiveTrailers();
-        	$trailerList = ArrayHelper::map($trailerObjects, 'id', 'Registration') ;
-
-        	
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
             return $this->render('update', [
                 'model' => $model,
-                'actionItems' => $actionItems,
-                'trailerList' => $trailerList,
             ]);
         }
     }

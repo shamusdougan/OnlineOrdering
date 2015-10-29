@@ -40,9 +40,9 @@ class Trucks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['registration', 'Status'], 'required'],
-            [['CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper'], 'integer'],
-            [['registration', 'mobile'], 'string', 'max' => 200],
+            [['registration', 'CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper'], 'required'],
+            [['CreatedBy', 'defaultTrailer', 'Status', 'Auger', 'Blower', 'Tipper'], 'integer'],
+            [['registration'], 'string', 'max' => 200],
             [['description', 'Special_Instruction'], 'string', 'max' => 500]
         ];
     }
@@ -57,7 +57,8 @@ class Trucks extends \yii\db\ActiveRecord
             'registration' => 'Registration',
             'description' => 'Description',
             'CreatedBy' => 'Created By',
-           
+            'defaultTrailer_id' => 'Default Trailer',
+            'Special_Instruction' => 'Special Instruction',
             'Status' => 'Status',
             'Auger' => 'Auger',
             'Blower' => 'Blower',
@@ -72,17 +73,7 @@ class Trucks extends \yii\db\ActiveRecord
 		}
     
    
-    public function getDefaultTrailersList()
-    	{
- 
- 			$returnArray = [];
-			foreach($this->defaultTrailers as $defaultTrailer)
-				{
-				$returnArray[] = $defaultTrailer->trailer->Registration;
-				}
-				
-			return implode($returnArray, ",");
-		}
+    
     
     /**
 	* 
@@ -197,33 +188,8 @@ class Trucks extends \yii\db\ActiveRecord
 						
 	}
     
-    
-    /**
-	* 
-	* 
-	* @return
-	*/
-	public function removeDefaultTrailers()
-	{
+
 	
-	foreach($this->defaultTrailers as $defaultTrailer)
-		{
-		$defaultTrailer->delete();
-		}
-
-	return Trucks::findOne($this->id);
-	}
-
-
-	public function listDefaultTrailers()
-	{
-		$trailerList = [];
-		foreach($this->defaultTrailers as $defaultTrailer)
-		{
-		$trailerList[] = $defaultTrailer->trailer_id;
-		}
-		
-		return $trailerList;
-	}    
+    
     
 }

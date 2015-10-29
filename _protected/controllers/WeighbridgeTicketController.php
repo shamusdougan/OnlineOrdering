@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 
-
+use mPDF;
 
 /**
  * WeighbridgeTicketController implements the CRUD actions for WeighbridgeTicket model.
@@ -165,28 +165,11 @@ class WeighbridgeTicketController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) 
-        	{
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        	}
-        else {
-            
-            
-            
-        	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge_ticket/create?exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'weighbridge-form', 'confirm' => 'Save and Exit Delivery?']; 
-			$actionItems[] = ['label'=>'Print Ticket', 'button' => 'print', 'url'=> null,]; 
-            
-            
-            
-            
-            
-             return $this->render('create', [
+        } else {
+            return $this->render('update', [
                 'model' => $model,
-                'delivery' => $model->delivery,
-                'actionItems' => $actionItems,
-                'deliveryList' => null,
             ]);
         }
     }
@@ -215,10 +198,10 @@ class WeighbridgeTicketController extends Controller
 	{
 		$mpdf = new mPDF;
 		
-		//$html = "<table border='1'><tr><td width='150px' height='150px'>hello world</td></Tr></table>";
+		$html = "<table border='1'><tr><td width='150px' height='150px'>hello world</td></Tr></table>";
 		
 		
-        $mpdf->WriteHTML($this->renderAjax('pdfForm'));
+        $mpdf->WriteHTML($html);
         $mpdf->Output();
         exit;
 

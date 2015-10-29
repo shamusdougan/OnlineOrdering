@@ -61,32 +61,6 @@ $this->registerJs("$('#".Html::getInputId($model, 'delivery_id')."').on('change'
 
 
 
-
-
-
-
-
-$this->registerJs("$('.sap_print').on('click',function(){
-	
-	var windowSizeArray = [ 'width=200,height=200',
-                            'width=300,height=400,scrollbars=yes' ];
-
-	var url = '".yii\helpers\Url::toRoute("weighbridge-ticket/pdf")."';
-    var windowName = 'Weigh Bridge Ticket';
-    var windowSize = windowSizeArray[$(this).attr('rel')];
-
-    window.open(url, windowName, windowSize);
-
-   
-
-	
-	});
-	
-
-
-
-");
-
 ?>
 
 <div class="weighbridge-ticket-form">
@@ -96,9 +70,9 @@ $this->registerJs("$('.sap_print').on('click',function(){
        
 		echo $form->field($model, 'ticket_number',  ['template' => '{input}'])->hiddenInput()->label(false);
 		//echo $form->field($model, 'date',  ['template' => '{input}'])->hiddenInput()->label(false);
-       echo $form->field($model, 'date', ['template' => '{input}'])->hiddenInput()->label(false);
-       echo $form->field($model, 'ticket_number', ['template' => '{input}'])->hiddenInput()->label(false);
-       echo $form->field($model, 'truck_id', ['template' => '{input}'])->hiddenInput()->label(false);
+       echo $form->field($model, 'date');
+       echo $form->field($model, 'ticket_number');
+       echo $form->field($model, 'truck_id');
    
     
     

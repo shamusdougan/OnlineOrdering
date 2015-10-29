@@ -1,8 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use kartik\grid\GridView;
-use app\components\actionButtons;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\trailersSearch */
@@ -13,15 +12,20 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="trailers-index">
 
-	<?= actionButtons::widget(['items' => $actionItems]) ?>
     <h1><?= Html::encode($this->title) ?></h1>
-   
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Trailers', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'export' => false,
         'columns' => [
-           
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
             'Registration',
             'Description',
             'Max_Capacity',

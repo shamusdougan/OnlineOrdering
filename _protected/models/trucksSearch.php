@@ -18,8 +18,8 @@ class trucksSearch extends trucks
     public function rules()
     {
         return [
-            [['id', 'CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper'], 'integer'],
-            [['registration', 'description'], 'safe'],
+            [['id', 'CreatedBy', 'defaultTrailer', 'Status', 'Auger', 'Blower', 'Tipper'], 'integer'],
+            [['registration', 'description', 'SpecialInstruction'], 'safe'],
         ];
     }
 
@@ -58,6 +58,7 @@ class trucksSearch extends trucks
         $query->andFilterWhere([
             'id' => $this->id,
             'CreatedBy' => $this->CreatedBy,
+            'defaultTrailer' => $this->defaultTrailer,
             'Status' => $this->Status,
             'Auger' => $this->Auger,
             'Blower' => $this->Blower,
@@ -65,7 +66,8 @@ class trucksSearch extends trucks
         ]);
 
         $query->andFilterWhere(['like', 'registration', $this->registration])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'SpecialInstruction', $this->SpecialInstruction]);
 
         return $dataProvider;
     }
