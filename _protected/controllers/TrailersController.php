@@ -26,6 +26,19 @@ class TrailersController extends Controller
         ];
     }
 
+	public function beforeAction($action)
+	{
+	    if (!parent::beforeAction($action)) {
+	        return false;
+	    }
+
+	    $this->view->params['menuItem'] = 'trailers';
+
+	    return true; // or false to not run the action
+	}
+
+
+
     /**
      * Lists all trailers models.
      * @return mixed
@@ -35,9 +48,13 @@ class TrailersController extends Controller
         $searchModel = new trailersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+ 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/trucks/create'];
+
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
     }
 

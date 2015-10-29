@@ -37,7 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'testWeight',
             // 'screenings',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+				'class' => 'kartik\grid\ActionColumn',
+				'template' => '{update} {delete}',
+				'width' => '5%',
+			],
         ],
     ]); ?>
 
