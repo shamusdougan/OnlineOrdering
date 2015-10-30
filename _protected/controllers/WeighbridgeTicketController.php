@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use kartik\mpdf\Pdf;
 
 
 
@@ -213,14 +214,12 @@ class WeighbridgeTicketController extends Controller
 
 	public function actionPdf()
 	{
-		$mpdf = new mPDF;
-		
-		//$html = "<table border='1'><tr><td width='150px' height='150px'>hello world</td></Tr></table>";
-		
-		
-        $mpdf->WriteHTML($this->renderAjax('pdfForm'));
-        $mpdf->Output();
-        exit;
+	$pdf = new Pdf([
+		'content' => "Hello world",  
+    	]);
+
+
+ 	return $pdf->render(); 
 
 	}
 	
