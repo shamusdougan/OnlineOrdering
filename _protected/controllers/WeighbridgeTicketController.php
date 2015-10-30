@@ -216,9 +216,15 @@ class WeighbridgeTicketController extends Controller
 	{
 	$pdf = new Pdf([
 		'content' => "Hello world",  
+		'destination' => Pdf::DEST_FILE, 
+		'filename' => 'c:\temp\test.pdf',
+//		'methods' => 
+//			[
+//			"SetJS" => "'this.print(false);'",
+//			]
     	]);
 
-
+	
  	return $pdf->render(); 
 
 	}
