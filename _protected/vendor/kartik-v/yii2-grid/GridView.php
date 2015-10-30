@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.6
+ * @version   3.0.7
  */
 
 namespace kartik\grid;
@@ -354,6 +354,11 @@ HTML;
      */
     public $resizableColumns = true;
 
+    /**
+     * @var boolean the resizableColumns plugin options
+     */
+    public $resizableColumnsOptions = ['resizeFromBody' => false];
+    
     /**
      * @var boolean whether to store resized column state using local storage persistence
      * (supported by most modern browsers). Defaults to `false`.
@@ -1441,14 +1446,16 @@ HTML;
             }
         }
         if ($this->resizableColumns) {
-            $store = '{store:null}';
+            $rcDefaults=[];
             if ($this->persistResize) {
                 GridResizeStoreAsset::register($view);
-                $store = '';
+            } else {
+                $rcDefaults=['store'=>null];
             }
+            $rcOptions=Json::encode(ArrayHelper::merge($rcDefaults, $this->resizableColumnsOptions));
             $contId = $this->containerOptions['id'];
             GridResizeColumnsAsset::register($view);
-            $script .= "$('#{$contId}').resizableColumns({$store});";
+            $script .= "$('#{$contId}').resizableColumns({$rcOptions});";
         }
         if ($this->floatHeader) {
             GridFloatHeadAsset::register($view);

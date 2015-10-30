@@ -8,6 +8,8 @@ class Robofile extends \Robo\Tasks
         $this->test();
 
         $version = file_get_contents('VERSION');
+        
+        $this->docs();
 
         // create GitHub release
         $this->taskGitHubRelease($version)
@@ -25,8 +27,8 @@ class Robofile extends \Robo\Tasks
     }
 
     protected $docs = [
-        'docs/GlobalConfig.md' => \Codeception\Specify\Config::class,
-        'docs/LocalConfig.md' => \Codeception\Specify\ConfigBuilder::class,
+        'docs/GlobalConfig.md' => '\Codeception\Specify\Config',
+        'docs/LocalConfig.md' => '\Codeception\Specify\ConfigBuilder',
     ];
 
     public function docs()

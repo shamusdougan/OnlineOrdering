@@ -31,13 +31,13 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		});
 
 		$this->specify("username is too long", function() {
-			$user->username = 'toolooooongnaaaaaaameeee',
+			$this->user->username = 'toolooooongnaaaaaaameeee',
 			verify($user->validate(['username'])->false());			
 		});
 
 		// alternative, TDD assertions can be used too.
 		$this->specify("username is ok", function() {
-			$user->username = 'davert',
+			$this->user->username = 'davert',
 			$this->assertTrue($user->validate(['username']));			
 		});				
 	}
@@ -179,6 +179,17 @@ $this->specify('this assertion is failing', function() {
 ?>
 ```
 
+In both cases, you can optionally test the exception message
+
+``` php
+<?php
+
+$this->specify('some exception with a message', function() {
+	throw new NotFoundException("my error message');
+}, ['throws' => ['NotFoundException', 'my error message']]);
+?>
+```
+
 ## Examples
 
 DataProviders alternative. Quite useful for basic data providers.
@@ -227,7 +238,7 @@ $this->cleanSpecify(); // removes before/after callbacks
 Install with Composer:
 
 
-```
+```json
 "require-dev": {
     "codeception/specify": "*",
     "codeception/verify": "*"
