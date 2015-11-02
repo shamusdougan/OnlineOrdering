@@ -99,7 +99,7 @@ class Trucks extends \yii\db\ActiveRecord
 	*		if it hasn't been assigned then allow 
 	* @return
 	*/
-    public function getAvailable($requestedDate)
+    public function getTrucksUsageArray($requestedDate)
     	{
 		
 	
@@ -108,51 +108,27 @@ class Trucks extends \yii\db\ActiveRecord
 						->all();
 		
 		$trucks = Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
-		$trucksArray = ArrayHelper::map($trucks, 'id', 'registration') ;
 		
-		//iternate through the lists of Deliveries, collect an array of trucks used so far
-		$usedTrucks = array();
-		foreach($deliveryLoadsOnDate as $deliveryLoad)
-			{
-			$truckID = $deliveryLoad->truck_id;
-			$usedTrucks[$truckID] = array();
-			
-			//for each delivery work go through and list the number of trailerbins being used
-			//We should end up with an array looking like array([truck_id] -> array(trailer_id => number_of_bins_used))
-			foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBin)
-				{
-				$trailerID = $deliveryLoadBin->trailerBin->trailer_id;
-				if(array_key_exists($trailerID, $usedTrucks[$truckID]))
-					{
-					$usedTrucks[$truckID][$trailerID] += 1;
-					}
-				else{
-					$usedTrucks[$truckID][$trailerID] = 1;
-					}
-				}
-			}
-
 		
-		//Go through each of the trucks->trailers and check that if the number of trailer bins being used matches The
-		// number of trailerbin available. If they dont match then with bins free the truck and trailers can have a delivery added to it.
-		foreach($usedTrucks as $truckID => $trailersArray)
+		//create the basic truck array assuming every truck is on delivery run 1
+		
+		$truckUsageArray = array();
+		foreach($trucks as $truck)
 			{
-			$trailersFull = true;
-			foreach($trailersArray as $trailerID => $trailerBinCount)
-				{
-				if(Trailers::getTrailerBinCount($trailerID) != $trailerBinCount)
-					{
-					$trailersFull = false;
-					}
-				}
-				
-			if($trailersFull)
-				{
-				unset($trucksArray[$truckID]);
-				}
+			$truckUsageArray[1][$truck->id]['truck'] = $truck;
+			$truckUsageArray[1][$truck->id]['remaining_space'] = '';
 			}
 		
-		return $trucksArray;
+		
+		//need to go through and populate the array based on usage for the trucks/trailers
+		
+		
+		
+		
+	
+		
+		
+		return $truckUsageArray;
 		}
     
     /**
@@ -183,7 +159,7 @@ class Trucks extends \yii\db\ActiveRecord
 				$assigned = true;
 				foreach($deliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailer)
 					{
-					$trailersAssignedArray[$deliveryLoadTrailer->trailer->id] = $deliveryLoadTrailer->trailer;
+					$trailersAssignedArray[$deliveryLoad->delivery_run_num][$deliveryLoadTrailer->trailer->id] = $deliveryLoadTrailer->trailer;
 					}
 				}
 			}

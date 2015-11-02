@@ -34,7 +34,7 @@ class DeliveryLoad extends \yii\db\ActiveRecord
         return [
             [['delivery_id'], 'required'],
             [['delivery_id', ], 'integer'],
-            [['load_qty'], 'number'],
+            [['load_qty', 'delivery_run_num'], 'number'],
             [['delivery_on', 'delivery_completed_on'], 'safe']
         ];
     }

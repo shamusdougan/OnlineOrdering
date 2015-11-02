@@ -531,3 +531,10 @@ hr.article-devider {
 	cursor: pointer;
 }
 
+.truck_allocation_panel
+{
+	border-radius: 25px;
+    background: #8AC007;
+}
+ 
+

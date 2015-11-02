@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2015 at 04:20 PM
+-- Generation Time: Nov 02, 2015 at 04:16 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1193,7 +1193,7 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `Mobile_Phone` varchar(50) DEFAULT NULL,
   `Company_id` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=574 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=570 ;
 
 --
 -- Dumping data for table `contacts`
@@ -1828,7 +1828,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=243 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=254 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -1837,12 +1837,10 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
 INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
 (232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 69, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 4, 103, NULL, NULL, 100),
 (235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100),
-(237, 'ORD3237', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(238, 'ORD3238', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 73, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 4, 1018, NULL, NULL, 100),
-(240, 'ORD3240', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(241, 'ORD3241', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-28', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(242, 'ORD3242', 596, 'MJ & DR Whitford Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-28', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, '4539.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-31', NULL, NULL, NULL, 2, 227, NULL, NULL, 100);
+(242, 'ORD3242', 596, 'MJ & DR Whitford Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-28', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, '4539.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-31', NULL, NULL, NULL, 2, 227, NULL, NULL, 100),
+(252, 'ORD3235', 559, 'Mark Lyons Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-29', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 1, 394, NULL, NULL, 100),
+(253, 'ORD3253', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1859,7 +1857,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=131 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=139 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1872,7 +1870,15 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (127, '2015-09-02', 12, '100', NULL, NULL, 235),
 (128, '2015-10-22', 54, '100', NULL, NULL, 239),
 (129, '2015-10-27', 53, '100', NULL, NULL, 240),
-(130, '2015-10-28', 58, '100', NULL, NULL, 242);
+(130, '2015-10-28', 58, '100', NULL, NULL, 242),
+(131, '2015-09-02', 12, '100', NULL, NULL, 245),
+(132, '2015-09-02', 12, '100', NULL, NULL, 246),
+(133, '2015-09-02', 12, '100', NULL, NULL, 247),
+(134, '2015-09-02', 12, '100', NULL, NULL, 248),
+(135, '2015-10-28', 58, '100', NULL, NULL, 249),
+(136, '2015-10-28', 58, '100', NULL, NULL, 250),
+(137, '2015-10-22', 54, '100', NULL, NULL, 251),
+(138, '2015-09-02', 12, '100', NULL, NULL, 252);
 
 -- --------------------------------------------------------
 
@@ -1898,7 +1904,7 @@ CREATE TABLE IF NOT EXISTS `delivery` (
 --
 
 INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`) VALUES
-(73, 'DEL00073', NULL, NULL, 55, '2015-10-28', NULL, 239, 2);
+(73, 'DEL00073', NULL, NULL, 0, '2015-10-28', NULL, 239, 2);
 
 -- --------------------------------------------------------
 
@@ -1910,19 +1916,12 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `delivery_id` int(10) NOT NULL,
   `load_qty` float NOT NULL,
-  `trailer_id` int(10) NOT NULL,
   `delivery_on` date DEFAULT NULL,
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
+  `delivery_run_num` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=181 ;
-
---
--- Dumping data for table `delivery_load`
---
-
-INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `trailer_id`, `delivery_on`, `delivery_completed_on`, `truck_id`) VALUES
-(180, 73, 55, 0, '2015-10-28', NULL, 92);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=185 ;
 
 -- --------------------------------------------------------
 
@@ -1936,23 +1935,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=731 ;
-
---
--- Dumping data for table `delivery_load_bin`
---
-
-INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
-(721, 180, 373, 3),
-(722, 180, 374, 3),
-(723, 180, 375, 4),
-(724, 180, 376, 3),
-(725, 180, 377, 3),
-(726, 180, 378, 4),
-(727, 180, 379, 4),
-(728, 180, 380, 16),
-(729, 180, 381, 8),
-(730, 180, 382, 7);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=767 ;
 
 -- --------------------------------------------------------
 
@@ -1965,15 +1948,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=265 ;
-
---
--- Dumping data for table `delivery_load_trailer`
---
-
-INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
-(263, 180, 3),
-(264, 180, 4);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=272 ;
 
 -- --------------------------------------------------------
 
@@ -2301,7 +2276,7 @@ CREATE TABLE IF NOT EXISTS `storage` (
   `SuburbTown` varchar(100) DEFAULT NULL,
   `Tipper` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1241 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1239 ;
 
 --
 -- Dumping data for table `storage`
@@ -2395,7 +2370,7 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 (100, 'Bulka Bags', '4.00', 870, b'1', b'0', 'Must Phone Jarreth Hume 1 hour Before Arriving. 0438 891 262', '3953', 1, '160 Palmross''s Road', 'LEONGATHA NORTH', b'0'),
 (101, 'Bulka Bags', '10.00', 484, b'1', b'0', 'Ring Kevin prior to leaving Nth Melbourne 0419 108 615', '', 1, '215 Heads Rd', '', b'0'),
 (102, 'Bulka Bags', '4.00', 201, b'1', b'0', 'Bulka Bags - Sheep Feed', '', 1, '245 Gleeson Road', 'TYNONG', b'0'),
-(103, 'Bulka Bags', NULL, 6, b'1', b'0', 'Must phone Alfie as truck leaves Mill, 0419 970 334. Auger Truck Only, take 4 Bulka bags', '3757', 1, '', 'WHITTLESEA', b'0'),
+(103, 'Bulka Bags', '5.00', 6, b'1', b'0', 'Must phone Alfie as truck leaves Mill, 0419 970 334. Auger Truck Only, take 4 Bulka bags', '3757', 1, '', 'WHITTLESEA', b'0'),
 (105, 'Bulka bags', '0.80', 374, b'1', b'0', 'Auger into bulka bags.', '', 1, '345 North Jindivick Road', 'JINDIVICK', b'0'),
 (106, 'bulker bag', NULL, 299, b'0', b'0', 'call Jake on 0428 003 963 please take bulker bags', '3816', 1, '110 Chambers Road', 'MODELLA', b'0'),
 (107, 'Bulker bags', '4.00', 70, b'1', b'1', 'Only dairy farm in the town of brandy creek. Take care as driveway is very steep coming back out and narrow.', '3821', 1, 'Old Sale Road', 'Brandy Creek', b'0'),
@@ -3687,6 +3662,8 @@ CREATE TABLE IF NOT EXISTS `trucks` (
   `Auger` tinyint(1) NOT NULL,
   `Blower` tinyint(1) NOT NULL,
   `Tipper` tinyint(1) NOT NULL,
+  `max_trailers` int(10) DEFAULT NULL,
+  `max_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
 
@@ -3694,28 +3671,28 @@ CREATE TABLE IF NOT EXISTS `trucks` (
 -- Dumping data for table `trucks`
 --
 
-INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`, `defaultTrailer_id`, `Special_Instruction`, `Status`, `Auger`, `Blower`, `Tipper`) VALUES
-(90, 'Container', '0400 000 000', 'Container', 1, NULL, '', 1, 0, 0, 0),
-(91, 'EX WORKS TRUCKS', '0000000000', 'EX WORKS TRUCKS', 1, NULL, '', 1, 0, 0, 0),
-(92, 'ISF 480', '0488 566 489', 'Scania 480', 1, 3, '', 1, 0, 0, 0),
-(93, 'ISF 540', 'TBA', 'VOLVO 540', 1, NULL, 'NO POWER PACK OR BLOWER - TIPPER ONLY', 1, 0, 0, 0),
-(94, 'ISX 908', '0407 908 555', 'TIPPER/BLOWER', 1, NULL, 'TIPPER/BLOWER', 1, 0, 0, 0),
-(95, 'QQJ 669', '0409 566 098', 'KEOGH AUGER (OLD AUGER)', 1, NULL, '', 1, 1, 1, 0),
-(96, 'RVL 465', '0409 566 057', 'C/VAC AUGER/BLOWER', 1, NULL, '', 1, 1, 1, 0),
-(97, 'SIP 819', '0409 566 058', 'HAMELEX SINGLE TIPPER', 1, NULL, '', 1, 1, 0, 0),
-(98, 'TOM HARWOOD', '0427017769', 'SINGLE TIPPER', 1, NULL, '', 1, 0, 0, 0),
-(99, 'TWV 765', '0417 566 089', 'C/VAC CHOOK BIN', 1, NULL, '', 1, 0, 1, 0),
-(100, 'ULZ 544', '0417 566 607', 'Truck is a write off - needs to be deleted', 1, NULL, '', 0, 0, 0, 1),
-(101, 'USZ 620', '0409 566 802', 'KOCKUMS TRI AXLE BLOWER', 1, NULL, '', 1, 0, 0, 1),
-(102, 'XQP 945', '0438 851 867', 'CVAC B-DOUBLE', 1, NULL, '', 1, 0, 0, 0),
-(103, 'YBV 974', '0409 566 333', 'CVAC BLOWER - Blue Tarp', 1, NULL, '', 1, 0, 0, 0),
-(104, 'YBV 987', '0409 566 044', 'CVAC BLOWER (SILVER)', 1, NULL, '', 1, 0, 0, 0),
-(105, 'YGW 955', '0409 566 098', 'CVAC BLOWER/STINGER-72982-S', 1, NULL, '', 1, 0, 0, 0),
-(106, 'YXU 596', '0417 566 607', 'MOORE B-BOUBLE', 1, NULL, '', 1, 0, 0, 0),
-(107, 'ZBW 257', '0488 566 008', 'HAMELEX B-DOUBLE', 1, NULL, '', 1, 0, 0, 0),
-(108, 'ZHR 591', '0409 566 078', 'C/VAC AUGER (ROLLOVER)', 1, NULL, '', 1, 0, 0, 0),
-(109, 'ZPV 911', '0488 566 030', 'C/VAC BLOWER/STINGER', 1, NULL, 'Michael Phillips', 1, 0, 0, 0),
-(110, 'ZWY 945', '0488 566 089', 'C/VAC B-DOUBLE CHOOK BIN', 1, NULL, '', 1, 0, 0, 0);
+INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`, `defaultTrailer_id`, `Special_Instruction`, `Status`, `Auger`, `Blower`, `Tipper`, `max_trailers`, `max_load`) VALUES
+(90, 'Container2', '0400 000 000', 'Container', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(91, 'EX WORKS TRUCKS', '0000000000', 'EX WORKS TRUCKS', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(92, 'ISF 480', '0488 566 489', 'Scania 480', 1, 3, '', 1, 0, 0, 0, NULL, NULL),
+(93, 'ISF 540', 'TBA', 'VOLVO 540', 1, NULL, 'NO POWER PACK OR BLOWER - TIPPER ONLY', 1, 0, 0, 0, NULL, NULL),
+(94, 'ISX 908', '0407 908 555', 'TIPPER/BLOWER', 1, NULL, 'TIPPER/BLOWER', 1, 0, 1, 0, NULL, NULL),
+(95, 'QQJ 669', '0409 566 098', 'KEOGH AUGER (OLD AUGER)', 1, NULL, '', 1, 1, 1, 0, NULL, NULL),
+(96, 'RVL 465', '0409 566 057', 'C/VAC AUGER/BLOWER', 1, NULL, '', 1, 1, 1, 0, NULL, NULL),
+(97, 'SIP 819', '0409 566 058', 'HAMELEX SINGLE TIPPER', 1, NULL, '', 1, 1, 0, 0, NULL, NULL),
+(98, 'TOM HARWOOD', '0427017769', 'SINGLE TIPPER', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(99, 'TWV 765', '0417 566 089', 'C/VAC CHOOK BIN', 1, NULL, '', 1, 0, 1, 0, NULL, NULL),
+(100, 'ULZ 544', '0417 566 607', 'Truck is a write off - needs to be deleted', 1, NULL, '', 0, 0, 0, 1, NULL, NULL),
+(101, 'USZ 620', '0409 566 802', 'KOCKUMS TRI AXLE BLOWER', 1, NULL, '', 1, 0, 0, 1, NULL, NULL),
+(102, 'XQP 945', '0438 851 867', 'CVAC B-DOUBLE', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(103, 'YBV 974', '0409 566 333', 'CVAC BLOWER - Blue Tarp', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(104, 'YBV 987', '0409 566 044', 'CVAC BLOWER (SILVER)', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(105, 'YGW 955', '0409 566 098', 'CVAC BLOWER/STINGER-72982-S', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(106, 'YXU 596', '0417 566 607', 'MOORE B-BOUBLE', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(107, 'ZBW 257', '0488 566 008', 'HAMELEX B-DOUBLE', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(108, 'ZHR 591', '0409 566 078', 'C/VAC AUGER (ROLLOVER)', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
+(109, 'ZPV 911', '0488 566 030', 'C/VAC BLOWER/STINGER', 1, NULL, 'Michael Phillips', 1, 0, 0, 0, NULL, NULL),
+(110, 'ZWY 945', '0488 566 089', 'C/VAC B-DOUBLE CHOOK BIN', 1, NULL, '', 1, 0, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3728,15 +3705,15 @@ CREATE TABLE IF NOT EXISTS `trucks_default_trailers` (
   `truck_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `trucks_default_trailers`
 --
 
 INSERT INTO `trucks_default_trailers` (`id`, `truck_id`, `trailer_id`) VALUES
-(1, 92, 3),
-(2, 92, 4);
+(7, 91, 3),
+(8, 92, 19);
 
 -- --------------------------------------------------------
 

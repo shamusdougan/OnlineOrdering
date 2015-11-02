@@ -65,8 +65,6 @@ function updateOrderDetails()
 }
 
 
-
-
 function updateOrderRemaining()
 {
 	allocatedQty = 0
@@ -131,35 +129,6 @@ function clearAllTrucksTrailers()
 		updateOrderRemaining();
 		});
 }
-
-
-
-function updateTruckList()
-{
-	requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
-	
-	$.ajax
-		({
-		url: '".yii\helpers\Url::toRoute("delivery/ajax-available-trucks")."',
-		data: {requestedDate: requestedDate},
-		success: function (data, textStatus, jqXHR) 
-			{
-			$('#available_trucks_control').html(data);;
-			},
-	    error: function (jqXHR, textStatus, errorThrown) 
-	    	{
-	        console.log('An error occured!');
-	        alert('Error in ajax request' );
-	    	}
-		});
-	
-}
-
-
-
-
-
-
 
 function updateSelectedTrailersInput()
 {
@@ -277,130 +246,6 @@ $this->registerJs("$('#add_truck_button').click(function(event)
 		
 	});
 ");
-
-
-
-
-
-$this->registerJs("
-
-
-function checkGroupings()
-{
-	
-	$('#available_trucks_control optgroup').each(function() {
-		truckCount = $(this).children().length;
-		if(truckCount == 0)
-			{
-			this.remove();
-			}
-		
-		
-		});
-	
-	
-}
-
-
-");
-
-
-$this->registerJs("$('#add_truck_use').click(function(event)
-	{
-		event.preventDefault(); 
-		selected_truck_array = $('#available_trucks_control').val().split('_');
-		truck_id = selected_truck_array[0]
-		deliveryrun_id = selected_truck_array[1]
-		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
-	
-		
-		$.ajax
-		  		({
-		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-delivery-load")."',
-				data: {truck_id: truck_id, deliveryrun_id: deliveryrun_id, requestedDate: requestedDate},
-				success: function (data, textStatus, jqXHR) 
-					{
-					$('#truck_display_section').append(data);
-					updateSelectedTrailersInput();
-					updateTrailerAddLink();
-					},
-		        error: function (jqXHR, textStatus, errorThrown) 
-		        	{
-		            console.log('An error occured!');
-		            alert('Error in ajax request' );
-		        	}
-				});
-				
-			
-		
-	
-		
-		
-	});
-");
-
-
-$this->registerJs("$('#add_truck_use_addtional_run').click(function(event)
-	{
-		event.preventDefault(); 
-		
-		
-		//First check a truck has been selected
-		selected_truck_id = $('#available_trucks_control').val();
-		
-		if(selected_truck_id == null)
-			{
-			alert('Select Truck to add additional Delivery Run onto');
-			return;
-			}
-
-
-		
-
-		
-		//split the id into the 2 components
-		selected_truck_array = selected_truck_id.split('_');
-		truck_id = selected_truck_array[0]
-		loadrun_id = parseFloat(selected_truck_array[1]);
-		
-		
-		//check to see if the truck has already had another delivery run created.
-		if($('#available_trucks_control option[value=\'' + truck_id + '_' + (loadrun_id + 1) + '\']').html() != null)
-			{
-			alert('Truck already in next delivery run');
-			return;
-			}
-		
-		//check to see if they want to create antoher delivery run
-		if(!confirm('Do you want to create an additional Delivery Run for this truck today?'))
-			{
-			return;	
-			}
-		
-		
-		//check to see if the option group exists if it doesn't create it first'
-		optgroupLabel = 'Delivery Load ' + (loadrun_id + 1);
-		if($('#available_trucks_control optgroup[label=\'' + optgroupLabel + '\']').html() == null)
-			{
-			$('#available_trucks_control').append('<optgroup label=\'' + optgroupLabel + '\'></optgroup>');
-			}
-		
-		//add the Truck to the delivery run
-		selected_truck_name = $('#available_trucks_control option:selected').text();		
-		var option = option = $('<option></option>');
-		option.val(truck_id + '_' + (loadrun_id + 1));
-		option.text(selected_truck_name);
-                
-		$('#available_trucks_control optgroup[label=\'' + optgroupLabel + '\']').append(option);
-	
-	});
-");
-
-
-
-
-
-
 
 //need to add ajax here to remove any bins that have been allocated to the order
  $this->registerJs("$(document).on('click', '.close_allocation_link', function() 
@@ -866,7 +711,7 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 								],
 							'pluginEvents' =>
 								[
-								'changeDate' => "function(e) { updateTruckList(); }",
+								'changeDate' => "function(e) { clearAllTrucksTrailers(); }",
 								
 								
 								]
@@ -876,7 +721,38 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
     			?>
     		</div>
     	</div>
-    </div>
+    	<div style='padding-left: 10px; width: 400px; float: left'>
+    		<div style='width: 100%;'><b>Truck</b></div>
+			<div style='width: 100%; padding-top: 5px;'>
+		    <?= DepDrop::widget([
+		    	'name' => 'TruckSelect',
+				'type'=>DepDrop::TYPE_SELECT2,
+				'id' => 'truck_selection',
+			    'select2Options'=>
+			    	[
+			    	'pluginOptions'=>
+			    		[
+			    		'allowClear'=>true,
+			    		]
+			    	],
+				'pluginOptions'=>[
+					'depends'=>[Html::getInputId($model, 'delivery_on')],
+					'url'=>Url::to(['/delivery/ajax-available-trucks']),
+					'placeholder'=>'Select Truck to add....',
+					],
+				'data' => $truckList,
+				]);	
+			?>	
+			</div> 
+    	</div>
+    	<div style='padding-left: 10px; width: 400px; float: left'>
+    		<div style='width: 100%;'>&nbsp</div>
+			<div style='width: 100%; padding-top: 5px;'>
+		   		<button id='add_truck_button' style='height: 40px; width: 75px'>Add</button>
+			</div> 
+    	</div>
+    	
+	</div>
 	
 	<div style='width: 100%; border: 1px solid; height: 30px; padding-left: 10px; padding-top: 2px;'>
 		Select Fill Method 
@@ -887,49 +763,26 @@ $this->registerJs("$(document).on('click', '.remove_trailer_link', function()
 		<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
 	</div>
 
+	<input type='hidden' id='selected_trailers' value='<?= $model->getTrailersUsedArrayString() ?>'>
 	
-	
-	<div style='width: 100%; height: 600px'>
-		<div style='width: 200px; float: left; height: 100%; border: 1px solid; '>
+	<div id='truck_display'>
+		<div id='truck_display_start'>
+			<? foreach($model->deliveryLoad as $deliveryLoad)
+				{
+					$selectedTrailers = $deliveryLoad->getLoadTrailerArray();
+					echo $this->render("/trucks/_allocation", [
+								'truck' => $deliveryLoad->truck,
+								'selectedTrailers' => $selectedTrailers,
+								'delivery' => $model,
+								'usedTrailerBins' => $usedTrailerBins,
+								]);
+				}
+			?>
 			
-			<?= Html::listbox('available_trucks_lists', null, 
-					['Available Trucks' => 
-						[
-						'1_1' => 'test', 
-						'2_1' => 'world',
-						'3_1' => 'again'
-						],
-					 ],
-					
-					[
-					'multiple'=>false,
-					'size'=>20, 
-					'style' => 'width:200px',
-					'id' => 'available_trucks_control',
-					
-					]
-				
-				
-				
-				); ?>
+			
+			
+			
 		</div>
-		<div style='width: 150px; float: left; height: 100%; border: 1px solid; '>
-			<div style='height: 20%; width: 100%'>
-				
-			</div>
-			<div>
-				<button id='add_truck_use' style='width: 100%'>Use Selected Truck</button>
-				<button id='add_truck_use_addtional_run'>Create Additional Delivery Run For Truck</button>
-			</div>
-		</div>
-		<div id='truck_display_section' style='width: 1000px; float: left; border: 1px solid;'>
-			
-			
-			
-			
-		</div>	
-		
-		
 	</div>
 
 	

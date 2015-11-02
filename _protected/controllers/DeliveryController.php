@@ -416,7 +416,7 @@ class DeliveryController extends Controller
 		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name');
 		
 		//echo $model->delivery_on."<br>";
-		$trucksAvailable = Trucks::getAvailable(strtotime($model->delivery_on));
+		$trucksAvailable = Trucks::getTrucksUsageArray(strtotime($model->delivery_on));
 		$usedTrailerBins = TrailerBins::getUsedBins(strtotime($model->delivery_on))	;
 		
 	
@@ -503,27 +503,23 @@ class DeliveryController extends Controller
 	* 
 	* 
 	*/
-    public function actionAjaxAvailableTrucks()
+    public function actionAjaxAvailableTrucks($requestedDate)
 	    {
-	    $out = [];
-		if (isset($_POST['depdrop_parents'])) 
-			{	
-			$requestedDate = strtotime($_POST['depdrop_parents'][0]);
-			if($requestedDate)
-				{
-				$trucksAvailable = Trucks::getAvailable($requestedDate);
-				
-				foreach($trucksAvailable as $truckID => $truckRego){
-					$out[] = array('id' => $truckID, 'name' => $truckRego);
-					}
-				
-				
-				echo Json::encode(['output'=>$out ]);	
-				}	
-			else{
-				return False;
-				}
-			}
+	    
+	    
+	    $truckList = Trucks::getTrucksUsageArray(strtotime($requestedDate));
+	    
+	    
+		//print_r($truckList);	
+		
+		
+		    
+		
+	    
+	    
+	    
+	    
+	    
 		}
 		
 	/**
@@ -536,7 +532,7 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-	public function actionAjaxAddDeliveryLoad($truck_id, $requestedDate)
+	public function actionAjaxAddDeliveryLoad($truck_id, $deliveryrun_id, $requestedDate)
 	{
 		
 	$truck = Trucks::findOne($truck_id);
@@ -549,7 +545,8 @@ class DeliveryController extends Controller
 	
 		//check to see if the truck already has a load, if so allocate the trailers already assigned, if not assign the default trailers.
 		$requestedDate = strtotime($requestedDate);
-	
+		
+		//Selected Trailers array is [Delivery_run_num][$trailer_id] => $trailer Object)
 		$selectedTrailers = $truck->isTruckAssigned($requestedDate);	
 
 		//If the selected truck hasn't yet been assigned then grab the default trailers for that truck if available
@@ -576,11 +573,13 @@ class DeliveryController extends Controller
 	
 
 	
-		return $this->renderPartial("/trucks/_allocation", [
+		return $this->renderPartial("/trucks/_form", [
 								'truck' => $truck,
 								'selectedTrailers' => $selectedTrailers,
-								'delivery' => null,
 								'usedTrailerBins' => $usedTrailerBins,
+								'delivery' => null,
+								'delivery_load' => null,
+								
 								]);
 		}
     }
@@ -734,6 +733,29 @@ class DeliveryController extends Controller
 	* 
 	*/
     public function actionAjaxRemoveDeliveryLoad($truck_id, $delivery_id)
+    {
+    	$response_array['status'] = 'success';
+		if (($delivery = Delivery::findOne($delivery_id)) == null)
+		 	{
+	 	  	$response_array['status'] = 'error';  
+		 	}
+		
+		
+		foreach($delivery->deliveryLoad as $delivery_load)
+			{
+			if($delivery_load->truck_id == $truck_id)
+				{
+					$delivery_load->removeAllLoads();
+				}
+			}
+		
+		echo json_encode($response_array);;
+	}
+    
+    
+    
+}
+($truck_id, $delivery_id)
     {
     	$response_array['status'] = 'success';
 		if (($delivery = Delivery::findOne($delivery_id)) == null)
