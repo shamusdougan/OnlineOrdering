@@ -1,31 +1,44 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
+
+	
+	
+	
+	
 /* @var $this yii\web\View */
-/* @var $model app\models\DeliveryLoad */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $deliveryLoad */
+/* @var $deliveryCount */
 ?>
 
-<div class="delivery-load-form">
+<div class="delivery-load-form" id='delivery_count_<?= $deliveryCount ?>' delivery_count='<?= $deliveryCount ?>'>
+	
+	<div class='delivery-load-truck'>
+		<?
+		echo $this->render('/Trucks/_truck', [
+			'truck' => $deliveryLoad->truck,
+			'deliveryCount' => $deliveryCount,
+	    	]);	
+		?>
+		
+	</div>
 
-    <?php $form = ActiveForm::begin(); ?>
+	<div class='delivery-load-trailer1'>
+		
+		
+		
+	</div>
+	<div class='delivery-load-trailer2'>
+		
+		
+		
+	</div>
 
-    <?= $form->field($model, 'delivery_id')->textInput() ?>
-
-    <?= $form->field($model, 'load_qty')->textInput() ?>
-
-    <?= $form->field($model, 'trailer_bin_id')->textInput() ?>
-
-    <?= $form->field($model, 'delivery_on')->textInput() ?>
-
-    <?= $form->field($model, 'delivery_completed_on')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+	<div class='delivery-load-action'>
+		<a title='Remove Load'>
+			<div class='sap_icon_small sap_cross_small remove_delivery_load' delivery_count='<?= $deliveryCount ?>'></div>
+		</a>
+	</div>
 
 </div>

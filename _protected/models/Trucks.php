@@ -107,29 +107,38 @@ class Trucks extends \yii\db\ActiveRecord
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
 						->all();
 		
-		$trucks = Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
-		
-		
-		//create the basic truck array assuming every truck is on delivery run 1
-		
-		$truckUsageArray = array();
-		foreach($trucks as $truck)
-			{
-			$truckUsageArray[1][$truck->id]['truck'] = $truck;
-			$truckUsageArray[1][$truck->id]['remaining_space'] = '';
-			}
-		
-		
-		//need to go through and populate the array based on usage for the trucks/trailers
-		
-		
-		
 		
 	
+		
+		//create the basic truck array assuming every truck is on delivery run 1
+		$truckUsageArray = array();
+		foreach($deliveryLoadsOnDate as $deliveryLoad)
+			{
+			if(array_key_exists($deliveryLoad->delivery_run_num, $truckUsageArray) && array_key_exists($deliveryLoad->truck_id, $truckUsageArray[$deliveryLoad->delivery_run_num]))
+				{
+				$truckUsageArray[$deliveryLoad->delivery_run_num][$deliveryLoad->truck_id]['loaded'] -= $deliveryLoad->load_qty;
+				}
+			else
+				{
+				$truckUsageArray[$deliveryLoad->delivery_run_num][$deliveryLoad->truck_id] = ($deliveryLoad->getTrailerCapacity() - $deliveryLoad->load_qty);
+
+				}
+			}
 		
 		
 		return $truckUsageArray;
 		}
+    
+    
+    
+    
+    
+    
+    public function getActive()
+    {
+		return Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
+	}
+    
     
     /**
 	* 

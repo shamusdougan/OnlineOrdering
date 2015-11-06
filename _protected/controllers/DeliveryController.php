@@ -101,7 +101,7 @@ class DeliveryController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($order_id)
     {
         $model = new Delivery();
 
@@ -219,48 +219,39 @@ class DeliveryController extends Controller
        
        	/**
 		   * 
-		   * New Order processing
+		   * New delivery processing
 		   * 
 		   */
-       	//If the order has been selected already, clicked the link from within the order
-       	$order = new CustomerOrders();
-       	if(($order_id = Yii::$app->request->get("order_id")) != null)
-	       	{
-	       
-	       	//check that the order is a real order, if not throw an error
-	       	 if (($order = customerOrders::findOne($order_id)) !== null) 
-	       	 	{
-	       	 		
-	       	 	//if the order alreadY has a delivery created use that in the form
-	       	 	if($order->hasDelivery())
-	       	 		{
-	       	 		$model = $order->delivery;
-					}
-					
-				//prepopulate the field in the model
-				else{
-					$model->order_id = $order_id;
-					}
-       			} 
-       		else{
-            	throw new NotFoundHttpException('The requested page does not exist.');
-        		}
-			}
+       	//get the customer order information
+        if (($order = customerOrders::findOne($order_id)) !== null) 
+       	 	{
+       	 		
+       	 	//if the order alreadY has a delivery created use that in the form
+       	 	if($order->hasDelivery())
+       	 		{
+       	 		$model = $order->delivery;
+				}
+				
+			//prepopulate the field in the model
+			else{
+				$model->order_id = $order_id;
+				}
+   			} 
+   		else{
+        	throw new NotFoundHttpException('The requested customer order cannot be found.');
+    		}
+       
+			
 
 			
 		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/create?exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
-		
-		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
-		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name') ;
-		
-		
+	
 		
 		return $this->render('create', [ 
 			'model' => $model,
 			'actionItems' => $actionItems,
-			'submittedOrders' => $submittedOrderArray,
 			'order' => $order
 			]);
 	}
@@ -532,56 +523,13 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-	public function actionAjaxAddDeliveryLoad($truck_id, $deliveryrun_id, $requestedDate)
+	public function actionAjaxAddDeliveryLoad($deliveryCount)
 	{
-		
-	$truck = Trucks::findOne($truck_id);
-	if($truck === null)
-		{
-		return "Unable to locate Required Truck";
-		}
-	else{
-	
-	
-		//check to see if the truck already has a load, if so allocate the trailers already assigned, if not assign the default trailers.
-		$requestedDate = strtotime($requestedDate);
-		
-		//Selected Trailers array is [Delivery_run_num][$trailer_id] => $trailer Object)
-		$selectedTrailers = $truck->isTruckAssigned($requestedDate);	
-
-		//If the selected truck hasn't yet been assigned then grab the default trailers for that truck if available
-		if(!$selectedTrailers)
-			{
-			$selectedTrailers = array();	
-			foreach($truck->defaultTrailers as $defaultTrailer)
-				{
-				if(!$defaultTrailer->trailer->isAlreadyAssigned($requestedDate))
-					{
-					$selectedTrailers[] = $defaultTrailer->trailer;
-					}
-				}	
-			}	
-		
-		
-		
-		
-		
-		
-		
-		//check to see if any of the trailerbins are already being used on the requested date
-		$usedTrailerBins = TrailerBins::getUsedBins($requestedDate)	;
-	
-
-	
-		return $this->renderPartial("/trucks/_form", [
-								'truck' => $truck,
-								'selectedTrailers' => $selectedTrailers,
-								'usedTrailerBins' => $usedTrailerBins,
-								'delivery' => null,
-								'delivery_load' => null,
-								
+		return $this->renderPartial("/delivery-load/_form", [
+								'deliveryLoad' => new DeliveryLoad(),
+								'deliveryCount' => $deliveryCount,
 								]);
-		}
+		
     }
     
     
@@ -686,6 +634,55 @@ class DeliveryController extends Controller
 		
 	}
     
+    
+    
+    
+    
+    public function actionAjaxAddTruck($requested_date, $selected_trucks)
+    {
+		
+		$requested_date = strtotime($requested_date);
+		
+		
+		$truckList = Trucks::getActive();
+		$truckLoads = Trucks::getTrucksUsageArray($requested_date);
+		
+		//put all the active trucks in the first delivery run
+		$deliveryRun = 1;
+		foreach($truckList as $truck)
+			{
+			$textDisplay = $truck->registration;
+			if(array_key_exists($deliveryRun, $truckLoads) && array_key_exists($truck->id, $truckLoads[$deliveryRun]))
+				{
+				$textDisplay .= " (Remaining ".$truckLoads[$deliveryRun][$truck->id]." )";
+				}
+			$data['Availble Trucks'][$truck->id."_".$deliveryRun] = $textDisplay;
+			}
+		
+		
+		
+		
+		
+		
+		return $this->renderPartial ("/trucks/_selectTruck", [
+			"data" => $data,
+			
+		
+		
+		]);
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public function actionAjaxAppendTrailer($truck_id, $selected_trailer_id, $requested_date)
     {
 		
@@ -755,26 +752,8 @@ class DeliveryController extends Controller
     
     
 }
-($truck_id, $delivery_id)
-    {
-    	$response_array['status'] = 'success';
-		if (($delivery = Delivery::findOne($delivery_id)) == null)
-		 	{
-	 	  	$response_array['status'] = 'error';  
-		 	}
-		
-		
-		foreach($delivery->deliveryLoad as $delivery_load)
-			{
-			if($delivery_load->truck_id == $truck_id)
-				{
-					$delivery_load->removeAllLoads();
-				}
-			}
-		
-		echo json_encode($response_array);;
-	}
+
     
     
     
-}
+

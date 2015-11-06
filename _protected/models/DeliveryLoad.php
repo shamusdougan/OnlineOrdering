@@ -75,6 +75,23 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	}
 	
 	
+	/**
+	* 
+	* Function getTrailerCapacity
+	* @return
+	*/	
+	public function getTrailerCapacity()
+	{
+		$trailerCapacity = 0;
+		foreach($this->deliveryLoadTrailer as $deliveryLoadTrailer)
+			{
+			$trailerCapacity += $deliveryLoadTrailer->trailer->Max_Capacity;
+			}
+			
+		return $trailerCapacity;
+	}
+		
+		
 		
 	/**
 	* 

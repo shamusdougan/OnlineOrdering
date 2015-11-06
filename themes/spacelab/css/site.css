@@ -424,8 +424,19 @@ hr.article-devider {
 	background-position:0px -20px;
 }
 
+.sap_icon_large
+{
+	width: 128px;
+	height: 128px;
+	margin-left: auto;
+	,argin-right: auto;
+}
 
-
+.sap_icon_large:hover
+{
+	background-position:0px -128px;
+	
+}
 .sap_edit{
 	background-image:url('/images/icons_action/icon-32-edit.png');
 	}
@@ -482,6 +493,9 @@ hr.article-devider {
 	background-image:url('/images/icons_action/icon-32-reversetruck.png');
 	}
 	
+.sap_new_truck{
+	background-image:url('/images/icons_action/icon-large-add.png');
+}
 	
 .sap_cross_small{
 	background-image:url('/images/icons_action/icon-16-cross.png');
@@ -533,8 +547,88 @@ hr.article-devider {
 
 .truck_allocation_panel
 {
-	border-radius: 25px;
-    background: #8AC007;
+	
 }
  
+.delivery-load-form
+{
+	width:1000px;
+	height:200px;
+	background: #F0F0F0  ;
+	margin:40px;
+	border-radius: 10px;
+	box-shadow: 0 10px 6px -6px #777;
+}
 
+.delivery-load-truck
+{
+	
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 180px;
+	height: 180px;
+	background: #E0E0E0;
+	float: left;
+	border-radius: 10px;
+	box-shadow: 0 10px 6px -6px #777;
+}
+
+.delivery-load-trailer1
+{
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 380px;
+	height: 180px;
+	background: #E0E0E0;
+	float: left;
+	box-shadow: 0 10px 6px -6px #777;
+	border-radius: 10px;
+}
+
+.delivery-load-trailer2
+{
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 380px;
+	height: 180px;
+	background: #E0E0E0;
+	box-shadow: 0 10px 6px -6px #777;
+	border-radius: 10px;
+	float: left;
+	
+}
+
+.delivery-load-action
+{
+	width: 30px;
+	height: 100%;
+	float: right;
+	padding-top: 5px;
+}
+
+.truck_empty_select
+{
+	width: 100%;
+	height: 100%;
+	
+}
+
+.truck_add_button
+{
+	width: 128px;
+	margin: auto;
+	height: 128px;
+	padding-top: 30px;
+	
+}
+
+
+
+
+.truck_select_dialog
+{
+	width: 600px;
+	height: 800px;
+	background-color: red;
+	
+}

@@ -1,10 +1,25 @@
 <?php
 
-?>
+
+/* @var $truck */
+/* @var $deliveryCount */
 
 
+if($truck == null) { ?>
 
-<div class='truck_allocation_panel' id='truck_panel_<?= $truck->id ?>' load_id='1' >
-Hello this is  atruck
+	<div class='truck_empty_select'>
+		<div class='truck_add_button' delivery_count='<?=  $deliveryCount ?>'>
+			<a title='Add Truck'><div class='sap_icon_large sap_new_truck'></div></a>
+		</div>
+		
+		
+	</div>
 
-</div>
+<? } else { ?>
+
+	<div class='truck_details' truck_id='<?= $truck->id ?>'>
+		
+		This is a truck
+	</div>
+	
+<? } ?>
