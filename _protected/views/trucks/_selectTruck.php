@@ -34,7 +34,7 @@ use yii\helpers\Html;
 	<div style='width: 150px; float: left; height: 100%;'>
 
 		<div>
-			<button id='add_truck_use' style='width: 100%'>Use Selected Truck</button>
+			<button id='add_truck_use' style='width: 100%' target_delivery_load='<?= $target_delivery_load ?>'>Use Selected Truck</button>
 			<button id='add_truck_use_addtional_run'>Create Additional Delivery Run For Truck</button>
 		</div>
 	</div>

@@ -85,7 +85,7 @@ $this->registerJs("$(document).on('click', '.remove_delivery_load', function()
 	});
 	");
 	
-$this->registerJs("$(document).on('click', '.truck_add_button', function() 
+$this->registerJs("$(document).on('click', '.select_truck_button', function() 
 	{	
 		delivery_count = $(this).attr('delivery_count');
 		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
@@ -106,8 +106,8 @@ $this->registerJs("$(document).on('click', '.truck_add_button', function()
 		
 		$.ajax
 	  		({
-	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-truck")."',
-			data: {requested_date: requestedDate, selected_trucks: selectedTrucks},
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
+			data: {requested_date: requestedDate, selected_trucks: selectedTrucks, target_delivery_load: delivery_count},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#select-modal').modal();
@@ -188,32 +188,36 @@ $this->registerJs("$(document).on('click', '#add_truck_use_addtional_run', funct
 ");
 
 
-$this->registerJs("$('#add_truck_use').click(function(event)
+$this->registerJs("$(document).on('click', '#add_truck_use', function(event) 
 	{
+
 		event.preventDefault(); 
 		selected_truck_array = $('#available_trucks_control').val().split('_');
-		truck_id = selected_truck_array[0]
-		deliveryrun_id = selected_truck_array[1]
+		truck_id = selected_truck_array[0];
+		deliveryrun_id = selected_truck_array[1];
 		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
-	
+		
+		target_delivery_load = $(this).attr('target_delivery_load');
 		
 		$.ajax
-		  		({
-		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-delivery-load")."',
-				data: {truck_id: truck_id, deliveryrun_id: deliveryrun_id, requestedDate: requestedDate},
-				success: function (data, textStatus, jqXHR) 
-					{
-					$('#truck_display_section').append(data);
-					updateSelectedTrailersInput();
-					updateTrailerAddLink();
-					},
-		        error: function (jqXHR, textStatus, errorThrown) 
-		        	{
-		            console.log('An error occured!');
-		            alert('Error in ajax request' );
-		        	}
-				});
-				
+	  		({
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-truck")."',
+			data: {target_delivery_load: target_delivery_load, truck_id: truck_id, deliveryrun_id: deliveryrun_id},
+			success: function (data, textStatus, jqXHR) 
+				{
+				$('#delivery_count_' + target_delivery_load + ' > .delivery-load-truck').html(data);
+				$('#select-modal').modal('hide');
+				},
+	        error: function (jqXHR, textStatus, errorThrown) 
+	        	{
+	            console.log('An error occured!');
+	            alert('Error in ajax request' );
+	        	}
+			});
+		
+	
+		
+	
 			
 		
 	

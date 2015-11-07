@@ -638,7 +638,7 @@ class DeliveryController extends Controller
     
     
     
-    public function actionAjaxAddTruck($requested_date, $selected_trucks)
+    public function actionAjaxSelectTruck($requested_date, $selected_trucks, $target_delivery_load)
     {
 		
 		$requested_date = strtotime($requested_date);
@@ -666,6 +666,7 @@ class DeliveryController extends Controller
 		
 		return $this->renderPartial ("/trucks/_selectTruck", [
 			"data" => $data,
+			"target_delivery_load" => $target_delivery_load,
 			
 		
 		
@@ -675,8 +676,37 @@ class DeliveryController extends Controller
     
     
     
-    
-    
+    /**
+	* 
+	*   Function: This should return the truck information
+	* 
+	* @param undefined $truck_id
+	* @param undefined $deliveryrun_id
+	* 
+	* @return
+	*/
+    public function actionAjaxAddTruck($target_delivery_load, $truck_id, $deliveryrun_id)
+    {
+    	
+    	
+    	$truck = Trucks::findOne($truck_id);
+    	
+    	
+    	//check to see if the truck is already in a load -> if so return the trailers for that load
+    	// if its not in a load already check to see if the default trailers are available if so loadthem into trailer1_id and trailer2_id
+    	
+    	
+    	
+    	
+    	
+    	
+		return 	$this->renderPartial('/Trucks/_truck', [
+			'truck' => $truck,
+			'deliveryCount' => $target_delivery_load,
+			'trailer1_id' => 1,
+			'trailer2_id' => 2,
+	    	]);	
+	}
     
     
     
