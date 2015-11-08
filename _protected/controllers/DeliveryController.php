@@ -638,28 +638,62 @@ class DeliveryController extends Controller
     
     
     
-    public function actionAjaxSelectTruck($requested_date, $selected_trucks, $target_delivery_load)
+    public function actionAjaxSelectTruck($requested_date, $target_delivery_load, $extra_used_trucks)
     {
 		
 		$requested_date = strtotime($requested_date);
-		
-		
+	
 		$truckList = Trucks::getActive();
 		$truckLoads = Trucks::getTrucksUsageArray($requested_date);
 		
+		
+		
 		//put all the active trucks in the first delivery run
-		$deliveryRun = 1;
+		$delivery_run_num = 1;
 		foreach($truckList as $truck)
 			{
 			$textDisplay = $truck->registration;
-			if(array_key_exists($deliveryRun, $truckLoads) && array_key_exists($truck->id, $truckLoads[$deliveryRun]))
+			if(array_key_exists($delivery_run_num, $truckLoads) && array_key_exists($truck->id, $truckLoads[$delivery_run_num]))
 				{
-				$textDisplay .= " (Remaining ".$truckLoads[$deliveryRun][$truck->id]." )";
+				$textDisplay .= " (Remaining ".$truckLoads[$delivery_run_num][$truck->id]." )";
 				}
-			$data['Availble Trucks'][$truck->id."_".$deliveryRun] = $textDisplay;
+			
+			$data['Available Trucks'][$truck->id."_".$delivery_run_num] = $textDisplay;
 			}
 		
+		//any additional delivery_runs from the database need to be added in here
 		
+
+
+
+
+
+
+
+
+
+
+
+		//any extra delivery runs only added on the page and not saved need to added in here
+		if($extra_used_trucks != "" && $extra_used_trucks != null)
+			{
+			$extra_runs_array = explode(",", $extra_used_trucks);
+			
+	
+			foreach($extra_runs_array as $extra_run)
+				{
+				$extra_delivery_run_array = explode("_", $extra_run);
+				$extra_truck_id = $extra_delivery_run_array[0];
+				$extra_delivery_run_id = $extra_delivery_run_array[1];
+				
+				//check to see if it already is in the data, if not add it
+				if(!(array_key_exists("Delivery Run ".$extra_delivery_run_id, $data) && array_key_exists($extra_truck_id, $data["Delivery Run ".$extra_delivery_run_id])))
+					{
+					$extra_truck = Trucks::findOne($extra_truck_id);
+					$data["Delivery Run ".$extra_delivery_run_id][$extra_truck_id."_".$extra_delivery_run_id] = $extra_truck->registration;
+					}
+				}
+			}
 		
 		
 		
@@ -685,15 +719,44 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/
-    public function actionAjaxAddTruck($target_delivery_load, $truck_id, $deliveryrun_id)
+    public function actionAjaxAddTruck($target_delivery_load, $truck_id, $delivery_run_num, $requestedDate)
     {
     	
-    	
+    	$requestedDate = strtotime($requestedDate);
     	$truck = Trucks::findOne($truck_id);
     	
     	
     	//check to see if the truck is already in a load -> if so return the trailers for that load
-    	// if its not in a load already check to see if the default trailers are available if so loadthem into trailer1_id and trailer2_id
+    	$trailer1_id = null;
+    	$trailer2_id = null;
+    	if(($deliveryLoad_id = $truck->isUsedAlready($requestedDate, $delivery_run_num)) !== false)
+    		{
+			$assignedDeliveryLoad = DeliveryLoad::findOne($deliveryLoad_id);
+			
+			$i = 1;
+			foreach($assignedDeliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailer)
+				{
+				if($i == 1){$trailer1_id = $deliveryLoadTrailer->trailer_id;}
+				if($i == 2){$trailer2_id = $deliveryLoadTrailer->trailer_id;}
+				$i++;
+				}
+			}
+		// if its not in a load already check to see if the default trailers are available if so loadthem into trailer1_id and trailer2_id
+    	else{
+    		
+    		$i = 1;
+			foreach($truck->defaultTrailers as $defaultTrailer)
+				{
+				if(!$defaultTrailer->trailer->isAlreadyAssigned($requestedDate, $delivery_run_num))
+					{
+					if($i == 1){$trailer1_id = $defaultTrailer->trailer_id;}
+					if($i == 2){$trailer2_id = $defaultTrailer->trailer_id;}
+					}
+				$i++;
+				}
+			}
+    	
+    	
     	
     	
     	
@@ -703,8 +766,9 @@ class DeliveryController extends Controller
 		return 	$this->renderPartial('/Trucks/_truck', [
 			'truck' => $truck,
 			'deliveryCount' => $target_delivery_load,
-			'trailer1_id' => 1,
-			'trailer2_id' => 2,
+			'trailer1_id' => $trailer1_id,
+			'trailer2_id' => $trailer2_id,
+			'delivery_run_num' => $delivery_run_num,
 	    	]);	
 	}
     

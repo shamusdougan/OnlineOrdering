@@ -37,7 +37,36 @@ $this->registerJs("$(function () {
 	});
 ");
 
+/*************************************************************
+* 
+* Page Operation Functions
+* 
+*************************************************************/
 
+
+$this->registerJs("
+
+function refreshTrailers()
+	{
+	$('.delivery-load-form').each(function() 
+		{
+		target_Delivery_load = $(this).attr('delivery_count');
+		truck_id = $(this).find('.truck_details:first').attr('truck_id');
+		truck_max_trailers = parseFloat($(this).find('.truck_details:first').attr('truck_max_trailers'));
+		trailer1_id = $(this).find('.truck_details:first').attr('trailer1_id');
+		trailer2_id = $(this).find('.truck_details:first').attr('trailer2_id');
+
+		$('#delivery_count_' + target_delivery_load + ' > .delivery-load-trailer1').html(trailer1_id);
+		$('#delivery_count_' + target_delivery_load + ' > .delivery-load-trailer2').html(trailer2_id);
+		
+			
+		});	
+		
+		
+		
+	}
+
+");
 
 /**********************************************************
 * 
@@ -91,23 +120,32 @@ $this->registerJs("$(document).on('click', '.select_truck_button', function()
 		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 		
 		
-		//List the trucks already put in the order
-		var selectedTrucks = new Array();
-		$('.truck_details').each(function() 
-			{
-			selectedTrucks.push($(this).attr('truck_id'));
-			});
-		selectedTrucks = selectedTrucks.join(',');
 		
+		//Check the date has been chosen before displaying a list of trucks
 		if(requestedDate == ''){
 			alert('Please select a Date for the delivery first');
 			return;
 		}
 		
+		//Check to see if any of the truck 2nd runs have been used
+		var usedTrucks = new Array();
+		$('.truck_details').each(function() 
+			{
+			used_truck_id = $(this).attr('truck_id');
+			used_delivery_run_num = $(this).attr('delivery_run_num');
+
+			if(used_delivery_run_num > 1)
+				{
+				usedTrucks.push(used_truck_id + '_' + used_delivery_run_num);	
+				}
+			});
+		usedTrucks = usedTrucks.join(',');
+		
+		
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
-			data: {requested_date: requestedDate, selected_trucks: selectedTrucks, target_delivery_load: delivery_count},
+			data: {requested_date: requestedDate, target_delivery_load: delivery_count, extra_used_trucks: usedTrucks},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#select-modal').modal();
@@ -194,19 +232,41 @@ $this->registerJs("$(document).on('click', '#add_truck_use', function(event)
 		event.preventDefault(); 
 		selected_truck_array = $('#available_trucks_control').val().split('_');
 		truck_id = selected_truck_array[0];
-		deliveryrun_id = selected_truck_array[1];
+		delivery_run_num = selected_truck_array[1];
 		requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
-		
 		target_delivery_load = $(this).attr('target_delivery_load');
+
+		//first check that the truck and delivery_run_num combination havent already been selected in this delivery
+		//List the trucks already put in the order
+		
+		var truckUsed = false;
+		$('.truck_details').each(function() 
+			{
+			used_truck_id = $(this).attr('truck_id');
+			used_delivery_run_num = $(this).attr('delivery_run_num');
+
+			if(used_truck_id == truck_id && used_delivery_run_num == delivery_run_num)
+				{
+				alert('Truck already used in this Delivery');
+				truckUsed = true;
+				}
+			});
+
+		if(truckUsed)
+			{
+			return;
+			}
+
 		
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-truck")."',
-			data: {target_delivery_load: target_delivery_load, truck_id: truck_id, deliveryrun_id: deliveryrun_id},
+			data: {target_delivery_load: target_delivery_load, truck_id: truck_id, delivery_run_num: delivery_run_num, requestedDate: requestedDate},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#delivery_count_' + target_delivery_load + ' > .delivery-load-truck').html(data);
 				$('#select-modal').modal('hide');
+				refreshTrailers();
 				},
 	        error: function (jqXHR, textStatus, errorThrown) 
 	        	{
@@ -214,15 +274,6 @@ $this->registerJs("$(document).on('click', '#add_truck_use', function(event)
 	            alert('Error in ajax request' );
 	        	}
 			});
-		
-	
-		
-	
-			
-		
-	
-		
-		
 	});
 ");
 

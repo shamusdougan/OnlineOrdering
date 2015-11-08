@@ -182,6 +182,35 @@ class Trucks extends \yii\db\ActiveRecord
 						
 	}
     
+    /**
+	* 
+	* Function isUsedAlready
+	* 
+	* Descriptuion: checks to see if the current truck has already been assigned, if so returns the delivery load Id of the first time it has been assigned
+	* 
+	* @param undefined $requestedDate
+	* @param undefined $deliverurun_id
+	* 
+	* @return
+	*/
+    public function isUsedAlready($requestedDate, $deliverurun_id)
+    	{
+		$deliveryLoads = DeliveryLoad::find()
+						->where(['delivery_load.delivery_on' => date("Y-m-d", $requestedDate ), 'truck_id' => $this->id])
+						->all();	
+						
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			if($this->id == $deliveryLoad->truck_id && $deliveryrun_id == $deliveryLoad->delivery_run_num)
+				{
+				return $deliveryLoad->id;
+				}
+			}
+		
+		return false;
+		}
+    
+    
     
     /**
 	* 

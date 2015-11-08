@@ -122,7 +122,7 @@ public function getTrailerBinCount($trailerID)
 	* Description: is will return the booleen if this trailer has already been assigned to a truck on that day.
 	* @return
 	*/
-public function isAlreadyAssigned($requestedDate)
+public function isAlreadyAssigned($requestedDate, $delivery_run_num)
     {
 		$usedTrailerList = DeliveryLoadTrailer::find()
 						->innerJoinWith('deliveryLoad', false)
@@ -130,7 +130,7 @@ public function isAlreadyAssigned($requestedDate)
 						->all();
 	
 	
-		
+	
 		
 		$assigned = false;
 		foreach($usedTrailerList as $usedTrailer)
