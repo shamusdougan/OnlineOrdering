@@ -719,7 +719,7 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/
-    public function actionAjaxAddTruck($target_delivery_load, $truck_id, $delivery_run_num, $requestedDate)
+    public function actionAjaxAddTruck($target_delivery_load, $truck_id, $delivery_run_num, $requestedDate, $usedTrailers)
     {
     	
     	$requestedDate = strtotime($requestedDate);
@@ -744,25 +744,32 @@ class DeliveryController extends Controller
 		// if its not in a load already check to see if the default trailers are available if so loadthem into trailer1_id and trailer2_id
     	else{
     		
-    		$i = 1;
+			//This will generate an array that looks like
+			//$used_trailer_array = array($trailer_id . "_" . $delivery_run_num;
+    		$used_trailer_array = explode(",", $usedTrailers);
+    		
+				
+    		$i = 1;    		
 			foreach($truck->defaultTrailers as $defaultTrailer)
 				{
+					
+				//Check to see if the default trailer has already been assigned to another delivery_load
 				if(!$defaultTrailer->trailer->isAlreadyAssigned($requestedDate, $delivery_run_num))
 					{
-					if($i == 1){$trailer1_id = $defaultTrailer->trailer_id;}
-					if($i == 2){$trailer2_id = $defaultTrailer->trailer_id;}
+					//also check to see that that trailer has already been put into the page	
+					$searchString = $defaultTrailer->trailer_id."_".$delivery_run_num;
+					if(array_search($searchString, $used_trailer_array) === false)
+						{
+						if($i == 1){$trailer1_id = $defaultTrailer->trailer_id;}
+						if($i == 2){$trailer2_id = $defaultTrailer->trailer_id;}
+						}
 					}
 				$i++;
 				}
 			}
     	
     	
-    	
-    	
-    	
-    	
-    	
-    	
+  	
 		return 	$this->renderPartial('/Trucks/_truck', [
 			'truck' => $truck,
 			'deliveryCount' => $target_delivery_load,
@@ -791,6 +798,30 @@ class DeliveryController extends Controller
 		
 	}
     
+    
+    public function actionAjaxGetTrailer($trailer_id, $delivery_run_num, $delivery_id, $target_delivery_load, $trailer_slot_num)
+    {
+		
+	
+	
+		$trailer = Trailers::findOne($trailer_id);
+	
+		
+		
+		return $this->renderPartial("/trailers/_trailer", [
+			'trailer' => $trailer,
+			'delivery_run_num' => $delivery_run_num,
+			'target_delivery_load' => $target_delivery_load,
+			'trailer_slot_num' => $trailer_slot_num,
+			]);
+		
+		
+		
+	}
+    
+    
+    
+    
     /**
 	* 
 	*  Function Select Trailers
@@ -801,18 +832,33 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-    public function actionAjaxSelectTrailers($requested_date, $selected_trailers, $truck_id, $all_trailers)
+    public function actionAjaxSelectTrailers($target_delivery_load, $delivery_run_num, $requestedDate, $usedTrailers, $trailer_slot_num)
     	{
 		$trailerList = Trailers::getAllActiveTrailers();
-		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
-		$used_trailers = explode(",", $all_trailers);
+		$trailersUsed = Trailers::getTrailersUsed(strtotime($requestedDate), $delivery_run_num);
+		$trailersUsed=  ArrayHelper::map($trailersUsed, 'id', 'Registration');
+		
+		$usedTrailers = explode(",", $usedTrailers); // should be an array of trailer_id + "_" + delivery_run_num
+		
+		//need to write a function that removes any trailers that are in the trailersUsed or usedTrailer arrays
+		$data = array();
+		foreach($trailerList as $trailerObject)
+			{
+			$searchString = $trailerObject->id."_".$delivery_run_num;
+			
+			//If the trailer isnt in the database as having been used and the not in the current display trailers then use it
+			if(!array_key_exists($trailerObject->id, $trailersUsed) && array_search($searchString, $usedTrailers) === false)
+				{
+				$data[$trailerObject->id] = $trailerObject->Registration;
+				}
+			}
+		
 		
 		return $this->renderPartial("/trailers/_trailerList", [
-			'trailerList' => $trailerList,
-			'trailersUsed' => $trailersUsed,
-			'selected_trailers' => explode(",", $selected_trailers),
-			'truck_id' => $truck_id,
-			'used_trailers' => $used_trailers,
+			'data' => $data,
+			'target_delivery_load' => $target_delivery_load,
+			'trailer_slot_num' => $trailer_slot_num,
+			
 			]);
 			
 		}

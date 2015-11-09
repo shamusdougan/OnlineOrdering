@@ -4,12 +4,14 @@ use yii\helpers\Html;
 
 
 	
+/*	truck - Truck Object
+*	deliveryCount - target_delivery_load
+*   trailer1_id - trailerID for the 1st Trailer,
+* 	trailer2_id - trailerID for the 2nd Trailer
+*	delivery_run_num - The Delivery Run Number Var
+*/	
 	
-	
-	
-/* @var $this yii\web\View */
-/* @var $deliveryLoad */
-/* @var $deliveryCount */
+
 ?>
 
 <div class="delivery-load-form" id='delivery_count_<?= $deliveryCount ?>' delivery_count='<?= $deliveryCount ?>'>
