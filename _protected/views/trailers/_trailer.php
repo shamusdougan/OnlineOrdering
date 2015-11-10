@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 	@var - $trailer - trailer to be rendered
 	@var - $delivery_run_num - The delivery run this is for
-	@var - $target_delivery_load - the delivery load that his trailer slot sits IN_ACCESS
+	@var - $target_delivery_load - the delivery load that his trailer slot sits in
 	@var - $trailer_slot_num - the trailer slot that this is being rendered for.
 	
 	
@@ -19,19 +19,23 @@ use yii\helpers\Html;
 * 		Trailer Render for a given Trailer details
 * 
 */
-if(isset($trailer)) {  ?>
+if(isset($trailer)) {  
+
+?>
 <div class='trailer_display_<?= $trailer->id ?> trailer_details' style='width: 350px; margin-right: 30px; float:left;'
 	trailer_id='<?= $trailer->id ?>' 
 	delivery_run_num='<?= $delivery_run_num ?>'
 	target_delivery_num='<?= $target_delivery_load ?>'
 	trailer_slot_num='<?= $trailer_slot_num ?>'
-
-
 	>
+	
 	<div style='width: 100%'>
-		Trailer (<?= $trailer->id ?>): <b><?= $trailer->Registration ?> 
-		
-		
+		<b><?= $trailer->Registration ?> </b>
+		<a class='remove_trailer_link' 
+			target_delivery_load='<?= $target_delivery_load ?>'
+			trailer_slot_num='<?= $trailer_slot_num ?>'
+			trailer_id='<?= $trailer->id ?>'
+			>(Remove)</a>
 		
 		
 		
@@ -46,27 +50,27 @@ if(isset($trailer)) {  ?>
 		
 		</div>
 		<div style='width: 75%; height: 100%; float: left'>
-			<input type='hidden' name='trailer[<?= $trailer->id ?>]' value='1'>
+			<input type='hidden' name='deliveryLoad[<?= $target_delivery_load ?>][trailers][]' value='<?= $trailer->id ?>'>
 			<?
 			
 			$binDivWidth = 100/$trailer->NumBins;
+			$count = 1;
 			foreach($trailer->trailerBins as  $trailerBin)
 				{
+				if($count > $trailer->NumBins)
+					{
+					exit;
+					}
 				
-				
-		
-			
-					
 				//Trailer bin hasn't been used in this delivery or any other delviery.
+				echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
+				echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
+				echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='deliveryLoad[".$target_delivery_load."][truck_load][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
+				echo "</div>";
+	
 				
-					echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
-					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='truck_load[".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
-					echo "</div>";
-		
 				
-				
-					
+				$count++;
 				}
 			
 			

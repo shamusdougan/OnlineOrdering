@@ -20,12 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= actionButtons::widget(['items' => $actionItems]) ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+     <?= $this->render('_form', [
         'model' => $model,
-        'submittedOrders' => $submittedOrders,
-        'order' => $order,
-        'truckList' => $truckList,
-        'usedTrailerBins' => $usedTrailerBins,
+        'order' => $model->customerOrder
     ]) ?>
 
 </div>

@@ -18,8 +18,8 @@ class trucksSearch extends trucks
     public function rules()
     {
         return [
-            [['id', 'CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper'], 'integer'],
-            [['registration', 'description'], 'safe'],
+            [['id', 'CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper', 'max_trailers'], 'integer'],
+            [['registration', 'description', 'max_trailers'], 'safe'],
         ];
     }
 

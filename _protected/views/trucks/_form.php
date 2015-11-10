@@ -26,7 +26,8 @@ use kartik\builder\Form;
 					[    
 					'registration' => ['type' => FORM::INPUT_TEXT, ],
 					'description' => ['type' => FORM::INPUT_TEXT, 'columnOptions' => ['colspan' => 2]],
-					'mobile' => ['type' => FORM::INPUT_TEXT, ]
+					'mobile' => ['type' => FORM::INPUT_TEXT, ],
+					'max_trailers' => ['type' => FORM::INPUT_TEXT, ],
 					],
 				]);
 		echo Form::widget(

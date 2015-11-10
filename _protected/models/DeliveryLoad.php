@@ -171,6 +171,25 @@ class DeliveryLoad extends \yii\db\ActiveRecord
     
     
     
+    public function getTrailerID($trailerIndex)
+    {
+		if(array_key_exists($trailerIndex, $this->deliveryLoadTrailer))
+			{
+			return $this->deliveryLoadTrailer[$trailerIndex]->trailer_id;
+			}
+		return null;
+	}
+    
+    
+    public function getTrailerObject($trailerIndex)
+    {
+    	
+ 		if(array_key_exists($trailerIndex, $this->deliveryLoadTrailer))
+			{
+			return $this->deliveryLoadTrailer[$trailerIndex]->trailer;
+			}
+		return null;
+	}
     
     /**
 	* 

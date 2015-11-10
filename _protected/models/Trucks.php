@@ -18,6 +18,7 @@ use Yii;
  * @property integer $Auger
  * @property integer $Blower
  * @property integer $Tipper
+ * @property integer $max_trailers
  */
 class Trucks extends \yii\db\ActiveRecord
 {
@@ -41,7 +42,7 @@ class Trucks extends \yii\db\ActiveRecord
     {
         return [
             [['registration', 'Status'], 'required'],
-            [['CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper'], 'integer'],
+            [['CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper', 'max_trailers'], 'integer'],
             [['registration', 'mobile'], 'string', 'max' => 200],
             [['description', 'Special_Instruction'], 'string', 'max' => 500]
         ];
@@ -57,7 +58,7 @@ class Trucks extends \yii\db\ActiveRecord
             'registration' => 'Registration',
             'description' => 'Description',
             'CreatedBy' => 'Created By',
-           
+            'max_trailers' => 'Max Trailers2',
             'Status' => 'Status',
             'Auger' => 'Auger',
             'Blower' => 'Blower',
