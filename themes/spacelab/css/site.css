@@ -555,9 +555,10 @@ hr.article-devider {
 	width:1000px;
 	height:200px;
 	background: #F0F0F0  ;
-	margin:40px;
+	margin:auto;
 	border-radius: 10px;
 	box-shadow: 0 10px 6px -6px #777;
+	margin-top: 10px;
 }
 
 .delivery-load-truck

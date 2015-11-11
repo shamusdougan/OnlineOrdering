@@ -12,11 +12,13 @@ use app\models\CustomerOrders;
 use app\models\Trucks;
 use app\models\Trailers;
 use app\models\TrailerBins;
+use app\models\WeighbridgeTicket;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use kartik\mpdf\Pdf;
 
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
@@ -247,12 +249,12 @@ class DeliveryController extends Controller
     	{
         
 		
-		
 
     	//remove the old loading data and create the new, even if it is the Same
     	$model->removeAllLoads();
     	$model = Delivery::findOne($model->id);
     	
+    
 
     	//this array contains all of the data about where the order has been loaded into.        		
     	 if ($model->load(Yii::$app->request->post()) && $model->save()) 
@@ -272,6 +274,7 @@ class DeliveryController extends Controller
 					$deliveryLoadObject = new DeliveryLoad();
 					$deliveryLoadObject->delivery_id = $model->id;
 					$deliveryLoadObject->truck_id = $deliveryLoad['truck_id'];
+					$deliveryLoadObject->delivery_run_num = $deliveryLoad['delivery_run_num'];
 					$deliveryLoadObject->delivery_on = $model->delivery_on;
 					$deliveryLoadObject->save();
 					
@@ -342,14 +345,17 @@ class DeliveryController extends Controller
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+		$actionItems[] = ['label'=>'Additive Loader', 'button' => 'print', 'url'=> null,]; 
+		
+	
 		
 		
-		$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
-		$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name');
+		//$submittedOrders = CustomerOrders::getSubmittedOrdersWithoutDelivery();
+		//$submittedOrderArray = ArrayHelper::map($submittedOrders, 'id', 'Name');
 		
 		//echo $model->delivery_on."<br>";
-		$trucksAvailable = Trucks::getTrucksUsageArray(strtotime($model->delivery_on));
-		$usedTrailerBins = TrailerBins::getUsedBins(strtotime($model->delivery_on))	;
+		///$trucksAvailable = Trucks::getTrucksUsageArray(strtotime($model->delivery_on));
+		//$usedTrailerBins = TrailerBins::getUsedBins(strtotime($model->delivery_on))	;
 		
 	
 	
@@ -376,7 +382,13 @@ class DeliveryController extends Controller
         $model = $this->findModel($id);
         $model->removeAllLoads();
         $model->customerOrder->unsetStatusDelivery();
+       
+       if($model->weighbridgeTicket)
+        	{
+			$model->weighbridgeTicket->delete();
+			}
   		$model->delete();
+  		
 
         return $this->redirect(['index']);
     }
@@ -461,10 +473,14 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-	public function actionAjaxAddDeliveryLoad($deliveryCount)
+	public function actionAjaxAddDeliveryLoad($deliveryCount, $requestedDate)
 	{
+		
+		$deliveryLoad =  new DeliveryLoad();
+		$deliveryLoad->delivery_on = $requestedDate;
+		
 		return $this->renderPartial("/delivery-load/_form", [
-								'deliveryLoad' => new DeliveryLoad(),
+								'deliveryLoad' => $deliveryLoad,
 								'deliveryCount' => $deliveryCount,
 								]);
 		
@@ -667,8 +683,12 @@ class DeliveryController extends Controller
     	//check to see if the truck is already in a load -> if so return the trailers for that load
     	$trailer1_id = null;
     	$trailer2_id = null;
+    	
+    	
     	if(($deliveryLoad_id = $truck->isUsedAlready($requestedDate, $delivery_run_num)) !== false)
     		{
+    			
+    	
 			$assignedDeliveryLoad = DeliveryLoad::findOne($deliveryLoad_id);
 			
 			$i = 1;
@@ -679,6 +699,9 @@ class DeliveryController extends Controller
 				$i++;
 				}
 			}
+			
+		
+			
 		// if its not in a load already check to see if the default trailers are available if so loadthem into trailer1_id and trailer2_id
     	else{
     		
@@ -737,12 +760,14 @@ class DeliveryController extends Controller
 	}
     
     
-    public function actionAjaxGetTrailer($trailer_id, $delivery_run_num, $delivery_id, $target_delivery_load, $trailer_slot_num)
+    public function actionAjaxGetTrailer($trailer_id, $delivery_run_num, $requestedDate, $target_delivery_load, $trailer_slot_num, $delivery_load_id)
     {
 		
 	
-	
+		$requestedDate = strtotime($requestedDate);
 		$trailer = Trailers::findOne($trailer_id);
+		
+		//$usedTrailerOtherLoads = Trailers::getUsedTrailersBinOtherLoads($trailer_id, $delivery_run_num, $requestedDate, $delivery_load_id);
 	
 		
 		
@@ -751,6 +776,8 @@ class DeliveryController extends Controller
 			'delivery_run_num' => $delivery_run_num,
 			'target_delivery_load' => $target_delivery_load,
 			'trailer_slot_num' => $trailer_slot_num,
+			'delivery_load_id' => $delivery_load_id,
+			'requestedDate' => $requestedDate,
 			]);
 		
 		
@@ -826,6 +853,47 @@ class DeliveryController extends Controller
 		
 		echo json_encode($response_array);;
 	}
+    
+    
+    /**
+	* Action to print the additive and loader sheet for the delivery/order
+	* 
+	* @return
+	*/
+    public function actionPrintAdditiveLoaderPdf($id)
+	{
+		
+	$delivery = Delivery::findOne($id);
+	
+	$content = $this->renderPartial("additive-loader", [
+			'delivery' => $delivery,
+
+			
+			]);
+		
+		
+	$pdf = new Pdf([
+		'content' => $content,  
+		//'destination' => Pdf::DEST_FILE, 
+		//'filename' => 'c:\temp\test.pdf',
+		'format' => Pdf::FORMAT_A4, 
+ 		'destination' => Pdf::DEST_BROWSER, 
+		'options' => ['title' => 'Additive Loader Sheet'],
+
+		'methods' => 
+			[
+			
+            'SetFooter'=>['{PAGENO}'],
+
+			"SetJS" => "'this.print();'",
+			]
+    	]);
+
+	
+ 	return $pdf->render(); 
+
+	}
+	
     
     
     

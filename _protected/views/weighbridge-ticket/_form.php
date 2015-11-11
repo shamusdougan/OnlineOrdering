@@ -71,7 +71,7 @@ $this->registerJs("$('.sap_print').on('click',function(){
 	var windowSizeArray = [ 'width=200,height=200',
                             'width=300,height=400,scrollbars=yes' ];
 
-	var url = '".yii\helpers\Url::toRoute("weighbridge-ticket/pdf")."';
+	var url = '".yii\helpers\Url::toRoute(["weighbridge-ticket/pdf", 'id' => $model->id])."';
     var windowName = 'Weigh Bridge Ticket';
     var windowSize = windowSizeArray[$(this).attr('rel')];
 

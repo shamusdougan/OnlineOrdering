@@ -72,10 +72,13 @@ class Delivery extends \yii\db\ActiveRecord
 	
 	public function getTruck()
 		{
-			return $this->hasOne(Trucks::className(), ['id', 'truck_id']);
+			return $this->hasOne(Trucks::className(), ['id' => 'truck_id']);
 		}
 
-
+	public function getWeighbridgeTicket()
+		{
+			return $this->hasOne(WeighbridgeTicket::className(), ['delivery_id' => 'id']);
+		}
 
 		
 	public function getBinLoad($trailerBin_id)

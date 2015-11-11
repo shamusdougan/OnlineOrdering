@@ -168,14 +168,25 @@ class WeighbridgeTicketController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-            return $this->redirect(['view', 'id' => $model->id]);
+           
+           
+           	$get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
+           
+           
         	}
         else {
             
             
             
         	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge_ticket/create?exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge-ticket/create?exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'weighbridge-form', 'confirm' => 'Save and Exit Delivery?']; 
 			$actionItems[] = ['label'=>'Print Ticket', 'button' => 'print', 'url'=> null,]; 
             
@@ -212,22 +223,42 @@ class WeighbridgeTicketController extends Controller
 
 
 
-	public function actionPdf()
+	public function actionPdf($id)
 	{
+	 
+		
+	$weighbridgeTicket = WeighbridgeTicket::findOne($id);
+	
+	$content = $this->renderPartial("weighbridgeTicket", [
+			'weighbridgeTicket' => $weighbridgeTicket,
+
+			
+			]);
+		
+		
 	$pdf = new Pdf([
-		'content' => "Hello world",  
-		'destination' => Pdf::DEST_FILE, 
-		'filename' => 'c:\temp\test.pdf',
-//		'methods' => 
-//			[
-//			"SetJS" => "'this.print(false);'",
-//			]
+		'content' => $content,  
+		//'destination' => Pdf::DEST_FILE, 
+		//'filename' => 'c:\temp\test.pdf',
+		'format' => Pdf::FORMAT_A4, 
+ 		'destination' => Pdf::DEST_BROWSER, 
+		'options' => ['title' => 'Weighbridge Ticket'],
+
+		'methods' => 
+			[
+			
+            'SetFooter'=>['{PAGENO}'],
+
+			//"SetJS" => "'this.print();'",
+			]
     	]);
 
 	
  	return $pdf->render(); 
 
 	}
+
+	
 	
 	/**
 	* 

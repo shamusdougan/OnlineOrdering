@@ -59,7 +59,7 @@ $this->registerJs("
 function refreshTrailers(update_target_delivery_load, update_trailer_slot_num)
 	{
 	var order_id = $(\"#".Html::getInputId($model, 'order_id')."\").val();		
-		
+	var requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
 		
 	$('.delivery-load-form').each(function() 
 		{
@@ -73,12 +73,13 @@ function refreshTrailers(update_target_delivery_load, update_trailer_slot_num)
 			trailer1_id = $(this).find('.truck_details:first').attr('trailer1_id');
 			trailer2_id = $(this).find('.truck_details:first').attr('trailer2_id');
 			delivery_run_num = $(this).find('.truck_details:first').attr('delivery_run_num');
+			delivery_load_id = $(this).find('.truck_details:first').attr('delivery_load_id');
 			
 			target = $('#delivery_count_' + target_delivery_load + ' > .delivery-load-trailer1');
 			
 			if(update_trailer_slot_num == 0 || update_trailer_slot_num == 1)
 				{
-				getTrailerRender(trailer1_id, delivery_run_num, ".($model->id ? $model->id : 0).", target, target_delivery_load, 1);		
+				getTrailerRender(trailer1_id, delivery_run_num, requestedDate, target, target_delivery_load, 1, delivery_load_id);		
 				}
 		 	
 		 	if(update_trailer_slot_num == 0 || update_trailer_slot_num == 2)
@@ -92,7 +93,7 @@ function refreshTrailers(update_target_delivery_load, update_trailer_slot_num)
 					target.html('<div class=\"trailer_slot_disabled\"></div>');
 					}
 			 	else{
-					getTrailerRender(trailer2_id, delivery_run_num, ".($model->id ? $model->id : 0).", target, target_delivery_load, 2);
+					getTrailerRender(trailer2_id, delivery_run_num, requestedDate, target, target_delivery_load, 2, delivery_load_id);
 					}		
 				}
 			}
@@ -103,14 +104,14 @@ function refreshTrailers(update_target_delivery_load, update_trailer_slot_num)
 	}
 
 
-function getTrailerRender(trailer_id, delivery_run_num, delivery_id, target, target_delivery_load, trailer_slot_num)
+function getTrailerRender(trailer_id, delivery_run_num, requestedDate, target, target_delivery_load, trailer_slot_num, delivery_load_id)
 	{
 		
 		
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-get-trailer")."',
-			data: {trailer_id: trailer_id, delivery_run_num: delivery_run_num, delivery_id: delivery_id, target_delivery_load: target_delivery_load, trailer_slot_num: trailer_slot_num},
+			data: {trailer_id: trailer_id, delivery_run_num: delivery_run_num, requestedDate: requestedDate, target_delivery_load: target_delivery_load, trailer_slot_num: trailer_slot_num, delivery_load_id: delivery_load_id},
 			success: function (data, textStatus, jqXHR) 
 				{
 				target.html(data);;
@@ -134,9 +135,27 @@ function getTrailerRender(trailer_id, delivery_run_num, delivery_id, target, tar
 * 
 **********************************************************/
 
+$this->registerJs("
+
+function  clearAllLoads()
+	{
+		$('#delivery_load_section').html('');
+	}
+
+
+");
+
+
 $this->registerJs("$('.add_delivery_load').click(function(event)
 	{
 		event.preventDefault(); 
+		
+		var requestedDate = $('#".Html::getInputId($model, 'delivery_on')."').val();
+		
+		if(requestedDate == ''){
+			alert('Please select a Date for the delivery first');
+			return;
+		}
 		
 		var last_delivery_count = 0;
 		$('.delivery-load-form').each(function() 
@@ -148,7 +167,7 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 		$.ajax
 		  		({
 		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-delivery-load")."',
-				data: {deliveryCount: next_delivery_count},
+				data: {deliveryCount: next_delivery_count, requestedDate: requestedDate},
 				success: function (data, textStatus, jqXHR) 
 					{
 					$('#delivery_load_section').append(data);
@@ -174,6 +193,8 @@ $this->registerJs("$(document).on('click', '.remove_delivery_load', function()
 	});
 	");
 	
+	
+	
 $this->registerJs("$(document).on('click', '.select_truck_button', function() 
 	{	
 		delivery_count = $(this).attr('delivery_count');
@@ -182,10 +203,7 @@ $this->registerJs("$(document).on('click', '.select_truck_button', function()
 		
 		
 		//Check the date has been chosen before displaying a list of trucks
-		if(requestedDate == ''){
-			alert('Please select a Date for the delivery first');
-			return;
-		}
+		
 		
 		//Check to see if any of the truck 2nd runs have been used
 		var usedTrucks = new Array();
@@ -328,7 +346,7 @@ $this->registerJs("$(document).on('click', '#add_truck_use', function(event)
 			});
 		usedTrailers = usedTrailers.join(',');
 		
-		
+	
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-truck")."',
@@ -550,6 +568,20 @@ $this->registerJs("$('#fill_method').on('change', function()
 			}
 		
 		});
+		
+		
+	function clearBinSelection()
+	{
+	$('.trailer_bin_checkbox').each(function() {
+		$(this).attr('checked', false);
+		$(this).attr('value', 0);
+		$(this).parent().attr('class', 'sap_trailer_empty');
+		});
+	updateOrderRemaining();
+	}
+		
+		
+		
 	");
 
 
@@ -692,6 +724,26 @@ $this->registerJs("$(document).on('click', '#fill_selected_bins', function(event
 
 ");
 
+
+
+$this->registerJs("$('.sap_print').on('click',function(){
+	
+	var windowSizeArray = [ 'width=200,height=200',
+                            'width=300,height=400,scrollbars=yes' ];
+
+	var url = '".yii\helpers\Url::toRoute(["delivery/print-additive-loader-pdf", 'id' => $model->id])."';
+    var windowName = 'Weigh Bridge Ticket';
+    var windowSize = windowSizeArray[$(this).attr('rel')];
+
+    window.open(url, windowName, windowSize);
+
+   
+
+	
+	});
+");
+
+
 ?>
 
 <div class="delivery-form">
@@ -703,123 +755,113 @@ $this->registerJs("$(document).on('click', '#fill_selected_bins', function(event
     
     
     
-   <div class='delivery-order-info'> 
-    <fieldset ><legend class='sapDeliveryFieldSetLegend'>Order Details</legend>		    
-		    		<table width='100%'>
-		    			<tr>
-		    				<td width='33%'><b>Customer: </b><input type='text' id='orderdetails-customer' readonly class='infoInput' value='<?= isset($order->client) ? $order->client->Company_Name: "" ?>'></td>
-		    				<td width='33%'><b>Order ID:</b> <input type='text' id='orderdetails-orderID' class='infoInput' readonly value='<?= $order->Order_ID ?>'> </td>
-		    				<td width='33%'><b>Order Qty:</b> <input type='text' id='orderdetails-orderQTY' class='infoInput' readonly value='<?= $order->Qty_Tonnes ?>'> </td>
-		    			</tr>
-		    			<tr>
-		    				<td width='33%'><b>Order Owner: </b><input type='text' id='orderdetails-owner' readonly class='infoInput' value='<?= isset($order->createdByUser) ? $order->createdByUser->fullname : "" ?>'> </td>
-		    				<td width='33%'><b>Requested Delivery By Date:</b> <input type='text' id='orderdetails-delivery-date' class='infoInput' readonly value='<?= isset($order->Requested_Delivery_by) ? date("D d-M-Y", strtotime($order->Requested_Delivery_by)): "" ?>'></td>
-		    				<td width='33%'><b>Delivered to Onsite Storage: </b><input type='text' id='orderdetails-storage' readonly class='infoInputLarge' value='<?= isset($order->storage) ? $order->storage->Description : "" ?>'> </td>
-		    			</tr>
-		    			<tr>
-		    				<td colspan='3' style='vertical-align:top;'>
-		    					 <b>Order Notes:</b><textarea rows='1' style='width:100%;' id='orderdetails-order-instructions' readonly><?= $order->Order_instructions ?></textarea>
-		    				</td>		    			
-		    			</tr>
-		    		</table>
-		    			
-		    			
+	   <div class='delivery-order-info'> 
+	    <fieldset ><legend class='sapDeliveryFieldSetLegend'>Order Details</legend>		    
+			    		<table width='100%'>
+			    			<tr>
+			    				<td width='33%'><b>Customer: </b><input type='text' id='orderdetails-customer' readonly class='infoInput' value='<?= isset($order->client) ? $order->client->Company_Name: "" ?>'></td>
+			    				<td width='33%'><b>Order ID:</b> <input type='text' id='orderdetails-orderID' class='infoInput' readonly value='<?= $order->Order_ID ?>'> </td>
+			    				<td width='33%'><b>Order Qty:</b> <input type='text' id='orderdetails-orderQTY' class='infoInput' readonly value='<?= $order->Qty_Tonnes ?>'> </td>
+			    			</tr>
+			    			<tr>
+			    				<td width='33%'><b>Order Owner: </b><input type='text' id='orderdetails-owner' readonly class='infoInput' value='<?= isset($order->createdByUser) ? $order->createdByUser->fullname : "" ?>'> </td>
+			    				<td width='33%'><b>Requested Delivery By Date:</b> <input type='text' id='orderdetails-delivery-date' class='infoInput' readonly value='<?= isset($order->Requested_Delivery_by) ? date("D d-M-Y", strtotime($order->Requested_Delivery_by)): "" ?>'></td>
+			    				<td width='33%'><b>Delivered to Onsite Storage: </b><input type='text' id='orderdetails-storage' readonly class='infoInputLarge' value='<?= isset($order->storage) ? $order->storage->Description : "" ?>'> </td>
+			    			</tr>
+			    			<tr>
+			    				<td colspan='3' style='vertical-align:top;'>
+			    					 <b>Order Notes:</b><textarea rows='1' style='width:100%;' id='orderdetails-order-instructions' readonly><?= $order->Order_instructions ?></textarea>
+			    				</td>		    			
+			    			</tr>
+			    		</table>
+			    			
+			    			
 
-	</fieldset>
-    </div>
-    <br>
+		</fieldset>
+	    </div>
+  	 <br>
   
     
-	<div style='border: 1px solid; width: 100%; height: 50px;'>
-		<font size='+3'>Unallocated Order (Tonnes): <span id='remaining_tonnes'></span></font>
-	</div>
-	<br>
-    
-    <div width='100%' style='height: 80px;'>
-    	<div style='width: 100%; float: left'>
-    		
-    		<div style='width: 400px; float: left;'>
-    			<?=  $form->field($model, 'delivery_on')->widget(DateControl::classname(), 
-    					[
-						'type'=>DateControl::FORMAT_DATE,
-						'disabled' => $readOnly,
-						'options' =>
-							[
-							'type' => DatePicker::TYPE_COMPONENT_APPEND,
-							//'placeholder' => "Requested Delivery Date...",
-							'pluginOptions' =>
+		<div style='border: 1px solid; width: 100%; height: 50px;'>
+			<font size='+3'>Unallocated Order (Tonnes): <span id='remaining_tonnes'></span></font>
+		</div>
+		<br>
+	    
+	    <div width='100%' style='height: 80px;'>
+	    	<div style='width: 100%; float: left'>
+	    		
+	    		<div style='width: 400px; margin: auto;'>
+	    			<?=  $form->field($model, 'delivery_on')->widget(DateControl::classname(), 
+	    					[
+							'type'=>DateControl::FORMAT_DATE,
+							'disabled' => $readOnly,
+							'options' =>
 								[
-								'autoclose' => true,
-								'todayHighlight' => true,
-								],
-							'pluginEvents' =>
-								[
-								'changeDate' => "function(e) { alert('need to clear al the delivery loads'); }",
-								
-								
+								'type' => DatePicker::TYPE_COMPONENT_APPEND,
+								//'placeholder' => "Requested Delivery Date...",
+								'pluginOptions' =>
+									[
+									'autoclose' => true,
+									'todayHighlight' => true,
+									],
+								'pluginEvents' =>
+									[
+									'changeDate' => "function(e) { clearAllLoads(); }",
+									
+									
+									]
+									
 								]
-								
-							]
-						]);
-    			?>
-    			
-    			
-    		</div>
-    		<div style='width: 400px; float: left; padding-top: 24px; padding-left: 15px'>
-    			<button class='add_delivery_load' style='width: 150px; height: 39px;'>Add Delivery Load</button>	
-    		</div>
-    		
-    	</div>
-    </div>
+							]);
+	    			?>
+	    			
+	    			
+	    		</div>
+	    		
+	    		
+	    	</div>
+	    </div>
 	
-	<div style='width: 100%; border: 1px solid; height: 30px; padding-left: 10px; padding-top: 2px;'>
-		Select Fill Method 
-		<select id='fill_method'>
-			<option value='fill_on_selection'>Fill Bin On Selection</option>
-			<option value='select_first'>Select Bins First then Allocate</option>
-		</select>
-		<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
-	</div>
+		<div style='width: 100%; border: 1px solid'>
+			<div style='width:500px; margin: auto; height: 30px; padding-left: 10px; padding-top: 2px;'>
+				Select Fill Method 
+				<select id='fill_method'>
+					<option value='fill_on_selection'>Fill Bin On Selection</option>
+					<option value='select_first'>Select Bins First then Allocate</option>
+				</select>
+				<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
+			</div>
 
-	
-	
-
-
-		<div id='delivery_load_section'>
-			<?
-			//check to see if a delivery load has already been created if not put a blank one in
-			
-			if(count($model->deliveryLoad) == 0)
-				{
-				$deliveryLoad = new DeliveryLoad();
-				$deliveryLoad->delivery_id = $model->id;
-				
-				echo $this->render('/delivery-load/_form', [
-        			'deliveryLoad' => $deliveryLoad,
-        			'deliveryCount' => 1,
-			    	]);
-			    
-			    
-				}
-			else{
-				
-				foreach($model->deliveryLoad as $index => $deliveryLoadObject)
-					{
-					echo $this->render('/delivery-load/_form', [
-	        			'deliveryLoad' => $deliveryLoadObject,
-	        			'deliveryCount' => ($index + 1),
-				    	]);
-					}
-				}
-				
-			
-			
-			?>
-			
-			
-			
-		</div>	
 		
+		
+
+
+			<div id='delivery_load_section'>
+				<?
+				
+				
+
+					foreach($model->deliveryLoad as $index => $deliveryLoadObject)
+						{
+						echo $this->render('/delivery-load/_form', [
+		        			'deliveryLoad' => $deliveryLoadObject,
+		        			'deliveryCount' => ($index + 1),
+					    	]);
+						}
+
+				
+				
+				?>
+				
+				
+				
+			</div>	
+			<div style='width: 150px; margin: auto; padding-top: 24px; padding-left: 15px'>
+	    			<button class='add_delivery_load' style='width: 150px; height: 39px;'>Add Delivery Load</button>	
+	    	</div>
+			
+		
+		</div>
 		
 	</div>
 

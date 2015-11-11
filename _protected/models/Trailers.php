@@ -175,4 +175,57 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 		
 		return $usedTrailerList;
 		}
+		
+		
+	public function getUsedBinsOtherLoads($delivery_run_num, $requestedDate, $delivery_load_id)
+		{
+		$deliveryLoads = DeliveryLoad::find()
+						->where(['delivery_on' => date("Y-m-d", $requestedDate) ])
+						->andWhere(['delivery_run_num' => $delivery_run_num])
+						->all();
+		
+		$usedTrailerBinList = array();
+	
+		
+		//iterate through each delivery and collect the info as required
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			//exclude the given delivery load id
+			if($deliveryLoad->id != $delivery_load_id)
+				{
+				foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBinObject)
+					{
+					$usedTrailerBinList[$deliveryLoadBinObject->trailer_bin_id] = $deliveryLoadBinObject->bin_load;
+					}	
+				}
+			}
+		
+		
+		return $usedTrailerBinList;			
+			
+			
+			
+			
+		}
+	
+	
+	public function getDeliveryLoadBins($delivery_load_id)
+		{
+			$deliveryLoad = DeliveryLoad::findOne($delivery_load_id);
+			
+			$usedBinsArray = array();
+			if($deliveryLoad != null)
+				{
+				foreach($deliveryLoad->deliveryLoadBin as $deliveryLoadBinObject)
+					{
+					$usedBinsArray[$deliveryLoadBinObject->trailer_bin_id] = $deliveryLoadBinObject->bin_load;
+					}	
+				}
+		
+				
+				
+			return $usedBinsArray;
+		}
+	
+		
 }

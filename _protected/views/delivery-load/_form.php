@@ -6,7 +6,7 @@ use yii\helpers\Html;
 	
 /*	truck - Truck Object
 *	deliveryCount - target_delivery_load
-*   $deliveryLoad - DeliveryLoad object being rendered in this page
+*   deliveryLoad - DeliveryLoad object being rendered in this page
 
 
 *	delivery_run_num - The Delivery Run Number Var
@@ -17,6 +17,7 @@ use yii\helpers\Html;
 
 <div class="delivery-load-form" id='delivery_count_<?= $deliveryCount ?>' delivery_count='<?= $deliveryCount ?>'>
 	
+		
 	<div class='delivery-load-truck'>
 		<?
 		echo $this->render('/Trucks/_truck', [
@@ -25,6 +26,7 @@ use yii\helpers\Html;
 			'delivery_run_num' => $deliveryLoad->delivery_run_num,
 			'trailer1_id' => $deliveryLoad->getTrailerID(0),
 			'trailer2_id' => $deliveryLoad->getTrailerID(1),
+			'delivery_load_id' => $deliveryLoad->id,
 	    	]);	
 		?>
 		
@@ -33,12 +35,14 @@ use yii\helpers\Html;
 	<div class='delivery-load-trailer1'>
 		
 		<?
+		
 		echo $this->render('/Trailers/_trailer', [
 			'trailer' => $deliveryLoad->getTrailerObject(0),
 			'target_delivery_load' => $deliveryCount,
 			'delivery_run_num' => $deliveryLoad->delivery_run_num,
 			'trailer_slot_num' => 1,
-			
+			'delivery_load_id' => $deliveryLoad->id,
+			'requestedDate' => strtotime($deliveryLoad->delivery_on),
 	    	]);	
 		?>
 		
@@ -52,7 +56,8 @@ use yii\helpers\Html;
 			'target_delivery_load' => $deliveryCount,
 			'delivery_run_num' => $deliveryLoad->delivery_run_num,
 			'trailer_slot_num' => 2,
-			
+			'delivery_load_id' => $deliveryLoad->id,
+			'requestedDate' => strtotime($deliveryLoad->delivery_on),
 	    	]);	
 		?>
 		

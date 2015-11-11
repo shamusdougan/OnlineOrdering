@@ -111,6 +111,18 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	}
 	
 	
+	
+	public function getLoadVolume()
+	{
+		$loadVolume = 0;
+		foreach($this->deliveryLoadBin as $bin)
+			{
+			$loadVolume += $bin->trailerBin->MaxCapacity;
+			}
+		
+		return $loadVolume;
+	}
+	
 	public function getLoadTrailerArray()
 	{
 		
@@ -205,5 +217,19 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		
 		return $deliveryLoads;
 	}
+    
+    
+    public function getTruckBinsString()
+    	{
+    		
+    		$returnString = "";
+			foreach($this->deliveryLoadBin as $deliveryLoadBinObject)
+				{
+				$returnString .= $deliveryLoadBinObject->trailerBin->BinNo." ";
+				}
+				
+			return $returnString;
+		}
+   
     
 }
