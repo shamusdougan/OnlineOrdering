@@ -62,7 +62,11 @@ $contactForm .=  Form::widget(
 			'Auger' => ['type'=>Form::INPUT_CHECKBOX, 'label' => 'Auger' ], 
 			'Blower' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'Blower'],
 			'Tipper' => ['type' =>Form::INPUT_CHECKBOX, 'label' => 'Tipper'],
-			
+			'Delivery_Instructions' => 
+				[
+				'type' => Form::INPUT_TEXTAREA,
+				'columnOptions'=>['colspan'=>4],
+				],
 			]
 		]);
 

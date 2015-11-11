@@ -8,6 +8,7 @@ use app\models\customerOrdersSearch;
 use app\models\Clients;
 use app\models\CustomerOrdersIngredients;
 use app\models\Product;
+use app\models\Storage;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -165,9 +166,9 @@ class CustomerOrderController extends Controller
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
-        				->select(['id', 'Company_Name'])
+        				->select(['id', 'Company_Name', 'Trading_as'])
         				->all();
-        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
+        	$clientList = ArrayHelper::map($clientObjects, 'id', 'clientListName') ;
         	
         	
         	//generate the list of storage option available, this will be over written by ajax if the client changes
@@ -591,11 +592,43 @@ class CustomerOrderController extends Controller
 				}
 			
 			
+			
+			
+			
+			if(Lookup::item($productType, 'ORDER_CATEGORY') == "Commodity")
+				{
+				$productTypes = [3];
+				}
+			elseif(Lookup::item($productType, 'ORDER_CATEGORY') == "Mix")
+				{
+				$productTypes = [2];
+				}
+			elseif(Lookup::item($productType, 'ORDER_CATEGORY') == "Pellet")
+				{
+				$productTypes = [1];
+				}
+			elseif(Lookup::item($productType, 'ORDER_CATEGORY') == "Additive")
+				{
+				$productTypes = [4];
+				}
+			elseif(Lookup::item($productType, 'ORDER_CATEGORY') == "Custom")
+				{
+				$productTypes = [4,3,2,1];
+				}
+			elseif(Lookup::item($productType, 'ORDER_CATEGORY') == "Pellet - Custom")
+				{
+				$productTypes = [1,4];
+				}
+			
+			
+			
 			$products = Product::find()
 	        				->where(['status' => Product::ACTIVE])
-	        				->where(['Product_Category' => $productType])
-	        				->select(['id', 'Name'])
+	        				->where(['Product_Category' => $productTypes])
+	        				->select(['id', 'Name', 'Mix_Type'])
 	        				->all();
+	        				
+	   
 	        $productList = ArrayHelper::map($products, 'id', 'Name') ;
 			return $this->renderAjax("/customer-orders-ingredients/_orderAdd", ['model' => $orderIngredient, 'productList' => $productList]);
 			}
@@ -633,6 +666,17 @@ class CustomerOrderController extends Controller
 			}
 		}
 	
+	
+	public function actionAjaxGetStorageDeliveryInstructions($storage_id)
+		{
+			
+			if($storage_id != "")
+				{
+				$storage = Storage::findOne($storage_id);
+				return $storage->Delivery_Instructions;		
+				}
+			return "";
+		}
 
 	public function actionAjaxCopy($id)
 		{

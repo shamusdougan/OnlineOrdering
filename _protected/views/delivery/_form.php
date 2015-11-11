@@ -74,9 +74,10 @@ function refreshTrailers(update_target_delivery_load, update_trailer_slot_num)
 			trailer2_id = $(this).find('.truck_details:first').attr('trailer2_id');
 			delivery_run_num = $(this).find('.truck_details:first').attr('delivery_run_num');
 			delivery_load_id = $(this).find('.truck_details:first').attr('delivery_load_id');
+
+			
 			
 			target = $('#delivery_count_' + target_delivery_load + ' > .delivery-load-trailer1');
-			
 			if(update_trailer_slot_num == 0 || update_trailer_slot_num == 1)
 				{
 				getTrailerRender(trailer1_id, delivery_run_num, requestedDate, target, target_delivery_load, 1, delivery_load_id);		

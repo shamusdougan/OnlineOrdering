@@ -78,6 +78,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	const STATUS_DISPATCHED = 4;
 	const STATUS_COMPLETED = 4;
 	
+		
     /**
      * @inheritdoc
      * 

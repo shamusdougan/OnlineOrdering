@@ -262,6 +262,16 @@ class Clients extends \yii\db\ActiveRecord
 		return $this->hasOne(User::className(), ['id' => 'Owner_id']);
 	}
 	
+	public function getClientListName()
+	{
+		$returnString = $this->Company_Name;
+		if($this->Trading_as != "")
+			{
+			$returnString .= " (".$this->Trading_as.")";
+			}
+		return $returnString;
+	}
+	
 	
 	public function isCustomer()
 	{

@@ -35,15 +35,23 @@ use yii\helpers\Html;
 	<div class='delivery-load-trailer1'>
 		
 		<?
+		if($deliveryLoad->truck == "")
+			{
+			echo $this->render('/Trailers/_trailer', [
+				'blank' => true
+		    	]);	
+			}
+		else{
+			echo $this->render('/Trailers/_trailer', [
+				'trailer' => $deliveryLoad->getTrailerObject(0),
+				'target_delivery_load' => $deliveryCount,
+				'delivery_run_num' => $deliveryLoad->delivery_run_num,
+				'trailer_slot_num' => 1,
+				'delivery_load_id' => $deliveryLoad->id,
+				'requestedDate' => strtotime($deliveryLoad->delivery_on),
+		    	]);	
+		}
 		
-		echo $this->render('/Trailers/_trailer', [
-			'trailer' => $deliveryLoad->getTrailerObject(0),
-			'target_delivery_load' => $deliveryCount,
-			'delivery_run_num' => $deliveryLoad->delivery_run_num,
-			'trailer_slot_num' => 1,
-			'delivery_load_id' => $deliveryLoad->id,
-			'requestedDate' => strtotime($deliveryLoad->delivery_on),
-	    	]);	
 		?>
 		
 		
@@ -51,14 +59,22 @@ use yii\helpers\Html;
 	<div class='delivery-load-trailer2'>
 		
 		<?
-		echo $this->render('/Trailers/_trailer', [
-			'trailer' => $deliveryLoad->getTrailerObject(1),
-			'target_delivery_load' => $deliveryCount,
-			'delivery_run_num' => $deliveryLoad->delivery_run_num,
-			'trailer_slot_num' => 2,
-			'delivery_load_id' => $deliveryLoad->id,
-			'requestedDate' => strtotime($deliveryLoad->delivery_on),
-	    	]);	
+		if($deliveryLoad->truck == "")
+			{
+			echo $this->render('/Trailers/_trailer', [
+				'blank' => true
+		    	]);	
+			}
+		else{
+			echo $this->render('/Trailers/_trailer', [
+				'trailer' => $deliveryLoad->getTrailerObject(1),
+				'target_delivery_load' => $deliveryCount,
+				'delivery_run_num' => $deliveryLoad->delivery_run_num,
+				'trailer_slot_num' => 2,
+				'delivery_load_id' => $deliveryLoad->id,
+				'requestedDate' => strtotime($deliveryLoad->delivery_on),
+		    	]);	
+		    }
 		?>
 		
 	</div>

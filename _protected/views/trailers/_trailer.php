@@ -20,6 +20,7 @@ use yii\helpers\Html;
 * 		Trailer Render for a given Trailer details
 * 
 */
+
 if(isset($trailer)) {  
 
 
@@ -136,7 +137,17 @@ $otherDeliveryLoadsBins = Trailers::getUsedBinsOtherLoads($delivery_run_num, $re
 * 		Trailer Render for an available trailer select
 * 
 */
- }  else { ?>
+} elseif(isset($blank)) { ?>
+	
+	<div class='trailer_empty_select'>
+		
+	</div>
+	
+		
+	
+
+
+ <? }  else { ?>
 
 
 	<div class='trailer_empty_select'>

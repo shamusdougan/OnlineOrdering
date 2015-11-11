@@ -85,4 +85,10 @@ class Product extends \yii\db\ActiveRecord
             'Retail_Price_t' => 'Retail  Price T',
         ];
     }
+    
+    
+    public function getProductTypeString()
+    {
+		return Lookup::item($this->Product_Category, 'PRODUCT_CATEGORY');
+	}
 }

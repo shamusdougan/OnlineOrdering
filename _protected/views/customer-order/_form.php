@@ -175,7 +175,7 @@ function updateOrderDetails()
            	$('#customerdetails-address').val(data.address);
            	$('#customerdetails-nearestTown').val(data.nearestTown);
            	$('#customerdetails-viewmore').show();
-           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/view?id=")."' + data.id);
+           	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/update?id=")."' + data.id);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
@@ -208,6 +208,27 @@ $this->registerJs(
 $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 	updateOrderDetails();
 });"); 
+
+$this->registerJs("$('#".Html::getInputId($model, 'Storage_Unit')."').on('change',function(){
+	
+	var storage_id = $(this).val();
+	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("customer-order/ajax-get-storage-delivery-instructions")."',
+		data: {storage_id: storage_id}, 
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('#".Html::getInputId($model, 'Order_instructions')."').val(data);
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+        });
+});"); 
+
+
 
 //Action on adding an ingredient
 $this->registerJs(
@@ -515,6 +536,7 @@ $( document ).ready(function() {
 								'initialize'=>false,
 								],
 							'data' => $storageList,
+							
 							],
 						],
 					'Order_instructions' =>
