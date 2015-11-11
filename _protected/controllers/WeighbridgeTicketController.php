@@ -138,7 +138,7 @@ class WeighbridgeTicketController extends Controller
         	
         	
         	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge_ticket/create?exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge-ticket/create?exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'weighbridge-form', 'confirm' => 'Save and Exit Delivery?']; 
 			
 			
@@ -269,9 +269,9 @@ class WeighbridgeTicketController extends Controller
 	public function actionAjaxDeliveryDetails($delivery_id)
 	{
 		if($delivery_id != null){
-			$delivery =  Delivery::findOne(['id'=>$delivery_id]);
+			$delivery =  Delivery::findOne($delivery_id);
 			
-		
+			
 			
 	    	return \yii\helpers\Json::encode([
 	    		'date' => $delivery->delivery_on,
