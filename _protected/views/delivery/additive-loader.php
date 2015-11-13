@@ -69,7 +69,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 					<tr>
 	 						<td width='50%'>Batch Size: </td>
 	 						<td wdith='50%'>
-	 						<?= $deliveryLoadObject->load_qty."T" ?>
+	 						<?= $delivery->num_batches." x ".number_format(($deliveryLoadObject->load_qty / $delivery->num_batches), 3)."T" ?>
 	 						</td>
 	 					</tr>
 	 				</table>
@@ -80,7 +80,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 	</table>
 		
 	</div>
-	<div style='width: 100%; height: 650px;' >
+	<div style='width: 100%; height: 620px;' >
 		<table width='100%'>
 			<tr style='background-color: #c6c6c6'>
 				<td><b>PRODUCT</B></td>
