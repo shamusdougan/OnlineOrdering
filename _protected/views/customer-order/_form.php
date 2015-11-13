@@ -549,6 +549,14 @@ $( document ).ready(function() {
 							],
 						
 						],
+					'verify_notes' =>
+						[
+						'type' => FORM::INPUT_CHECKBOX,
+						'options' =>
+							[
+							'disabled' => $readOnly,
+							],
+						]
 					]
 				])
 				

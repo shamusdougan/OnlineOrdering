@@ -54,7 +54,10 @@ class Lookup extends \yii\db\ActiveRecord
     
     public function item($itemCode, $itemType)
     {
-		$result = Lookup::find()->where(['Type' => $itemType, 'code' => $itemCode])->one();
+		$result = Lookup::find()
+					->where(['Type' => $itemType, 'code' => $itemCode])
+					->orderBy('position')
+					->one();
 		
 		if(isset($result))
 		{
@@ -75,7 +78,10 @@ class Lookup extends \yii\db\ActiveRecord
 	
 	public function  items($itemType)
 	{
-		$results = Lookup::find()->where(['Type' => $itemType])->all();
+		$results = Lookup::find()
+					->where(['Type' => $itemType])
+					->orderBy('position')
+					->all();
 		
 		$resultArray = array();
 		foreach($results as $result){

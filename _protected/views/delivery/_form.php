@@ -745,6 +745,27 @@ $this->registerJs("$('.sap_print').on('click',function(){
 ");
 
 
+
+/********************************************************************
+* 
+* Batch Size calculations
+* 
+********************************************************************/
+
+
+$this->registerJs("$('#".Html::getInputId($model, 'num_batches')."').on('change', function()
+		{
+		var num_batches = parseFloat($(this).val());
+		var	orderQty = parseFloat($('#orderdetails-orderQTY').val());
+
+
+		var batchSize = (orderQty / num_batches).toFixed(3);;
+		$('#".Html::getInputId($model, 'batchSize')."').val(batchSize)
+	
+		
+		});
+
+");
 ?>
 
 <div class="delivery-form">
@@ -787,34 +808,61 @@ $this->registerJs("$('.sap_print').on('click',function(){
 			<font size='+3'>Unallocated Order (Tonnes): <span id='remaining_tonnes'></span></font>
 		</div>
 		<br>
-	    
-	    <div width='100%' style='height: 80px;'>
+	     <?= $form->errorSummary($model); ?>  
+	    <div width='100%' style='height: 100px;'>
 	    	<div style='width: 100%; float: left'>
 	    		
-	    		<div style='width: 400px; margin: auto;'>
-	    			<?=  $form->field($model, 'delivery_on')->widget(DateControl::classname(), 
-	    					[
-							'type'=>DateControl::FORMAT_DATE,
-							'disabled' => $readOnly,
-							'options' =>
-								[
-								'type' => DatePicker::TYPE_COMPONENT_APPEND,
+	    		<div style='width: 800px; margin: auto;'>
+	    			<?= 
+	    			Form::widget(
+						[
+						'model'=>$model,
+						'form'=>$form,
+					
+						'columns'=>3,
+						'attributes' =>
+							[    
+	    					'delivery_on' =>
+	    						[
+	    					
+								'type' => Form::INPUT_WIDGET,
+								'widgetClass' => DateControl::classname(),
 								//'placeholder' => "Requested Delivery Date...",
-								'pluginOptions' =>
+								'options' =>
 									[
-									'autoclose' => true,
-									'todayHighlight' => true,
-									],
-								'pluginEvents' =>
-									[
-									'changeDate' => "function(e) { clearAllLoads(); }",
-									
-									
+									'pluginOptions' =>
+										[
+										'autoclose' => true,
+										'todayHighlight' => true,
+										],
+									'pluginEvents' =>
+										[
+										'changeDate' => "function(e) { clearAllLoads(); }",
+										]
 									]
-									
-								]
-							]);
+								],
+							'num_batches' =>
+	    						[
+	    						'type' => Form::INPUT_TEXT,
+	    						],
+	    					'batchSize' =>
+	    						[
+	    						'type' => FORM::INPUT_TEXT,
+	    						'options'=>
+	    							[
+	    							'disabled' => True,
+	    							]
+	    						]
+	    						
+	    					],
+	    					
+	    				]);
+	    			
 	    			?>
+	    	
+							
+				
+	    			
 	    			
 	    			
 	    		</div>

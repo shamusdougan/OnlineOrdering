@@ -206,6 +206,7 @@ class DeliveryController extends Controller
 			//prepopulate the field in the model
 			else{
 				$model->order_id = $order_id;
+				$model->num_batches = $model->calculateBatchSize($order->Qty_Tonnes);
 				}
    			} 
    		else{

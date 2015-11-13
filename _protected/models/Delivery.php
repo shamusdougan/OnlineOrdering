@@ -38,8 +38,10 @@ class Delivery extends \yii\db\ActiveRecord
     {
         return [
             [['delivery_qty', 'order_id'], 'number'],
+            [['delivery_on'], 'required'],
             [['delivery_on', 'delivery_completed_on', 'status'], 'safe'],
-            [['weigh_bridge_ticket', 'weighed_by'], 'string', 'max' => 100]
+            [['weigh_bridge_ticket', 'weighed_by'], 'string', 'max' => 100],
+            [['num_batches'], 'batchCheck'],
         ];
     }
 
@@ -55,8 +57,36 @@ class Delivery extends \yii\db\ActiveRecord
             'delivery_qty' => 'Delivery Qty',
             'delivery_on' => 'Delivery Date',
             'delivery_completed_on' => 'Delivery Completed On',
+            'num_batches' => 'Number of batches',
         ];
     }
+    
+  	public function batchCheck($attribute, $params)
+  		{
+  			//As defined by the plant equipment
+  			$maximum_batch_size = 5;
+  			
+  			if($this->num_batches <= 0)
+  				{
+				$this->addError($attribute,'You must have a least 1 Batch');
+				}
+			
+  			$order_size = $this->customerOrder->Qty_Tonnes;
+  			$batch_size = $order_size / $this->num_batches;
+  			if($batch_size > $maximum_batch_size)
+  				{
+				$this->addError($attribute,'The Batch Size must be less than '.$maximum_batch_size.'T');
+				}
+  			//$number_of_batches = ceil($order_size / $maximum_batch_size);
+
+		}
+    
+
+	public function getBatchSize()
+		{
+			$order_size = $this->customerOrder->Qty_Tonnes;
+  			return number_format($order_size / $this->num_batches, 3)." T";
+		}
     
     
     public function getCustomerOrder()
@@ -78,6 +108,13 @@ class Delivery extends \yii\db\ActiveRecord
 	public function getWeighbridgeTicket()
 		{
 			return $this->hasOne(WeighbridgeTicket::className(), ['delivery_id' => 'id']);
+		}
+
+	public function calculateBatchSize($order_qty)
+		{
+			$maximumBatchSize = 5; 
+			
+			return ceil($order_qty / $maximumBatchSize);
 		}
 
 		

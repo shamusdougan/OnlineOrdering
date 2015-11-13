@@ -95,6 +95,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
     {
         return [
             [['Customer_id', 'Name', 'Created_On', 'Qty_Tonnes', 'Requested_Delivery_by', 'Storage_Unit'], 'required'],
+            [['verify_notes'], 'required', 'requiredValue' => 1, 'message' => 'Please verify the Order Notes are correct and up to date'],
             [['Customer_id', 'Mix_Type', 'Qty_Tonnes', 'Billing_company', 'Billing_type', 'Created_By', 'Discount_pT', 'Discount_pT_Base', 'Discount_type', 'Feed_Days_Remaining', 'Feed_Type', 'Herd_Size', 'Modified_By', 'Order_notification', 'Owner', 'Price_Production', 'Price_Production_Base', 'Price_production_pT', 'Price_production_pT_Base', 'Price_Transport', 'Price_Transport_Base', 'Price_transport_pT', 'Price_transport_pT_Base', 'Process', 'Process_Stage', 'Product_Category', 'Second_Customer', 'Second_customer_Order_percent', 'Ship_To', 'Status', 'Storage_Unit', 'Submitted_Status', 'Submitted_Status_Description'], 'integer'],
             [['Discount_Percent', 'Date_Fulfilled', 'Date_Submitted', 'Created_On', 'Load_Due', 'Modified_On', 'Requested_Delivery_by'], 'safe'],
             [['Feed_QOH_Tonnes', 'Feed_Rate_Kg_Day', 'Price_pT', 'Price_pT_Base', 'Price_Sub_Total', 'Price_Sub_Total_Base', 'Price_Total', 'Price_Total_Base', 'Price_Total_pT', 'Price_Total_pT_Base'], 'number'],
@@ -196,6 +197,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Storage_Unit' => 'Storage  Unit',
             'Submitted_Status' => 'Submitted  Status',
             'Submitted_Status_Description' => 'Submitted  Status  Description',
+            'verify_notes' => 'I Verify that the Order Notes are correct and up to date',
         ];
     }
     

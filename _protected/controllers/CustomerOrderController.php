@@ -625,11 +625,11 @@ class CustomerOrderController extends Controller
 			$products = Product::find()
 	        				->where(['status' => Product::ACTIVE])
 	        				->where(['Product_Category' => $productTypes])
-	        				->select(['id', 'Name', 'Mix_Type'])
+	        				->select(['id', 'Name', 'Product_Category'])
 	        				->all();
 	        				
 	   
-	        $productList = ArrayHelper::map($products, 'id', 'Name') ;
+	        $productList = ArrayHelper::map($products, 'id', 'Name', 'productTypeString');
 			return $this->renderAjax("/customer-orders-ingredients/_orderAdd", ['model' => $orderIngredient, 'productList' => $productList]);
 			}
 		}
