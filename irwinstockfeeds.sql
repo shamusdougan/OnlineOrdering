@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2015 at 04:16 PM
+-- Generation Time: Nov 14, 2015 at 10:08 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -1827,20 +1827,25 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status` int(5) DEFAULT NULL,
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
+  `verify_notes` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=254 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=258 ;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
-INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`) VALUES
-(232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 69, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 4, 103, NULL, NULL, 100),
-(235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100),
-(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix - Custom 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', 73, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 4, 1018, NULL, NULL, 100),
-(242, 'ORD3242', 596, 'MJ & DR Whitford Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-28', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, '4539.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-31', NULL, NULL, NULL, 2, 227, NULL, NULL, 100),
-(252, 'ORD3235', 559, 'Mark Lyons Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-29', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 1, 394, NULL, NULL, 100),
-(253, 'ORD3253', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`, `verify_notes`) VALUES
+(232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 69, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 4, 103, NULL, NULL, 100, 0),
+(235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100, 0),
+(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 2, 1018, NULL, NULL, 100, 0),
+(242, 'ORD3242', 596, 'MJ & DR Whitford Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-28', 29, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, '4539.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-31', NULL, NULL, NULL, 3, 227, NULL, NULL, 100, 0),
+(252, 'ORD3235', 559, 'Mark Lyons Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-29', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 1, 394, NULL, NULL, 100, 0),
+(253, 'ORD3253', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(254, 'ORD3254', 61, 'Andrew Fyfe Commodity 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-11', 31, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Take a right turn', NULL, NULL, NULL, '294.25', NULL, NULL, NULL, NULL, '294.25', NULL, '2942.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, NULL, '2015-11-12', NULL, NULL, NULL, 4, 611, NULL, NULL, 100, 0),
+(255, 'ORD3255', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(256, 'ORD3256', 3, 'A & W Cotchins Custom 15T', NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '5595.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-13', NULL, NULL, NULL, 1, 1224, NULL, NULL, 100, 1),
+(257, 'ORD3257', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1857,7 +1862,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=139 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=144 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -1878,7 +1883,12 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (135, '2015-10-28', 58, '100', NULL, NULL, 249),
 (136, '2015-10-28', 58, '100', NULL, NULL, 250),
 (137, '2015-10-22', 54, '100', NULL, NULL, 251),
-(138, '2015-09-02', 12, '100', NULL, NULL, 252);
+(138, '2015-09-02', 12, '100', NULL, NULL, 252),
+(139, '2015-11-11', 15, '44', NULL, NULL, 254),
+(140, '2015-11-11', 16, '53', NULL, NULL, 254),
+(141, '2015-11-11', 17, '3', NULL, NULL, 254),
+(142, '2015-11-12', 158, '100', NULL, NULL, 255),
+(143, '2015-11-13', 2, '100', NULL, NULL, 256);
 
 -- --------------------------------------------------------
 
@@ -1896,15 +1906,18 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `delivery_completed_on` date DEFAULT NULL,
   `order_id` int(10) NOT NULL,
   `status` int(10) NOT NULL,
+  `num_batches` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=74 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `delivery`
 --
 
-INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`) VALUES
-(73, 'DEL00073', NULL, NULL, 0, '2015-10-28', NULL, 239, 2);
+INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`, `num_batches`) VALUES
+(29, 'DEL00029', NULL, NULL, 11, '2015-11-12', NULL, 242, 1, 3),
+(31, 'DEL00031', NULL, NULL, 10, '2015-11-12', NULL, 254, 2, 0),
+(32, 'DEL00032', NULL, NULL, 55, '2015-11-19', NULL, 239, 1, 12);
 
 -- --------------------------------------------------------
 
@@ -1921,7 +1934,16 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `truck_id` int(5) DEFAULT NULL,
   `delivery_run_num` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=185 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+
+--
+-- Dumping data for table `delivery_load`
+--
+
+INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `delivery_completed_on`, `truck_id`, `delivery_run_num`) VALUES
+(26, 31, 10, '2015-11-12', NULL, 92, 1),
+(34, 29, 11, '2015-11-12', NULL, 92, 1),
+(37, 32, 55, '2015-11-19', NULL, 92, 1);
 
 -- --------------------------------------------------------
 
@@ -1935,7 +1957,22 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=767 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+
+--
+-- Dumping data for table `delivery_load_bin`
+--
+
+INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
+(27, 26, 365, 0),
+(28, 26, 366, 3),
+(29, 26, 367, 2),
+(30, 26, 368, 2),
+(31, 26, 369, 3),
+(39, 34, 456, 11),
+(46, 37, 456, 16),
+(47, 37, 457, 28),
+(48, 37, 380, 11);
 
 -- --------------------------------------------------------
 
@@ -1948,7 +1985,19 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=272 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+
+--
+-- Dumping data for table `delivery_load_trailer`
+--
+
+INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
+(33, 26, 19),
+(34, 26, 1),
+(49, 34, 19),
+(50, 34, 1),
+(55, 37, 19),
+(56, 37, 4);
 
 -- --------------------------------------------------------
 
@@ -1986,7 +2035,7 @@ CREATE TABLE IF NOT EXISTS `lookup` (
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
 
 --
 -- Dumping data for table `lookup`
@@ -2016,7 +2065,7 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (21, 'Inactive', 2, 'ACTIVE_STATUS', 2),
 (22, 'Share Farmer', 6, 'FARM_OPERATION', 6),
 (23, 'Commodity', 3, 'ORDER_CATEGORY', 3),
-(24, 'Mix', 2, 'ORDER_CATEGORY', 2),
+(24, 'Mix', 2, 'ORDER_CATEGORY', 5),
 (26, 'Pellet', 1, 'ORDER_CATEGORY', 1),
 (27, 'Additive', 4, 'ORDER_CATEGORY', 4),
 (28, 'None', 1, 'DISCOUNT_TYPE', 1),
@@ -2033,7 +2082,13 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (39, 'IN_PROGRESS', 1, 'DELIVERY_STATUS', 1),
 (40, 'LOADED', 2, 'DELIVERY_STATUS', 2),
 (41, 'COMPLETED', 3, 'DELIVERY_STATUS', 3),
-(42, 'Completed', 5, 'ORDER_STATUS', 5);
+(42, 'Completed', 5, 'ORDER_STATUS', 5),
+(43, 'Custom', 5, 'ORDER_CATEGORY', 6),
+(44, 'Pellet - Custom', 6, 'ORDER_CATEGORY', 2),
+(45, 'Commodity', 3, 'PRODUCT_CATEGORY', 1),
+(46, 'Mix', 2, 'PRODUCT_CATEGORY', 2),
+(47, 'Pellet', 1, 'PRODUCT_CATEGORY', 3),
+(48, 'Additive', 4, 'PRODUCT_CATEGORY', 4);
 
 -- --------------------------------------------------------
 
@@ -3559,12 +3614,6 @@ INSERT INTO `trailer_bins` (`id`, `trailer_id`, `BinNo`, `MaxCapacity`, `Status`
 (402, 10, '5', 3, 1),
 (403, 10, '6', 3.5, 1),
 (404, 11, 'BIN 1', 20, 1),
-(405, 12, 'A1', 2.5, 1),
-(406, 12, 'A2', 4, 1),
-(407, 12, 'A3', 4, 1),
-(408, 12, 'A4', 4, 1),
-(409, 12, 'A5', 4, 1),
-(410, 12, 'A6', 2.5, 1),
 (411, 12, 'B1', 4, 1),
 (412, 12, 'B2', 4, 1),
 (413, 12, 'B3', 4, 1),
@@ -3672,27 +3721,27 @@ CREATE TABLE IF NOT EXISTS `trucks` (
 --
 
 INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`, `defaultTrailer_id`, `Special_Instruction`, `Status`, `Auger`, `Blower`, `Tipper`, `max_trailers`, `max_load`) VALUES
-(90, 'Container2', '0400 000 000', 'Container', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(91, 'EX WORKS TRUCKS', '0000000000', 'EX WORKS TRUCKS', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(92, 'ISF 480', '0488 566 489', 'Scania 480', 1, 3, '', 1, 0, 0, 0, NULL, NULL),
-(93, 'ISF 540', 'TBA', 'VOLVO 540', 1, NULL, 'NO POWER PACK OR BLOWER - TIPPER ONLY', 1, 0, 0, 0, NULL, NULL),
-(94, 'ISX 908', '0407 908 555', 'TIPPER/BLOWER', 1, NULL, 'TIPPER/BLOWER', 1, 0, 1, 0, NULL, NULL),
-(95, 'QQJ 669', '0409 566 098', 'KEOGH AUGER (OLD AUGER)', 1, NULL, '', 1, 1, 1, 0, NULL, NULL),
-(96, 'RVL 465', '0409 566 057', 'C/VAC AUGER/BLOWER', 1, NULL, '', 1, 1, 1, 0, NULL, NULL),
-(97, 'SIP 819', '0409 566 058', 'HAMELEX SINGLE TIPPER', 1, NULL, '', 1, 1, 0, 0, NULL, NULL),
-(98, 'TOM HARWOOD', '0427017769', 'SINGLE TIPPER', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(99, 'TWV 765', '0417 566 089', 'C/VAC CHOOK BIN', 1, NULL, '', 1, 0, 1, 0, NULL, NULL),
-(100, 'ULZ 544', '0417 566 607', 'Truck is a write off - needs to be deleted', 1, NULL, '', 0, 0, 0, 1, NULL, NULL),
-(101, 'USZ 620', '0409 566 802', 'KOCKUMS TRI AXLE BLOWER', 1, NULL, '', 1, 0, 0, 1, NULL, NULL),
-(102, 'XQP 945', '0438 851 867', 'CVAC B-DOUBLE', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(103, 'YBV 974', '0409 566 333', 'CVAC BLOWER - Blue Tarp', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(104, 'YBV 987', '0409 566 044', 'CVAC BLOWER (SILVER)', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(105, 'YGW 955', '0409 566 098', 'CVAC BLOWER/STINGER-72982-S', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(106, 'YXU 596', '0417 566 607', 'MOORE B-BOUBLE', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(107, 'ZBW 257', '0488 566 008', 'HAMELEX B-DOUBLE', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(108, 'ZHR 591', '0409 566 078', 'C/VAC AUGER (ROLLOVER)', 1, NULL, '', 1, 0, 0, 0, NULL, NULL),
-(109, 'ZPV 911', '0488 566 030', 'C/VAC BLOWER/STINGER', 1, NULL, 'Michael Phillips', 1, 0, 0, 0, NULL, NULL),
-(110, 'ZWY 945', '0488 566 089', 'C/VAC B-DOUBLE CHOOK BIN', 1, NULL, '', 1, 0, 0, 0, NULL, NULL);
+(90, 'Container2', '0400 000 000', 'Container', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(91, 'EX WORKS TRUCKS', '0000000000', 'EX WORKS TRUCKS', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(92, 'ISF 480', '0488 566 489', 'Scania 480', 1, 3, '', 1, 0, 0, 0, 2, NULL),
+(93, 'ISF 540', 'TBA', 'VOLVO 540', 1, NULL, 'NO POWER PACK OR BLOWER - TIPPER ONLY', 1, 0, 0, 0, 2, NULL),
+(94, 'ISX 908', '0407 908 555', 'TIPPER/BLOWER', 1, NULL, 'TIPPER/BLOWER', 1, 0, 1, 0, 1, NULL),
+(95, 'QQJ 669', '0409 566 098', 'KEOGH AUGER (OLD AUGER)', 1, NULL, '', 1, 1, 1, 0, 1, NULL),
+(96, 'RVL 465', '0409 566 057', 'C/VAC AUGER/BLOWER', 1, NULL, '', 1, 1, 1, 0, 1, NULL),
+(97, 'SIP 819', '0409 566 058', 'HAMELEX SINGLE TIPPER', 1, NULL, '', 1, 1, 0, 0, 1, NULL),
+(98, 'TOM HARWOOD', '0427017769', 'SINGLE TIPPER', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(99, 'TWV 765', '0417 566 089', 'C/VAC CHOOK BIN', 1, NULL, '', 1, 0, 1, 0, 1, NULL),
+(100, 'ULZ 544', '0417 566 607', 'Truck is a write off - needs to be deleted', 1, NULL, '', 0, 0, 0, 1, 1, NULL),
+(101, 'USZ 620', '0409 566 802', 'KOCKUMS TRI AXLE BLOWER', 1, NULL, '', 1, 0, 0, 1, 1, NULL),
+(102, 'XQP 945', '0438 851 867', 'CVAC B-DOUBLE', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(103, 'YBV 974', '0409 566 333', 'CVAC BLOWER - Blue Tarp', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(104, 'YBV 987', '0409 566 044', 'CVAC BLOWER (SILVER)', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(105, 'YGW 955', '0409 566 098', 'CVAC BLOWER/STINGER-72982-S', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(106, 'YXU 596', '0417 566 607', 'MOORE B-BOUBLE', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(107, 'ZBW 257', '0488 566 008', 'HAMELEX B-DOUBLE', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(108, 'ZHR 591', '0409 566 078', 'C/VAC AUGER (ROLLOVER)', 1, NULL, '', 1, 0, 0, 0, 1, NULL),
+(109, 'ZPV 911', '0488 566 030', 'C/VAC BLOWER/STINGER', 1, NULL, 'Michael Phillips', 1, 0, 0, 0, 1, NULL),
+(110, 'ZWY 945', '0488 566 089', 'C/VAC B-DOUBLE CHOOK BIN', 1, NULL, '', 1, 0, 0, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -3793,14 +3842,17 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `testWeight` float DEFAULT NULL,
   `screenings` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `weighbridge_ticket`
 --
 
 INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_id`, `date`, `driver`, `gross`, `tare`, `net`, `Notes`, `Moisture`, `Protein`, `testWeight`, `screenings`) VALUES
-(9, 'WB000001', 73, 92, '2015-10-28', '', 1, 2, 4, '', NULL, NULL, NULL, NULL);
+(11, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, '', NULL, NULL, NULL, NULL),
+(12, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test', NULL, NULL, NULL, NULL),
+(13, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL),
+(14, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL);
 
 --
 -- Constraints for dumped tables
