@@ -81,19 +81,28 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 		
 	</div>
 	<div style='width: 100%; height: 620px;' >
-		<table width='100%'>
+		<table >
 			<tr style='background-color: #c6c6c6'>
-				<td><b>PRODUCT</B></td>
-				<td><b>%</b></td>
-				<td><b>WEIGHT</B></td>
+				<td width='350px'><b>PRODUCT</B></td>
+				<td width='100px'></td><b></b></td>
+				<td width='250px'><b>WEIGHT</B></td>
 			</tr>
 			<?
+			$boxesWidth = '150';
+			$imageWidth = min(($boxesWidth / $delivery->num_batches), 30);
 			foreach($delivery->customerOrder->ingredients as $orderIngredient)
 				{
 					echo "<tr>";
-					echo "<td>".$orderIngredient->product->Name."</td>";
-					echo "<td>".number_format($orderIngredient->ingredient_percent, 3)."%</td>";
-					echo "<td>".number_format((($delivery->customerOrder->Qty_Tonnes * $orderIngredient->ingredient_percent) / 100), 3)."T</td>";
+					echo "<td><span style='font-size: 22px'>".$orderIngredient->product->Name."</spant></td>";
+					echo "<td align='right'><span style='font-size: 18px'>".number_format($orderIngredient->ingredient_percent, 3)."%</span></td>";
+					echo "<td align='right'><span style='font-size: 18px'>".number_format(((($delivery->customerOrder->Qty_Tonnes / $delivery->num_batches) * $orderIngredient->ingredient_percent) / 100), 3)."T </span>";
+					for($i=0; $i < $delivery->num_batches; $i++)
+						{
+							echo "<img src='images/tick-box.png' width='".$imageWidth."'>";
+						}
+					
+					
+					echo "</td>";
 					echo "</tr>";
 				}
 			
