@@ -127,6 +127,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
     {
 		$scenarios = parent::scenarios();
         $scenarios['createDummy'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By'];//Scenario Values Only Accepted
+        $scenarios['copyOrder'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By'];//Scenario Values Only Accepted
         return $scenarios;
     }
 
@@ -365,11 +366,14 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	public function copy()
 	{
 		//create a copy of the order and save it to the database
-		$newOrder = new CustomerOrders();
+		$newOrder = new CustomerOrders(['scenario' => 'copyOrder']);
 		$newOrder->attributes = $this->attributes;
 		$newOrder->Status = CustomerOrders::STATUS_ACTIVE;
 		$newOrder->Created_On = date("Y-m-d");
 		$newOrder->Requested_Delivery_by = date("Y-m-d");
+		$newOrder->verify_notes = 0;
+		$newOrder->save();
+		$newOrder->Order_ID = $newOrder->getOrderNumber();
 		$newOrder->save();
 		
 		//create a copy of all of the rder ingredients and save them to the database

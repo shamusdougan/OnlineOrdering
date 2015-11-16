@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use app\models\Lookup;
 use yii\helpers\Json;
+use kartik\mpdf\Pdf;
 
 /**
  * CustomerOrderController implements the CRUD actions for customerOrders model.
@@ -160,6 +161,7 @@ class CustomerOrderController extends Controller
 			else{
 				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index'];
 				$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
+				$actionItems[] = ['label'=>'Print', 'button' => 'print', 'url'=>null];
 			}
 			
         	
@@ -708,6 +710,40 @@ class CustomerOrderController extends Controller
 			
 			}
 		}
+
+  public function actionPrint($id)
+	{
+		
+	$order = CustomerOrders::findOne($id);
+	
+	$content = $this->renderPartial("_print", [
+			'order' => $order,
+
+			
+			]);
+		
+		
+	$pdf = new Pdf([
+		'content' => $content,  
+		//'destination' => Pdf::DEST_FILE, 
+		//'filename' => 'c:\temp\test.pdf',
+		'format' => Pdf::FORMAT_A4, 
+ 		'destination' => Pdf::DEST_BROWSER, 
+		'options' => ['title' => 'Customer Order'],
+
+		'methods' => 
+			[
+			
+            'SetFooter'=>['{PAGENO}'],
+
+			//"SetJS" => "'this.print();'",
+			]
+    	]);
+
+	
+ 	return $pdf->render(); 
+
+	}
 
 	
 }

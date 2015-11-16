@@ -58,9 +58,10 @@ function getIngredientWeightedCost()
 	var weightedCost = 0
 	$(\".weightedCost\").each(function() 
  		{
-		if(!isNaN($(this).text()) && $(this).text().length!=0) 
+ 		costString = ($(this).text()).replace('$', '');
+		if(!isNaN(costString) && costString.length!=0) 
 			{
-           	weightedCost += parseFloat($(this).text());
+           	weightedCost += parseFloat(costString);
        		}
 		});
 	$(\"#".Html::getInputId($model, 'Price_pT_Base')."-disp\").maskMoney('mask',weightedCost);	
@@ -78,6 +79,8 @@ function updateOrderCosts()
 	var basePricePerTone = $(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val();
 	var baseDiscountPerTonne = $(\"#".Html::getInputId($model, 'Discount_pT')."\").val();
 	var OrderQty =  $(\"#".Html::getInputId($model, 'Qty_Tonnes')."\").val();
+	
+
 	
 	if(!isNaN(productionCost) && productionCost.length!=0) 
 		{
@@ -118,7 +121,6 @@ function updateOrderCosts()
 	else{
 		OrderQty = 0;
 		}
-	
 	
 	
 	var basePricePerTon = weightedCost + (productionCost) + (transportCost);
@@ -380,6 +382,11 @@ $this->registerJs("
 		{
 			updateOrderCosts();
 		});	
+		
+	$('#".Html::getInputId($model, 'Qty_Tonnes')."').on('change', function()
+		{
+			updateOrderCosts();
+		});	
 ");
 
 //Load the initial order data to the right hand Side
@@ -391,11 +398,27 @@ $( document ).ready(function() {
 	getIngredientSum();
 });
 
-
-
-
 ");
 
+
+
+
+$this->registerJs("$('.sap_print').on('click',function(){
+	
+	var windowSizeArray = [ 'width=200,height=200',
+                            'width=300,height=400,scrollbars=yes' ];
+
+	var url = '".yii\helpers\Url::toRoute(["customer-order/print", 'id' => $model->id])."';
+    var windowName = 'Weigh Bridge Ticket';
+    var windowSize = windowSizeArray[$(this).attr('rel')];
+
+    window.open(url, windowName, windowSize);
+
+   
+
+	
+	});
+");
 
 ?>
 
@@ -617,6 +640,7 @@ $( document ).ready(function() {
 						'attribute' => 'Percent_ingredients',
         				'pageSummary'=>true,
 						'format'=>'raw',
+						'hAlign'=>'right',
 						'value'=>function ($model) use ($readOnly) {
         					//return $model->ingredient_percent;
         					if($readOnly)
@@ -635,14 +659,16 @@ $( document ).ready(function() {
 					],
 					[
 			    		'attribute' => 'product.List_Price_pT_Base',
-			    		//'hidden' => true,
 			    		 'contentOptions' => ['class' => 'pricePerTon'],
-
-			    	
-			    		
+			    		 'hAlign'=>'right',
 			    	],
 					[
 						'attribute' => 'WeightedCost',
+						'hAlign'=>'right',
+						'value'=>function ($model) {
+        					//return $model->ingredient_percent;
+							return  '$'.number_format($model->WeightedCost, 2);
+    						},
 						'contentOptions' => ['class' => 'weightedCost'],
 						'pageSummary' => True,
 					],
