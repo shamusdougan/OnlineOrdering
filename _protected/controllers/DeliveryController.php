@@ -346,7 +346,7 @@ class DeliveryController extends Controller
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
-		$actionItems[] = ['label'=>'Additive Loader', 'button' => 'print', 'url'=> null,]; 
+		$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id]; 
 		
 	
 		
@@ -862,17 +862,25 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/
-    public function actionPrintAdditiveLoaderPdf($id)
+    public function actionPrintAdditiveLoaderPdf($id, $autoPrint = false, $saveLocation=false)
 	{
 		
 	$delivery = Delivery::findOne($id);
 	
 	$content = $this->renderPartial("additive-loader", [
 			'delivery' => $delivery,
-
-			
 			]);
+
+
 		
+	$methods = 
+		[
+		'SetFooter'=>['{PAGENO}'],
+		];
+	if($autoPrint)
+		{
+		$methods['SetJS'] = "'this.print();'"	;
+		}
 		
 	$pdf = new Pdf([
 		'content' => $content,  
@@ -882,15 +890,12 @@ class DeliveryController extends Controller
  		'destination' => Pdf::DEST_BROWSER, 
 		'options' => ['title' => 'Additive Loader Sheet'],
 
-		'methods' => 
-			[
-			
-            'SetFooter'=>['{PAGENO}'],
-
-			//"SetJS" => "'this.print();'",
-			]
+		'methods' => $methods,
     	]);
 
+	
+	
+	
 	
  	return $pdf->render(); 
 

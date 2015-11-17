@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 
 /* @var $this yii\web\View */
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="delivery-create">
 
-	<?= actionButtons::widget(['items' => $actionItems]) ?>
+	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
      <?= $this->render('_form', [

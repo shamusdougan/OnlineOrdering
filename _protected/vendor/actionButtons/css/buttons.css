@@ -1,0 +1,132 @@
+.sapActionBar{
+	width: 1278px;
+	height: 40px;
+	border: 1px solid;
+
+
+	
+}
+
+
+.sapContent{
+	width: 1280px;
+	}
+	
+
+	
+.sap_button{
+	width: 55px;
+	height: 40px;
+	float: left;
+		
+	}
+	
+.sap_button a{
+	color: #000000;
+	text-decoration: none;
+}
+	
+.sap_buttonText{
+	text-align: center;
+	line-height: 85%;
+	}
+
+	
+.sap_icon {
+	width: 32px;
+	height: 32px;
+	margin-left:auto;
+ 	margin-right:auto;
+ 	}
+	
+.sap_icon:hover {
+	background-position:0px -32px;
+}
+
+.sap_icon_small {
+	width: 20px;
+	height: 20px;
+	margin-left:auto;
+ 	margin-right:auto;
+ 	}
+	
+.sap_icon_small:hover {
+	background-position:0px -20px;
+}
+
+.sap_icon_large
+{
+	width: 128px;
+	height: 128px;
+	margin-left: auto;
+	,argin-right: auto;
+}
+
+.sap_icon_large:hover
+{
+	background-position:0px -128px;
+	
+}
+.sap_edit{
+	background-image:url('../icons/icon-32-edit.png');
+	}
+	
+.sap_print{
+	background-image:url('../icons/icon-32-print.png');
+	}
+	
+.sap_copy{
+	background-image:url('../icons/icon-32-invadd.png');
+	}
+	
+.sap_list{
+	background-image:url('../icons/icon-32-list.png');
+	}
+
+.sap_alert{
+	background-image:url('../icons/icon-32-alert.png');
+}
+
+.sap_viewButton{
+	background-image:url('../icons/icon-32-view.png');
+}
+	
+.sap_cancel{
+	background-image:url('../icons/icon-32-cancel.png');
+	}
+	
+.sap_save{
+	background-image:url('../icons/icon-32-save.png');
+	}
+
+.sap_new{
+	background-image:url('../icons/icon-32-new.png');
+	}
+
+.sap_export{
+	background-image:url('../icons/icon-32-export.png');
+	}
+	
+.sap_delete{
+	background-image:url('../icons/icon-32-delete.png');
+	}
+	
+.sap_back{
+	background-image:url('../icons/icon-32-back.png');
+	}
+
+.sap_truck{
+	background-image:url('../icons/icon-32-truck.png');
+	}
+	
+.sap_reversetruck{
+	background-image:url('../icons/icon-32-reversetruck.png');
+	}
+	
+.sap_new_truck{
+	background-image:url('../icons/icon-large-add.png');
+}
+	
+.sap_cross_small{
+	background-image:url('../icons/icon-16-cross.png');
+	}

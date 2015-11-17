@@ -20,6 +20,7 @@ class Delivery extends \yii\db\ActiveRecord
 	const STATUS_INPROGRESS = 1;
 	const STATUS_LOADED = 2;
 	const STATUS_COMPLETED = 3;
+	const MAX_BATCH_SIZE = 5;
 	
 	
 	
@@ -63,19 +64,19 @@ class Delivery extends \yii\db\ActiveRecord
     
   	public function batchCheck($attribute, $params)
   		{
-  			//As defined by the plant equipment
-  			$maximum_batch_size = 5;
+  			
   			
   			if($this->num_batches <= 0)
   				{
 				$this->addError($attribute,'You must have a least 1 Batch');
+				return;
 				}
 			
   			$order_size = $this->customerOrder->Qty_Tonnes;
   			$batch_size = $order_size / $this->num_batches;
-  			if($batch_size > $maximum_batch_size)
+  			if($batch_size > Delivery::MAX_BATCH_SIZE)
   				{
-				$this->addError($attribute,'The Batch Size must be less than '.$maximum_batch_size.'T');
+				$this->addError($attribute,'The Batch Size must be less than '.Delivery::MAX_BATCH_SIZE.'T');
 				}
   			//$number_of_batches = ceil($order_size / $maximum_batch_size);
 
@@ -84,7 +85,13 @@ class Delivery extends \yii\db\ActiveRecord
 
 	public function getBatchSize()
 		{
-			$order_size = $this->customerOrder->Qty_Tonnes;
+			$order_size = $this->customerOrder->Qty_Tonnes;		
+			if($this->num_batches == 0)
+				{
+				$this->num_batches	= ceil($order_size / Delivery::MAX_BATCH_SIZE);
+				$this->save();
+				}
+			
   			return number_format($order_size / $this->num_batches, 3)." T";
 		}
     

@@ -11,9 +11,7 @@ use app\models\Trucks;
 use app\models\DeliveryLoad;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
-
-
-
+use vendor\actionButtons\actionButtonsWidget;
 	
 /*	model - Delivery Object
 *	order - Customeroder
@@ -726,23 +724,6 @@ $this->registerJs("$(document).on('click', '#fill_selected_bins', function(event
 ");
 
 
-
-$this->registerJs("$('.sap_print').on('click',function(){
-	
-	var windowSizeArray = [ 'width=200,height=200',
-                            'width=300,height=400,scrollbars=yes' ];
-
-	var url = '".yii\helpers\Url::toRoute(["delivery/print-additive-loader-pdf", 'id' => $model->id])."';
-    var windowName = 'Weigh Bridge Ticket';
-    var windowSize = windowSizeArray[$(this).attr('rel')];
-
-    window.open(url, windowName, windowSize);
-
-   
-
-	
-	});
-");
 
 
 
