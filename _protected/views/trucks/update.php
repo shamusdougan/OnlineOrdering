@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\trucks */
@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="trucks-update">
 
-	<?= actionButtons::widget(['items' => $actionItems]) ?>
+	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
 

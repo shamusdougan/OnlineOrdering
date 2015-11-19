@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 
 /* @var $this yii\web\View */
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="weighbridge-ticket-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
-	<?= actionButtons::widget(['items' => $actionItems]) ?>
+	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 	
 	
 	

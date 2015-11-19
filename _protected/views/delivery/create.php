@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 
 /* @var $this yii\web\View */

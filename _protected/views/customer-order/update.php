@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use app\models\CustomerOrders;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 use app\models\Lookup;
 
 
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update
 ?>
 <div class="customer-orders-update">
 
-	 <?= actionButtons::widget(['items' => $actionItems]) ?>
+	 <?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
 

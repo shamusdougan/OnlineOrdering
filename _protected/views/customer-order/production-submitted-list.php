@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\Url;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 use app\models\Lookup;
 use app\models\User;
 use kartik\widgets\ActiveForm;
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="customer-orders-index">
 
-    <?= actionButtons::widget(['items' => $actionItems]) ?>
+    <?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
     

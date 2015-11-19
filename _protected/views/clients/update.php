@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\clients */
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->Company_Name];
 <div class="clients-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
-  	<p><?= actionButtons::widget(['items' => $actionItems])  ?></p>
+  	<p><?= actionButtonsWidget::widget(['items' => $actionItems])  ?></p>
     <?= $this->render('_form', [
         'model' => $model, 'clientList' => $clientList, 'userList' => $userList
     ]) ?>

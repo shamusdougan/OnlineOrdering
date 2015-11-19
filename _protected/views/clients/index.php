@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\clientsSearch */
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     
-      <p><?= actionButtons::widget(['items' => $actionItems])  ?></p>
+      <p><?= actionButtonsWidget::widget(['items' => $actionItems])  ?></p>
     
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

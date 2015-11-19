@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use app\components\actionButtons;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\trailersSearch */
@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="trailers-index">
 
-	<?= actionButtons::widget(['items' => $actionItems]) ?>
+	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
     <h1><?= Html::encode($this->title) ?></h1>
    
     <?= GridView::widget([
