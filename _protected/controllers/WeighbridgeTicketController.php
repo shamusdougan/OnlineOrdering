@@ -53,8 +53,10 @@ class WeighbridgeTicketController extends Controller
     {
         $searchModel = new WeighbridgeTicketSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-		 $actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/weighbridge-ticket/create'];
+ 		$dataProvider->setSort(['defaultOrder' => ['ticket_number'=>SORT_DESC]]);
+		
+		
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/weighbridge-ticket/create'];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

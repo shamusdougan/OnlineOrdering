@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use vendor\actionButtons\actionButtonsWidget;
+use app\models\trucks;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\WeighbridgeTicketSearch */
@@ -22,15 +23,51 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'export' => false,
         'columns' => [
-			'date',
-			'truck.registration',
-            'ticket_number',
-            'delivery_id',
+        	[
+	        	'attribute' => 'ticket_number',
+	        	'format' => 'raw',
+	    		'value' => function ($data)
+	    			{
+					return html::a($data->ticket_number, "/weighbridge-ticket/update?id=".$data->id);
+					},
+				'width' => '10%',
+    		],
+			[
+	    		'attribute' => 'date',
+	    		'label' => 'Date',
+	    		'filterType'=> GridView::FILTER_DATE,
+	    		'filterWidgetOptions' => 
+	    			[
+					'pluginOptions'=>
+						[
+						'format' => 'dd M yyyy',
+						'autoWidget' => true,
+						'autoclose' => true,
+						'todayBtn' => true,
+						],
+					],
+	    		'format' => 'raw',
+	    		'value' => function ($data)
+	    			{
+					return date("D - d M Y", strtotime($data->date));
+					},
+				'width' => '15%',
+    		],
+			[
+				'attribute' => 'truck_id',
+				'label' => 'Vehicle',
+				'filter' => Trucks::getFilterList(),
+				'value' => function ($data)
+	    			{
+					return $data->truck->registration;
+					},
+			],
+           
           
             
-            // 'gross',
-            // 'tare',
-            // 'net',
+            'gross',
+            'tare',
+            'net',
             // 'Notes',
             // 'Moisture',
             // 'Protein',

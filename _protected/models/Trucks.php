@@ -246,4 +246,14 @@ class Trucks extends \yii\db\ActiveRecord
 		return $trailerList;
 	}    
     
+    
+    
+    
+    public function getFilterList()
+    {
+		$trucks = Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
+		$filterList =  ArrayHelper::map($trucks, 'id', 'registration');
+		return $filterList;
+		
+	}
 }
