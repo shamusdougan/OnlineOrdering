@@ -268,4 +268,14 @@ class Delivery extends \yii\db\ActiveRecord
 		$this->save();
 	}
 	
+	
+	public function hasWeighBridgeTicket()
+		{
+		if($this->weighbridgeTicket == null)
+			{
+			return false;
+			}
+		return true;
+		}
+	
 }

@@ -119,6 +119,15 @@
 	background-image:url('../icons/icon-32-truck.png');
 	}
 	
+.sap_truck_load{
+	background-image:url('../icons/icon-32-truck-load.png');
+}
+
+.sap_tags{
+	background-image:url('../icons/icon-32-tags.png');
+}
+
+	
 .sap_reversetruck{
 	background-image:url('../icons/icon-32-reversetruck.png');
 	}

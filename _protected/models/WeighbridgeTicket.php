@@ -37,12 +37,12 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['delivery_id', 'gross', 'tare', 'net', 'ticket_number'], 'required'],
-            [['delivery_id', 'truck_id'], 'integer'],
+            [['delivery_id', 'gross', 'tare', 'net', 'ticket_number', 'driver'], 'required'],
+            [['delivery_id', 'truck_id', 'smo_number'], 'integer'],
             [['date', 'ticket_number'], 'safe'],
             [['gross', 'tare', 'net', 'Moisture', 'Protein', 'testWeight', 'screenings'], 'number'],
             [['driver'], 'string', 'max' => 200],
-            [['Notes'], 'string', 'max' => 500]
+            [['Notes'], 'string', 'max' => 400]
         ];
     }
 
@@ -65,6 +65,7 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
             'Protein' => 'Protein',
             'testWeight' => 'Test Weight',
             'screenings' => 'Screenings',
+            'smo_number' => "SMO Number",
         ];
     }
     
@@ -74,10 +75,10 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
     {
 		$temp = WeighbridgeTicket::find()->orderBy(['ticket_number' => SORT_DESC])->one();
 		if(isset($temp)){
-			return "WB". str_pad(($temp->ticket_number)+1, 5, '0', STR_PAD_LEFT);
+			return "WB". str_pad(($temp->id)+1, 5, '0', STR_PAD_LEFT);
 			}
 		else{
-			return "WB000001";
+			return "WB00001";
 		}
 	}
 	
@@ -92,4 +93,7 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
     	{
 			return $this->hasOne(Trucks::className(), ['id' => 'truck_id'] );
 		}
+		
+	
+		
 }

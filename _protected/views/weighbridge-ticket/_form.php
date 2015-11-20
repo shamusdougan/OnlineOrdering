@@ -192,7 +192,17 @@ $this->registerJs("$('.sap_print').on('click',function(){
 			    			[
 			    			'type' => Form::INPUT_TEXT,
 			    			'columnOptions'=>['colspan'=>2],
-			    			]	
+			    			],
+			    		'driver' =>
+			    			[
+			    			'type' => Form::INPUT_TEXT,
+			    			'columnOptions'=>['colspan'=>2],
+			    			],
+			    		'smo_number' => 
+			    			[
+			    			'type' => Form::INPUT_TEXT,
+			    			'columnOptions'=>['colspan'=>2],
+			    			]
 		    			]
    				
    				

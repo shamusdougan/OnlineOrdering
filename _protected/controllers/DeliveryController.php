@@ -77,8 +77,9 @@ class DeliveryController extends Controller
         $searchModel = new DeliverySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
-        $actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/delivery/create'];
-
+        $actionItems= array();
+        //$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/delivery/create'];
+		
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -318,14 +319,17 @@ class DeliveryController extends Controller
         	//Once save, either stay on the page or exit. Controlled via the actiob buttons
         	$get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
-	    			{
-					return $this->redirect(['update', 'id' => $model->id]);
-					}
-				else{
-					return $this->redirect(['index']);
-					}
-            
-   
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			
+            elseif(isset($get['load']) && $get['load'] == 'true')
+   				{
+				return $this->redirect(['weighbridge-ticket/create', 'delivery_id' => $model->id]);
+				}
+   			else{
+				return $this->redirect(['index']);
+				}
     	} 
         
         
@@ -344,9 +348,17 @@ class DeliveryController extends Controller
     else{
     	
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+    	$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id]; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
-		$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id]; 
+		if($model->hasWeighbridgeTicket())
+			{
+			$actionItems[] = ['label'=>'Weigh Ticket', 'button' => 'tags', 'url'=> '/weighbridge-ticket/update?id='.$model->weighbridgeTicket->id]; 		
+			}
+		else{
+			$actionItems[] = ['label'=>'Save & Load', 'button' => 'truck_load', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&load=true', 'submit' => 'delivery-form', 'confirm' => 'Save and Load Truck?']; 	
+			}
+		
 		
 	
 		
