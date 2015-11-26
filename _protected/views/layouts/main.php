@@ -76,6 +76,7 @@ AppAsset::register($this);
 						
 						
 						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')], 
+						['label' => 'Users', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'user')], 
 						['label' => 'Products', 'url' => Url::toRoute('/product'), 'active'=>($currentItem == 'product')],
 						['label' => 'Import Data (remove Later)', 'url' => Url::toRoute('/import-functions'), 'active'=>($currentItem == 'import')],
 						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]

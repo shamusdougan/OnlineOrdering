@@ -317,4 +317,15 @@ class User extends UserIdentity
 	}
 	
 	
+	
+	/**
+	* 		Permission functions
+	*/
+	
+	public function canEditCustomer()
+	{
+			
+	}
+	
+	
 }

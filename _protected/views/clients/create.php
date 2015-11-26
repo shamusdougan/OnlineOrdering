@@ -1,30 +1,38 @@
 <?php
 
 use yii\helpers\Html;
-
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\clients */
 
-$this->title = 'Create Clients';
 $this->params['breadcrumbs'][] = ['label' => 'Clients', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $model->Company_Name];
+
+
+
+
+
+
+
+
 ?>
+<div class="clients-update">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+  	<p><?= actionButtonsWidget::widget(['items' => $actionItems])  ?></p>
+
+
 <div class="clients-create">
 
-<div class="contacts-form">
 
-    <?php $form = ActiveForm::begin(); ?>
 
-    <?= $this->render('_form', [
-        'model' => $model, 'clientList' => $clientList, 'userList' => $userList
+  
+
+    <?= $this->render('_createForm', [
+        'model' => $model, 'clientList' => $clientList
     ]) ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

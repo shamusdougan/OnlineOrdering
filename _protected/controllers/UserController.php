@@ -24,7 +24,7 @@ class UserController extends AppController
          * How many users we want to display per page.
          * @var int
          */
-        $pageSize = 11;
+     
         $this->view->params['menuItem'] = 'userItem';
 
         /**
@@ -35,13 +35,14 @@ class UserController extends AppController
         $theCreator = (Yii::$app->user->can('theCreator')) ? true : false ;
 
         $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $pageSize, $theCreator);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=>'/user/create', ];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
     }
 

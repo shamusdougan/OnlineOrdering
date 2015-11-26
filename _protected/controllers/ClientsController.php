@@ -70,17 +70,45 @@ class ClientsController extends Controller
     {
         $model = new clients();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+            	
+            	
+            $get = Yii::$app->request->get();
+			if(isset($get['exit']) && $get['exit'] == 'false' )
+	    		{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
+            
+        	}
+         else {
         	
 
-        	$clientDropDownList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
-        	$userDropDownList = ArrayHelper::map(User::find()->all(), 'id', 'fullname') ;
+	        $user = Yii::$app->user->canEditCustomer(); 
+	        print_r($user);
+	        //$user->canEditCustomer();
+        
+        	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/clients/create?&exit=false', 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information and Exit?']; 
+			
+			$clientDropDownList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
+			
+			//Set the client Defaults
+			$model->Status = Clients::STATUS_ACTIVE;
+			$model->Owner_id = Yii::$app->user->identity->id;
+			$model->Is_Customer = 1;
+			$model->Is_Factory = 0;
+			$model->Is_Supplier = 0;
+			$model->Owner_id = Yii::$app->user->identity->id;
         	
-        	
-            return $this->render('update', [
-                'model' => $model, 'clientList' => $clientDropDownList, 'userList' => $userDropDownList
+            return $this->render('create', [
+                'model' => $model, 
+                'clientList' => $clientDropDownList,
+                'actionItems' => $actionItems,
             ]);
         }
     }
@@ -98,7 +126,10 @@ class ClientsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
           
-          
+            $actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/clients/create?&exit=false', 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information and Exit?']; 
+	
           
           
         	$get = Yii::$app->request->get();

@@ -1,7 +1,8 @@
 <?php
 use app\helpers\CssHelper;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
@@ -14,21 +15,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1>
 
-    <?= Html::encode($this->title) ?>
+ 	<h1><?= Html::encode($this->title) ?></h1>
+    
+      <p><?= actionButtonsWidget::widget(['items' => $actionItems])  ?></p>
 
-    <span class="pull-right">
-        <?= Html::a(Yii::t('app', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
-    </span>         
+    
 
     </h1>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'export' => false,
         'summary' => false,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+           
             'username',
+            'fullname',
             'email:email',
             // status
             [
@@ -56,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // buttons
             ['class' => 'yii\grid\ActionColumn',
             'header' => "Menu",
-            'template' => '{view} {update} {delete}',
+            'template' => '{update} {delete}',
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                         return Html::a('', $url, ['title'=>'View user', 
