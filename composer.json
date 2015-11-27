@@ -8,7 +8,8 @@
         "tutorial": "http://www.freetuts.org/tutorial/view?id=6",
         "source": "https://github.com/nenad-zivkovic/yii2-basic-template"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable" : true,
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",
@@ -25,7 +26,8 @@
         "kartik-v/yii2-editable": "*",
         "kartik-v/yii2-money": "*",
         "kartik-v/yii2-date-range": "*",
-        "kartik-v/yii2-mpdf": "dev-master"
+        "kartik-v/yii2-mpdf": "dev-master",
+        "webvimark/module-user-management": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

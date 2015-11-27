@@ -40,12 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'Address_1_TownSuburb',
             'Main_Phone',
          
-            	[
-				'attribute' => 'Owner_id',
-				'value' => 'owner.fullname',
-				'label' => 'Owner',
-				'filter' => $userList,
-				],
+        	[
+			'attribute' => 'Owner_id',
+			'value' => 'owner.fullname',
+			'label' => 'Owner',
+			'filter' => $userList,
+			],
         	],
         'rowOptions' => function ($model, $key, $index, $grid)
         	{

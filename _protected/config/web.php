@@ -20,7 +20,21 @@ $config = [
         	[
         	'class' => '\kartik\datecontrol\Module'
     		],
+ 		'user-management' => 
+ 			[
+	        'class' => 'webvimark\modules\UserManagement\UserManagementModule',
 
+	        // 'enableRegistration' => true,
+
+	        // Here you can set your handler to change layout for any controller or action
+	        // Tip: you can use this event in any module
+	        'on beforeAction'=>function(yii\base\ActionEvent $event) {
+	                if ( $event->action->uniqueId == 'user-management/auth/login' )
+	                {
+	                    $event->action->controller->layout = 'loginLayout.php';
+	                };
+	            },
+	   		],
 
 		],
     'components' => [
@@ -67,8 +81,9 @@ $config = [
             'showScriptName' => false,
         ],
         'user' => [
-            'identityClass' => 'app\models\UserIdentity',
-            'enableAutoLogin' => false,
+            'class' => 'webvimark\modules\UserManagement\components\UserConfig',
+            //'identityClass' => 'app\models\UserIdentity',
+            //'enableAutoLogin' => false,
         ],
         'session' => [
             'class' => 'yii\web\Session',

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use webvimark\modules\UserManagement\models\User;
 
 use Yii;
 
@@ -365,10 +366,67 @@ class ImportFunctions extends \yii\db\ActiveRecord
 
 
 
-		
+	function importCRMUsers($importArray)
+	{
+		$mapping = [
+			'username' => 9,
+			'firstname' => 6,
+			'surname' => 7,
+			'email' => 9,
+			];
+			
+			
+		$user = new User();
+			
+		//iterate through each of the mapping fields and assign that attirbute the value from the csv. Any 
+		//unique mappings for an attribute are specfied using the if statement, finally if there are none matched then just map the field
+		//straight across.
+		foreach($mapping as $attribute => $csvColNum)
+			{
+			if(!array_key_exists($csvColNum, $importArray))
+				{
+				$this->recordsFailed++;
+				$this->progress .= "Error index to large for row of data. check the mapping array\n";
+				}
+			else{
+				$user->$attribute = $importArray[$csvColNum];		
+				}
+			
+			}
+		$user->status = 1;
+		$user->email_confirmed = 1;
+		$user->created_at = time();
+		$user->updated_at = time();
+			
+		if(strcmp($importArray[0], "Full Name") === 0){
+			$this->progress .= "Header Field found skipping line\n";
+			}
+		elseif($user->save())
+			{
+			$this->recordsImported++;	
+			}
+		else{
+			foreach($user->getErrors() as $errorField => $error)
+				{
+				$this->progress .= "error importing field ".$errorField." error: ".$error[0]."\n";
+				}
+			$this->recordsFailed++;	
+			}	
+			
+	}
   
 
-    
+   
+   
+   function assignClients($importArray)
+   {
+   	
+   	
+   	
+   	
+   	
+   	
+   } 
     
     
     

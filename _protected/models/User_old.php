@@ -317,15 +317,10 @@ class User extends UserIdentity
 	}
 	
 	
-	
-	/**
-	* 		Permission functions
-	*/
-	
-	public function canEditCustomer()
-	{
-			
-	}
+	public function getFullname()
+		{
+			return $this->firstname." ".$this->surname;
+		}
 	
 	
 }

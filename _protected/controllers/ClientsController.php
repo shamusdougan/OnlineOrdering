@@ -5,11 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\clients;
 use app\models\clientsSearch;
-use app\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use webvimark\modules\UserManagement\models\User;
 
 
 /**
@@ -37,9 +37,13 @@ class ClientsController extends Controller
     {
         $searchModel = new clientsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=>'/clients/create', ];
+        
+        
+        if(User::hasPermission('createCustomer')){
+			$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=>'/clients/create', ];	
+			}
+		
 		$userList = user::getUserListArray(); 
-
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -87,9 +91,8 @@ class ClientsController extends Controller
          else {
         	
 
-	        $user = Yii::$app->user->canEditCustomer(); 
-	        print_r($user);
-	        //$user->canEditCustomer();
+	      
+	        
         
         	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/clients/create?&exit=false', 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information?']; 
@@ -99,11 +102,10 @@ class ClientsController extends Controller
 			
 			//Set the client Defaults
 			$model->Status = Clients::STATUS_ACTIVE;
-			$model->Owner_id = Yii::$app->user->identity->id;
 			$model->Is_Customer = 1;
 			$model->Is_Factory = 0;
 			$model->Is_Supplier = 0;
-			$model->Owner_id = Yii::$app->user->identity->id;
+			$model->Owner_id = User::getCurrentUser()->id;
         	
             return $this->render('create', [
                 'model' => $model, 

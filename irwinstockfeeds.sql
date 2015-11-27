@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2015 at 07:48 AM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Nov 27, 2015 at 04:32 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `article` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `summary` text COLLATE utf8_unicode_ci NOT NULL,
@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS `article` (
   `status` int(11) NOT NULL,
   `category` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -45,22 +47,25 @@ CREATE TABLE IF NOT EXISTS `article` (
 --
 
 CREATE TABLE IF NOT EXISTS `auth_assignment` (
-  `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `item_name` varchar(64) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `created_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`item_name`,`user_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `auth_assignment`
 --
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
-('admin', 1, 1433830404),
-('admin', 2, 2147483647),
-('admin', 3, 2147483647),
-('admin', 4, 2147483647),
-('admin', 5, 2147483647),
-('admin', 6, 2147483647);
+('Admin', 2, 1448578287),
+('Admin', 19, 1448601546),
+('production', 19, 1448601546),
+('sales', 2, 1448578279),
+('sales', 3, 1448589714),
+('sales', 24, 1448601524),
+('sales', 26, 1448601507);
 
 -- --------------------------------------------------------
 
@@ -69,22 +74,351 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `auth_item` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(64) NOT NULL,
   `type` int(11) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `data` text COLLATE utf8_unicode_ci,
+  `description` text,
+  `rule_name` varchar(64) DEFAULT NULL,
+  `data` text,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `updated_at` int(11) DEFAULT NULL,
+  `group_code` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`name`),
+  KEY `rule_name` (`rule_name`),
+  KEY `idx-auth_item-type` (`type`),
+  KEY `fk_auth_item_group_code` (`group_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `auth_item`
 --
 
-INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-('admin', 1, NULL, NULL, NULL, 1433830403, 1433830403),
-('useSettings', 2, 'Allow user to modify system settings', NULL, NULL, 1433830403, 1433830403);
+INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`, `group_code`) VALUES
+('/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//controller', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//crud', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//extension', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//form', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//model', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('//module', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/app/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/admin', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/create', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/index', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/update', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/article/view', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/asset/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/asset/compress', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/asset/template', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/cache/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/cache/flush', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/cache/flush-all', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/cache/flush-schema', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/cache/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/clients/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/clients/create', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/clients/delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/clients/index', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/clients/update', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/clients/view', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/ajax-create', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/ajax-delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/ajax-update', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/create', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/detail', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/index', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/modal', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/update', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/contacts/view', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/ajax-add-ingredient', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/ajax-company-details', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/ajax-copy', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/ajax-get-storage-delivery-instructions', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/ajax-storage-details', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/ajax-update-ingredient', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/copy', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/create', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/index', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/print', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/production-active-list', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/production-submitted-list', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/update', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/update-production-active', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/update-production-submitted', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-order/view', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/ajax-delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/create', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/delete', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/index', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/update', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/customer-orders-ingredients/view', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/datecontrol/*', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/datecontrol/parse/*', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/datecontrol/parse/convert', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/debug/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/debug/default/*', 3, NULL, NULL, NULL, 1448580338, 1448580338, NULL),
+('/debug/default/db-explain', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/debug/default/download-mail', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/debug/default/index', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/debug/default/toolbar', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/debug/default/view', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/delivery-load-bin/*', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load-bin/create', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load-bin/delete', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load-bin/index', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load-bin/update', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load-bin/view', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load/*', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load/create', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load/delete', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load/index', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load/update', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery-load/view', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/*', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-add-delivery-load', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-add-trailers', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-add-truck', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-append-trailer', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-available-trucks', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-get-trailer', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-order-details', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-remove-delivery-load', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-remove-trailer', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-select-trailers', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-select-truck', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/ajax-update-delivery-load', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/create', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/delete', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/index', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/print-additive-loader-pdf', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/update', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/delivery/view', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/fixture/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/fixture/load', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/fixture/unload', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/default/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/default/action', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/default/diff', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/default/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/default/preview', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gii/default/view', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/gridview/*', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/gridview/export/*', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/gridview/export/download', 3, NULL, NULL, NULL, 1448580339, 1448580339, NULL),
+('/help/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/help/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/import-functions/*', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/import-functions/create', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/import-functions/delete', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/import-functions/import', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/import-functions/index', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/import-functions/update', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/import-functions/view', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/lookup/*', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/lookup/create', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/lookup/delete', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/lookup/index', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/lookup/test', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/lookup/update', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/lookup/view', 3, NULL, NULL, NULL, 1448580337, 1448580337, NULL),
+('/message/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/message/config', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/message/extract', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/create', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/down', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/history', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/mark', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/new', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/redo', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/to', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/migrate/up', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/product/*', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/product/create', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/product/delete', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/product/index', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/product/update', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/product/view', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/rbac/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/rbac/init', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/site/*', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/about', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/activate-account', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/captcha', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/contact', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/error', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/index', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/login', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/logout', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/request-password-reset', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/reset-password', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/site/signup', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/*', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/ajax-create', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/ajax-delete', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/ajax-update', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/create', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/delete', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/index', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/update', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/storage/view', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailer-bins/*', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailer-bins/create', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailer-bins/delete', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailer-bins/index', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailer-bins/update', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailer-bins/view', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailers/*', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trailers/create', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trailers/delete', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trailers/index', 3, NULL, NULL, NULL, 1448580336, 1448580336, NULL),
+('/trailers/update', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trailers/view', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks-default-trailers/*', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks-default-trailers/create', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks-default-trailers/delete', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks-default-trailers/index', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks-default-trailers/update', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks-default-trailers/view', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks/*', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks/create', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks/delete', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks/index', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks/update', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/trucks/view', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/user-management/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/bulk-activate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/bulk-deactivate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/bulk-delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/create', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/grid-page-size', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/grid-sort', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/toggle-attribute', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/update', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth-item-group/view', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/captcha', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/change-own-password', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/confirm-email', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/confirm-email-receive', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/confirm-registration-email', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/login', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/logout', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/password-recovery', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/password-recovery-receive', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/auth/registration', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/bulk-activate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/bulk-deactivate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/bulk-delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/create', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/grid-page-size', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/grid-sort', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/refresh-routes', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/set-child-permissions', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/set-child-routes', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/toggle-attribute', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/update', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/permission/view', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/bulk-activate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/bulk-deactivate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/bulk-delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/create', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/grid-page-size', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/grid-sort', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/set-child-permissions', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/set-child-roles', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/toggle-attribute', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/update', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/role/view', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-permission/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-permission/set', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-permission/set-roles', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/bulk-activate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/bulk-deactivate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/bulk-delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/create', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/grid-page-size', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/grid-sort', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/toggle-attribute', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/update', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user-visit-log/view', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/*', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/bulk-activate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/bulk-deactivate', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/bulk-delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/change-password', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/create', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/delete', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/grid-page-size', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/grid-sort', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/index', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/toggle-attribute', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/update', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-management/user/view', 3, NULL, NULL, NULL, 1448576990, 1448576990, NULL),
+('/user-roles/*', 3, NULL, NULL, NULL, 1448580334, 1448580334, NULL),
+('/user-roles/index', 3, NULL, NULL, NULL, 1448580334, 1448580334, NULL),
+('/user/*', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/user/create', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/user/delete', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/user/index', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/user/update', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/user/view', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/*', 3, NULL, NULL, NULL, 1448580334, 1448580334, NULL),
+('/weighbridge-ticket/ajax-delivery-details', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/create', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/delete', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/index', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/pdf', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/update', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('/weighbridge-ticket/view', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('Admin', 1, 'Admin', NULL, NULL, 1448576990, 1448576990, NULL),
+('assignRolesToUsers', 2, 'Assign roles to users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('bindUserToIp', 2, 'Bind user to IP', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('changeOwnPassword', 2, 'Change own password', NULL, NULL, 1448576991, 1448576991, 'userCommonPermissions'),
+('changeUserPassword', 2, 'Change user password', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('commonPermission', 2, 'Common permission', NULL, NULL, 1448576986, 1448576986, NULL),
+('createCustomer', 2, 'Create Customer', NULL, NULL, 1448596316, 1448596316, 'customers'),
+('createCustomerOrder', 2, 'Create Customer Order', NULL, NULL, 1448595731, 1448595731, 'customerOrders'),
+('createDelivery', 2, 'Create Delivery', NULL, NULL, 1448595134, 1448595134, 'customerOrders'),
+('createUsers', 2, 'Create users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('deleteUsers', 2, 'Delete users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('editCustomer', 2, 'Edit Customer', NULL, NULL, 1448594986, 1448594986, 'customers'),
+('editOrders', 2, 'Edit Orders', NULL, NULL, 1448589825, 1448589825, 'customerOrders'),
+('editOwnCustomer', 2, 'Edit Own Customer', NULL, NULL, 1448595005, 1448595005, 'customers'),
+('editOwnOrder', 2, 'Edit Own Order', NULL, NULL, 1448594872, 1448594872, 'customerOrders'),
+('editUserEmail', 2, 'Edit user email', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('editUsers', 2, 'Edit users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('production', 1, 'Production', NULL, NULL, 1448595955, 1448595955, NULL),
+('sales', 1, 'Sales', NULL, NULL, 1448577992, 1448594946, NULL),
+('setCreditHold', 2, 'Set Customer Credit Hold', NULL, NULL, 1448594915, 1448594915, 'customers'),
+('submitCustomerOrder', 2, 'Submit Customer Order', NULL, NULL, 1448595091, 1448595091, 'customerOrders'),
+('unsubmitCustomerOrder', 2, 'Unsubmit Customer Order', NULL, NULL, 1448595112, 1448595112, 'customerOrders'),
+('viewRegistrationIp', 2, 'View registration IP', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('viewUserEmail', 2, 'View user email', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('viewUserRoles', 2, 'View user roles', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('viewUsers', 2, 'View users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('viewVisitLog', 2, 'View visit log', NULL, NULL, 1448576991, 1448576991, 'userManagement');
 
 -- --------------------------------------------------------
 
@@ -93,16 +427,101 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 --
 
 CREATE TABLE IF NOT EXISTS `auth_item_child` (
-  `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `parent` varchar(64) NOT NULL,
+  `child` varchar(64) NOT NULL,
+  PRIMARY KEY (`parent`,`child`),
+  KEY `child` (`child`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `auth_item_child`
 --
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
-('admin', 'useSettings');
+('editOrders', '/customer-order/ajax-add-ingredient'),
+('editOrders', '/customer-order/ajax-company-details'),
+('editOrders', '/customer-order/ajax-copy'),
+('editOrders', '/customer-order/ajax-get-storage-delivery-instructions'),
+('editOrders', '/customer-order/ajax-storage-details'),
+('editOrders', '/customer-order/ajax-update-ingredient'),
+('editOrders', '/customer-order/copy'),
+('editOrders', '/customer-order/create'),
+('editOrders', '/customer-order/delete'),
+('editOrders', '/customer-order/index'),
+('editOrders', '/customer-order/print'),
+('editOrders', '/customer-order/update'),
+('editOrders', '/customer-order/view'),
+('editOrders', '/customer-orders-ingredients/ajax-delete'),
+('changeOwnPassword', '/user-management/auth/change-own-password'),
+('assignRolesToUsers', '/user-management/user-permission/set'),
+('assignRolesToUsers', '/user-management/user-permission/set-roles'),
+('viewVisitLog', '/user-management/user-visit-log/grid-page-size'),
+('viewVisitLog', '/user-management/user-visit-log/index'),
+('viewVisitLog', '/user-management/user-visit-log/view'),
+('editUsers', '/user-management/user/bulk-activate'),
+('editUsers', '/user-management/user/bulk-deactivate'),
+('deleteUsers', '/user-management/user/bulk-delete'),
+('changeUserPassword', '/user-management/user/change-password'),
+('createUsers', '/user-management/user/create'),
+('deleteUsers', '/user-management/user/delete'),
+('viewUsers', '/user-management/user/grid-page-size'),
+('viewUsers', '/user-management/user/index'),
+('editUsers', '/user-management/user/update'),
+('viewUsers', '/user-management/user/view'),
+('Admin', 'assignRolesToUsers'),
+('Admin', 'changeOwnPassword'),
+('sales', 'changeOwnPassword'),
+('Admin', 'changeUserPassword'),
+('sales', 'createCustomer'),
+('production', 'createCustomerOrder'),
+('sales', 'createCustomerOrder'),
+('production', 'createDelivery'),
+('Admin', 'createUsers'),
+('Admin', 'deleteUsers'),
+('production', 'editCustomer'),
+('production', 'editOrders'),
+('production', 'editOwnCustomer'),
+('sales', 'editOwnCustomer'),
+('production', 'editOwnOrder'),
+('sales', 'editOwnOrder'),
+('Admin', 'editUsers'),
+('production', 'setCreditHold'),
+('production', 'submitCustomerOrder'),
+('sales', 'submitCustomerOrder'),
+('production', 'unsubmitCustomerOrder'),
+('editUserEmail', 'viewUserEmail'),
+('assignRolesToUsers', 'viewUserRoles'),
+('Admin', 'viewUsers'),
+('assignRolesToUsers', 'viewUsers'),
+('changeUserPassword', 'viewUsers'),
+('createUsers', 'viewUsers'),
+('deleteUsers', 'viewUsers'),
+('editUsers', 'viewUsers');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_item_group`
+--
+
+CREATE TABLE IF NOT EXISTS `auth_item_group` (
+  `code` varchar(64) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `auth_item_group`
+--
+
+INSERT INTO `auth_item_group` (`code`, `name`, `created_at`, `updated_at`) VALUES
+('customerOrders', 'Customer Orders', 1448580814, 1448580829),
+('customers', 'Customers', 1448590000, 1448590000),
+('production', 'Production', 1448580852, 1448580852),
+('userCommonPermissions', 'User common permission', 1448576991, 1448576991),
+('userManagement', 'User management', 1448576990, 1448576990);
 
 -- --------------------------------------------------------
 
@@ -111,18 +530,12 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `auth_rule` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `data` text COLLATE utf8_unicode_ci,
+  `name` varchar(64) NOT NULL,
+  `data` text,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `auth_rule`
---
-
-INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
-('isAuthor', 'O:25:"app\\rbac\\rules\\AuthorRule":3:{s:4:"name";s:8:"isAuthor";s:9:"createdAt";i:1433830403;s:9:"updatedAt";i:1433830403;}', 1433830403, 1433830403);
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -131,7 +544,7 @@ INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `clients` (
-`id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `Company_Name` varchar(100) NOT NULL,
   `Account_Number` varchar(6) NOT NULL,
   `Main_Phone` varchar(12) NOT NULL,
@@ -224,8 +637,9 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `Sub_Region` varchar(255) DEFAULT NULL,
   `Supplies_to` varchar(255) DEFAULT NULL,
   `Trading_as` varchar(255) DEFAULT NULL,
-  `Website` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=906 ;
+  `Website` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=908 ;
 
 --
 -- Dumping data for table `clients`
@@ -1151,7 +1565,9 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 (902, 'Yarragon Football club', 'A10410', '', 0, b'0', b'0', b'1', '0', '', 'YARRAGON VIC 3823 AUSTRALIA', 1, 'AUSTRALIA', 3823, 'VIC', '', '', '', 'YARRAGON', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 0, '', '', 18, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', '', 0, 18, '', '', '', '', '', 1, '', '', '', ''),
 (903, 'Yarram Park', 'A10477', '03 5354 1407', 0, b'1', b'0', b'0', '0', '', 'Moysten-Dunkeld Road WILLAURA VIC 3379 AUSTRALIA', 1, 'AUSTRALIA', 3379, 'VIC', 'Moysten-Dunkeld Road', '', '', 'WILLAURA', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 3, 'No', 'No', 29, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '4.0', '', 40, 0, b'1', b'1', '', '', '0408 436 299', 0, '0000-00-00', 'Western Districts > Camperdown > CAMPERDOWN (197 KMs)', 0, 23, '', '', '', '', 'YarramPark', 1, 'Western Districts', '', 'Yarram Park - Jeremy Upton', ''),
 (904, 'Yesveer Thind C.O.D. NO TRADE', 'A10766', '', 0, b'1', b'0', b'0', '0', '', '', 1, '', 0, '', '', '', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 22, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', 'East Gippsland > Maffra > HEYFIELD (204.07 KMs)', 0, 22, 'East Gippsland', '', '', '', '', 1, 'East Gippsland > Maffra', '', 'Y Thind / A Burrowes Heyfield', ''),
-(905, 'Zebra Printer-Production - TechnoSource Aust P/L', 'A10601', '1300 300 344', 39335, b'0', b'0', b'1', '0', '', 'uNIT 23 / 85-91 Keilor Park Drive TULLAMARINE 3043', 1, '', 0, '', 'uNIT 23 / 85-91 Keilor Park Drive', 'TULLAMARINE 3043', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 18, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', '', 0, 18, '', '', '', '', '', 1, '', '', 'Label Order ID L10050DT', '');
+(905, 'Zebra Printer-Production - TechnoSource Aust P/L', 'A10601', '1300 300 344', 39335, b'0', b'0', b'1', '0', '', 'uNIT 23 / 85-91 Keilor Park Drive TULLAMARINE 3043', 1, '', 0, '', 'uNIT 23 / 85-91 Keilor Park Drive', 'TULLAMARINE 3043', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 18, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', '', 0, 18, '', '', '', '', '', 1, '', '', 'Label Order ID L10050DT', ''),
+(906, 'test', '', '123466', NULL, b'1', b'0', b'0', '', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, b'0', b'0', '', '', '', NULL, NULL, '', NULL, 1, '', '', '', '', '', 1, '', '', '', ''),
+(907, 'Test Company Shamus', '', '12346556', NULL, b'1', b'0', b'0', '', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, b'0', b'0', '', '', '', NULL, NULL, '', NULL, 3, '', '', '', '', '', 1, '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1160,7 +1576,7 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 --
 
 CREATE TABLE IF NOT EXISTS `contacts` (
-`id` int(5) NOT NULL,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `Business_Phone` varchar(100) CHARACTER SET utf8 NOT NULL,
   `Address_1` varchar(100) DEFAULT NULL,
   `Address_1_CountryRegion` varchar(100) DEFAULT NULL,
@@ -1181,7 +1597,8 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `Job_Title` varchar(100) DEFAULT NULL,
   `Last_Name` varchar(100) NOT NULL,
   `Mobile_Phone` varchar(50) DEFAULT NULL,
-  `Company_id` varchar(200) DEFAULT NULL
+  `Company_id` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=570 ;
 
 --
@@ -1755,7 +2172,7 @@ INSERT INTO `contacts` (`id`, `Business_Phone`, `Address_1`, `Address_1_CountryR
 --
 
 CREATE TABLE IF NOT EXISTS `customer_orders` (
-`id` int(4) NOT NULL,
+  `id` int(4) NOT NULL AUTO_INCREMENT,
   `Order_ID` varchar(8) NOT NULL,
   `Customer_id` int(10) NOT NULL,
   `Name` varchar(200) NOT NULL,
@@ -1816,8 +2233,9 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status` int(5) DEFAULT NULL,
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
-  `verify_notes` tinyint(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=258 ;
+  `verify_notes` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=268 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -1832,8 +2250,13 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (253, 'ORD3253', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
 (254, 'ORD3254', 61, 'Andrew Fyfe Commodity 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-11', 31, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Take a right turn', NULL, NULL, NULL, '294.25', NULL, NULL, NULL, NULL, '294.25', NULL, '2942.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, NULL, '2015-11-12', NULL, NULL, NULL, 4, 611, NULL, NULL, 100, 0),
 (255, 'ORD3255', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(256, 'ORD3256', 3, 'A & W Cotchins Custom 15T', NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '5595.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-13', NULL, NULL, NULL, 1, 1224, NULL, NULL, 100, 1),
-(257, 'ORD3257', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
+(256, 'ORD3256', 3, 'A & W Cotchins Custom 15T', NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-13', NULL, NULL, NULL, 2, 1224, NULL, NULL, 100, 1),
+(257, 'ORD3257', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(263, 'ORD3263', 61, 'Andrew Fyfe Pellet 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '296.44', NULL, NULL, NULL, NULL, '296.44', NULL, '3260.84', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-11-16', NULL, NULL, NULL, 1, 408, NULL, NULL, 100, 1),
+(264, 'ORD3264', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(265, 'ORD3265', 1, 'A & CJ Huts - Aristin Park (1) Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', 33, '9.47', 25, NULL, 'because', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Call Arie 0428 311 370 prior to delivery', NULL, NULL, NULL, '264.00', NULL, NULL, NULL, NULL, '264.00', NULL, '2390.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-20', NULL, NULL, NULL, 4, 98, NULL, NULL, 100, 1),
+(266, 'ORD3266', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(267, 'ORD3267', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1842,40 +2265,58 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 --
 
 CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
-`id` int(5) NOT NULL,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `created_on` date NOT NULL,
   `ingredient_id` int(5) NOT NULL,
-  `ingredient_percent` decimal(10,0) NOT NULL,
+  `ingredient_percent` decimal(10,3) NOT NULL,
   `modified_by` int(5) DEFAULT NULL,
   `modified_on` date DEFAULT NULL,
-  `order_id` int(5) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=144 ;
+  `order_id` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=166 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
 --
 
 INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, `ingredient_percent`, `modified_by`, `modified_on`, `order_id`) VALUES
-(124, '2015-09-02', 2, '100', NULL, NULL, 230),
-(125, '2015-09-02', 12, '100', NULL, NULL, 232),
-(126, '2015-09-02', 71, '100', NULL, NULL, 234),
-(127, '2015-09-02', 12, '100', NULL, NULL, 235),
-(128, '2015-10-22', 54, '100', NULL, NULL, 239),
-(129, '2015-10-27', 53, '100', NULL, NULL, 240),
-(130, '2015-10-28', 58, '100', NULL, NULL, 242),
-(131, '2015-09-02', 12, '100', NULL, NULL, 245),
-(132, '2015-09-02', 12, '100', NULL, NULL, 246),
-(133, '2015-09-02', 12, '100', NULL, NULL, 247),
-(134, '2015-09-02', 12, '100', NULL, NULL, 248),
-(135, '2015-10-28', 58, '100', NULL, NULL, 249),
-(136, '2015-10-28', 58, '100', NULL, NULL, 250),
-(137, '2015-10-22', 54, '100', NULL, NULL, 251),
-(138, '2015-09-02', 12, '100', NULL, NULL, 252),
-(139, '2015-11-11', 15, '44', NULL, NULL, 254),
-(140, '2015-11-11', 16, '53', NULL, NULL, 254),
-(141, '2015-11-11', 17, '3', NULL, NULL, 254),
-(142, '2015-11-12', 158, '100', NULL, NULL, 255),
-(143, '2015-11-13', 2, '100', NULL, NULL, 256);
+(124, '2015-09-02', 2, '100.000', NULL, NULL, 230),
+(125, '2015-09-02', 12, '100.000', NULL, NULL, 232),
+(126, '2015-09-02', 71, '100.000', NULL, NULL, 234),
+(127, '2015-09-02', 12, '100.000', NULL, NULL, 235),
+(128, '2015-10-22', 54, '100.000', NULL, NULL, 239),
+(129, '2015-10-27', 53, '100.000', NULL, NULL, 240),
+(130, '2015-10-28', 58, '100.000', NULL, NULL, 242),
+(131, '2015-09-02', 12, '100.000', NULL, NULL, 245),
+(132, '2015-09-02', 12, '100.000', NULL, NULL, 246),
+(133, '2015-09-02', 12, '100.000', NULL, NULL, 247),
+(134, '2015-09-02', 12, '100.000', NULL, NULL, 248),
+(135, '2015-10-28', 58, '100.000', NULL, NULL, 249),
+(136, '2015-10-28', 58, '100.000', NULL, NULL, 250),
+(137, '2015-10-22', 54, '100.000', NULL, NULL, 251),
+(138, '2015-09-02', 12, '100.000', NULL, NULL, 252),
+(139, '2015-11-11', 15, '44.000', NULL, NULL, 254),
+(140, '2015-11-11', 16, '53.000', NULL, NULL, 254),
+(141, '2015-11-11', 17, '3.000', NULL, NULL, 254),
+(142, '2015-11-12', 158, '100.000', NULL, NULL, 255),
+(143, '2015-11-13', 2, '100.000', NULL, NULL, 256),
+(144, '2015-11-11', 15, '44.000', NULL, NULL, 258),
+(145, '2015-11-11', 16, '53.000', NULL, NULL, 258),
+(146, '2015-11-11', 17, '3.000', NULL, NULL, 258),
+(151, '2015-11-16', 1, '99.005', NULL, NULL, 259),
+(152, '2015-11-16', 14, '0.995', NULL, NULL, 259),
+(153, '2015-11-11', 15, '44.000', NULL, NULL, 260),
+(154, '2015-11-11', 16, '53.000', NULL, NULL, 260),
+(155, '2015-11-11', 17, '3.000', NULL, NULL, 260),
+(156, '2015-11-11', 15, '44.000', NULL, NULL, 262),
+(157, '2015-11-11', 16, '53.000', NULL, NULL, 262),
+(158, '2015-11-11', 17, '3.000', NULL, NULL, 262),
+(159, '2015-11-11', 15, '44.000', NULL, NULL, 263),
+(160, '2015-11-11', 16, '53.000', NULL, NULL, 263),
+(162, '2015-11-16', 1, '100.000', NULL, NULL, 264),
+(163, '2015-11-16', 2, '3.000', NULL, NULL, 263),
+(164, '2015-11-16', 92, '99.993', NULL, NULL, 265),
+(165, '2015-11-16', 1, '0.007', NULL, NULL, 265);
 
 -- --------------------------------------------------------
 
@@ -1884,7 +2325,7 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 --
 
 CREATE TABLE IF NOT EXISTS `delivery` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `Name` varchar(10) NOT NULL,
   `weigh_bridge_ticket` varchar(100) DEFAULT NULL,
   `weighed_by` varchar(100) DEFAULT NULL,
@@ -1893,8 +2334,9 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `delivery_completed_on` date DEFAULT NULL,
   `order_id` int(10) NOT NULL,
   `status` int(10) NOT NULL,
-  `num_batches` int(10) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=33 ;
+  `num_batches` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `delivery`
@@ -1903,7 +2345,8 @@ CREATE TABLE IF NOT EXISTS `delivery` (
 INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`, `num_batches`) VALUES
 (29, 'DEL00029', NULL, NULL, 11, '2015-11-12', NULL, 242, 1, 3),
 (31, 'DEL00031', NULL, NULL, 10, '2015-11-12', NULL, 254, 2, 2),
-(32, 'DEL00032', NULL, NULL, 55, '2015-11-19', NULL, 239, 1, 12);
+(32, 'DEL00032', NULL, NULL, 55, '2015-11-19', NULL, 239, 1, 12),
+(33, 'DEL00033', NULL, NULL, 10, '2015-11-19', NULL, 265, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -1912,14 +2355,15 @@ INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `deli
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_load` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `delivery_id` int(10) NOT NULL,
   `load_qty` float NOT NULL,
   `delivery_on` date DEFAULT NULL,
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
-  `delivery_run_num` int(10) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+  `delivery_run_num` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `delivery_load`
@@ -1927,8 +2371,9 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
 
 INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `delivery_completed_on`, `truck_id`, `delivery_run_num`) VALUES
 (37, 32, 55, '2015-11-19', NULL, 92, 1),
-(38, 29, 11, '2015-11-12', NULL, 92, 1),
-(39, 31, 10, '2015-11-12', NULL, 92, 1);
+(38, 33, 10, '2015-11-19', NULL, 92, 1),
+(40, 31, 10, '2015-11-12', NULL, 92, 1),
+(41, 29, 11, '2015-11-12', NULL, 92, 1);
 
 -- --------------------------------------------------------
 
@@ -1937,11 +2382,12 @@ INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `de
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `delivery_load_id` int(11) NOT NULL,
   `trailer_bin_id` int(11) NOT NULL,
-  `bin_load` float DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+  `bin_load` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=62 ;
 
 --
 -- Dumping data for table `delivery_load_bin`
@@ -1951,12 +2397,14 @@ INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bi
 (46, 37, 456, 16),
 (47, 37, 457, 28),
 (48, 37, 380, 11),
-(49, 38, 456, 11),
-(50, 39, 365, 0),
-(51, 39, 366, 3),
-(52, 39, 367, 2),
-(53, 39, 368, 2),
-(54, 39, 369, 3);
+(49, 38, 381, 8),
+(50, 38, 383, 2),
+(56, 40, 365, 0),
+(57, 40, 366, 3),
+(58, 40, 367, 2),
+(59, 40, 368, 2),
+(60, 40, 369, 3),
+(61, 41, 456, 11);
 
 -- --------------------------------------------------------
 
@@ -1965,10 +2413,11 @@ INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bi
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `delivery_load_id` int(10) NOT NULL,
-  `trailer_id` int(10) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+  `trailer_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
 --
 -- Dumping data for table `delivery_load_trailer`
@@ -1978,9 +2427,11 @@ INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VAL
 (55, 37, 19),
 (56, 37, 4),
 (57, 38, 19),
-(58, 38, 1),
-(59, 39, 19),
-(60, 39, 1);
+(58, 38, 4),
+(61, 40, 19),
+(62, 40, 1),
+(63, 41, 19),
+(64, 41, 1);
 
 -- --------------------------------------------------------
 
@@ -1989,10 +2440,11 @@ INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `import_functions` (
-`id` int(5) NOT NULL,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `function` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `function` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `import_functions`
@@ -2002,7 +2454,8 @@ INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
 (1, 'Import Customer Orders From Microsoft CRM', 'importCustomerOrdersCRM'),
 (2, 'Import Trucks', 'importTrucksCRM'),
 (3, 'Import Trailers', 'importTrailersCRM'),
-(4, 'Import Trailer Bins', 'importTrailerBinsCRM');
+(4, 'Import Trailer Bins', 'importTrailerBinsCRM'),
+(5, 'import CRM Users', 'importCRMUsers');
 
 -- --------------------------------------------------------
 
@@ -2011,11 +2464,12 @@ INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `lookup` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `code` int(11) NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `position` int(11) NOT NULL
+  `position` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
 
 --
@@ -2079,7 +2533,8 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 
 CREATE TABLE IF NOT EXISTS `migration` (
   `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2088,8 +2543,18 @@ CREATE TABLE IF NOT EXISTS `migration` (
 
 INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m000000_000000_base', 1433553028),
+('m140608_173539_create_user_table', 1448576981),
+('m140611_133903_init_rbac', 1448576982),
+('m140808_073114_create_auth_item_group_table', 1448576985),
+('m140809_072112_insert_superadmin_to_user', 1448576986),
+('m140809_073114_insert_common_permisison_to_auth_item', 1448576986),
 ('m141022_115823_create_user_table', 1433553030),
 ('m141022_115912_create_rbac_tables', 1433553031),
+('m141023_141535_create_user_visit_log', 1448576986),
+('m141116_115804_add_bind_to_ip_and_registration_ip_to_user', 1448576987),
+('m141121_194858_split_browser_and_os_column', 1448576989),
+('m141201_220516_add_email_and_email_confirmed_to_user', 1448576990),
+('m141207_001649_create_basic_user_permissions', 1448576991),
 ('m150104_153617_create_article_table', 1433553031);
 
 -- --------------------------------------------------------
@@ -2099,7 +2564,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `products` (
-`id` int(3) NOT NULL,
+  `id` int(3) NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Product_ID` int(10) NOT NULL,
   `Description` varchar(200) DEFAULT NULL,
@@ -2115,7 +2580,8 @@ CREATE TABLE IF NOT EXISTS `products` (
   `Mix_Type` int(5) DEFAULT NULL,
   `ndf` decimal(5,2) DEFAULT NULL,
   `Product_Category` int(1) DEFAULT NULL,
-  `Retail_Price_t` decimal(8,2) DEFAULT NULL
+  `Retail_Price_t` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=167 ;
 
 --
@@ -2297,7 +2763,7 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 --
 
 CREATE TABLE IF NOT EXISTS `storage` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `Description` varchar(600) DEFAULT NULL,
   `Capacity` decimal(10,2) DEFAULT NULL,
   `company_id` int(3) NOT NULL,
@@ -2308,7 +2774,8 @@ CREATE TABLE IF NOT EXISTS `storage` (
   `Status` int(1) NOT NULL,
   `Street_1` varchar(100) DEFAULT NULL,
   `SuburbTown` varchar(100) DEFAULT NULL,
-  `Tipper` bit(1) NOT NULL
+  `Tipper` bit(1) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1239 ;
 
 --
@@ -3482,7 +3949,7 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 --
 
 CREATE TABLE IF NOT EXISTS `trailers` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `Registration` varchar(200) NOT NULL,
   `Description` varchar(200) NOT NULL,
   `Max_Capacity` int(30) NOT NULL,
@@ -3490,7 +3957,8 @@ CREATE TABLE IF NOT EXISTS `trailers` (
   `Auger` tinyint(1) NOT NULL,
   `Blower` tinyint(1) NOT NULL,
   `Tipper` tinyint(1) NOT NULL,
-  `Status` int(5) NOT NULL
+  `Status` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 --
@@ -3538,11 +4006,12 @@ INSERT INTO `trailers` (`id`, `Registration`, `Description`, `Max_Capacity`, `Nu
 --
 
 CREATE TABLE IF NOT EXISTS `trailer_bins` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `trailer_id` int(10) NOT NULL,
   `BinNo` varchar(100) NOT NULL,
   `MaxCapacity` float NOT NULL,
-  `Status` int(10) NOT NULL
+  `Status` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=489 ;
 
 --
@@ -3676,7 +4145,7 @@ INSERT INTO `trailer_bins` (`id`, `trailer_id`, `BinNo`, `MaxCapacity`, `Status`
 --
 
 CREATE TABLE IF NOT EXISTS `trucks` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `registration` varchar(200) NOT NULL,
   `mobile` varchar(20) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL,
@@ -3688,7 +4157,8 @@ CREATE TABLE IF NOT EXISTS `trucks` (
   `Blower` tinyint(1) NOT NULL,
   `Tipper` tinyint(1) NOT NULL,
   `max_trailers` int(10) DEFAULT NULL,
-  `max_load` float DEFAULT NULL
+  `max_load` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
 
 --
@@ -3725,9 +4195,10 @@ INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`
 --
 
 CREATE TABLE IF NOT EXISTS `trucks_default_trailers` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `truck_id` int(10) NOT NULL,
-  `trailer_id` int(10) NOT NULL
+  `trailer_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
@@ -3745,53 +4216,72 @@ INSERT INTO `trucks_default_trailers` (`id`, `truck_id`, `trailer_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-`id` int(11) NOT NULL,
-  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `firstname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `surname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `fullname` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `status` smallint(6) NOT NULL,
-  `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `account_activation_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `firstname` varchar(100) NOT NULL,
+  `surname` varchar(100) NOT NULL,
+  `auth_key` varchar(32) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `confirmation_token` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
+  `superadmin` smallint(6) DEFAULT '0',
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
+  `updated_at` int(11) NOT NULL,
+  `registration_ip` varchar(15) DEFAULT NULL,
+  `bind_to_ip` varchar(255) DEFAULT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `email_confirmed` smallint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `fullname`, `email`, `password_hash`, `status`, `auth_key`, `password_reset_token`, `account_activation_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'Sys', 'Admin', 'Sys Admin', 'irwinadmin@dontcare.com', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(2, 'brad@irwinstockfeeds.com.au', 'Brad', 'Egan', 'Brad Egan', 'brad@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(3, 'bryan@irwinstockfeeds.com.au', 'Bryan', 'Irwin', NULL, 'bryan@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(4, 'crmadmin@irwinstockfeeds.com.au', 'CRM', 'Admin', NULL, 'crmadmin@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(5, 'davidwalters@irwinstockfeeds.com.au', 'David', 'Walters', NULL, 'davidwalters@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(6, 'david@irwinstockfeeds.com.au', 'David', 'Walters', NULL, 'david@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(7, 'elle@irwinstockfeeds.com.au', 'Elle', 'Lockey', NULL, 'elle@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(8, 'Georgina@irwinstockfeeds.com.au', 'Georgina', 'Account', NULL, 'Georgina@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(9, 'heath@irwinstockfeeds.com.au', 'Heath', 'Killeen', NULL, 'heath@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(10, 'innesbriscoe@irwinstockfeeds.com.au', 'Innes', 'Briscoe', NULL, 'innesbriscoe@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(12, 'jake@irwinstockfeeds.com.au', 'Jake', 'Frecklington', NULL, 'jake@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(13, 'johnc@irwinstockfeeds.com.au', 'John', 'Celentane', NULL, 'johnc@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(14, 'julia@irwinstockfeeds.com.au', 'Julia', 'Poletti', NULL, 'julia@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(15, 'kim@irwinstockfeeds.com.au', 'Kim', 'Worrell', NULL, 'kim@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(16, 'kristyevans@irwinstockfeeds.com.au', 'Kristy', 'Evans', NULL, 'kristyevans@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(17, 'Langlang@irwinstockfeeds.com.au', 'Langlang', 'Account', NULL, 'Langlang@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(18, 'madeleine@irwinstockfeeds.com.au', 'Madeleine', 'Pinnuck', NULL, 'madeleine@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(19, 'mal@irwinstockfeeds.com.au', 'Mal', 'Rogers', NULL, 'mal@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(20, 'markfowler@irwinstockfeeds.com.au', 'Mark', 'Fowler', NULL, 'markfowler@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(21, 'Michael.Hoolahan@irwinstockfeeds.com.au', 'Michael', 'Hoolihan', NULL, 'Michael.Hoolahan@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(22, 'molly@irwinstockfeeds.com.au', 'Molly', 'Pinnuck', NULL, 'molly@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(23, 'pete@irwinstockfeeds.com.au', 'Peter', 'Lowry', NULL, 'pete@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(24, 'shamus.dougan@irwinstockfeeds.com.au', 'Shamus', 'Dougan', NULL, 'shamus.dougan@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(25, 'shane@irwinstockfeeds.com.au', 'Shane', 'Doherty', NULL, 'shane@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(26, 'crmoln@microsoft.com', 'Support', 'User', NULL, 'crmoln@microsoft.com', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(28, 'trevor@irwinstockfeeds.com.au', 'Trevor', 'Paul', NULL, 'trevor@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504),
-(29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', NULL, 'vicky@irwinstockfeeds.com.au', '$2y$13$PM9EgiPszjILfhuwA67INev/j6IhkRRLlKuILGoUF0e/tbv3vqzgO', 10, 'K9DSfWCgnqcohlUsKWERlLLljhrlz4jB', NULL, NULL, 1433825724, 1433830504);
+INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `auth_key`, `password_hash`, `confirmation_token`, `status`, `superadmin`, `created_at`, `updated_at`, `registration_ip`, `bind_to_ip`, `email`, `email_confirmed`) VALUES
+(1, 'superadmin', 'Super Admin', ' Account', 'swt6wX19TxrZe-w3OtWulm3rPJx9ivZ2', '$2y$13$FkudpKwx5hbEEDgYT5Io7.P71DOVyiPVYNkjsT5zjJjfbBfQV/UHy', NULL, 1, 1, 1448576986, 1448598445, NULL, '', '', 1),
+(2, 'admin', 'Admin', 'Account', 'fq5NUjiiiY563CoyEt4NIPExDJHjjXx4', '$2y$13$5TCThdDbrHvxRS426od8aeZ1HWZf85NTQL4kADit1ZpF1QNthsLMW', NULL, 1, 0, 1448578078, 1448598421, '127.0.0.1', '', '', 0),
+(3, 'shamus.dougan@sapient-tech.com.au', 'Shamus', 'Dougan', 'svGWhZuJbWiZ_7Br4__VwaLYERMlYriQ', '$2y$13$o7I6dfH/YnrsQk2lnXavw.iPoUsZGppuOGbn8XpqXYQch33MCj3Ne', NULL, 1, 0, 1448589362, 1448598402, '127.0.0.1', '', 'shamus.dougan@sapient-tech.com.au', 1),
+(4, 'brad@irwinstockfeeds.com.au', 'Brad', 'Egan', '32iAKtH_ktPqukS9K3zhIHCb4jyjU3Ap', '', NULL, 1, 0, 1448600450, 1448601456, '127.0.0.1', '', 'brad@irwinstockfeeds.com.au', 1),
+(5, 'bryan@irwinstockfeeds.com.au', 'Bryan', 'Irwin', 'MWq8jI5z-BrOncI5g9DVyQ_mRfiFzymp', '', NULL, 1, 0, 1448600450, 1448601445, '127.0.0.1', '', 'bryan@irwinstockfeeds.com.au', 1),
+(7, 'davidwalters@irwinstockfeeds.com.au', 'David', 'Walters', 'Zg4kUzv3yPcdZhHFgzX43n3z0LPq7Z3u', '', NULL, 1, 0, 1448600450, 1448601433, '127.0.0.1', '', 'davidwalters@irwinstockfeeds.com.au', 1),
+(8, 'david@irwinstockfeeds.com.au', 'David', 'Walters', 'ptdrbg5XrUdAgMUxuwNnck7VljQMvFFN', '', NULL, 1, 0, 1448600450, 1448601420, '127.0.0.1', '', 'david@irwinstockfeeds.com.au', 1),
+(9, 'elle@irwinstockfeeds.com.au', 'Elle', 'Lockey', 'R6YWTbTHePbTVitN8LPY_U-AVEldbPS_', '', NULL, 1, 0, 1448600450, 1448601408, '127.0.0.1', '', 'elle@irwinstockfeeds.com.au', 1),
+(10, 'Georgina@irwinstockfeeds.com.au', 'Georgina', 'Account', '4IS2PW3H6nE5n--RPmDnSn2EOObaqftE', '', NULL, 1, 0, 1448600450, 1448601399, '127.0.0.1', '', 'Georgina@irwinstockfeeds.com.au', 1),
+(11, 'heath@irwinstockfeeds.com.au', 'Heath', 'Killeen', 'wum_PvJ7Da13hCqrXU1M_edxh_bYUk7R', '', NULL, 1, 0, 1448600450, 1448601388, '127.0.0.1', '', 'heath@irwinstockfeeds.com.au', 1),
+(13, 'jake@irwinstockfeeds.com.au', 'Jake', 'Frecklington', 'UXdkzJzI2u_PHncLln1CXTtWtK4_05Y3', '', NULL, 1, 0, 1448600450, 1448601368, '127.0.0.1', '', 'jake@irwinstockfeeds.com.au', 1),
+(15, 'julia@irwinstockfeeds.com.au', 'Julia', 'Poletti', 'fBqtPb4k2wIp9F_mSCpPYLCowvokH5RH', '', NULL, 1, 0, 1448600450, 1448601344, '127.0.0.1', '', 'julia@irwinstockfeeds.com.au', 1),
+(16, 'kim@irwinstockfeeds.com.au', 'Kim', 'Worrell', 'PwVMki4cLJ1xBFUhWDE-ZH--2krYkxJb', '', NULL, 1, 0, 1448600450, 1448601333, '127.0.0.1', '', 'kim@irwinstockfeeds.com.au', 1),
+(17, 'kristyevans@irwinstockfeeds.com.au', 'Kristy', 'Evans', 'rEXpcQTudcue1X7ywb9Ru7RTYktXsTmE', '', NULL, 1, 0, 1448600450, 1448601322, '127.0.0.1', '', 'kristyevans@irwinstockfeeds.com.au', 1),
+(18, 'Langlang@irwinstockfeeds.com.au', 'Langlang', 'Account', 'aBfOhEoDZ0APXFhReMAVdsFMjsubx7cv', '', NULL, 1, 0, 1448600450, 1448601312, '127.0.0.1', '', 'Langlang@irwinstockfeeds.com.au', 1),
+(19, 'madeleine@irwinstockfeeds.com.au', 'Madeleine', 'Pinnuck', 'AWayFOFDtZVHc2_MgxcBs5ZD2JUWel-v', '', NULL, 1, 0, 1448600450, 1448601301, '127.0.0.1', '', 'madeleine@irwinstockfeeds.com.au', 1),
+(20, 'mal@irwinstockfeeds.com.au', 'Mal', 'Rogers', 'c40rq0stX5Cjm5fuq-h2WbYf17tDL02f', '', NULL, 1, 0, 1448600450, 1448601228, '127.0.0.1', '', 'mal@irwinstockfeeds.com.au', 1),
+(22, 'Michael.Hoolahan@irwinstockfeeds.com.au', 'Michael', 'Hoolihan', 'CE4zC3jqdyQdZA_hX0rpV2NuvjIvJAO3', '', NULL, 1, 0, 1448600450, 1448601108, '127.0.0.1', '', 'Michael.Hoolahan@irwinstockfeeds.com.au', 1),
+(23, 'molly@irwinstockfeeds.com.au', 'Molly', 'Pinnuck', 'dCKo0I4Hlo8wYlgM1XD5qaI5qbJQjNHk', '', NULL, 1, 0, 1448600450, 1448601067, '127.0.0.1', '', 'molly@irwinstockfeeds.com.au', 1),
+(24, 'pete@irwinstockfeeds.com.au', 'Peter', 'Lowry', 'WF_CHs3rD0fz9lmw3UH40Yv9zNmjHzyK', '', NULL, 1, 0, 1448600451, 1448601005, '127.0.0.1', '', 'pete@irwinstockfeeds.com.au', 1),
+(26, 'shane@irwinstockfeeds.com.au', 'Shane', 'Doherty', 'c_9OdM41ZiqtBDA8ZZGLidifN5MiDWQr', '', NULL, 1, 0, 1448600451, 1448601500, '127.0.0.1', '', 'shane@irwinstockfeeds.com.au', 1),
+(28, 'trevor@irwinstockfeeds.com.au', 'Trevor', 'Paul', 'qdKxichfStP2FGNDghYrfO6gbeO3xHZ_', '', NULL, 1, 0, 1448600451, 1448600926, '127.0.0.1', '', 'trevor@irwinstockfeeds.com.au', 1),
+(29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', 'lMbXMYi0DEzkacsNaYh3yd5CM7MionK1', '', NULL, 1, 0, 1448600451, 1448600451, '127.0.0.1', '', 'vicky@irwinstockfeeds.com.au', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_visit_log`
+--
+
+CREATE TABLE IF NOT EXISTS `user_visit_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(255) NOT NULL,
+  `ip` varchar(15) NOT NULL,
+  `language` char(2) NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `visit_time` int(11) NOT NULL,
+  `browser` varchar(30) DEFAULT NULL,
+  `os` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3800,7 +4290,7 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `fullname`, `email
 --
 
 CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `ticket_number` varchar(50) NOT NULL,
   `delivery_id` int(10) NOT NULL,
   `truck_id` int(11) NOT NULL,
@@ -3813,8 +4303,9 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `Moisture` float DEFAULT NULL,
   `Protein` float DEFAULT NULL,
   `testWeight` float DEFAULT NULL,
-  `screenings` float DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+  `screenings` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `weighbridge_ticket`
@@ -3824,255 +4315,9 @@ INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_i
 (11, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, '', NULL, NULL, NULL, NULL),
 (12, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test', NULL, NULL, NULL, NULL),
 (13, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL),
-(14, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL);
+(14, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL),
+(15, 'WB00001', 33, 92, '2015-11-19', '', 12, 2, 10, 'blah blah blah', 1, 2, 3, 4);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `article`
---
-ALTER TABLE `article`
- ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `auth_assignment`
---
-ALTER TABLE `auth_assignment`
- ADD PRIMARY KEY (`item_name`,`user_id`);
-
---
--- Indexes for table `auth_item`
---
-ALTER TABLE `auth_item`
- ADD PRIMARY KEY (`name`), ADD KEY `rule_name` (`rule_name`), ADD KEY `idx-auth_item-type` (`type`);
-
---
--- Indexes for table `auth_item_child`
---
-ALTER TABLE `auth_item_child`
- ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
-
---
--- Indexes for table `auth_rule`
---
-ALTER TABLE `auth_rule`
- ADD PRIMARY KEY (`name`);
-
---
--- Indexes for table `clients`
---
-ALTER TABLE `clients`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `contacts`
---
-ALTER TABLE `contacts`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `customer_orders`
---
-ALTER TABLE `customer_orders`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `customer_orders_ingredients`
---
-ALTER TABLE `customer_orders_ingredients`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery`
---
-ALTER TABLE `delivery`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery_load`
---
-ALTER TABLE `delivery_load`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery_load_bin`
---
-ALTER TABLE `delivery_load_bin`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery_load_trailer`
---
-ALTER TABLE `delivery_load_trailer`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `import_functions`
---
-ALTER TABLE `import_functions`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lookup`
---
-ALTER TABLE `lookup`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migration`
---
-ALTER TABLE `migration`
- ADD PRIMARY KEY (`version`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `storage`
---
-ALTER TABLE `storage`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trailers`
---
-ALTER TABLE `trailers`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trailer_bins`
---
-ALTER TABLE `trailer_bins`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trucks`
---
-ALTER TABLE `trucks`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trucks_default_trailers`
---
-ALTER TABLE `trucks_default_trailers`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `weighbridge_ticket`
---
-ALTER TABLE `weighbridge_ticket`
- ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `article`
---
-ALTER TABLE `article`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `clients`
---
-ALTER TABLE `clients`
-MODIFY `id` int(100) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=906;
---
--- AUTO_INCREMENT for table `contacts`
---
-ALTER TABLE `contacts`
-MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=570;
---
--- AUTO_INCREMENT for table `customer_orders`
---
-ALTER TABLE `customer_orders`
-MODIFY `id` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=258;
---
--- AUTO_INCREMENT for table `customer_orders_ingredients`
---
-ALTER TABLE `customer_orders_ingredients`
-MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=144;
---
--- AUTO_INCREMENT for table `delivery`
---
-ALTER TABLE `delivery`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `delivery_load`
---
-ALTER TABLE `delivery_load`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
---
--- AUTO_INCREMENT for table `delivery_load_bin`
---
-ALTER TABLE `delivery_load_bin`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=55;
---
--- AUTO_INCREMENT for table `delivery_load_trailer`
---
-ALTER TABLE `delivery_load_trailer`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
---
--- AUTO_INCREMENT for table `import_functions`
---
-ALTER TABLE `import_functions`
-MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `lookup`
---
-ALTER TABLE `lookup`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=167;
---
--- AUTO_INCREMENT for table `storage`
---
-ALTER TABLE `storage`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1239;
---
--- AUTO_INCREMENT for table `trailers`
---
-ALTER TABLE `trailers`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `trailer_bins`
---
-ALTER TABLE `trailer_bins`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=489;
---
--- AUTO_INCREMENT for table `trucks`
---
-ALTER TABLE `trucks`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=111;
---
--- AUTO_INCREMENT for table `trucks_default_trailers`
---
-ALTER TABLE `trucks_default_trailers`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `weighbridge_ticket`
---
-ALTER TABLE `weighbridge_ticket`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- Constraints for dumped tables
 --
@@ -4081,26 +4326,34 @@ MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 -- Constraints for table `article`
 --
 ALTER TABLE `article`
-ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_assignment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item`
 --
 ALTER TABLE `auth_item`
-ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_auth_item_group_code` FOREIGN KEY (`group_code`) REFERENCES `auth_item_group` (`code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_visit_log`
+--
+ALTER TABLE `user_visit_log`
+  ADD CONSTRAINT `user_visit_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

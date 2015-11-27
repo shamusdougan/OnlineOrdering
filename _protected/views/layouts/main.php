@@ -7,11 +7,72 @@ use yii\bootstrap\Nav;
 use kartik\widgets\SideNav;
 use yii\widgets\Breadcrumbs;
 use app\models\CustomerOrders;
+use app\components\sideNavActive;
+use webvimark\modules\UserManagement\models\User;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
+$user = User::getCurrentUser();
+
+
+$items = [
+			['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/'), 'active' => sideNavActive::widget(['controller' => "site"])],					
+			['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>sideNavActive::widget(['controller' => "clients"])],
+		];
+		
+if(User::hasRole('sales'))
+	{
+	$items[] = ['label' => 'Sales', 'icon' => 'usd', 'items' => 
+					[
+					['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order']), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['index', 'create', 'update']])],
+					]
+				];
+	}
+if(User::hasRole('production'))
+	{
+	$items[] = ['label' => 'Production', 'icon' => 'star', 'items' => 
+		[
+			['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['production-active-list', 'update-production-active']])],
+			['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['production-submitted-list']])],
+			['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>sideNavActive::widget(['controller' => "delivery", ])],
+			['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>sideNavActive::widget(['controller' => "weighbridge-ticket", ])],
+		
+		
+		]];
+	}
+if(User::hasRole('Admin'))
+	{
+	$items[] = ['label' => 'Admin', 'icon' => 'list-alt', 'items' => 
+		[
+		['label' => 'Trucks', 'icon' => 'th-list', 'url' => Url::toRoute('/trucks'), 'active'=>sideNavActive::widget(['controller' => "trucks", ])],
+		['label' => 'Trailers', 'icon' => 'inbox', 'url' => Url::toRoute('/trailers'), 'active'=>sideNavActive::widget(['controller' => "trailers", ])],
+		['label' => 'Customer Storage',  'url' => Url::toRoute('/storage'), 'active'=>sideNavActive::widget(['controller' => "storage", ])],
+		['label' => 'Customer Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>sideNavActive::widget(['controller' => "contacts", ])],
+		['label' => 'User Accounts', 'url' => Url::toRoute('/user-management/user'), 'active'=> sideNavActive::widget(['controller' => ["user", "user-permission"]])], 
+		
+		]];
+	$items[] = ['label' => 'Settings', 'icon' => 'cog', 'items' => [
+		
+		
+		['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>sideNavActive::widget(['controller' => "lookup", ])], 
+		['label' => 'Products', 'url' => Url::toRoute('/product'), 'active'=>sideNavActive::widget(['controller' => "product", ])],
+		['label' => 'Import Data (remove Later)', 'url' => Url::toRoute('/import-functions'), 'active'=>sideNavActive::widget(['controller' => "import-functions", ])],
+		['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')],
+		['label' => 'User Permissions', 'url' => Url::toRoute('/user-management/permission'), 'active'=> sideNavActive::widget(['controller' => "permission"])], 
+		['label' => 'User Roles', 'url' => Url::toRoute('/user-management/role'), 'active'=> sideNavActive::widget(['controller' => "role"])], 
+		['label' => 'User Groups', 'url' => Url::toRoute('/user-management/auth-item-group'), 'active'=> sideNavActive::widget(['controller' => "auth-item-group"])], 
+		
+
+		]];
+	}
+
+$items[] = ['label' => 'Logout', 'icon' => 'off', 'url' => Url::toRoute('site/logout')];
+
+
+
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -42,49 +103,15 @@ AppAsset::register($this);
    
     		
     		
-    		$username = Yii::$app->user->identity->username;
+    		
+
+    		
+    		
     		echo SideNav::widget([
 				'type' => SideNav::TYPE_DEFAULT,
-				'heading' => "Menu (".$username.")",
-				'items' => [
-					['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/')],					
-					['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>($currentItem == 'client')],
-					['label' => 'Sales', 'icon' => 'usd', 'items' => 
-						[
-						['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order']), 'active'=>($currentItem == 'customer-order-sales')],
-						
-						]],
-					['label' => 'Production', 'icon' => 'star', 'items' => 
-						[
-						['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>($currentItem == 'customer-order-production-active')],
-						['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>($currentItem == 'customer-order-production-submitted')],
-						['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>($currentItem == 'delivery')],
-						['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>($currentItem == 'weighbridge')],
-						
-						
-						]],	
-					['label' => 'Admin', 'icon' => 'list-alt', 'items' => 
-						[
-						['label' => 'Trucks', 'icon' => 'th-list', 'url' => Url::toRoute('/trucks'), 'active'=>($currentItem == 'trucks')],
-						['label' => 'Trailers', 'icon' => 'inbox', 'url' => Url::toRoute('/trailers'), 'active'=>($currentItem == 'trailers')],
-						['label' => 'Customer Storage',  'url' => Url::toRoute('/storage'), 'active'=>($currentItem == 'storage')],
-						['label' => 'Customer Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>($currentItem == 'contacts')],
-						['label' => 'User Accounts', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'userItem')], 
-						]],	
+				'heading' => "Menu (".$user->fullname.")",
+				'items' => $items, 
 				
-					['label' => 'Settings', 'icon' => 'cog', 'visible' => Yii::$app->user->can("useSettings"), 'items' => [
-						
-						
-						['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>($currentItem == 'lookupItem')], 
-						['label' => 'Users', 'url' => Url::toRoute('/user'), 'active'=>($currentItem == 'user')], 
-						['label' => 'Products', 'url' => Url::toRoute('/product'), 'active'=>($currentItem == 'product')],
-						['label' => 'Import Data (remove Later)', 'url' => Url::toRoute('/import-functions'), 'active'=>($currentItem == 'import')],
-						['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')]
-					
-					]],
-					['label' => 'Logout', 'icon' => 'off', 'url' => Url::toRoute('site/logout')]
-				
-				]
 				]);        
 				?>
     	</div>
