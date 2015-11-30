@@ -418,13 +418,33 @@ class ImportFunctions extends \yii\db\ActiveRecord
 
    
    
-   function assignClients($importArray)
+   function correctOwnerDetails($importArray)
    {
+   
+   		$mapping = [
+			'AccountNumber' => 0,
+			'currentOwner' => 1,
+			'NewOwner' => 2,
+			];
    	
    	
-   	
-   	
-   	
+   		$client = Clients::findOne(['Account_Number' => $importArray[$mapping['AccountNumber']]]);
+   		if($client == null)
+   			{
+			$this->progress .= "Failed to find Client with Accounts number: ".$importArray[$mapping['AccountNumber']]."\n";
+			return;
+			}
+			
+		$client->Owner_id = $importArray[$mapping['NewOwner']];
+		$client->scenario  = 'bulkModify';
+		if(!$client->save())
+			{
+			$this->progress .= "Failed to update Client: ".$client->Company_Name." with new owner id: ".$importArray[$mapping['NewOwner']]."\n";
+			return;
+			}
+   		
+   		$this->progress .= "Updated Client: ".$client->Company_Name." with new owner id: ".$importArray[$mapping['NewOwner']]."\n";
+   		return;
    	
    } 
     

@@ -17,6 +17,17 @@ use webvimark\modules\UserManagement\models\User;
  */
 class ClientsController extends Controller
 {
+	
+	
+	
+	const SALES_STATUS_CURRENT = 1;
+	const SALES_STATUS_INTER = 2;
+	const SALES_STATUS_LOST = 3;
+	
+	const STATUS_ACTIVE = 1;
+	const STATUS_INACTIVE = 0;
+	
+	
     public function behaviors()
     {
         return [
@@ -38,7 +49,7 @@ class ClientsController extends Controller
         $searchModel = new clientsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
-        
+        $actionItems = array();
         if(User::hasPermission('createCustomer')){
 			$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=>'/clients/create', ];	
 			}
@@ -128,10 +139,7 @@ class ClientsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
           
-            $actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/clients/create?&exit=false', 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information and Exit?']; 
-	
+          
           
           
         	$get = Yii::$app->request->get();
@@ -156,11 +164,24 @@ class ClientsController extends Controller
 			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/clients/update?id='.$model->id.'&exit=false', 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information?']; 
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information and Exit?']; 
 			
+			$user = User::getCurrentUser();
+			
+			
+			
+		
+				
+				
+			$readOnly = !(User::hasPermission("editCustomer") || (User::hasPermission("editOwnCustomer") && ($model->Owner_id == $user->id)));
+			$changeCreditHold = User::hasPermission("setCreditHold");
+			
+			
             return $this->render('update', [
                 'model' => $model, 
                 'clientList' => $clientDropDownList, 
                 'userList' => $userDropDownList,
                 'actionItems' => $actionItems,
+                'readOnly' => $readOnly,
+                'changeCreditHold' => $changeCreditHold,
             ]);
         }
     }

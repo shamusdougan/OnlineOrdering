@@ -95,6 +95,7 @@ html, body {
 	margin-left: auto;
 	background-color: #EFEFEF;
 	border-radius: 20px;
+	padding-top: 10px;
 
 }
 
@@ -114,6 +115,7 @@ html, body {
 .login_title
 {
 	font-size: 24px;	
+	
 }
 
 

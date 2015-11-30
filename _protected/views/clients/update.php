@@ -16,7 +16,11 @@ $this->params['breadcrumbs'][] = ['label' => $model->Company_Name];
     <h1><?= Html::encode($this->title) ?></h1>
   	<p><?= actionButtonsWidget::widget(['items' => $actionItems])  ?></p>
     <?= $this->render('_form', [
-        'model' => $model, 'clientList' => $clientList, 'userList' => $userList
+        'model' => $model, 
+        'clientList' => $clientList, 
+        'userList' => $userList, 
+        'readOnly' => $readOnly,
+        'changeCreditHold' => $changeCreditHold
     ]) ?>
 
 </div>

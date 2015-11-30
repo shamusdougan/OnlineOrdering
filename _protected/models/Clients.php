@@ -127,7 +127,7 @@ class Clients extends \yii\db\ActiveRecord
     {
         return [
             [['Company_Name', 'Main_Phone'], 'required'],
-            [['id', 'Fax', 'Address_1_Address_Type', 'Address_1_Postal_Code', 'Address_2_Address_Type', 'Address_2_Postal_Code', 'Billing_contact', 'Billing_type', 'Business_Type', 'Client_Status', 'Created_By', 'Dairy_No', 'Exchange_Rate', 'Farm_Operation', 'Feed_Days_Remaining', 'Feed_QOH_Tonnes', 'Herd_Size', 'Herd_Type', 'Modified_By', 'No_of_Employees', 'Owner_id', 'Status'], 'integer'],
+            [['id', 'Fax', 'Address_1_Address_Type', 'Address_1_Postal_Code', 'Address_2_Address_Type', 'Address_2_Postal_Code', 'Billing_contact', 'Billing_type', 'Business_Type', 'Client_Status', 'Created_By', 'Dairy_No', 'Exchange_Rate', 'Farm_Operation', 'Feed_Days_Remaining', 'Feed_QOH_Tonnes', 'Herd_Size', 'Herd_Type', 'Modified_By', 'No_of_Employees', 'Owner_id', 'Sales_Status'], 'integer'],
             [['Is_Customer', 'Is_Factory', 'Is_Supplier', 'Address1_IsBillTo', 'Address1_IsShipTo', 'Credit_Hold', 'Do_not_allow_Bulk_Emails', 'Do_not_allow_Bulk_Mails', 'Do_not_allow_Emails', 'Do_not_allow_Faxes', 'Do_not_allow_Mails', 'Do_not_allow_Phone_Calls', 'Is_Internal', 'Is_Provider'], 'boolean'],
             [['Created_On', 'Feed_empty', 'Feed_QOH_Update', 'Modified_On', 'Address_1_TownSuburb'], 'safe'],
             [['Feed_Rate_Kg_Day'], 'number'],
@@ -146,6 +146,19 @@ class Clients extends \yii\db\ActiveRecord
             [['Herd_Notes'], 'string', 'max' => 1000],
             [['Map_Reference'], 'string', 'max' => 8]
         ];
+    }
+
+
+
+/*
+	* Input Senarios
+	*/
+	public function scenarios()
+    {
+		$scenarios = parent::scenarios();
+        $scenarios['bulkModify'] = [];//Scenario Values Only Accepted
+        
+        return $scenarios;
     }
 
     /**
@@ -196,7 +209,7 @@ class Clients extends \yii\db\ActiveRecord
             'Billing_type' => 'Billing Type',
             'Business_Type' => 'Business  Type',
             'Category' => 'Category',
-            'Client_Status' => 'Client  Status',
+            'Client_Status' => 'Client Status',
             'Copy_addess' => 'Copy Addess',
             'Copy_address' => 'Copy Address',
             'Created_By' => 'Created  By',
@@ -241,7 +254,7 @@ class Clients extends \yii\db\ActiveRecord
             'Preferred_Day' => 'Preferred  Day',
             'Preferred_FacilityEquipment' => 'Preferred  Facility Equipment',
             'Property_Name' => 'Property  Name',
-            'Status' => 'Status',
+            'Sales_Status' => 'Status',
             'Sub_Region' => 'Sub  Region',
             'Supplies_to' => 'Supplies To',
             'Trading_as' => 'Trading As',

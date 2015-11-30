@@ -20,7 +20,7 @@ use yii\widgets\Pjax;
 <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id'=>'client_edit_form'] ); 
 
 	echo $form->field($model, 'id')->hiddenInput()->label(false) ;
-	echo $form->field($model, 'Status')->hiddenInput()->label(false) ;
+	echo $form->field($model, 'Sales_Status')->hiddenInput()->label(false) ;
 	echo $form->field($model, 'Owner_id')->hiddenInput()->label(false) ;
 	echo $form->field($model, 'Is_Customer')->hiddenInput()->label(false) ;
 	echo $form->field($model, 'Is_Factory')->hiddenInput()->label(false) ;
@@ -125,7 +125,7 @@ $companyAccounts = Form::widget(
     	
     	'attributes'=>
     		[
-    		'Status'=>['label' => 'Billing Type', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items' => Lookup::items("BILLING_TYPE")],
+    		'Billing_type'=>['label' => 'Billing Type', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items' => Lookup::items("BILLING_TYPE")],
     		'3rd_Party_Company' => 
     			[
 				'type' => Form::INPUT_WIDGET,
