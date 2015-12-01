@@ -51,10 +51,15 @@ class ProductController extends Controller
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+ 		
+ 		 
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product/create'];
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
     }
 

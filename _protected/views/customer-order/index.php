@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use vendor\actionButtons\actionButtonsWidget;
 use app\models\Lookup;
-use app\models\User;
+
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -53,8 +53,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
     		],
             [
-            'attribute' => 'client.Company_Name',
+            'attribute' => 'Customer_id',
+            'value' => function ($data) use ($customerList)
+            	{
+				return $customerList[$data->Customer_id];
+				},
             'label' => "Customer",
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter' => $customerList,
+            'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
+    		'filterInputOptions'=>['placeholder'=>'Any Client'],
             ],
             [
             'attribute' =>'Name',
@@ -72,9 +80,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 			],
 			[
-			'attribute' => 'createdByUser.fullname',
+			'attribute' => 'Created_By',
 			'label' => 'Created By',
-			'filter' => User::getUserFilterArray(),
+			'filter' => $userList,
+			'value' => function ($data) use ($userList) 
+				{
+				return $userList[$data->Created_By];
+				}
 			],
             [
             'attribute' => 'Price_Total',

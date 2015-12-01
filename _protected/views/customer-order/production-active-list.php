@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 			'attribute' => 'createdByUser.fullname',
 			'label' => 'Created By',
-			'filter' => User::getUserFilterArray(),
+			'filter' => $userListArray,
 			],
             [
             'attribute' => 'Price_Total',

@@ -31,11 +31,13 @@ class Product extends \yii\db\ActiveRecord
 	const ACTIVE = 1;
 	const INACTIVE = 2;
 	
-	const COMMODITY = 1;
-	const CUSTOM = 2;
-	const STANDARD_MIX = 3;
-	const PELLET = 4;	
-	const ADDITIVE = 5;
+	const COMMODITY = 3;
+	const MIX = 2;
+	const PELLET = 1;	
+	const ADDITIVE = 4;
+	
+	const MIXTYPE_BASE = 1;
+	const MIXTYPE_COMBINATION = 2;
 	
 	
     /**
@@ -52,9 +54,9 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Name', 'Product_ID', 'Status', 'Default_Unit'], 'required'],
+            [['Name', 'Product_ID', 'Status', 'Default_Unit', 'price_pT'], 'required'],
             [['Product_ID', 'Status', 'Decimals_Supported', 'Default_Unit', 'Mix_Type', 'Product_Category'], 'integer'],
-            [['cp', 'List_Price_pT_Base', 'me', 'Mix_Margin', 'Mix_Margin_Base', 'ndf', 'Retail_Price_t'], 'number'],
+            [['cp', 'me', 'Mix_Margin', 'Mix_Margin_Base', 'ndf', 'price_pT'], 'number'],
             [['Name'], 'string', 'max' => 100],
             [['Description', 'Feed_notes'], 'string', 'max' => 200]
         ];
@@ -75,14 +77,13 @@ class Product extends \yii\db\ActiveRecord
             'Decimals_Supported' => 'Decimals  Supported',
             'Default_Unit' => 'Default  Unit',
             'Feed_notes' => 'Feed Notes',
-            'List_Price_pT_Base' => 'Price P/T',
             'me' => 'Me',
             'Mix_Margin' => 'Mix  Margin',
             'Mix_Margin_Base' => 'Mix  Margin  Base',
             'Mix_Type' => 'Mix  Type',
             'ndf' => 'Ndf',
             'Product_Category' => 'Product  Category',
-            'Retail_Price_t' => 'Retail  Price T',
+            'price_pT' => 'Price Per Ton',
         ];
     }
     
@@ -91,4 +92,14 @@ class Product extends \yii\db\ActiveRecord
     {
 		return Lookup::item($this->Product_Category, 'PRODUCT_CATEGORY');
 	}
+	
+	
+	public function getActiveProducts()
+	{
+		return Product::find()->where(['Status' => Product::ACTIVE]);
+	}
+	
+	
+	
+	
 }

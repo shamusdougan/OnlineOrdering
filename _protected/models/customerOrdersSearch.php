@@ -64,13 +64,13 @@ class CustomerOrdersSearch extends CustomerOrders
 		      'asc' => ['clients.Company_Name' => SORT_ASC],
 		      'desc' => ['clients.Company_Name' => SORT_DESC],
 		];
-		$dataProvider->sort->attributes['createdByUser.fullname'] = [
+		$dataProvider->sort->attributes['Created_By'] = [
 		      'asc' => ['user.firstname' => SORT_ASC],
 		      'desc' => ['user.firstname' => SORT_DESC],
 		];
 		
 		$query->joinWith(['client']); 
-		$query->joinWith(['createdByUser']); 
+	
 
         $this->load($params);
 
@@ -89,7 +89,7 @@ class CustomerOrdersSearch extends CustomerOrders
             'Date_Submitted' => $this->Date_Submitted,
             'Billing_company' => $this->Billing_company,
             'Billing_type' => $this->Billing_type,
-            'Created_By' => $this->Created_By,
+            'customer_orders.Created_By' => $this->Created_By,
             'Created_On' => $this->Created_On,
             'Discount_Percent' => $this->Discount_Percent,
             'Discount_pT' => $this->Discount_pT,
@@ -142,8 +142,8 @@ class CustomerOrdersSearch extends CustomerOrders
             ->andFilterWhere(['like', 'Discount_notation', $this->Discount_notation])
             ->andFilterWhere(['like', 'Order_instructions', $this->Order_instructions])
             ->andFilterWhere(['like', 'Product_Name', $this->Product_Name])
-            ->andFilterWhere(['like', 'clients.Company_Name', $this->getAttribute('client.Company_Name')])
-            ->andFilterWhere(['like', 'user.fullname', $this->getAttribute('createdByUser.fullname')]);
+            ->andFilterWhere(['like', 'clients.Company_Name', $this->getAttribute('client.Company_Name')]);
+          
 
         return $dataProvider;
     }
@@ -215,7 +215,7 @@ public function dataQuery($params, $query)
             'Date_Submitted' => $this->Date_Submitted,
             'Billing_company' => $this->Billing_company,
             'Billing_type' => $this->Billing_type,
-            'Created_By' => $this->Created_By,
+            'customer_orders.Created_By' => $this->Created_By,
             'Created_On' => $this->Created_On,
             'Discount_Percent' => $this->Discount_Percent,
             'Discount_pT' => $this->Discount_pT,
@@ -268,8 +268,7 @@ public function dataQuery($params, $query)
             ->andFilterWhere(['like', 'Discount_notation', $this->Discount_notation])
             ->andFilterWhere(['like', 'Order_instructions', $this->Order_instructions])
             ->andFilterWhere(['like', 'Product_Name', $this->Product_Name])
-            ->andFilterWhere(['like', 'clients.Company_Name', $this->getAttribute('client.Company_Name')])
-            ->andFilterWhere(['like', 'user.fullname', $this->getAttribute('createdByUser.fullname')]);
+            ->andFilterWhere(['like', 'clients.Company_Name', $this->getAttribute('client.Company_Name')]);
 
         return $dataProvider;
     }

@@ -2,6 +2,7 @@
 
 namespace app\models;
 use webvimark\modules\UserManagement\models\User;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -111,8 +112,12 @@ class Clients extends \yii\db\ActiveRecord
      
      
     const DUMMY = 666;
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    const SALES_STATUS_CURRENT = 1;
+	const SALES_STATUS_INTER = 2;
+	const SALES_STATUS_LOST = 3;
+	
+	const STATUS_ACTIVE = 1;
+	const STATUS_INACTIVE = 0;
      
      
     public static function tableName()
@@ -303,5 +308,17 @@ class Clients extends \yii\db\ActiveRecord
 		 return $this->hasMany(CustomerOrders::className(), ['Customer_id' => 'id']);
 	}
 
+
+ 
+    public function getActiveClientListArray()
+    	{
+		$clientObjects = Clients::find()
+    				->where('id != :id', ['id'=>Clients::DUMMY])
+    				->select(['id', 'Company_Name'])
+    				->all();
+    	$clientList = ArrayHelper::map($clientObjects, 'id', 'clientListName') ;
+        	
+        return $clientList;
+		}
 	
 }

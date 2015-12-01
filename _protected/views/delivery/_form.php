@@ -177,6 +177,38 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 		            alert('Error in ajax request' );
 		        	}
 				});
+				
+				
+		//Check to see if any of the truck 2nd runs have been used
+		var usedTrucks = new Array();
+		$('.truck_details').each(function() 
+			{
+			used_truck_id = $(this).attr('truck_id');
+			used_delivery_run_num = $(this).attr('delivery_run_num');
+
+			if(used_delivery_run_num > 1)
+				{
+				usedTrucks.push(used_truck_id + '_' + used_delivery_run_num);	
+				}
+			});
+		usedTrucks = usedTrucks.join(',');
+		
+		
+		$.ajax
+	  		({
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
+			data: {requested_date: requestedDate, target_delivery_load: next_delivery_count, extra_used_trucks: usedTrucks},
+			success: function (data, textStatus, jqXHR) 
+				{
+				$('#select-modal').modal();
+				$('.modal-body').html(data);
+				},
+	        error: function (jqXHR, textStatus, errorThrown) 
+	        	{
+	            console.log('An error occured!');
+	            alert('Error in ajax request' );
+	        	}
+			});
 		
 	});
 	");
@@ -811,16 +843,17 @@ $this->registerJs("$('#".Html::getInputId($model, 'num_batches')."').on('change'
 								//'placeholder' => "Requested Delivery Date...",
 								'options' =>
 									[
-									'pluginOptions' =>
-										[
-										'autoclose' => true,
-										'todayHighlight' => true,
-										],
+									
 									'pluginEvents' =>
 										[
 										'changeDate' => "function(e) { clearAllLoads(); }",
 										]
-									]
+									],
+								'pluginOptions' =>
+										[
+										'autoclose' => true,
+										'todayHighlight' => true,
+										],
 								],
 							'num_batches' =>
 	    						[
@@ -853,13 +886,14 @@ $this->registerJs("$('#".Html::getInputId($model, 'num_batches')."').on('change'
 	    </div>
 	
 		<div style='width: 100%; border: 1px solid'>
-			<div style='width:500px; margin: auto; height: 30px; padding-left: 10px; padding-top: 2px;'>
+			<div style='width:800px; margin: auto; height: 30px; padding-left: 10px; padding-top: 2px;'>
 				Select Fill Method 
 				<select id='fill_method'>
 					<option value='fill_on_selection'>Fill Bin On Selection</option>
 					<option value='select_first'>Select Bins First then Allocate</option>
 				</select>
 				<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
+				<button class='add_delivery_load' style='width: 150px; '>Add Delivery Load </button>
 			</div>
 
 		
@@ -886,9 +920,7 @@ $this->registerJs("$('#".Html::getInputId($model, 'num_batches')."').on('change'
 				
 				
 			</div>	
-			<div style='width: 150px; margin: auto; padding-top: 24px; padding-left: 15px'>
-	    			<button class='add_delivery_load' style='width: 150px; height: 39px;'>Add Delivery Load</button>	
-	    	</div>
+			
 			
 		
 		</div>

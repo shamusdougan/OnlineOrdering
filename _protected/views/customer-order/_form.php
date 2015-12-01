@@ -659,8 +659,8 @@ $this->registerJs("$('.sap_print').on('click',function(){
 					],
 					[
 			    		'attribute' => 'product.List_Price_pT_Base',
-			    		 'contentOptions' => ['class' => 'pricePerTon'],
-			    		 'hAlign'=>'right',
+			    		'contentOptions' => ['class' => 'pricePerTon'],
+			    		'hAlign'=>'right',
 			    	],
 					[
 						'attribute' => 'WeightedCost',

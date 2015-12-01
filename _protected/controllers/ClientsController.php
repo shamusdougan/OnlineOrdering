@@ -112,7 +112,7 @@ class ClientsController extends Controller
 			$clientDropDownList = ArrayHelper::map(Clients::find()->select(['id', 'Company_Name'])->all(), 'id', 'Company_Name') ;
 			
 			//Set the client Defaults
-			$model->Status = Clients::STATUS_ACTIVE;
+			$model->Sales_Status = Clients::SALES_STATUS_CURRENT;
 			$model->Is_Customer = 1;
 			$model->Is_Factory = 0;
 			$model->Is_Supplier = 0;
@@ -214,4 +214,6 @@ class ClientsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+   
 }

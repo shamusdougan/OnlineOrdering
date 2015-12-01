@@ -20,7 +20,7 @@ class ProductSearch extends Product
         return [
             [['id', 'Product_ID', 'Status', 'Decimals_Supported', 'Default_Unit', 'Mix_Type', 'Product_Category'], 'integer'],
             [['Name', 'Description', 'Feed_notes'], 'safe'],
-            [['cp', 'List_Price_pT_Base', 'me', 'Mix_Margin', 'Mix_Margin_Base', 'ndf', 'Retail_Price_t'], 'number'],
+            [['cp', 'price_pT', 'me', 'Mix_Margin', 'Mix_Margin_Base', 'ndf'], 'number'],
         ];
     }
 
@@ -63,14 +63,13 @@ class ProductSearch extends Product
             'cp' => $this->cp,
             'Decimals_Supported' => $this->Decimals_Supported,
             'Default_Unit' => $this->Default_Unit,
-            'List_Price_pT_Base' => $this->List_Price_pT_Base,
             'me' => $this->me,
             'Mix_Margin' => $this->Mix_Margin,
             'Mix_Margin_Base' => $this->Mix_Margin_Base,
             'Mix_Type' => $this->Mix_Type,
             'ndf' => $this->ndf,
             'Product_Category' => $this->Product_Category,
-            'Retail_Price_t' => $this->Retail_Price_t,
+            'price_pT' => $this->price_pT,
         ]);
 
         $query->andFilterWhere(['like', 'Name', $this->Name])

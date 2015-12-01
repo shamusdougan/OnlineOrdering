@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2015 at 09:44 AM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Dec 01, 2015 at 04:17 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `article` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `summary` text COLLATE utf8_unicode_ci NOT NULL,
@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS `article` (
   `status` int(11) NOT NULL,
   `category` int(11) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -47,7 +49,9 @@ CREATE TABLE IF NOT EXISTS `article` (
 CREATE TABLE IF NOT EXISTS `auth_assignment` (
   `item_name` varchar(64) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created_at` int(11) DEFAULT NULL
+  `created_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`item_name`,`user_id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -77,7 +81,11 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
   `data` text,
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
-  `group_code` varchar(64) DEFAULT NULL
+  `group_code` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`name`),
+  KEY `rule_name` (`rule_name`),
+  KEY `idx-auth_item-type` (`type`),
+  KEY `fk_auth_item_group_code` (`group_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -420,7 +428,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 
 CREATE TABLE IF NOT EXISTS `auth_item_child` (
   `parent` varchar(64) NOT NULL,
-  `child` varchar(64) NOT NULL
+  `child` varchar(64) NOT NULL,
+  PRIMARY KEY (`parent`,`child`),
+  KEY `child` (`child`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -498,7 +508,8 @@ CREATE TABLE IF NOT EXISTS `auth_item_group` (
   `code` varchar(64) NOT NULL,
   `name` varchar(255) NOT NULL,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -522,7 +533,8 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
   `name` varchar(64) NOT NULL,
   `data` text,
   `created_at` int(11) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL
+  `updated_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -532,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
 --
 
 CREATE TABLE IF NOT EXISTS `clients` (
-`id` int(100) NOT NULL,
+  `id` int(100) NOT NULL AUTO_INCREMENT,
   `Company_Name` varchar(100) NOT NULL,
   `Account_Number` varchar(6) NOT NULL,
   `Main_Phone` varchar(12) NOT NULL,
@@ -625,8 +637,9 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `Sub_Region` varchar(255) DEFAULT NULL,
   `Supplies_to` varchar(255) DEFAULT NULL,
   `Trading_as` varchar(255) DEFAULT NULL,
-  `Website` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=908 ;
+  `Website` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=909 ;
 
 --
 -- Dumping data for table `clients`
@@ -1554,7 +1567,8 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 (904, 'Yesveer Thind C.O.D. NO TRADE', 'A10766', '', 0, b'1', b'0', b'0', '0', '', '', 1, '', 0, '', '', '', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 22, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', 'East Gippsland > Maffra > HEYFIELD (204.07 KMs)', 0, 23, 'East Gippsland', '', '', '', '', 1, 'East Gippsland > Maffra', '', 'Y Thind / A Burrowes Heyfield', ''),
 (905, 'Zebra Printer-Production - TechnoSource Aust P/L', 'A10601', '1300 300 344', 39335, b'0', b'0', b'1', '0', '', 'uNIT 23 / 85-91 Keilor Park Drive TULLAMARINE 3043', 1, '', 0, '', 'uNIT 23 / 85-91 Keilor Park Drive', 'TULLAMARINE 3043', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 18, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '', 0, '0000-00-00', '', 0, 19, '', '', '', '', '', 1, '', '', 'Label Order ID L10050DT', ''),
 (906, 'test', '', '123466', NULL, b'1', b'0', b'0', '', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, b'0', b'0', '', '', '', NULL, NULL, '', NULL, 1, '', '', '', '', '', 1, '', '', '', ''),
-(907, 'Test Company Shamus', '', '12346556', NULL, b'1', b'0', b'0', '', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, b'0', b'0', '', '', '', NULL, NULL, '', NULL, 3, '', '', '', '', '', 1, '', '', '', '');
+(907, 'Test Company Shamus', '', '12346556', NULL, b'1', b'0', b'0', '', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, b'0', b'0', '', '', '', NULL, NULL, '', NULL, 3, '', '', '', '', '', 1, '', '', '', ''),
+(908, 'test 2 ', '', '12345', NULL, b'1', b'0', b'0', '', '', NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, '', '', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'0', NULL, '', '', NULL, b'0', b'0', b'0', b'0', b'0', b'0', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, b'0', b'0', '', '', '', NULL, NULL, '', NULL, 1, '', '', '', '', '', 1, '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1563,7 +1577,7 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 --
 
 CREATE TABLE IF NOT EXISTS `contacts` (
-`id` int(5) NOT NULL,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `Business_Phone` varchar(100) CHARACTER SET utf8 NOT NULL,
   `Address_1` varchar(100) DEFAULT NULL,
   `Address_1_CountryRegion` varchar(100) DEFAULT NULL,
@@ -1584,7 +1598,8 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `Job_Title` varchar(100) DEFAULT NULL,
   `Last_Name` varchar(100) NOT NULL,
   `Mobile_Phone` varchar(50) DEFAULT NULL,
-  `Company_id` varchar(200) DEFAULT NULL
+  `Company_id` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=570 ;
 
 --
@@ -2158,7 +2173,7 @@ INSERT INTO `contacts` (`id`, `Business_Phone`, `Address_1`, `Address_1_CountryR
 --
 
 CREATE TABLE IF NOT EXISTS `customer_orders` (
-`id` int(4) NOT NULL,
+  `id` int(4) NOT NULL AUTO_INCREMENT,
   `Order_ID` varchar(8) NOT NULL,
   `Customer_id` int(10) NOT NULL,
   `Name` varchar(200) NOT NULL,
@@ -2219,8 +2234,9 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Submitted_Status` int(5) DEFAULT NULL,
   `Submitted_Status_Description` int(5) DEFAULT NULL,
   `Percent_ingredients` float DEFAULT NULL,
-  `verify_notes` tinyint(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=268 ;
+  `verify_notes` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=271 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -2239,9 +2255,12 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (257, 'ORD3257', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
 (263, 'ORD3263', 61, 'Andrew Fyfe Pellet 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '296.44', NULL, NULL, NULL, NULL, '296.44', NULL, '3260.84', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-11-16', NULL, NULL, NULL, 1, 408, NULL, NULL, 100, 1),
 (264, 'ORD3264', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(265, 'ORD3265', 1, 'A & CJ Huts - Aristin Park (1) Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', 33, '9.47', 25, NULL, 'because', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Call Arie 0428 311 370 prior to delivery', NULL, NULL, NULL, '264.00', NULL, NULL, NULL, NULL, '264.00', NULL, '2390.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-20', NULL, NULL, NULL, 4, 98, NULL, NULL, 100, 1),
+(265, 'ORD3265', 1, 'A & CJ Huts - Aristin Park (1) Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', 33, '9.47', 25, NULL, 'because', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Call Arie 0428 311 370 prior to delivery', NULL, NULL, NULL, '264.00', NULL, NULL, NULL, NULL, '264.00', NULL, '2390.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-20', NULL, NULL, NULL, 3, 98, NULL, NULL, 100, 1),
 (266, 'ORD3266', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(267, 'ORD3267', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
+(267, 'ORD3267', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(268, 'ORD3268', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(269, 'ORD3269', 908, 'test 2  Pellet - Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 34, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Order delivery from the Order Page', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '3730.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, NULL, '2015-12-09', NULL, NULL, NULL, 4, 1239, NULL, NULL, 100, 1),
+(270, 'ORD3270', 908, 'test 2  Pellet 19T', NULL, 19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 35, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '7087.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-12-01', NULL, NULL, NULL, 3, 1239, NULL, NULL, 100, 1);
 
 -- --------------------------------------------------------
 
@@ -2250,14 +2269,15 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 --
 
 CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
-`id` int(5) NOT NULL,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `created_on` date NOT NULL,
   `ingredient_id` int(5) NOT NULL,
   `ingredient_percent` decimal(10,3) NOT NULL,
   `modified_by` int(5) DEFAULT NULL,
   `modified_on` date DEFAULT NULL,
-  `order_id` int(5) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=166 ;
+  `order_id` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=171 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -2298,9 +2318,13 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (159, '2015-11-11', 15, '44.000', NULL, NULL, 263),
 (160, '2015-11-11', 16, '53.000', NULL, NULL, 263),
 (162, '2015-11-16', 1, '100.000', NULL, NULL, 264),
-(163, '2015-11-16', 2, '3.000', NULL, NULL, 263),
 (164, '2015-11-16', 92, '99.993', NULL, NULL, 265),
-(165, '2015-11-16', 1, '0.007', NULL, NULL, 265);
+(165, '2015-11-16', 1, '0.007', NULL, NULL, 265),
+(166, '2015-12-01', 2, '99.998', NULL, NULL, 269),
+(167, '2015-12-01', 84, '0.002', NULL, NULL, 269),
+(168, '2015-12-01', 2, '99.998', NULL, NULL, 270),
+(169, '2015-12-01', 84, '0.002', NULL, NULL, 270),
+(170, '2015-12-01', 2, '3.000', NULL, NULL, 263);
 
 -- --------------------------------------------------------
 
@@ -2309,7 +2333,7 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 --
 
 CREATE TABLE IF NOT EXISTS `delivery` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `Name` varchar(10) NOT NULL,
   `weigh_bridge_ticket` varchar(100) DEFAULT NULL,
   `weighed_by` varchar(100) DEFAULT NULL,
@@ -2318,18 +2342,21 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `delivery_completed_on` date DEFAULT NULL,
   `order_id` int(10) NOT NULL,
   `status` int(10) NOT NULL,
-  `num_batches` int(10) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=34 ;
+  `num_batches` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `delivery`
 --
 
 INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`, `num_batches`) VALUES
-(29, 'DEL00029', NULL, NULL, 11, '2015-11-12', NULL, 242, 1, 3),
+(29, 'DEL00029', NULL, NULL, 11, '2015-11-12', NULL, 242, 2, 3),
 (31, 'DEL00031', NULL, NULL, 10, '2015-11-12', NULL, 254, 2, 2),
 (32, 'DEL00032', NULL, NULL, 55, '2015-11-19', NULL, 239, 1, 12),
-(33, 'DEL00033', NULL, NULL, 10, '2015-11-19', NULL, 265, 2, 2);
+(33, 'DEL00033', NULL, NULL, 10, '2015-11-19', NULL, 265, 1, 2),
+(34, 'DEL00034', NULL, NULL, 10, '2015-12-14', NULL, 269, 2, 3),
+(35, 'DEL00035', NULL, NULL, 19, '2015-12-31', NULL, 270, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -2338,14 +2365,15 @@ INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `deli
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_load` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `delivery_id` int(10) NOT NULL,
   `load_qty` float NOT NULL,
   `delivery_on` date DEFAULT NULL,
   `delivery_completed_on` date DEFAULT NULL,
   `truck_id` int(5) DEFAULT NULL,
-  `delivery_run_num` int(10) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+  `delivery_run_num` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
 
 --
 -- Dumping data for table `delivery_load`
@@ -2354,8 +2382,10 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
 INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `delivery_completed_on`, `truck_id`, `delivery_run_num`) VALUES
 (37, 32, 55, '2015-11-19', NULL, 92, 1),
 (38, 33, 10, '2015-11-19', NULL, 92, 1),
-(40, 31, 10, '2015-11-12', NULL, 92, 1),
-(41, 29, 11, '2015-11-12', NULL, 92, 1);
+(41, 29, 11, '2015-11-12', NULL, 92, 1),
+(42, 34, 10, '2015-12-14', NULL, 92, 1),
+(43, 31, 10, '2015-11-12', NULL, 92, 1),
+(45, 35, 19, '2015-12-31', NULL, 92, 1);
 
 -- --------------------------------------------------------
 
@@ -2364,11 +2394,12 @@ INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `de
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `delivery_load_id` int(11) NOT NULL,
   `trailer_bin_id` int(11) NOT NULL,
-  `bin_load` float DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=62 ;
+  `bin_load` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=72 ;
 
 --
 -- Dumping data for table `delivery_load_bin`
@@ -2380,12 +2411,15 @@ INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bi
 (48, 37, 380, 11),
 (49, 38, 381, 8),
 (50, 38, 383, 2),
-(56, 40, 365, 0),
-(57, 40, 366, 3),
-(58, 40, 367, 2),
-(59, 40, 368, 2),
-(60, 40, 369, 3),
-(61, 41, 456, 11);
+(61, 41, 456, 11),
+(62, 42, 456, 10),
+(63, 43, 365, 0),
+(64, 43, 366, 3),
+(65, 43, 367, 2),
+(66, 43, 368, 2),
+(67, 43, 369, 3),
+(70, 45, 456, 6.90909),
+(71, 45, 457, 12.0909);
 
 -- --------------------------------------------------------
 
@@ -2394,10 +2428,11 @@ INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bi
 --
 
 CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `delivery_load_id` int(10) NOT NULL,
-  `trailer_id` int(10) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
+  `trailer_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
 
 --
 -- Dumping data for table `delivery_load_trailer`
@@ -2408,10 +2443,12 @@ INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VAL
 (56, 37, 4),
 (57, 38, 19),
 (58, 38, 4),
-(61, 40, 19),
-(62, 40, 1),
 (63, 41, 19),
-(64, 41, 1);
+(64, 41, 1),
+(65, 42, 19),
+(66, 43, 19),
+(67, 43, 1),
+(69, 45, 19);
 
 -- --------------------------------------------------------
 
@@ -2420,9 +2457,10 @@ INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `import_functions` (
-`id` int(5) NOT NULL,
+  `id` int(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `function` varchar(100) DEFAULT NULL
+  `function` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
@@ -2444,12 +2482,13 @@ INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `lookup` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `code` int(11) NOT NULL,
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `position` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
+  `position` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=53 ;
 
 --
 -- Dumping data for table `lookup`
@@ -2502,7 +2541,11 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (45, 'Commodity', 3, 'PRODUCT_CATEGORY', 1),
 (46, 'Mix', 2, 'PRODUCT_CATEGORY', 2),
 (47, 'Pellet', 1, 'PRODUCT_CATEGORY', 3),
-(48, 'Additive', 4, 'PRODUCT_CATEGORY', 4);
+(48, 'Additive', 4, 'PRODUCT_CATEGORY', 4),
+(49, 'Active', 1, 'PRODUCT_STATUS', 1),
+(50, 'Inactive', 2, 'PRODUCT_STATUS', 2),
+(51, 'Base', 1, 'PRODUCT_MIXTYPE', 1),
+(52, 'Combination', 2, 'PRODUCT_MIXTYPE', 2);
 
 -- --------------------------------------------------------
 
@@ -2512,7 +2555,8 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 
 CREATE TABLE IF NOT EXISTS `migration` (
   `version` varchar(180) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2542,7 +2586,7 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `products` (
-`id` int(3) NOT NULL,
+  `id` int(3) NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Product_ID` int(10) NOT NULL,
   `Description` varchar(200) DEFAULT NULL,
@@ -2551,187 +2595,201 @@ CREATE TABLE IF NOT EXISTS `products` (
   `Decimals_Supported` int(5) DEFAULT NULL,
   `Default_Unit` int(5) NOT NULL,
   `Feed_notes` varchar(200) DEFAULT NULL,
-  `List_Price_pT_Base` decimal(10,2) DEFAULT NULL,
   `me` decimal(10,2) DEFAULT NULL,
   `Mix_Margin` decimal(10,2) DEFAULT NULL,
   `Mix_Margin_Base` decimal(10,2) DEFAULT NULL,
   `Mix_Type` int(5) DEFAULT NULL,
   `ndf` decimal(5,2) DEFAULT NULL,
   `Product_Category` int(1) DEFAULT NULL,
-  `Retail_Price_t` decimal(8,2) DEFAULT NULL
+  `price_pT` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=167 ;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp`, `Decimals_Supported`, `Default_Unit`, `Feed_notes`, `List_Price_pT_Base`, `me`, `Mix_Margin`, `Mix_Margin_Base`, `Mix_Type`, `ndf`, `Product_Category`, `Retail_Price_t`) VALUES
-(1, 'Stock Pellet', 1000, NULL, 1, '0.00', 2, 1, NULL, '318.00', '0.00', '318.00', '318.00', NULL, '0.00', 1, '318.00'),
-(2, 'Production Pellet', 1002, NULL, 1, '0.00', 2, 1, NULL, '373.00', '0.00', '373.00', '373.00', NULL, '0.00', 1, '373.00'),
-(3, 'Performance Pellet', 1003, NULL, 1, '0.00', 2, 1, NULL, '388.00', '0.00', '388.00', '388.00', NULL, '0.00', 1, '388.00'),
-(4, 'Premium Pellet', 1004, NULL, 1, '0.00', 2, 1, NULL, '389.00', '0.00', '389.00', '389.00', NULL, '0.00', 1, '389.00'),
-(5, 'Premium Plus Pellet', 1005, NULL, 1, '0.00', 2, 1, NULL, '391.00', '0.00', '391.00', '391.00', NULL, '0.00', 1, '391.00'),
-(6, 'Calf Starter Pellet', 1006, NULL, 1, '0.00', 2, 1, NULL, '451.00', '0.00', '451.00', '451.00', NULL, '0.00', 1, '451.00'),
-(7, 'Calf Rearer Pellet', 1007, NULL, 1, '0.00', 2, 1, NULL, '423.00', '0.00', '423.00', '423.00', NULL, '0.00', 1, '423.00'),
-(8, 'Lead Feed Pellet', 1008, NULL, 1, '0.00', 2, 1, NULL, '508.75', '0.00', '78.70', '78.70', NULL, '0.00', 2, '508.75'),
-(9, 'Elders Pre Calve/Lamb - TSS Grain', 1009, NULL, 1, '0.00', 0, 1, NULL, '0.00', '0.00', '0.00', '0.00', 1, '0.00', 3, '0.00'),
-(10, 'Pellet - Sheep', 1010, NULL, 1, '0.00', 0, 1, NULL, '368.00', '0.00', '368.00', '368.00', NULL, '0.00', 1, '368.00'),
-(11, 'Summer Super Special', 1011, NULL, 1, '0.00', 0, 1, NULL, '0.00', '0.00', '0.00', '0.00', NULL, '0.00', 1, '0.00'),
-(12, 'Non Grain Beef Pellet Ration', 1012, NULL, 1, '13.51', 0, 1, NULL, '375.00', '8.86', '105.97', '105.97', 2, '25.74', 2, '375.00'),
-(13, 'Non Grain Beef Pellet', 1013, NULL, 1, '0.00', 0, 1, NULL, '375.00', '0.00', '375.00', '375.00', NULL, '0.00', 1, '375.00'),
-(14, 'Eskalin 500 (50%)', 1023, NULL, 2, NULL, 2, 1, 'Vet Script Required Cows must be introduced onto product in steps.', '106508.00', NULL, NULL, NULL, NULL, NULL, 4, '106508.00'),
-(15, 'Wheat', 2001, NULL, 1, '11.00', 2, 1, NULL, '305.00', '13.50', NULL, NULL, 1, '12.00', 3, '305.00'),
-(16, 'Barley', 2002, NULL, 1, '11.00', 2, 1, NULL, '285.00', '12.80', NULL, NULL, 1, '12.00', 3, '285.00'),
-(17, 'Triticale', 2003, NULL, 1, '3.30', 2, 1, NULL, '300.00', '3.90', NULL, NULL, 1, '4.50', 3, '300.00'),
-(18, 'Sorghum', 2004, NULL, 1, '10.00', 2, 1, NULL, '250.00', '12.00', NULL, NULL, 1, '10.00', 3, '250.00'),
-(19, 'Maize', 2005, NULL, 1, '8.00', 2, 1, NULL, '310.00', '14.00', NULL, NULL, 1, '9.00', 3, '310.00'),
-(20, 'Lupins', 2006, NULL, 1, '31.00', 2, 1, NULL, '460.00', '13.00', NULL, NULL, 1, '24.00', 3, '460.00'),
-(21, 'Faba Beans', 2007, NULL, 1, '30.00', 2, 1, NULL, '500.00', '12.00', NULL, NULL, 1, '25.00', 3, '500.00'),
-(22, 'Peas', 2008, NULL, 1, '26.00', 2, 1, NULL, '360.00', '12.00', NULL, NULL, NULL, '26.00', 3, '360.00'),
-(23, 'Canola Meal', 2009, NULL, 1, '38.00', 2, 1, NULL, '460.00', '12.00', NULL, NULL, 2, '26.00', 3, '460.00'),
-(24, 'Cottonseed Meal', 2010, NULL, 1, '44.00', 2, 1, NULL, '325.00', '11.50', NULL, NULL, 2, '26.00', 3, '325.00'),
-(25, 'Copra Meal', 2011, NULL, 1, '22.00', 2, 1, NULL, '237.00', '12.50', NULL, NULL, 2, '50.00', 3, '237.00'),
-(26, 'Oat Bran', 2012, NULL, 1, '6.00', 2, 1, NULL, '50.00', '8.00', NULL, NULL, NULL, '59.00', 3, '50.00'),
-(27, 'Palm Kernal', 2013, NULL, 1, '16.00', 2, 1, NULL, '300.00', '11.00', NULL, NULL, NULL, '56.00', 3, '300.00'),
-(28, 'Choc Malt', 2014, NULL, 1, '20.00', 2, 1, NULL, '300.00', '14.00', '0.00', '0.00', NULL, '35.00', 3, '300.00'),
-(29, 'Malt Combings', 2015, NULL, 1, '15.00', 2, 1, NULL, '160.00', '11.00', NULL, NULL, NULL, '30.00', 3, '160.00'),
-(30, 'Biscuit Meal', 2016, NULL, 1, '10.00', 2, 1, NULL, '250.00', '15.00', NULL, NULL, 2, '25.00', 3, '250.00'),
-(31, 'Barley 2nd''s', 2017, NULL, 1, '9.00', 2, 1, NULL, '60.00', '9.00', NULL, NULL, NULL, '25.00', 3, '60.00'),
-(32, 'DDG', 2018, NULL, 1, '26.00', 2, 1, NULL, '285.00', '12.00', NULL, NULL, NULL, '30.00', 3, '285.00'),
-(33, 'Mill Run', 2019, NULL, 1, '15.00', 2, 1, NULL, '280.00', '11.00', NULL, NULL, NULL, '30.00', 3, '280.00'),
-(34, 'Soya Bean Meal', 2021, NULL, 1, NULL, 2, 1, NULL, '500.00', NULL, NULL, NULL, NULL, NULL, 3, '500.00'),
-(35, 'Wheat 2nds', 2022, NULL, 1, NULL, 2, 1, NULL, '180.00', NULL, NULL, NULL, NULL, NULL, 3, '180.00'),
-(36, 'Pea Pollard', 2023, NULL, 1, NULL, 2, 1, NULL, '220.00', NULL, NULL, NULL, NULL, NULL, 3, '220.00'),
-(37, 'Limestone', 2024, NULL, 1, NULL, 2, 1, NULL, '53.00', NULL, NULL, NULL, NULL, NULL, 3, '53.00'),
-(38, 'Bentonite', 2025, NULL, 1, NULL, 2, 1, NULL, '226.00', NULL, NULL, NULL, NULL, NULL, 3, '226.00'),
-(39, 'Stock Pellet - Mix', 2026, NULL, 1, '18.90', 2, 1, NULL, '306.00', '10.80', NULL, NULL, NULL, '0.00', 3, '306.00'),
-(40, 'Almond Meal', 2027, NULL, 1, NULL, 2, 1, NULL, '126.00', NULL, NULL, NULL, NULL, NULL, 3, '126.00'),
-(41, 'Hominie - Corn Meal', 2028, 'Corn Meal - Hominie', 1, '12.00', 2, 1, NULL, '300.00', '12.00', NULL, NULL, NULL, NULL, 3, '300.00'),
-(42, 'Almond Hulls', 2029, NULL, 1, NULL, 0, 1, NULL, '101.00', NULL, NULL, NULL, NULL, NULL, 3, '101.00'),
-(43, 'Hay', 2030, NULL, 1, NULL, 0, 1, NULL, '250.00', NULL, NULL, NULL, NULL, NULL, 3, '250.00'),
-(44, 'Energy Blend', 2031, NULL, 2, '14.00', 2, 1, NULL, '275.00', '14.00', NULL, NULL, NULL, NULL, 3, '275.00'),
-(45, 'Choc Meal', 2032, NULL, 1, '14.00', 0, 1, NULL, '300.00', '14.00', NULL, NULL, NULL, NULL, 3, '300.00'),
-(46, 'Hay - Vetch', 2033, NULL, 1, NULL, 0, 1, NULL, '275.00', NULL, NULL, NULL, NULL, NULL, 3, '275.00'),
-(47, 'Grape Meal', 2034, NULL, 1, '16.00', 0, 1, NULL, '210.00', '11.00', '155.00', '155.00', NULL, '25.00', 3, '210.00'),
-(48, 'Freight', 2035, NULL, 1, NULL, 0, 1, NULL, '0.00', NULL, '0.00', '0.00', NULL, NULL, 3, '0.00'),
-(49, 'Lentils', 2036, NULL, 1, NULL, 0, 1, NULL, '475.00', NULL, NULL, NULL, NULL, NULL, 3, '475.00'),
-(50, 'Lentils 2nds', 2037, NULL, 1, NULL, 0, 1, NULL, '60.00', NULL, NULL, NULL, NULL, NULL, 3, '60.00'),
-(51, 'Barley Offal', 2038, NULL, 1, NULL, 0, 1, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 3, '0.00'),
-(52, 'Sugar - Bulk', 2039, NULL, 1, NULL, 0, 1, NULL, '300.00', NULL, NULL, NULL, NULL, NULL, 3, '300.00'),
-(53, 'Irmix 12.5ME 14%CP', 3000, NULL, 1, '12.14', 2, 1, NULL, '396.90', '9.80', '78.29', '78.29', NULL, '14.85', 2, '396.90'),
-(54, 'Unimix Mix 12ME 13%CP', 3001, NULL, 1, '10.07', 2, 1, NULL, '381.10', '9.74', '79.74', '79.74', NULL, '15.63', 2, '381.10'),
-(55, 'Economix 12.5ME 12%CP', 3002, NULL, 1, '9.99', 2, 1, NULL, '385.66', '9.84', '82.60', '82.60', NULL, '13.67', 2, '385.66'),
-(56, 'Premium Meal 12.5%ME 16%CP', 3003, NULL, 1, '14.24', 2, 1, NULL, '409.90', '10.74', '79.94', '79.94', 2, '16.42', 2, '409.90'),
-(57, 'Sustain Mix 12.5ME 18%CP', 3004, NULL, 1, '16.57', 2, 1, NULL, '420.10', '11.14', '78.49', '78.49', NULL, '17.60', 2, '420.10'),
-(58, 'Super Mix 13ME 13%CP', 3005, NULL, 1, '10.56', 2, 1, NULL, '412.70', '10.68', '101.04', '101.04', NULL, '9.56', 2, '412.70'),
-(59, 'Beef Mix', 3006, NULL, 1, '12.30', 2, 1, NULL, '358.10', '11.80', '92.00', '92.00', NULL, '9.00', 2, '358.10'),
-(60, '20% Calf Starter Meal', 3010, NULL, 1, '18.67', 2, 1, NULL, '514.81', '11.18', '105.12', '105.12', 2, '17.39', 2, '514.81'),
-(61, '20% Calf Beginner Meal', 3011, NULL, 1, '18.89', 2, 1, NULL, '465.06', '11.45', '92.69', '92.69', NULL, '17.60', 2, '465.06'),
-(62, '18% Calf Rearer Meal', 3012, NULL, 1, '16.55', 0, 1, NULL, '461.00', '11.58', '104.53', '104.53', NULL, '18.52', 2, '461.00'),
-(63, 'Lead Feed Meal', 3013, NULL, 1, '15.86', 2, 1, NULL, '568.75', '9.49', '84.80', '84.80', NULL, '13.14', 2, '568.75'),
-(64, 'Irwin Blend', 3015, NULL, 1, '13.50', 2, 1, NULL, '203.50', '8.50', NULL, NULL, 3, '22.50', 2, '203.50'),
-(65, 'Palm Blend Mix', 3016, NULL, 1, '9.55', 2, 1, NULL, '322.05', '8.75', '83.00', '83.00', 2, '17.00', 2, '322.05'),
-(66, 'Spring Special', 3017, NULL, 1, '11.23', 2, 1, NULL, '347.97', '10.67', '80.00', '80.00', 2, '10.56', 2, '347.97'),
-(67, 'Lupin Blend', 3018, NULL, 1, '28.50', 0, 1, NULL, '410.00', '12.50', NULL, NULL, 2, '25.00', 2, '410.00'),
-(68, 'Hay Extender Mix', 3019, NULL, 1, '6.40', 0, 1, NULL, '270.60', '4.40', '90.00', '90.00', 2, '22.40', 2, '270.60'),
-(69, 'ACE Farms Mix Dec 14 -Mar 15', 3020, NULL, 2, '13.46', 0, 1, NULL, '371.00', '12.85', '48.18', '48.18', 3, '14.44', 2, '371.00'),
-(70, 'Acid Buff', 4000, NULL, 1, NULL, 2, 1, NULL, '1040.00', NULL, NULL, NULL, NULL, NULL, 4, '1040.00'),
-(71, 'AvailaCu 100 (10%)', 4001, NULL, 1, NULL, 2, 1, NULL, '12650.00', NULL, NULL, NULL, NULL, NULL, 4, '12650.00'),
-(72, 'AvailaZn 100 (10%)', 4003, NULL, 1, NULL, 2, 1, NULL, '9020.00', NULL, NULL, NULL, NULL, NULL, 4, '9020.00'),
-(73, 'Availa4 100 (10%)', 4004, NULL, 1, NULL, 2, 1, NULL, '9955.00', NULL, NULL, NULL, NULL, NULL, 4, '9955.00'),
-(74, 'Sodium Bicarb', 4010, NULL, 1, NULL, 2, 1, NULL, '594.00', NULL, NULL, NULL, NULL, NULL, 4, '594.00'),
-(75, 'BIO MOS', 4013, NULL, 1, NULL, 2, 1, NULL, '12375.00', NULL, NULL, NULL, NULL, NULL, 4, '12375.00'),
-(76, 'N/F Biotin 2% DEB510', 4014, NULL, 1, NULL, 2, 1, NULL, '25570.00', NULL, NULL, NULL, NULL, NULL, 4, '25570.00'),
-(77, 'Bloat Control E50', 4015, NULL, 1, NULL, 2, 1, NULL, '4637.00', NULL, NULL, NULL, NULL, NULL, 4, '4637.00'),
-(78, 'Bovatec 200 (20%)', 4016, NULL, 1, NULL, 2, 1, NULL, '15345.00', NULL, NULL, NULL, NULL, NULL, 4, '15345.00'),
-(79, 'Caus Mag AL 8 96% (MgO2)', 4017, NULL, 1, NULL, 2, 1, NULL, '748.00', NULL, NULL, NULL, NULL, NULL, 4, '748.00'),
-(80, 'DCP (18%)', 4018, NULL, 1, NULL, 2, 1, NULL, '665.00', NULL, NULL, NULL, NULL, NULL, 4, '665.00'),
-(81, 'Diamond V XPC', 4019, NULL, 1, NULL, 2, 1, NULL, '5445.00', NULL, NULL, NULL, NULL, NULL, 4, '5445.00'),
-(82, 'Dolomite/Ag Lime', 4020, NULL, 1, NULL, 2, 1, NULL, '363.00', NULL, NULL, NULL, NULL, NULL, 4, '363.00'),
-(83, 'Elitox', 4021, NULL, 1, NULL, 2, 1, NULL, '6600.00', NULL, NULL, NULL, NULL, NULL, 4, '6600.00'),
-(84, 'Epsom Salts (MgSO4)', 4022, NULL, 1, NULL, 2, 1, NULL, '352.00', NULL, NULL, NULL, NULL, NULL, 4, '352.00'),
-(85, 'Eskalin 20 (2%)', 4023, NULL, 1, NULL, 2, 1, NULL, '6820.00', NULL, NULL, NULL, NULL, NULL, 4, '6820.00'),
-(86, 'High Five 100 (10%)', 4024, NULL, 1, NULL, 2, 1, NULL, '13035.00', NULL, NULL, NULL, NULL, NULL, 4, '13035.00'),
-(87, 'Megalac', 4026, NULL, 1, NULL, 2, 1, NULL, '1865.00', NULL, NULL, NULL, NULL, NULL, 4, '1865.00'),
-(88, 'Mintrex B', 4027, NULL, 1, NULL, 2, 1, NULL, '7645.00', NULL, NULL, NULL, NULL, NULL, 4, '7645.00'),
-(89, 'Molasses Sweetener Combo', 4028, NULL, 1, NULL, 2, 1, NULL, '16550.00', '30.00', NULL, NULL, NULL, NULL, 4, '16550.00'),
-(90, 'Mycosorb', 4029, NULL, 1, NULL, 2, 1, NULL, '8305.00', NULL, NULL, NULL, NULL, NULL, 4, '8305.00'),
-(91, 'Rumensin 100 (10%)', 4030, NULL, 2, NULL, 2, 1, NULL, '7271.00', NULL, NULL, NULL, NULL, NULL, 4, '7271.00'),
-(92, 'Salt', 4031, NULL, 1, NULL, 2, 1, NULL, '264.00', NULL, NULL, NULL, NULL, NULL, 4, '264.00'),
-(93, 'Sel-Plex 2 (0.2%)', 4032, NULL, 1, NULL, 2, 1, NULL, '24255.00', NULL, NULL, NULL, NULL, NULL, 4, '24255.00'),
-(94, 'Tylan 50 (5%)', 4033, NULL, 1, NULL, 2, 1, NULL, '7865.00', NULL, NULL, NULL, NULL, NULL, 4, '7865.00'),
-(95, 'Veg Oil', 4034, NULL, 1, NULL, 2, 1, NULL, '575.00', '30.00', NULL, NULL, NULL, NULL, 4, '575.00'),
-(96, 'Vitamin B1', 4035, NULL, 1, NULL, 2, 1, NULL, '10615.00', NULL, NULL, NULL, NULL, NULL, 4, '10615.00'),
-(97, 'Zinc Oxide', 4036, NULL, 1, NULL, 2, 1, NULL, '3850.00', NULL, NULL, NULL, NULL, NULL, 4, '3850.00'),
-(98, 'Zinc Oxide (80%Zn)', 4037, NULL, 1, NULL, 2, 1, NULL, '3850.00', NULL, NULL, NULL, NULL, NULL, 4, '3850.00'),
-(99, 'N/F Irwin Dairy Mix DEB383', 4038, NULL, 1, NULL, 2, 1, NULL, '2701.00', NULL, NULL, NULL, NULL, NULL, 4, '2701.00'),
-(100, 'Sugar', 4040, NULL, 1, NULL, 2, 1, NULL, '630.00', '0.34', NULL, NULL, NULL, NULL, 4, '630.00'),
-(101, 'Performance DFM Powder (Yeast)', 4041, NULL, 1, NULL, 2, 1, NULL, '8321.00', NULL, NULL, NULL, NULL, NULL, 4, '8321.00'),
-(102, 'Performance Healthy Herd', 4042, NULL, 1, NULL, 2, 1, NULL, '8960.00', NULL, NULL, NULL, NULL, NULL, 4, '8960.00'),
-(103, 'Performance Fire Up', 4043, NULL, 1, NULL, 2, 1, NULL, '4928.00', NULL, NULL, NULL, NULL, NULL, 4, '4928.00'),
-(104, 'Dairy 220 Plus', 4044, NULL, 1, NULL, 2, 1, NULL, '1920.00', NULL, NULL, NULL, NULL, NULL, 4, '1920.00'),
-(105, 'Dairy200', 4045, NULL, 1, NULL, 2, 1, NULL, '1558.00', NULL, NULL, NULL, NULL, NULL, 4, '1558.00'),
-(106, 'Dairy PreLac 300', 4046, NULL, 1, NULL, 2, 1, NULL, '1865.00', NULL, NULL, NULL, NULL, NULL, 4, '1865.00'),
-(107, 'N/F Zinc DEB045', 4047, NULL, 1, NULL, 2, 1, NULL, '2045.00', NULL, NULL, NULL, NULL, NULL, 4, '2045.00'),
-(108, 'N/F Summer', 4048, NULL, 1, NULL, 2, 1, NULL, '2198.00', NULL, NULL, NULL, NULL, NULL, 4, '2198.00'),
-(109, 'N/F Sum Hi Zinc 125 DEB029', 4049, NULL, 1, NULL, 2, 1, NULL, '1593.00', NULL, NULL, NULL, NULL, NULL, 4, '1593.00'),
-(110, 'N/F Hi Milker 250 DEB001', 4050, NULL, 1, NULL, 2, 1, NULL, '1212.00', NULL, NULL, NULL, NULL, NULL, 4, '1212.00'),
-(111, 'N/F Hi Milker+HiZinc DEB042', 4051, NULL, 1, NULL, 2, 1, NULL, '1384.00', NULL, NULL, NULL, NULL, NULL, 4, '1384.00'),
-(112, 'N/F Performer DEB010', 4052, NULL, 1, NULL, 2, 1, NULL, '1430.00', NULL, NULL, NULL, NULL, NULL, 4, '1430.00'),
-(113, 'N/F TM2M DEB011', 4053, NULL, 1, NULL, 2, 1, NULL, '1865.00', NULL, NULL, NULL, NULL, NULL, 4, '1865.00'),
-(114, 'N/F TM2MT DEB013', 4054, NULL, 1, NULL, 2, 1, NULL, '2621.00', NULL, NULL, NULL, NULL, NULL, 4, '2621.00'),
-(115, 'N/F Performer+Biotin DEB018', 4055, NULL, 1, NULL, 2, 1, NULL, '1574.00', NULL, NULL, NULL, NULL, NULL, 4, '1574.00'),
-(116, 'N/F Bicarb250(Clyne) DEB005', 4056, NULL, 1, NULL, 2, 1, NULL, '1018.00', NULL, NULL, NULL, NULL, NULL, 4, '1018.00'),
-(117, 'N/F Anionic Pellet DEB099', 4057, NULL, 1, NULL, 2, 1, NULL, '1065.00', NULL, NULL, NULL, NULL, NULL, 4, '1065.00'),
-(118, 'Go-Cow Tylan Pellet', 4058, NULL, 2, NULL, 2, 1, NULL, '2002.00', NULL, NULL, NULL, NULL, NULL, 4, '2002.00'),
-(119, 'Glow Cow Pellet', 4059, NULL, 1, NULL, 2, 1, NULL, '2519.00', NULL, NULL, NULL, NULL, NULL, 4, '2519.00'),
-(120, 'Eco Go Cow', 4060, NULL, 1, NULL, 2, 1, NULL, '1562.00', NULL, NULL, NULL, NULL, NULL, 4, '1562.00'),
-(121, 'Get Set Cow Pellet', 4061, NULL, 1, NULL, 2, 1, NULL, '1177.00', NULL, NULL, NULL, NULL, NULL, 4, '1177.00'),
-(122, 'BFN First Base', 4062, NULL, 1, NULL, 2, 1, NULL, '1190.00', NULL, NULL, NULL, NULL, NULL, 4, '1190.00'),
-(123, 'Caus Mag AL 4', 4063, NULL, 1, NULL, 2, 1, NULL, '854.70', NULL, NULL, NULL, NULL, NULL, 4, '854.70'),
-(124, 'Ammonium Sulphate', 4064, NULL, 1, NULL, 2, 1, NULL, '598.00', NULL, NULL, NULL, NULL, NULL, 4, '598.00'),
-(125, 'Magnapac', 4065, NULL, 1, NULL, 2, 1, NULL, '1430.00', NULL, NULL, NULL, NULL, NULL, 4, '1430.00'),
-(126, 'Dairy 230', 4066, NULL, 1, NULL, 2, 1, NULL, '1197.00', NULL, NULL, NULL, NULL, NULL, 4, '1197.00'),
-(127, 'DairyTech Powder', 4067, NULL, 1, NULL, 0, 2, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(128, 'A Max Yeast', 4068, NULL, 1, NULL, 0, 2, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(129, 'Lucerne Chaff', 4069, NULL, 1, '0.51', 2, 1, NULL, '1000.00', '0.36', NULL, NULL, NULL, '1.50', 4, '1000.00'),
-(130, 'Protein Plus', 4070, 'Dairytech Nutrition Supplied Product', 1, NULL, 2, 2, NULL, '0.00', NULL, '0.00', '0.00', NULL, NULL, 4, '0.00'),
-(131, 'Dairy Max 300', 4071, NULL, 1, NULL, 2, 1, NULL, '1645.00', NULL, NULL, NULL, NULL, NULL, 4, '1645.00'),
-(132, 'Dairy Tech Pellet', 4072, NULL, 1, NULL, 0, 2, NULL, '0.00', NULL, '0.00', '0.00', NULL, NULL, 4, '0.00'),
-(133, 'Rumen Calm - Dairy Tech', 4073, NULL, 1, NULL, 0, 2, NULL, '0.00', NULL, '0.00', '0.00', NULL, NULL, 4, '0.00'),
-(134, 'Rumicare - AusPac', 4074, NULL, 1, NULL, 0, 2, NULL, '940.50', NULL, '0.00', '0.00', NULL, NULL, 4, '940.50'),
-(135, 'Fluid Aron', 4075, 'Flavouring - $13.75 per kilogram', 1, NULL, 0, 2, NULL, '13750.00', NULL, NULL, NULL, NULL, NULL, 4, '13750.00'),
-(136, 'Dairytech Anionic Pellet', 4076, NULL, 1, NULL, 0, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, NULL),
-(137, 'N/F Soy Chlor DEB533', 4077, NULL, 1, NULL, 0, 1, NULL, '1424.50', NULL, '0.00', '0.00', NULL, NULL, 4, '1424.50'),
-(138, 'Dairy Prelac 400 + Vicomb', 4078, NULL, 1, NULL, 0, 1, NULL, '2970.00', NULL, '0.00', '0.00', NULL, NULL, 4, '2970.00'),
-(139, 'Optimin Lacto-Max 5', 4079, NULL, 1, NULL, 0, 1, NULL, '10340.00', NULL, '0.00', '0.00', NULL, NULL, 4, '10340.00'),
-(140, 'OmyaCarb 50', 4080, NULL, 1, NULL, 0, 1, NULL, '285.00', NULL, NULL, NULL, NULL, NULL, 4, '285.00'),
-(141, 'Betaine', 4081, NULL, 1, NULL, 0, 3, NULL, '5.80', NULL, '0.00', '0.00', NULL, NULL, 4, '5.80'),
-(142, 'Zinc Sulphate', 4082, NULL, 1, NULL, 0, 1, NULL, '1000.00', NULL, '0.00', '0.00', NULL, NULL, 4, '1000.00'),
-(143, 'Base Plus', 4083, NULL, 1, NULL, 0, 3, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(144, 'Action Power', 4084, NULL, 1, NULL, 0, 3, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(145, 'N/F TM2Mon+Mag DEBW011', 4085, NULL, 2, NULL, 0, 3, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(146, 'N/F Fusion Pellet DEB062', 4086, NULL, 1, NULL, 0, 3, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(147, 'Magnesium Chloride Granular', 4087, NULL, 1, NULL, 0, 3, NULL, '518.00', NULL, NULL, NULL, NULL, NULL, 4, '518.00'),
-(148, 'N/F TM2 + Mag Ox', 4088, NULL, 2, NULL, 0, 3, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(149, 'Black Urea', 4089, NULL, 1, NULL, 0, 1, NULL, '1113.00', NULL, '0.00', '0.00', NULL, NULL, 4, '1113.00'),
-(150, 'Availa Zinc 120', 4090, NULL, 1, NULL, 0, 1, NULL, '11.22', NULL, NULL, NULL, NULL, NULL, 4, '11.22'),
-(151, 'N/F Ellinbank 250 DEBW007', 4091, NULL, 1, NULL, 0, 1, NULL, '1090.00', NULL, NULL, NULL, NULL, NULL, 4, '1090.00'),
-(152, 'Go Cow Pellet', 4092, NULL, 1, NULL, 0, 1, NULL, '1815.00', NULL, NULL, NULL, NULL, NULL, 4, '1815.00'),
-(153, 'N/F Eskalin 50GM DEB103', 4093, NULL, 1, NULL, 0, 1, NULL, '1683.88', NULL, NULL, NULL, NULL, NULL, 4, '1683.88'),
-(154, 'Omnigen Pellet DEB111', 4094, NULL, 1, NULL, 0, 1, NULL, '3617.40', NULL, NULL, NULL, NULL, NULL, 4, '3617.40'),
-(155, 'Lead Plus', 4095, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, NULL),
-(156, 'N/F TM2-ML50 DEBW130', 4096, NULL, 1, NULL, 2, 1, NULL, '3105.00', NULL, NULL, NULL, NULL, NULL, 4, '3105.00'),
-(157, 'N/F Anionic Soychlor DEB098', 4097, NULL, 2, NULL, 2, 1, NULL, '1100.00', NULL, NULL, NULL, NULL, NULL, 4, '1100.00'),
-(158, 'Gypsum', 4098, NULL, 1, NULL, 0, 2, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(159, 'Calciprill DEB596', 4099, NULL, 1, NULL, 0, 1, NULL, '325.00', NULL, NULL, NULL, NULL, NULL, 4, '325.00'),
-(160, 'Bicarb Soda - Bagged', 4100, NULL, 1, NULL, 0, 1, NULL, '382.00', NULL, NULL, NULL, NULL, NULL, 4, '382.00'),
-(161, 'Monendox', 4101, NULL, 1, NULL, 2, 3, NULL, '5100.00', NULL, NULL, NULL, NULL, NULL, 4, '5100.00'),
-(162, 'N/F Hi Zinc 4.78% DEB160', 4102, NULL, 1, NULL, 2, 1, NULL, '1349.15', NULL, NULL, NULL, NULL, NULL, 4, '1349.15'),
-(163, 'Udder Mate 25 + Se Pellets', 4103, NULL, 1, NULL, 2, 3, NULL, '24.10', NULL, NULL, NULL, NULL, NULL, 4, '24.10'),
-(164, 'Levucell SC10 ME Titan', 4104, NULL, 1, NULL, 2, 3, NULL, '81.68', NULL, NULL, NULL, NULL, NULL, 4, '81.68'),
-(165, 'Orego Stim', 4105, NULL, 1, NULL, 2, 3, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 4, '0.00'),
-(166, 'Pharma-Lead/Close up Premix + Bovatec', 4106, NULL, 1, NULL, 2, 1, NULL, '1634.00', NULL, NULL, NULL, NULL, NULL, 4, '1634.00');
+INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp`, `Decimals_Supported`, `Default_Unit`, `Feed_notes`, `me`, `Mix_Margin`, `Mix_Margin_Base`, `Mix_Type`, `ndf`, `Product_Category`, `price_pT`) VALUES
+(1, 'Stock Pellet', 1000, NULL, 1, '0.00', 2, 1, NULL, '0.00', '318.00', '318.00', 2, '0.00', 1, '318.00'),
+(2, 'Production Pellet', 1002, NULL, 1, '0.00', 2, 1, NULL, '0.00', '373.00', '373.00', 2, '0.00', 1, '373.00'),
+(3, 'Performance Pellet', 1003, NULL, 1, '0.00', 2, 1, NULL, '0.00', '388.00', '388.00', 2, '0.00', 1, '388.00'),
+(4, 'Premium Pellet', 1004, NULL, 1, '0.00', 2, 1, NULL, '0.00', '389.00', '389.00', 2, '0.00', 1, '389.00'),
+(5, 'Premium Plus Pellet', 1005, NULL, 1, '0.00', 2, 1, NULL, '0.00', '391.00', '391.00', 2, '0.00', 1, '391.00'),
+(6, 'Calf Starter Pellet', 1006, NULL, 1, '0.00', 2, 1, NULL, '0.00', '451.00', '451.00', 2, '0.00', 1, '451.00'),
+(7, 'Calf Rearer Pellet', 1007, NULL, 1, '0.00', 2, 1, NULL, '0.00', '423.00', '423.00', 2, '0.00', 1, '423.00'),
+(8, 'Lead Feed Pellet', 1008, NULL, 1, '0.00', 2, 1, NULL, '0.00', '78.70', '78.70', 2, '0.00', 2, '508.75'),
+(9, 'Elders Pre Calve/Lamb - TSS Grain', 1009, NULL, 1, '0.00', 0, 1, NULL, '0.00', '0.00', '0.00', 1, '0.00', 3, '0.00'),
+(10, 'Pellet - Sheep', 1010, NULL, 1, '0.00', 0, 1, NULL, '0.00', '368.00', '368.00', 2, '0.00', 1, '368.00'),
+(11, 'Summer Super Special', 1011, NULL, 1, '0.00', 0, 1, NULL, '0.00', '0.00', '0.00', 2, '0.00', 1, '0.00'),
+(12, 'Non Grain Beef Pellet Ration', 1012, NULL, 1, '13.51', 0, 1, NULL, '8.86', '105.97', '105.97', 2, '25.74', 2, '375.00'),
+(13, 'Non Grain Beef Pellet', 1013, NULL, 1, '0.00', 0, 1, NULL, '0.00', '375.00', '375.00', 2, '0.00', 1, '375.00'),
+(14, 'Eskalin 500 (50%)', 1023, NULL, 2, NULL, 2, 1, 'Vet Script Required Cows must be introduced onto product in steps.', NULL, NULL, NULL, 2, NULL, 4, '106508.00'),
+(15, 'Wheat', 2001, NULL, 1, '11.00', 2, 1, NULL, '13.50', NULL, NULL, 1, '12.00', 3, '305.00'),
+(16, 'Barley', 2002, NULL, 1, '11.00', 2, 1, NULL, '12.80', NULL, NULL, 1, '12.00', 3, '285.00'),
+(17, 'Triticale', 2003, NULL, 1, '3.30', 2, 1, NULL, '3.90', NULL, NULL, 1, '4.50', 3, '300.00'),
+(18, 'Sorghum', 2004, NULL, 1, '10.00', 2, 1, NULL, '12.00', NULL, NULL, 1, '10.00', 3, '250.00'),
+(19, 'Maize', 2005, NULL, 1, '8.00', 2, 1, NULL, '14.00', NULL, NULL, 1, '9.00', 3, '310.00'),
+(20, 'Lupins', 2006, NULL, 1, '31.00', 2, 1, NULL, '13.00', NULL, NULL, 1, '24.00', 3, '460.00'),
+(21, 'Faba Beans', 2007, NULL, 1, '30.00', 2, 1, NULL, '12.00', NULL, NULL, 1, '25.00', 3, '500.00'),
+(22, 'Peas', 2008, NULL, 1, '26.00', 2, 1, NULL, '12.00', NULL, NULL, 1, '26.00', 3, '360.00'),
+(23, 'Canola Meal', 2009, NULL, 1, '38.00', 2, 1, NULL, '12.00', NULL, NULL, 1, '26.00', 3, '460.00'),
+(24, 'Cottonseed Meal', 2010, NULL, 1, '44.00', 2, 1, NULL, '11.50', NULL, NULL, 1, '26.00', 3, '325.00'),
+(25, 'Copra Meal', 2011, NULL, 1, '22.00', 2, 1, NULL, '12.50', NULL, NULL, 1, '50.00', 3, '237.00'),
+(26, 'Oat Bran', 2012, NULL, 1, '6.00', 2, 1, NULL, '8.00', NULL, NULL, 1, '59.00', 3, '50.00'),
+(27, 'Palm Kernal', 2013, NULL, 1, '16.00', 2, 1, NULL, '11.00', NULL, NULL, 1, '56.00', 3, '300.00'),
+(28, 'Choc Malt', 2014, NULL, 1, '20.00', 2, 1, NULL, '14.00', '0.00', '0.00', 1, '35.00', 3, '300.00'),
+(29, 'Malt Combings', 2015, NULL, 1, '15.00', 2, 1, NULL, '11.00', NULL, NULL, 1, '30.00', 3, '160.00'),
+(30, 'Biscuit Meal', 2016, NULL, 1, '10.00', 2, 1, NULL, '15.00', NULL, NULL, 1, '25.00', 3, '250.00'),
+(31, 'Barley 2nd''s', 2017, NULL, 1, '9.00', 2, 1, NULL, '9.00', NULL, NULL, 1, '25.00', 3, '60.00'),
+(32, 'DDG', 2018, NULL, 1, '26.00', 2, 1, NULL, '12.00', NULL, NULL, 1, '30.00', 3, '285.00'),
+(33, 'Mill Run', 2019, NULL, 1, '15.00', 2, 1, NULL, '11.00', NULL, NULL, 1, '30.00', 3, '280.00'),
+(34, 'Soya Bean Meal', 2021, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '500.00'),
+(35, 'Wheat 2nds', 2022, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '180.00'),
+(36, 'Pea Pollard', 2023, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '220.00'),
+(37, 'Limestone', 2024, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '53.00'),
+(38, 'Bentonite', 2025, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '226.00'),
+(39, 'Stock Pellet - Mix', 2026, NULL, 1, '18.90', 2, 1, NULL, '10.80', NULL, NULL, 1, '0.00', 3, '306.00'),
+(40, 'Almond Meal', 2027, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '126.00'),
+(41, 'Hominie - Corn Meal', 2028, 'Corn Meal - Hominie', 1, '12.00', 2, 1, NULL, '12.00', NULL, NULL, 1, NULL, 3, '300.00'),
+(42, 'Almond Hulls', 2029, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '101.00'),
+(43, 'Hay', 2030, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '250.00'),
+(44, 'Energy Blend', 2031, NULL, 2, '14.00', 2, 1, NULL, '14.00', NULL, NULL, 1, NULL, 3, '275.00'),
+(45, 'Choc Meal', 2032, NULL, 1, '14.00', 0, 1, NULL, '14.00', NULL, NULL, 1, NULL, 3, '300.00'),
+(46, 'Hay - Vetch', 2033, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '275.00'),
+(47, 'Grape Meal', 2034, NULL, 1, '16.00', 0, 1, NULL, '11.00', '155.00', '155.00', 1, '25.00', 3, '210.00'),
+(48, 'Freight', 2035, NULL, 1, NULL, 0, 1, NULL, NULL, '0.00', '0.00', 1, NULL, 3, '0.00'),
+(49, 'Lentils', 2036, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '475.00'),
+(50, 'Lentils 2nds', 2037, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '60.00'),
+(51, 'Barley Offal', 2038, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '0.00'),
+(52, 'Sugar - Bulk', 2039, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 1, NULL, 3, '300.00'),
+(53, 'Irmix 12.5ME 14%CP', 3000, NULL, 1, '12.14', 2, 1, NULL, '9.80', '78.29', '78.29', 2, '14.85', 2, '396.90'),
+(54, 'Unimix Mix 12ME 13%CP', 3001, NULL, 1, '10.07', 2, 1, NULL, '9.74', '79.74', '79.74', 2, '15.63', 2, '381.10'),
+(55, 'Economix 12.5ME 12%CP', 3002, NULL, 1, '9.99', 2, 1, NULL, '9.84', '82.60', '82.60', 2, '13.67', 2, '385.66'),
+(56, 'Premium Meal 12.5%ME 16%CP', 3003, NULL, 1, '14.24', 2, 1, NULL, '10.74', '79.94', '79.94', 2, '16.42', 2, '409.90'),
+(57, 'Sustain Mix 12.5ME 18%CP', 3004, NULL, 1, '16.57', 2, 1, NULL, '11.14', '78.49', '78.49', 2, '17.60', 2, '420.10'),
+(58, 'Super Mix 13ME 13%CP', 3005, NULL, 1, '10.56', 2, 1, NULL, '10.68', '101.04', '101.04', 2, '9.56', 2, '412.70'),
+(59, 'Beef Mix', 3006, NULL, 1, '12.30', 2, 1, NULL, '11.80', '92.00', '92.00', 2, '9.00', 2, '358.10'),
+(60, '20% Calf Starter Meal', 3010, NULL, 1, '18.67', 2, 1, NULL, '11.18', '105.12', '105.12', 2, '17.39', 2, '514.81'),
+(61, '20% Calf Beginner Meal', 3011, NULL, 1, '18.89', 2, 1, NULL, '11.45', '92.69', '92.69', 2, '17.60', 2, '465.06'),
+(62, '18% Calf Rearer Meal', 3012, NULL, 1, '16.55', 0, 1, NULL, '11.58', '104.53', '104.53', 2, '18.52', 2, '461.00'),
+(63, 'Lead Feed Meal', 3013, NULL, 1, '15.86', 2, 1, NULL, '9.49', '84.80', '84.80', 2, '13.14', 2, '568.75'),
+(64, 'Irwin Blend', 3015, NULL, 1, '13.50', 2, 1, NULL, '8.50', NULL, NULL, 2, '22.50', 2, '203.50'),
+(65, 'Palm Blend Mix', 3016, NULL, 1, '9.55', 2, 1, NULL, '8.75', '83.00', '83.00', 2, '17.00', 2, '322.05'),
+(66, 'Spring Special', 3017, NULL, 1, '11.23', 2, 1, NULL, '10.67', '80.00', '80.00', 2, '10.56', 2, '347.97'),
+(67, 'Lupin Blend', 3018, NULL, 1, '28.50', 0, 1, NULL, '12.50', NULL, NULL, 2, '25.00', 2, '410.00'),
+(68, 'Hay Extender Mix', 3019, NULL, 1, '6.40', 0, 1, NULL, '4.40', '90.00', '90.00', 2, '22.40', 2, '270.60'),
+(69, 'ACE Farms Mix Dec 14 -Mar 15', 3020, NULL, 2, '13.46', 0, 1, NULL, '12.85', '48.18', '48.18', 2, '14.44', 2, '371.00'),
+(70, 'Acid Buff', 4000, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1040.00'),
+(71, 'AvailaCu 100 (10%)', 4001, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '12650.00'),
+(72, 'AvailaZn 100 (10%)', 4003, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '9020.00'),
+(73, 'Availa4 100 (10%)', 4004, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '9955.00'),
+(74, 'Sodium Bicarb', 4010, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '594.00'),
+(75, 'BIO MOS', 4013, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '12375.00'),
+(76, 'N/F Biotin 2% DEB510', 4014, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '25570.00'),
+(77, 'Bloat Control E50', 4015, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '4637.00'),
+(78, 'Bovatec 200 (20%)', 4016, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '15345.00'),
+(79, 'Caus Mag AL 8 96% (MgO2)', 4017, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '748.00'),
+(80, 'DCP (18%)', 4018, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '665.00'),
+(81, 'Diamond V XPC', 4019, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '5445.00'),
+(82, 'Dolomite/Ag Lime', 4020, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '363.00'),
+(83, 'Elitox', 4021, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '6600.00'),
+(84, 'Epsom Salts (MgSO4)', 4022, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '352.00'),
+(85, 'Eskalin 20 (2%)', 4023, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '6820.00'),
+(86, 'High Five 100 (10%)', 4024, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '13035.00'),
+(87, 'Megalac', 4026, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1865.00'),
+(88, 'Mintrex B', 4027, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '7645.00'),
+(89, 'Molasses Sweetener Combo', 4028, NULL, 1, NULL, 2, 1, NULL, '30.00', NULL, NULL, 2, NULL, 4, '16550.00'),
+(90, 'Mycosorb', 4029, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '8305.00'),
+(91, 'Rumensin 100 (10%)', 4030, NULL, 2, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '7271.00'),
+(92, 'Salt', 4031, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '264.00'),
+(93, 'Sel-Plex 2 (0.2%)', 4032, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '24255.00'),
+(94, 'Tylan 50 (5%)', 4033, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '7865.00'),
+(95, 'Veg Oil', 4034, NULL, 1, NULL, 2, 1, NULL, '30.00', NULL, NULL, 2, NULL, 4, '575.00'),
+(96, 'Vitamin B1', 4035, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '10615.00'),
+(97, 'Zinc Oxide', 4036, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '3850.00'),
+(98, 'Zinc Oxide (80%Zn)', 4037, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '3850.00'),
+(99, 'N/F Irwin Dairy Mix DEB383', 4038, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '2701.00'),
+(100, 'Sugar', 4040, NULL, 1, NULL, 2, 1, NULL, '0.34', NULL, NULL, 2, NULL, 4, '630.00'),
+(101, 'Performance DFM Powder (Yeast)', 4041, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '8321.00'),
+(102, 'Performance Healthy Herd', 4042, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '8960.00'),
+(103, 'Performance Fire Up', 4043, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '4928.00'),
+(104, 'Dairy 220 Plus', 4044, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1920.00'),
+(105, 'Dairy200', 4045, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1558.00'),
+(106, 'Dairy PreLac 300', 4046, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1865.00'),
+(107, 'N/F Zinc DEB045', 4047, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '2045.00'),
+(108, 'N/F Summer', 4048, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '2198.00'),
+(109, 'N/F Sum Hi Zinc 125 DEB029', 4049, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1593.00'),
+(110, 'N/F Hi Milker 250 DEB001', 4050, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1212.00'),
+(111, 'N/F Hi Milker+HiZinc DEB042', 4051, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1384.00'),
+(112, 'N/F Performer DEB010', 4052, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1430.00'),
+(113, 'N/F TM2M DEB011', 4053, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1865.00'),
+(114, 'N/F TM2MT DEB013', 4054, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '2621.00'),
+(115, 'N/F Performer+Biotin DEB018', 4055, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1574.00'),
+(116, 'N/F Bicarb250(Clyne) DEB005', 4056, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1018.00'),
+(117, 'N/F Anionic Pellet DEB099', 4057, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1065.00'),
+(118, 'Go-Cow Tylan Pellet', 4058, NULL, 2, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '2002.00'),
+(119, 'Glow Cow Pellet', 4059, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '2519.00'),
+(120, 'Eco Go Cow', 4060, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1562.00'),
+(121, 'Get Set Cow Pellet', 4061, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1177.00'),
+(122, 'BFN First Base', 4062, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1190.00'),
+(123, 'Caus Mag AL 4', 4063, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '854.70'),
+(124, 'Ammonium Sulphate', 4064, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '598.00'),
+(125, 'Magnapac', 4065, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1430.00'),
+(126, 'Dairy 230', 4066, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1197.00'),
+(127, 'DairyTech Powder', 4067, NULL, 1, NULL, 0, 2, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(128, 'A Max Yeast', 4068, NULL, 1, NULL, 0, 2, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(129, 'Lucerne Chaff', 4069, NULL, 1, '0.51', 2, 1, NULL, '0.36', NULL, NULL, 2, '1.50', 4, '1000.00'),
+(130, 'Protein Plus', 4070, 'Dairytech Nutrition Supplied Product', 1, NULL, 2, 2, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '0.00'),
+(131, 'Dairy Max 300', 4071, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1645.00'),
+(132, 'Dairy Tech Pellet', 4072, NULL, 1, NULL, 0, 2, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '0.00'),
+(133, 'Rumen Calm - Dairy Tech', 4073, NULL, 1, NULL, 0, 2, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '0.00'),
+(134, 'Rumicare - AusPac', 4074, NULL, 1, NULL, 0, 2, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '940.50'),
+(135, 'Fluid Aron', 4075, 'Flavouring - $13.75 per kilogram', 1, NULL, 0, 2, NULL, NULL, NULL, NULL, 2, NULL, 4, '13750.00'),
+(136, 'Dairytech Anionic Pellet', 4076, NULL, 1, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, NULL),
+(137, 'N/F Soy Chlor DEB533', 4077, NULL, 1, NULL, 0, 1, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '1424.50'),
+(138, 'Dairy Prelac 400 + Vicomb', 4078, NULL, 1, NULL, 0, 1, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '2970.00'),
+(139, 'Optimin Lacto-Max 5', 4079, NULL, 1, NULL, 0, 1, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '10340.00'),
+(140, 'OmyaCarb 50', 4080, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '285.00'),
+(141, 'Betaine', 4081, NULL, 1, NULL, 0, 3, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '5.80'),
+(142, 'Zinc Sulphate', 4082, NULL, 1, NULL, 0, 1, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '1000.00'),
+(143, 'Base Plus', 4083, NULL, 1, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(144, 'Action Power', 4084, NULL, 1, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(145, 'N/F TM2Mon+Mag DEBW011', 4085, NULL, 2, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(146, 'N/F Fusion Pellet DEB062', 4086, NULL, 1, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(147, 'Magnesium Chloride Granular', 4087, NULL, 1, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '518.00'),
+(148, 'N/F TM2 + Mag Ox', 4088, NULL, 2, NULL, 0, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(149, 'Black Urea', 4089, NULL, 1, NULL, 0, 1, NULL, NULL, '0.00', '0.00', 2, NULL, 4, '1113.00'),
+(150, 'Availa Zinc 120', 4090, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '11.22'),
+(151, 'N/F Ellinbank 250 DEBW007', 4091, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1090.00'),
+(152, 'Go Cow Pellet', 4092, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1815.00'),
+(153, 'N/F Eskalin 50GM DEB103', 4093, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1683.88'),
+(154, 'Omnigen Pellet DEB111', 4094, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '3617.40'),
+(155, 'Lead Plus', 4095, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, NULL),
+(156, 'N/F TM2-ML50 DEBW130', 4096, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '3105.00'),
+(157, 'N/F Anionic Soychlor DEB098', 4097, NULL, 2, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1100.00'),
+(158, 'Gypsum', 4098, NULL, 1, NULL, 0, 2, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(159, 'Calciprill DEB596', 4099, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '325.00'),
+(160, 'Bicarb Soda - Bagged', 4100, NULL, 1, NULL, 0, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '382.00'),
+(161, 'Monendox', 4101, NULL, 1, NULL, 2, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '5100.00'),
+(162, 'N/F Hi Zinc 4.78% DEB160', 4102, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1349.15'),
+(163, 'Udder Mate 25 + Se Pellets', 4103, NULL, 1, NULL, 2, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '24.10'),
+(164, 'Levucell SC10 ME Titan', 4104, NULL, 1, NULL, 2, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '81.68'),
+(165, 'Orego Stim', 4105, NULL, 1, NULL, 2, 3, NULL, NULL, NULL, NULL, 2, NULL, 4, '0.00'),
+(166, 'Pharma-Lead/Close up Premix + Bovatec', 4106, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 2, NULL, 4, '1634.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_prices`
+--
+
+CREATE TABLE IF NOT EXISTS `products_prices` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `product_id` int(100) NOT NULL,
+  `date_valid_from` date NOT NULL,
+  `price_pt` float NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2740,7 +2798,7 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 --
 
 CREATE TABLE IF NOT EXISTS `storage` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `Description` varchar(600) DEFAULT NULL,
   `Capacity` decimal(10,2) DEFAULT NULL,
   `company_id` int(3) NOT NULL,
@@ -2751,8 +2809,9 @@ CREATE TABLE IF NOT EXISTS `storage` (
   `Status` int(1) NOT NULL,
   `Street_1` varchar(100) DEFAULT NULL,
   `SuburbTown` varchar(100) DEFAULT NULL,
-  `Tipper` bit(1) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1239 ;
+  `Tipper` bit(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1240 ;
 
 --
 -- Dumping data for table `storage`
@@ -3916,7 +3975,8 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 (1235, 'WHOLE GRAIN SILO WITH AUGER', '50.00', 478, b'0', b'0', 'REVERSE UP TO AUGER & TIP GRAIN OFF. MUST PHONE KELVIN WITH DELIVERY TIME APPROX 2 HOURS PRIOR. 0418 527 924', '3966', 1, '135 Agnes River Rd', 'HAZEL PARK', b'1'),
 (1236, 'Witchell farm Silo 1', '28.00', 334, b'1', b'1', 'Witchells Farm- Shane Kennedys old farm Jacksons Track Labertouche. any truck only silo at dairy', '', 2, 'Jacksons track', '', b'0'),
 (1237, 'Witchells Farm Silo 1', '28.00', 501, b'1', b'1', 'Witchells Farm- Shane Kennedys old farm Jacksons Track Labertouche. any truck only silo at dairy', '', 1, 'Jacksons Trk', '', b'0'),
-(1238, 'Yellow Silo @ Piggery', '4.00', 857, b'0', b'1', 'blower truck. once you have entered the front gates to property, the piggery is on the LHS. there are concrete water tanks on the LHS and piggery is behind them. Yellow silo is there. please call Chris to confirm you are at the right silo 0437 583 386', '3818', 1, '510 Gardner-Holeman Road', 'DROUIN', b'0');
+(1238, 'Yellow Silo @ Piggery', '4.00', 857, b'0', b'1', 'blower truck. once you have entered the front gates to property, the piggery is on the LHS. there are concrete water tanks on the LHS and piggery is behind them. Yellow silo is there. please call Chris to confirm you are at the right silo 0437 583 386', '3818', 1, '510 Gardner-Holeman Road', 'DROUIN', b'0'),
+(1239, 'Bulka Bags (25Kg)', '25.00', 908, b'0', b'0', '', '', 1, '', '', b'0');
 
 -- --------------------------------------------------------
 
@@ -3925,7 +3985,7 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 --
 
 CREATE TABLE IF NOT EXISTS `trailers` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `Registration` varchar(200) NOT NULL,
   `Description` varchar(200) NOT NULL,
   `Max_Capacity` int(30) NOT NULL,
@@ -3933,7 +3993,8 @@ CREATE TABLE IF NOT EXISTS `trailers` (
   `Auger` tinyint(1) NOT NULL,
   `Blower` tinyint(1) NOT NULL,
   `Tipper` tinyint(1) NOT NULL,
-  `Status` int(5) NOT NULL
+  `Status` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 --
@@ -3981,11 +4042,12 @@ INSERT INTO `trailers` (`id`, `Registration`, `Description`, `Max_Capacity`, `Nu
 --
 
 CREATE TABLE IF NOT EXISTS `trailer_bins` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `trailer_id` int(10) NOT NULL,
   `BinNo` varchar(100) NOT NULL,
   `MaxCapacity` float NOT NULL,
-  `Status` int(10) NOT NULL
+  `Status` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=489 ;
 
 --
@@ -4119,7 +4181,7 @@ INSERT INTO `trailer_bins` (`id`, `trailer_id`, `BinNo`, `MaxCapacity`, `Status`
 --
 
 CREATE TABLE IF NOT EXISTS `trucks` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `registration` varchar(200) NOT NULL,
   `mobile` varchar(20) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL,
@@ -4131,7 +4193,8 @@ CREATE TABLE IF NOT EXISTS `trucks` (
   `Blower` tinyint(1) NOT NULL,
   `Tipper` tinyint(1) NOT NULL,
   `max_trailers` int(10) DEFAULT NULL,
-  `max_load` float DEFAULT NULL
+  `max_load` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=111 ;
 
 --
@@ -4168,9 +4231,10 @@ INSERT INTO `trucks` (`id`, `registration`, `mobile`, `description`, `CreatedBy`
 --
 
 CREATE TABLE IF NOT EXISTS `trucks_default_trailers` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `truck_id` int(10) NOT NULL,
-  `trailer_id` int(10) NOT NULL
+  `trailer_id` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
@@ -4188,7 +4252,7 @@ INSERT INTO `trucks_default_trailers` (`id`, `truck_id`, `trailer_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `firstname` varchar(100) NOT NULL,
   `surname` varchar(100) NOT NULL,
@@ -4202,7 +4266,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `registration_ip` varchar(15) DEFAULT NULL,
   `bind_to_ip` varchar(255) DEFAULT NULL,
   `email` varchar(128) DEFAULT NULL,
-  `email_confirmed` smallint(1) NOT NULL DEFAULT '0'
+  `email_confirmed` smallint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
@@ -4241,7 +4306,7 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `auth_key`, `passw
 --
 
 CREATE TABLE IF NOT EXISTS `user_visit_log` (
-`id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `token` varchar(255) NOT NULL,
   `ip` varchar(15) NOT NULL,
   `language` char(2) NOT NULL,
@@ -4249,7 +4314,9 @@ CREATE TABLE IF NOT EXISTS `user_visit_log` (
   `user_id` int(11) DEFAULT NULL,
   `visit_time` int(11) NOT NULL,
   `browser` varchar(30) DEFAULT NULL,
-  `os` varchar(20) DEFAULT NULL
+  `os` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -4259,12 +4326,13 @@ CREATE TABLE IF NOT EXISTS `user_visit_log` (
 --
 
 CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
-`id` int(10) NOT NULL,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `ticket_number` varchar(50) NOT NULL,
   `delivery_id` int(10) NOT NULL,
   `truck_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `driver` varchar(200) NOT NULL,
+  `smo_number` varchar(50) DEFAULT NULL,
   `gross` float NOT NULL,
   `tare` float NOT NULL,
   `net` float NOT NULL,
@@ -4272,284 +4340,19 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `Moisture` float DEFAULT NULL,
   `Protein` float DEFAULT NULL,
   `testWeight` float DEFAULT NULL,
-  `screenings` float DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+  `screenings` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `weighbridge_ticket`
 --
 
-INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_id`, `date`, `driver`, `gross`, `tare`, `net`, `Notes`, `Moisture`, `Protein`, `testWeight`, `screenings`) VALUES
-(11, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, '', NULL, NULL, NULL, NULL),
-(12, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test', NULL, NULL, NULL, NULL),
-(13, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL),
-(14, 'WB000001', 31, 92, '2015-11-12', '', 1, 2, 3, 'test tasa asdfasf aasd fasdfasd fasd fasdf asdf asdf asdf asdf asdf asdf asd sd sdfsd', NULL, NULL, NULL, NULL),
-(15, 'WB00001', 33, 92, '2015-11-19', '', 12, 2, 10, 'blah blah blah', 1, 2, 3, 4);
+INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_id`, `date`, `driver`, `smo_number`, `gross`, `tare`, `net`, `Notes`, `Moisture`, `Protein`, `testWeight`, `screenings`) VALUES
+(17, 'WB00001', 34, 92, '2015-12-14', 'Shamus', '1234', 10, 2, 8, 'blah blah blah', NULL, NULL, NULL, NULL),
+(18, 'WB00018', 29, 92, '2015-11-12', 'Shamus', '12345', 15, 2, 13, 'again blah blah', NULL, NULL, NULL, NULL),
+(19, 'WB00019', 31, 92, '2015-11-12', 'Joe', '1234', 14, 2, 12, '', NULL, NULL, NULL, NULL);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `article`
---
-ALTER TABLE `article`
- ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `auth_assignment`
---
-ALTER TABLE `auth_assignment`
- ADD PRIMARY KEY (`item_name`,`user_id`), ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `auth_item`
---
-ALTER TABLE `auth_item`
- ADD PRIMARY KEY (`name`), ADD KEY `rule_name` (`rule_name`), ADD KEY `idx-auth_item-type` (`type`), ADD KEY `fk_auth_item_group_code` (`group_code`);
-
---
--- Indexes for table `auth_item_child`
---
-ALTER TABLE `auth_item_child`
- ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
-
---
--- Indexes for table `auth_item_group`
---
-ALTER TABLE `auth_item_group`
- ADD PRIMARY KEY (`code`);
-
---
--- Indexes for table `auth_rule`
---
-ALTER TABLE `auth_rule`
- ADD PRIMARY KEY (`name`);
-
---
--- Indexes for table `clients`
---
-ALTER TABLE `clients`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `contacts`
---
-ALTER TABLE `contacts`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `customer_orders`
---
-ALTER TABLE `customer_orders`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `customer_orders_ingredients`
---
-ALTER TABLE `customer_orders_ingredients`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery`
---
-ALTER TABLE `delivery`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery_load`
---
-ALTER TABLE `delivery_load`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery_load_bin`
---
-ALTER TABLE `delivery_load_bin`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `delivery_load_trailer`
---
-ALTER TABLE `delivery_load_trailer`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `import_functions`
---
-ALTER TABLE `import_functions`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lookup`
---
-ALTER TABLE `lookup`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `migration`
---
-ALTER TABLE `migration`
- ADD PRIMARY KEY (`version`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `storage`
---
-ALTER TABLE `storage`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trailers`
---
-ALTER TABLE `trailers`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trailer_bins`
---
-ALTER TABLE `trailer_bins`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trucks`
---
-ALTER TABLE `trucks`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `trucks_default_trailers`
---
-ALTER TABLE `trucks_default_trailers`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
- ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user_visit_log`
---
-ALTER TABLE `user_visit_log`
- ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `weighbridge_ticket`
---
-ALTER TABLE `weighbridge_ticket`
- ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `article`
---
-ALTER TABLE `article`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `clients`
---
-ALTER TABLE `clients`
-MODIFY `id` int(100) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=908;
---
--- AUTO_INCREMENT for table `contacts`
---
-ALTER TABLE `contacts`
-MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=570;
---
--- AUTO_INCREMENT for table `customer_orders`
---
-ALTER TABLE `customer_orders`
-MODIFY `id` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=268;
---
--- AUTO_INCREMENT for table `customer_orders_ingredients`
---
-ALTER TABLE `customer_orders_ingredients`
-MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=166;
---
--- AUTO_INCREMENT for table `delivery`
---
-ALTER TABLE `delivery`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=34;
---
--- AUTO_INCREMENT for table `delivery_load`
---
-ALTER TABLE `delivery_load`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
---
--- AUTO_INCREMENT for table `delivery_load_bin`
---
-ALTER TABLE `delivery_load_bin`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=62;
---
--- AUTO_INCREMENT for table `delivery_load_trailer`
---
-ALTER TABLE `delivery_load_trailer`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=65;
---
--- AUTO_INCREMENT for table `import_functions`
---
-ALTER TABLE `import_functions`
-MODIFY `id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT for table `lookup`
---
-ALTER TABLE `lookup`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-MODIFY `id` int(3) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=167;
---
--- AUTO_INCREMENT for table `storage`
---
-ALTER TABLE `storage`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1239;
---
--- AUTO_INCREMENT for table `trailers`
---
-ALTER TABLE `trailers`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT for table `trailer_bins`
---
-ALTER TABLE `trailer_bins`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=489;
---
--- AUTO_INCREMENT for table `trucks`
---
-ALTER TABLE `trucks`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=111;
---
--- AUTO_INCREMENT for table `trucks_default_trailers`
---
-ALTER TABLE `trucks_default_trailers`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `user_visit_log`
---
-ALTER TABLE `user_visit_log`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `weighbridge_ticket`
---
-ALTER TABLE `weighbridge_ticket`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 --
 -- Constraints for dumped tables
 --
@@ -4558,34 +4361,34 @@ MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
 -- Constraints for table `article`
 --
 ALTER TABLE `article`
-ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_assignment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_assignment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item`
 --
 ALTER TABLE `auth_item`
-ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_auth_item_group_code` FOREIGN KEY (`group_code`) REFERENCES `auth_item_group` (`code`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_auth_item_group_code` FOREIGN KEY (`group_code`) REFERENCES `auth_item_group` (`code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_visit_log`
 --
 ALTER TABLE `user_visit_log`
-ADD CONSTRAINT `user_visit_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_visit_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

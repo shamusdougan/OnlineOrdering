@@ -16,6 +16,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Lookup;
 use yii\helpers\Json;
 use kartik\mpdf\Pdf;
+use webvimark\modules\UserManagement\models\User;
 
 /**
  * CustomerOrderController implements the CRUD actions for customerOrders model.
@@ -64,12 +65,19 @@ class CustomerOrderController extends Controller
         $dataProvider->setSort(['defaultOrder' => ['Created_On'=>SORT_DESC]]);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create'];
+
+		$userList = User::getUserListArray();	
+		$customerList = Clients::getActiveClientListArray();
+		
+		
 		
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
+            'userList' => $userList,
+            'customerList' => $customerList,
         ]);
     }
 
@@ -251,11 +259,13 @@ class CustomerOrderController extends Controller
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create?redirectTo=update-production-active'];
 		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'submit' => 'customer-order-active-list-form', 'url'=> null];
 		
-
+		$userListArray = User::getUserListArray();
+		
         return $this->render('production-active-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
+            'userListArray' => $userListArray,
         ]);
     }
 
@@ -374,13 +384,14 @@ class CustomerOrderController extends Controller
         $dataProvider = $searchModel->getSubmittedOrders(Yii::$app->request->queryParams);
 
 		$actionItems[] = ['label'=>'Unsubmit Order(s)', 'button' => 'reversetruck', 'submit' => 'customer-order-submitted-list-form', 'url'=> null];
-		
+		$userListArray = User::getUserListArray();
 
 
         return $this->render('production-submitted-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
+            'userListArray' => $userListArray,
         ]);
     }
 
@@ -493,7 +504,7 @@ class CustomerOrderController extends Controller
 	    		'contact' => $model->owner->fullname,
 		        'address'=>$model->Address_1,
 		        'phone'=>$model->Main_Phone,
-		        'status'=>Lookup::item($model->Status, 'CLIENT_STATUS'),
+		        'Sales_Status'=>Lookup::item($model->Sales_Status, 'CLIENT_STATUS'),
 		        'nearestTown'=>$model->Nearest_Town,
 		        'id'=>$model->id,
 		        'storage' => $storageList

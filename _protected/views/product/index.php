@@ -1,8 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use app\models\Lookup;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProductSearch */
@@ -16,26 +17,34 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Product', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+  
+  
+    <?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'export' => false,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+         
 
  			'Product_ID',
             'Name',
-           
+            [
+            'attribute' => 'Status',
+            'value' => function ($data)
+            	{
+				return Lookup::item($data->Status, "PRODUCT_STATUS");
+				},
+			'filter' => Lookup::items("PRODUCT_STATUS"),
+            ],
+
             'Description',
-            'Status',
             // 'cp',
             // 'Decimals_Supported',
             // 'Default_Unit',
             // 'Feed_notes',
-            'List_Price_pT_Base',
+            'price_pT',
             // 'me',
             // 'Mix_Margin',
             // 'Mix_Margin_Base',

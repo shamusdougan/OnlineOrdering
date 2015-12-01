@@ -5,7 +5,7 @@ use kartik\grid\GridView;
 use yii\helpers\Url;
 use vendor\actionButtons\actionButtonsWidget;
 use app\models\Lookup;
-use app\models\User;
+use webvimark\modules\UserManagement\models\User;
 use kartik\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 			'attribute' => 'createdByUser.fullname',
 			'label' => 'Created By',
-			'filter' => User::getUserFilterArray(),
+			'filter' => $userListArray,
 			],
             [
             'attribute' => 'Price_Total',
