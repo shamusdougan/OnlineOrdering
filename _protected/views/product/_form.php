@@ -1,53 +1,155 @@
 <?php
 
+use app\models\Product;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use app\models\Lookup;
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
+use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Product */
 /* @var $form yii\widgets\ActiveForm */
-?>
 
+if(!isset($readOnly)){$readOnly = false;}
+if(!isset($lockProductCode)){$lockProductCode = true;}
+
+$this->registerJs(
+    "$(document).on('change', '#".Html::getInputId($model, 'Mix_Type')."', function() 
+    	{
+    	
+    	
+		var product_type = $(this).val();
+		if(product_type == ".Product::MIXTYPE_BASE.")
+			{
+			$('#product_price_list').show();
+			$('#ingredient_list').hide();
+			}
+		else if (product_type == ".Product::MIXTYPE_COMPOSITE.")
+			{
+				
+			$('#product_price_list').hide();
+			$('#ingredient_list').show();
+			}
+    	
+		
+	});"
+   );
+?>
 <div class="product-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+   <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'product-form']); ?>
+ 
+ 
+ 	<?
+ //Customer Select options
+		    echo Form::widget([
+		    	'model'=>$model,
+		    	'form'=>$form,
+		    	'columns'=>3,
+		    	'attributes'=>[
+		    		'Product_ID' =>
+		    			[
+	    				'type' => Form::INPUT_TEXT,
+	    				'options'=>
+	    					[
+	    					'disabled' => $lockProductCode,
+	    					],
+		    			],			 
+		    		'Name' =>
+		    			[
+	    				'type' => Form::INPUT_TEXT,
+	    				'options'=>
+	    					[
+	    					'disabled' => $readOnly,
+	    					],
+							
+		    			],	
+		    		'Product_Category' =>
+		    			[
+	    				'type' => Form::INPUT_WIDGET,
+		    			'widgetClass' => '\kartik\widgets\Select2',
+	    				'options'=>
+	    					[
+	    					'data' => Lookup::items("PRODUCT_CATEGORY"),
+	    					'disabled' => $readOnly,
+	    					],
+							
+		    			],	
+		      	]
+		    ]);
+	?>
 
-    <?= $form->field($model, 'Name')->textInput(['maxlength' => true]) ?>
+<div style='width: 400px'>
+<?php
+	
+  echo Form::widget([
+		    	'model'=>$model,
+		    	'form'=>$form,
+		    	'columns'=>2,
+				'attributes'=>
+					[
+					'Mix_Type' => 
+						[
+						'type' => FORM::INPUT_WIDGET,
+						'widgetClass' => '\kartik\widgets\Select2',
+	    				'options'=>
+	    					[
+	    					'data' => Lookup::items("PRODUCT_MIXTYPE"),
+	    					'disabled' => $readOnly,
+	    					],
+	    				]
+					]
+				]);
 
-    <?= $form->field($model, 'Product_ID')->textInput() ?>
+?>
 
-    <?= $form->field($model, 'Description')->textInput(['maxlength' => true]) ?>
+</div>
 
-    <?= $form->field($model, 'Status')->textInput() ?>
+<div style='width: 100%; <? if($model->Mix_Type != Product::MIXTYPE_BASE){ echo " display: none; ";} ?>' id='product_price_list' >
+	
+	<?= $this->render("/products-pricing/_pricingSingle", [
+					'product' => $model,
+					'readOnly' => $readOnly,
+					]); ?>
+	
+	
+</div>
 
-    <?= $form->field($model, 'cp')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Decimals_Supported')->textInput() ?>
+<div style='width: 100%; <? if($model->Mix_Type != Product::MIXTYPE_COMPOSITE){ echo " display: none; ";} ?>' id='ingredient_list' >
+	
+	
+	<?= $model->Mix_Type ?>
+	Add in products in the description here.
+	
+</div>
 
-    <?= $form->field($model, 'Default_Unit')->textInput() ?>
 
-    <?= $form->field($model, 'Feed_notes')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'List_Price_pT_Base')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'me')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Mix_Margin')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Mix_Margin_Base')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Mix_Type')->textInput() ?>
-
-    <?= $form->field($model, 'ndf')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'Product_Category')->textInput() ?>
-
-    <?= $form->field($model, 'Retail_Price_t')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+
+<div>
+	<?php		
+		Modal::begin([
+		    'id' => 'activity-modal',
+		    'header' => '<h4 class="modal-title">Add Price</h4>',
+		    'size' => 'modal-lg',
+		    'options' =>
+		    	[
+				'tabindex' => false,
+				]
+
+		]);		?>
+
+
+		<div id="modal_content">dd</div>
+
+	<?php Modal::end(); ?>
+	
+</div>
+

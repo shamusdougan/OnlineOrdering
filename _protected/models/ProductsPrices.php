@@ -47,4 +47,11 @@ class ProductsPrices extends \yii\db\ActiveRecord
             'price_pt' => 'Price Pt',
         ];
     }
+    
+    
+    
+     public function getProduct()
+    {
+		 return $this->hasOne(Product::className(), ['id' => 'product_id' ]);
+	}
 }

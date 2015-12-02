@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Product;
 use app\models\ProductSearch;
+use app\models\ProductsPrices;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -104,10 +105,30 @@ class ProductController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+           
+           
+           $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
+        	} 
+        else {
+        	
+        	
+        	
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/index', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/product/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product and Exit?'];
+		
+        	
+        	
             return $this->render('update', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }
@@ -140,4 +161,68 @@ class ProductController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    public function actionAjaxAddPrice($product_id)
+    {
+		$model = new ProductsPrices();
+		
+		
+		if ($model->load(Yii::$app->request->post()) && $model->save()) 
+			{
+			return true;
+
+
+			}
+		else{
+			
+		
+		 
+		 	$model->product_id = $product_id;
+		 
+			return $this->renderAjax('/products-pricing/_add', [
+	                'model' => $model,
+	                
+	            ]);
+		}
+	}
+    
+    
+    
+	public function actionAjaxUpdatePrice($id)
+    {
+		$model = ProductsPrices::findOne($id);
+		
+		
+		if ($model->load(Yii::$app->request->post()) && $model->save()) 
+			{
+			return true;
+
+
+			}
+		else{
+			
+		
+		 
+		 
+		 
+			return $this->renderAjax('/products-pricing/_add', [
+	                'model' => $model,
+	                
+	            ]);
+		}
+	}
+    
+    
+    
+    
+    
+	public function actionAjaxDeletePrice($id)
+    {
+		$model = ProductsPrices::findOne($id);
+		$model->delete();
+		
+		
+	}
+    
 }

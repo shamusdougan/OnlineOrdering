@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2015 at 04:17 PM
+-- Generation Time: Dec 02, 2015 at 04:10 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -2544,8 +2544,8 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (48, 'Additive', 4, 'PRODUCT_CATEGORY', 4),
 (49, 'Active', 1, 'PRODUCT_STATUS', 1),
 (50, 'Inactive', 2, 'PRODUCT_STATUS', 2),
-(51, 'Base', 1, 'PRODUCT_MIXTYPE', 1),
-(52, 'Combination', 2, 'PRODUCT_MIXTYPE', 2);
+(51, 'Base Product', 1, 'PRODUCT_MIXTYPE', 1),
+(52, 'Composite', 2, 'PRODUCT_MIXTYPE', 2);
 
 -- --------------------------------------------------------
 
@@ -2789,7 +2789,16 @@ CREATE TABLE IF NOT EXISTS `products_prices` (
   `date_valid_from` date NOT NULL,
   `price_pt` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `products_prices`
+--
+
+INSERT INTO `products_prices` (`id`, `product_id`, `date_valid_from`, `price_pt`) VALUES
+(3, 15, '2015-11-10', 33),
+(4, 15, '2015-11-03', 0),
+(5, 15, '2015-11-19', 11);
 
 -- --------------------------------------------------------
 

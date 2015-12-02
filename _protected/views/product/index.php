@@ -29,7 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
          
 
  			'Product_ID',
-            'Name',
+ 			[
+ 			'attribute' => 'Name',
+ 			'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return html::a($data->Name, "/product/update?id=".$data->id);
+				},
+ 			
+ 			],
             [
             'attribute' => 'Status',
             'value' => function ($data)
@@ -57,7 +65,12 @@ $this->params['breadcrumbs'][] = $this->title;
 					},
 				'filter' => Lookup::items("ORDER_CATEGORY"),
 			],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+            'class' => 'kartik\grid\ActionColumn',
+           	'template' => '{update} {delete}',
+		
+            
+            ],
         ],
     ]); ?>
 

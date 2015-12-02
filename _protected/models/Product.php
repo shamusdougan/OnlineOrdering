@@ -37,7 +37,7 @@ class Product extends \yii\db\ActiveRecord
 	const ADDITIVE = 4;
 	
 	const MIXTYPE_BASE = 1;
-	const MIXTYPE_COMBINATION = 2;
+	const MIXTYPE_COMPOSITE = 2;
 	
 	
     /**
@@ -88,6 +88,15 @@ class Product extends \yii\db\ActiveRecord
     }
     
     
+    	
+	public function getPricings()
+	{
+		return $this->hasMany(ProductsPrices::className(), ['product_id' => 'id' ]);
+	}
+
+    
+    
+    
     public function getProductTypeString()
     {
 		return Lookup::item($this->Product_Category, 'PRODUCT_CATEGORY');
@@ -98,8 +107,6 @@ class Product extends \yii\db\ActiveRecord
 	{
 		return Product::find()->where(['Status' => Product::ACTIVE]);
 	}
-	
-	
-	
+
 	
 }
