@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2015 at 04:10 PM
+-- Generation Time: Dec 03, 2015 at 08:18 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -2780,6 +2780,33 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `products_ingredients`
+--
+
+CREATE TABLE IF NOT EXISTS `products_ingredients` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `created_on` date NOT NULL,
+  `product_id` int(5) NOT NULL,
+  `ingredient_percent` decimal(10,3) NOT NULL,
+  `modified_by` int(5) DEFAULT NULL,
+  `modified_on` date DEFAULT NULL,
+  `product_ingredient_id` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `products_ingredients`
+--
+
+INSERT INTO `products_ingredients` (`id`, `created_on`, `product_id`, `ingredient_percent`, `modified_by`, `modified_on`, `product_ingredient_id`) VALUES
+(1, '2015-12-03', 2, '22.000', NULL, NULL, 16),
+(7, '2015-12-03', 2, '0.003', NULL, NULL, 19),
+(8, '2015-12-03', 2, '0.006', NULL, NULL, 47),
+(9, '2015-12-03', 2, '77.991', NULL, NULL, 15);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products_prices`
 --
 
@@ -2789,7 +2816,7 @@ CREATE TABLE IF NOT EXISTS `products_prices` (
   `date_valid_from` date NOT NULL,
   `price_pt` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `products_prices`
