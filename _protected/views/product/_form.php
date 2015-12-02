@@ -96,7 +96,7 @@ $this->registerJs(
 	    				'options'=>
 	    					[
 	    					'data' => Lookup::items("PRODUCT_MIXTYPE"),
-	    					'disabled' => $readOnly,
+	    					'disabled' => isset($model->id),
 	    					],
 	    				]
 					]
@@ -120,8 +120,10 @@ $this->registerJs(
 <div style='width: 100%; <? if($model->Mix_Type != Product::MIXTYPE_COMPOSITE){ echo " display: none; ";} ?>' id='ingredient_list' >
 	
 	
-	<?= $model->Mix_Type ?>
-	Add in products in the description here.
+	<?= $this->render("/products-ingredients/_productIngredients", [
+					'product' => $model,
+					'readOnly' => $readOnly,
+					]); ?>
 	
 </div>
 

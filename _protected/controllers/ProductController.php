@@ -6,9 +6,11 @@ use Yii;
 use app\models\Product;
 use app\models\ProductSearch;
 use app\models\ProductsPrices;
+use app\models\ProductsIngredients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -124,7 +126,7 @@ class ProductController extends Controller
 			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/product/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product and Exit?'];
 		
-        	
+      
         	
             return $this->render('update', [
                 'model' => $model,
@@ -174,10 +176,7 @@ class ProductController extends Controller
 
 
 			}
-		else{
-			
-		
-		 
+		else{	 
 		 	$model->product_id = $product_id;
 		 
 			return $this->renderAjax('/products-pricing/_add', [
@@ -200,29 +199,96 @@ class ProductController extends Controller
 
 
 			}
-		else{
-			
-		
-		 
-		 
-		 
+		else{	 
 			return $this->renderAjax('/products-pricing/_add', [
 	                'model' => $model,
 	                
 	            ]);
 		}
 	}
-    
-    
-    
-    
-    
+  
 	public function actionAjaxDeletePrice($id)
     {
 		$model = ProductsPrices::findOne($id);
 		$model->delete();
-		
-		
 	}
-    
+
+
+
+
+
+
+
+	public function actionAjaxAddIngredient($product_id, $ingredient_sum)
+	{
+		$model = new ProductsIngredients();
+		
+		
+		if ($model->load(Yii::$app->request->post()) && $model->save()) 
+			{
+			return true;
+
+
+			}
+		else{	 
+		 	$model->product_id = $product_id;
+		 	$model->created_on = date("Y-m-d");
+		 	$max_percent = (100 - $ingredient_sum);
+		 	$model->ingredient_percent = $max_percent;
+		 
+		 	$baseProducts = Product::find()
+	        				->where(['status' => Product::ACTIVE])
+	        				->where(['Mix_Type' => Product::MIXTYPE_BASE])
+	        				->select(['id', 'Name', 'Product_Category'])
+	        				->all();
+		 	$productList = ArrayHelper::map($baseProducts, 'id', 'Name');
+
+	
+			return $this->renderAjax('/products-ingredients/_add', [
+	                'model' => $model,
+	                'productList' => $productList,
+	                'max_percent' => $max_percent,
+	            ]); 
+		}
+	}
+
+	public function actionAjaxUpdateIngredient($id, $ingredient_sum)
+	{
+		$model = ProductsIngredients::findOne($id);
+		
+		
+		if ($model->load(Yii::$app->request->post()) && $model->save()) 
+			{
+			return true;
+
+
+			}
+		else{	 
+		
+			$max_percent = ((100 - $ingredient_sum) + $model->ingredient_percent);
+			$baseProducts = Product::find()
+	        				->where(['status' => Product::ACTIVE])
+	        				->where(['Mix_Type' => Product::MIXTYPE_BASE])
+	        				->select(['id', 'Name', 'Product_Category'])
+	        				->all();
+		 	$productList = ArrayHelper::map($baseProducts, 'id', 'Name');
+		
+		
+			return $this->renderAjax('/products-ingredients/_add', [
+	                'model' => $model,
+	                'productList' => $productList,
+	                'max_percent' => $max_percent,
+	            ]);
+		}
+	}
+
+
+
+	public function actionAjaxDeleteIngredient($id)
+	{
+		$model = ProductsIngredients::findOne($id);
+		$model->delete();
+	}
+
+
 }

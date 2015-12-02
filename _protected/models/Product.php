@@ -94,7 +94,11 @@ class Product extends \yii\db\ActiveRecord
 		return $this->hasMany(ProductsPrices::className(), ['product_id' => 'id' ]);
 	}
 
-    
+    public function getIngredients()
+	{
+		return $this->hasMany(ProductsIngredients::className(), ['product_id' => 'id' ]);
+	}
+
     
     
     public function getProductTypeString()
@@ -108,5 +112,7 @@ class Product extends \yii\db\ActiveRecord
 		return Product::find()->where(['Status' => Product::ACTIVE]);
 	}
 
+
+	
 	
 }
