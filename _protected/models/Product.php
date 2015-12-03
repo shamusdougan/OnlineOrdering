@@ -58,7 +58,19 @@ class Product extends \yii\db\ActiveRecord
             [['Product_ID', 'Status', 'Decimals_Supported', 'Default_Unit', 'Mix_Type', 'Product_Category'], 'integer'],
             [['cp', 'me', 'Mix_Margin', 'Mix_Margin_Base', 'ndf', 'price_pT'], 'number'],
             [['Name'], 'string', 'max' => 100],
-            [['Description', 'Feed_notes'], 'string', 'max' => 200]
+            [['Description', 'Feed_notes'], 'string', 'max' => 200],
+            [['Product_ID'], 'unique'],
+            [['Mix_Percentage_Total'], 'number', 'min' => 100, 'max' => 100, 'when' => function($model)
+            	{
+				return $model->Mix_Type == Product::MIXTYPE_COMPOSITE;
+				},
+				'whenClient' => "function (attribute, value) {
+					return $('#Mix_Percentage_Total').val() == ".Product::MIXTYPE_COMPOSITE.";
+					}",
+				'message' => 'Ingredients Must Equal 100%'
+            
+            
+            ]
         ];
     }
 
@@ -112,7 +124,50 @@ class Product extends \yii\db\ActiveRecord
 		return Product::find()->where(['Status' => Product::ACTIVE]);
 	}
 
-
+	public function getCurrentPrice($priceDate = null)
+	{
+		if($priceDate == null)
+			{
+			$priceDate = time();
+			}
+		
+		
+		//If its a base proudct type just grab the relevant price data from the pricing table
+		if($this->Mix_Type == Product::MIXTYPE_BASE)
+		{
+			$result = ProductsPrices::find()
+						->where(['product_id' => $this->id])
+						->andWhere('`date_valid_from` <= :date_val', [':date_val' => date("Y-m-d", $priceDate)])
+						->orderBy(['date_valid_from' => SORT_DESC])
+						->one();
+						
+			//echo $result->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql."<br>";
+			
+		
+			
+			if($result){
+				return $result->price_pt;
+				}
+			return "No Price Set";
+		}
+		else if($this->Mix_Type == Product::MIXTYPE_COMPOSITE)
+			{
+				
+			$sum = 0;
+			foreach($this->ingredients as $productIngredient)
+				{
+				$percent = $productIngredient->ingredient_percent;
+				$price = $productIngredient->product->getCurrentPrice($priceDate);
+				$sum += ($price * ($percent/100));
+				}
+				
+			return $sum;
+				
+			}
+		
+		
+		
+	}
 	
 	
 }

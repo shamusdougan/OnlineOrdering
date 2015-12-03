@@ -17,7 +17,13 @@ $this->registerJs(
     "$(document).on('click', '#add_price_button', function() 
     	{
     	
-    	
+    	var allowAdd = ".(isset($model->Id) ? 1 : 0).";
+    	if(!allowAdd)
+    		{
+			alert('Please save the Product to the database first');
+			return;
+			}
+			
 		var product_id =  ($(this).attr('product_id'));
 		
 		$.ajax
@@ -164,7 +170,7 @@ $gridColumns = 	[
 
 
 $dataProvider = new yii\data\ActiveDataProvider(['query' => $product->getPricings()]);
-$dataProvider->setSort(['defaultOrder' => ['date_valid_from'=>SORT_ASC]]);
+$dataProvider->setSort(['defaultOrder' => ['date_valid_from'=>SORT_DESC]]);
 echo GridView::widget(
 				[
 				'id' => 'pricings',

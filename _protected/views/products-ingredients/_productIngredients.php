@@ -38,8 +38,8 @@ function getIngredientSum()
            	sum += parseFloat($(this).text());
        		}
 		});
-	$('#ingredient_sum').val(sum);
-	$('tfoot td:eq(1)').text(sum);
+	$('#".Html::getInputId($product, 'Mix_Percentage_Total')."').val(sum);
+	
 	
 	
 	return sum;
@@ -53,9 +53,16 @@ $this->registerJs(
     "$(document).on('click', '#add_ingredient_button', function() 
     	{
     	
+    	var allowAdd = ".(isset($product->id)  ? 1 : 0).";
+    	if(!allowAdd)
+    		{
+			alert('Please save the Product to the database first');
+			return;
+			}
+    	
     	
 		var product_id =  ($(this).attr('product_id'));
-		var ingredient_sum = parseFloat($('#ingredient_sum').val());
+		var ingredient_sum = parseFloat($('#".Html::getInputId($product, 'Mix_Percentage_Total')."').val());
 		
 		$.ajax
   		({
@@ -161,6 +168,14 @@ $gridColumns = 	[
 			    	'attribute' => 'ingredient.Name',
 			    	'pageSummary'=>'Total',
 			    	],
+			    	[
+			    	'attribute' => 'ingredient.price_pT',
+			    	'label' => 'Price per Tonne',
+			    	'value' => function($data){
+						return $data->ingredient->getCurrentPrice();
+						},
+			    	'hAlign'=>'right',
+			    	],
 			    
 			    	[
 					'attribute' => 'ingredient_percent',
@@ -181,6 +196,21 @@ $gridColumns = 	[
 								}
         					
     						},*/
+					],
+					[
+					    'class'=>'kartik\grid\FormulaColumn', 
+					    'header'=>'Weighted Cost', 
+					    'vAlign'=>'right',
+					    'value'=>function ($model, $key, $index, $widget) { 
+					        $p = compact('model', 'key', 'index');
+					        return $widget->col(1, $p) * ( $widget->col(2, $p) / 100);
+					    },
+					    'headerOptions'=>['class'=>'kartik-sheet-style'],
+					    'hAlign'=>'right', 
+					    'format'=>['decimal', 2],
+					    'mergeHeader'=>true,
+					    'pageSummary'=>true,
+					    'footer'=>true
 					],
 					[
 			    	'class' => '\kartik\grid\ActionColumn',
@@ -221,7 +251,7 @@ $dataProvider->setSort(['defaultOrder' => ['ingredient_percent'=>SORT_DESC]]);
 
 
 
-echo "<input type='hidden' id='ingredient_sum'>";
+
 echo GridView::widget(
 				[
 				'id' => 'ingredients',

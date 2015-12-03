@@ -87,11 +87,32 @@ class ProductController extends Controller
     {
         $model = new Product();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+     
+     
+     
+            $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+	    			{
+					return $this->redirect(['update', 'id' => $model->id]);
+					}
+				else{
+					return $this->redirect(['index']);
+					}
+        	} 
+        else {
+        
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/index', 'confirm' => 'Cancel Changes?'];
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/product/create?&exit=false', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product?'];
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product and Exit?'];
+		
+			$model->Mix_Type = Product::MIXTYPE_BASE;
+        
             return $this->render('create', [
                 'model' => $model,
+                'lockProductCode' => false,
+                'actionItems' => $actionItems,
             ]);
         }
     }

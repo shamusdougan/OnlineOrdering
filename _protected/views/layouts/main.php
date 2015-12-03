@@ -68,7 +68,6 @@ if(User::hasRole('Admin'))
 		
 		
 		['label' => 'Lookups', 'url' => Url::toRoute('/lookup'), 'active'=>sideNavActive::widget(['controller' => "lookup", ])], 
-		['label' => 'Products', 'url' => Url::toRoute('/product'), 'active'=>sideNavActive::widget(['controller' => "product", ])],
 		['label' => 'Import Data (remove Later)', 'url' => Url::toRoute('/import-functions'), 'active'=>sideNavActive::widget(['controller' => "import-functions", ])],
 		['label' => 'gii (remove later)', 'url' => Url::toRoute('/gii')],
 		['label' => 'User Permissions', 'url' => Url::toRoute('/user-management/permission'), 'active'=> sideNavActive::widget(['controller' => "permission"])], 

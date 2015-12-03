@@ -40,8 +40,11 @@ $this->registerJs(
 
    <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'product-form']); ?>
  
- 
+ <?= $form->errorSummary($model); ?>  
  	<?
+ 	
+
+ 	echo $form->field($model, 'Mix_Percentage_Total', ['template' => '{input}'])->hiddenInput()->label(false); 
  //Customer Select options
 		    echo Form::widget([
 		    	'model'=>$model,
@@ -80,13 +83,13 @@ $this->registerJs(
 		    ]);
 	?>
 
-<div style='width: 400px'>
+<div style='width: 600px'>
 <?php
 	
   echo Form::widget([
 		    	'model'=>$model,
 		    	'form'=>$form,
-		    	'columns'=>2,
+		    	'columns'=>3,
 				'attributes'=>
 					[
 					'Mix_Type' => 
@@ -98,6 +101,23 @@ $this->registerJs(
 	    					'data' => Lookup::items("PRODUCT_MIXTYPE"),
 	    					'disabled' => isset($model->id),
 	    					],
+	    				],
+	    			'Status' =>
+	    				[
+	    				'type' => FORM::INPUT_DROPDOWN_LIST,
+	    				'items' => Lookup::items("PRODUCT_STATUS"),
+	    				
+	    				],
+	    			'price_pT' =>
+	    				[
+	    				'type' => FORM::INPUT_TEXT,
+	    				'value' => function ($data)
+	    					{
+								return 33;
+							},
+						'hAlign'=>'right',
+	    				
+	    				
 	    				]
 					]
 				]);
