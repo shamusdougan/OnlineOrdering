@@ -35,7 +35,6 @@ use yii\helpers\Html;
 									[
 									'autoclose' => true,
 									'todayHighlight' => true,
-									'startDate' => date("d M Y"),
 									]
 								]
 							],

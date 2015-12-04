@@ -12,12 +12,13 @@ $this->registerJs(
    );	
 
 
+
 //Action on adding an ingredient
 $this->registerJs(
     "$(document).on('click', '#add_price_button', function() 
     	{
     	
-    	var allowAdd = ".(isset($model->Id) ? 1 : 0).";
+    	var allowAdd = ".($product->id != null ? 'true' : '\'\'').";
     	if(!allowAdd)
     		{
 			alert('Please save the Product to the database first');

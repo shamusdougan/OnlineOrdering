@@ -147,7 +147,8 @@ class ProductController extends Controller
 			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/product/update?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product and Exit?'];
 		
-      
+      		$model->getCurrentPrice();
+      		
         	
             return $this->render('update', [
                 'model' => $model,
@@ -311,5 +312,11 @@ class ProductController extends Controller
 		$model->delete();
 	}
 
+	public function actionAjaxGetPrice($product_id)
+	{
+		$product = Product::FindOne($product_id);
+		$product->getCurrentPrice();
+		return $product->price_pT;
+	}
 
 }

@@ -15,6 +15,7 @@ $this->registerJs(
 $this->registerJs("
 $(document).on('pjax:end', function() {
    getIngredientSum();
+   updatePricePerTonne();
     });
 
 $( document ).ready(function() {
@@ -45,6 +46,24 @@ function getIngredientSum()
 	return sum;
 }
 
+
+function updatePricePerTonne()
+{
+	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("product/ajax-get-price")."',
+		data: {product_id: ".$product->id."},
+		success: function (data, textStatus, jqXHR) 
+			{
+			$('#".Html::getInputId($product, 'price_pT')."').val(data);
+			},
+        error: function (jqXHR, textStatus, errorThrown) 
+        	{
+            console.log('An error occured!');
+            alert('Error in ajax request' );
+        	}
+		});
+}
 ");
 
 
@@ -172,7 +191,8 @@ $gridColumns = 	[
 			    	'attribute' => 'ingredient.price_pT',
 			    	'label' => 'Price per Tonne',
 			    	'value' => function($data){
-						return $data->ingredient->getCurrentPrice();
+						$data->ingredient->getCurrentPrice();
+						return $data->ingredient->price_pT;
 						},
 			    	'hAlign'=>'right',
 			    	],

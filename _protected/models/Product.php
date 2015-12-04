@@ -124,7 +124,7 @@ class Product extends \yii\db\ActiveRecord
 		return Product::find()->where(['Status' => Product::ACTIVE]);
 	}
 
-	public function getCurrentPrice($priceDate = null)
+	public function getCurrentPrice($priceDate = null, $recurseCheck = false)
 	{
 		if($priceDate == null)
 			{
@@ -140,30 +140,32 @@ class Product extends \yii\db\ActiveRecord
 						->andWhere('`date_valid_from` <= :date_val', [':date_val' => date("Y-m-d", $priceDate)])
 						->orderBy(['date_valid_from' => SORT_DESC])
 						->one();
-						
-			//echo $result->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql."<br>";
-			
-		
-			
+								
 			if($result){
-				return $result->price_pt;
+				$this->price_pT = $result->price_pt;
 				}
-			return "No Price Set";
+			else{
+				$this->price_pT = 0;	
+			}
 		}
-		else if($this->Mix_Type == Product::MIXTYPE_COMPOSITE)
+		elseif($recurseCheck == false && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
 			{
 				
 			$sum = 0;
 			foreach($this->ingredients as $productIngredient)
 				{
 				$percent = $productIngredient->ingredient_percent;
-				$price = $productIngredient->product->getCurrentPrice($priceDate);
+				$productIngredient->ingredient->getCurrentPrice($priceDate, true);
+				$price = $productIngredient->ingredient->price_pT;
 				$sum += ($price * ($percent/100));
 				}
 				
-			return $sum;
+			$this->price_pT = $sum;
 				
 			}
+		else{
+			die("Recursive situation found in calculating proudct pricing");
+		}
 		
 		
 		

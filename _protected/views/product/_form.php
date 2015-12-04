@@ -111,13 +111,7 @@ $this->registerJs(
 	    			'price_pT' =>
 	    				[
 	    				'type' => FORM::INPUT_TEXT,
-	    				'value' => function ($data)
-	    					{
-								return 33;
-							},
 						'hAlign'=>'right',
-	    				
-	    				
 	    				]
 					]
 				]);

@@ -52,7 +52,15 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'Decimals_Supported',
             // 'Default_Unit',
             // 'Feed_notes',
-            'price_pT',
+            [
+            'attribute' => 'price_pT',
+            'value' => function ($data)
+            	{
+				$data->getCurrentPrice();
+				return number_format($data->price_pT, 2);
+				},
+            'hAlign' => 'right',
+            ],
             // 'me',
             // 'Mix_Margin',
             // 'Mix_Margin_Base',
