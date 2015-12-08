@@ -1,6 +1,7 @@
 <?php
 use kartik\grid\GridView;
 use yii\helpers\Html;
+use webvimark\modules\UserManagement\models\User;
 
 
 //This handles the clicking of the refresh button on the grid
@@ -102,6 +103,28 @@ $this->registerJs(
 		
 	});"
    );
+
+//Action on adding an ingredient
+$this->registerJs(
+    "$(document).on('click', '#import_ingredient_button', function() 
+    	{
+    	
+    	var allowAdd = ".(isset($product->id)  ? 1 : 0).";
+    	if(!allowAdd)
+    		{
+			alert('Please save the Product to the database first');
+			return;
+			}
+    	
+    	
+		var product_id =  ($(this).attr('product_id'));
+		
+		alert(product_id);
+		
+	});"
+   );
+
+
 
 //action on submiting the ingredient add form
 $this->registerJs("
@@ -283,6 +306,7 @@ echo GridView::widget(
 				'toolbar'=> 
 					[
 						['content'=>
+							(User::hasRole('Admin') ? Html::button('<i class="glyphicon glyphicon-download-alt"></i>', ['type'=>'button', 'title'=>'Import Ingredients', 'id' => 'import_ingredient_button', 'class'=>'btn btn-success', 'product_id' => $product->id]) : ' '). ' '.
 							($readOnly ? ' ' : Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success', 'product_id' => $product->id])). ' '.
 							Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh', 'id' => 'refresh_ingredient_grid', 'class'=>'btn btn-success', ])
 						],
