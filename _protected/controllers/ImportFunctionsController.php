@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\ImportFunctions;
 use app\models\ImportFunctionSearch;
+use app\models\Product;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -172,6 +173,85 @@ class ImportFunctionsController extends Controller
 	}
     
     
+   public function actionImportIngredient($product_id)
+   	{
+	$importIngredientId = 7;
+	$model = $this->findModel($importIngredientId);
+	$product = Product::findOne($product_id);
+	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update?id='.$product_id];
 	
+	
+	if ($model->load(Yii::$app->request->post()) )
+			{
+				
+				$model->file = UploadedFile::getInstance($model, 'file');
+				
+				if ( $model->file )
+				{
+				$time = date("Ymd Hi");
+					$model->file->saveAs(Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension);
+                    $model->file = Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension;
+                    $handle = fopen($model->file, "r");
+					
+					//Initialise the counters for the import
+					$model->initImport();
+					
+					//clear the existing product ingedients
+					
+					$product->clearIngredients();
+
+
+					$sum = 0;
+					//iterate through each line of the csv file with and apply the import function to it.
+					//The import function will save the data.
+                    while (($fileLine = fgetcsv($handle, ",")) !== false) 
+						{
+						$functionName = $model->function;
+						$sum += $model->$functionName($fileLine, $product_id);
+						}
+					$model->closeImport();	
+					
+					if(bccomp($sum, 100) != 0)
+						{
+						$model->recordsFailed++;
+						$model->progress .= "Total Ingredients need to sum to 100, currently ingredient percentage is: ".bccomp($sum, 100)."\n";
+						}
+				}
+				
+			if($model->recordsFailed > 0)
+				{
+				return $this->render('import-ingredient', 
+					[
+					'model' => $model,
+					'product' => $product,
+					'actionItems' => $actionItems,
+					]); 		
+				}	
+			else{
+				return $this->redirect(['/product/update', 'id' => $product_id]); 		
+				}
+			
+			}
+	
+	
+	
+	return $this->render('import-ingredient', 
+		[
+		'model' => $model, 
+		'product' => $product,
+		'actionItems' => $actionItems,
+		
+		]); 
+	}
+    
+    
+    
+    public function actionCreateTemplateCsv()
+    {
+		$content = "Ingredient Code,Ingredient,Ingedient %";
+		
+		return $this->renderPartial("csvTemplate", ['content' => $content]);
+	}
+    
     
 }

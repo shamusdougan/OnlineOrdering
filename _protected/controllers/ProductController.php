@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -108,6 +109,7 @@ class ProductController extends Controller
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'product-form', 'confirm' => 'Save Current Product and Exit?'];
 		
 			$model->Mix_Type = Product::MIXTYPE_BASE;
+			$model->price_pT = 0;
         
             return $this->render('create', [
                 'model' => $model,
@@ -318,5 +320,30 @@ class ProductController extends Controller
 		$product->getCurrentPrice();
 		return $product->price_pT;
 	}
-
+	
+	
+	
+	public function actionAjaxImportIngredients($product_id)
+	{
+		
+		$product = Product::findOne($product_id);
+		$file = UploadedFile::getInstanceByName('importFile');		
+	
+		return $this->renderAjax('/products-ingredients/_import',
+				[
+				'file' => $file,
+				]);
+	}
+	
+	
+	
+	public function actionUpdatePricing()
+	{
+		
+		
+	$productList = Product::getBaseProducts();	
+	return $this->render('updatePricing');
+		
+	}
+	
 }

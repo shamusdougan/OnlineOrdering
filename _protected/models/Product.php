@@ -54,15 +54,15 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Name', 'Product_ID', 'Status', 'Default_Unit', 'price_pT'], 'required'],
-            [['Product_ID', 'Status', 'Decimals_Supported', 'Default_Unit', 'Mix_Type', 'Product_Category'], 'integer'],
+            [['Name', 'Product_ID', 'Status', 'price_pT'], 'required'],
+            [['Product_ID', 'Status', 'Decimals_Supported', 'Mix_Type', 'Product_Category'], 'integer'],
             [['cp', 'me', 'Mix_Margin', 'Mix_Margin_Base', 'ndf', 'price_pT'], 'number'],
             [['Name'], 'string', 'max' => 100],
             [['Description', 'Feed_notes'], 'string', 'max' => 200],
             [['Product_ID'], 'unique'],
             [['Mix_Percentage_Total'], 'number', 'min' => 100, 'max' => 100, 'when' => function($model)
             	{
-				return $model->Mix_Type == Product::MIXTYPE_COMPOSITE;
+				return ($model->Mix_Type == Product::MIXTYPE_COMPOSITE) && ($model->id != null);
 				},
 				'whenClient' => "function (attribute, value) {
 					return $('#Mix_Percentage_Total').val() == ".Product::MIXTYPE_COMPOSITE.";
@@ -171,5 +171,13 @@ class Product extends \yii\db\ActiveRecord
 		
 	}
 	
+	
+	public function clearIngredients()
+	{
+		foreach($this->ingredients as $product_ingredient)
+			{
+			$product_ingredient->delete();
+			}
+	}
 	
 }

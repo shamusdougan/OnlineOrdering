@@ -448,7 +448,64 @@ class ImportFunctions extends \yii\db\ActiveRecord
    	
    } 
     
-    
+   
+   
+   function importIngredients($importArray, $product_id)
+   {
+   		$mapping = [
+   			'product_ingredient_id' => 0,
+   			'ingredient_percent' => 2,
+   			];
+   			
+   		$product_ingredient = new ProductsIngredients();
+   		$product_ingredient->product_id = $product_id;
+   		$product_ingredient->created_on = date("Y-m-d");
+   		$product_ingredient->ingredient_percent = $importArray[$mapping['ingredient_percent']];
+   		
+   		
+   		$productObj = Product::find()
+   						->where(['Product_ID' => $importArray[$mapping['product_ingredient_id']]])
+   						->One();
+   		
+   	
+   		if(strcmp($importArray[0], "Ingredient Code") === 0){
+   			$this->progress .= "Header Field found skipping line\n";
+   			return;
+   			}
+   		elseif(!$productObj)
+   			{
+			$this->progress .= "Unable to find Product with id: ".$importArray[$mapping['product_ingredient_id']]." Please check the id and try again\n";
+			$this->recordsFailed++;	
+			return;
+			}
+		elseif($productObj->Mix_Type != Product::MIXTYPE_BASE)
+			{
+			$this->progress .= "You cannot add a compound object as an ingredient product id: ".$importArray[$mapping['product_ingredient_id']]."\n";
+			$this->recordsFailed++;	
+			return;
+			}
+			
+		$product_ingredient->product_ingredient_id = $productObj->id;
+			
+   		if(!$product_ingredient->save())
+			{
+			$this->progress .= "Failed to update Product Ingredient: ".$product_ingredient->id." for product id: ".$product_id."\n";
+			foreach($product_ingredient->errors as $errorMessage)
+				{
+				$this->progress .= $errorMessage[0]."\n";	
+			
+				}
+			$this->recordsFailed++;	
+	
+			}
+		else{
+			$this->progress .= "Creating new Product Ingredient for product id: ".$product_id."\n";
+			$this->recordsImported++;
+			return $product_ingredient->ingredient_percent;
+			}
+			
+		return 0;
+   } 
     
     
    }

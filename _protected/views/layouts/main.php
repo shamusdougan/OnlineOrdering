@@ -38,7 +38,7 @@ if(User::hasRole('production'))
 			['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['production-submitted-list']])],
 			['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>sideNavActive::widget(['controller' => "delivery", ])],
 			['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>sideNavActive::widget(['controller' => "weighbridge-ticket", ])],
-			['label' => 'Products', 'icon' => 'tags', 'url' => Url::toRoute('/product'), 'active'=>sideNavActive::widget(['controller' => "product", ])],
+			['label' => 'Products', 'icon' => 'tags', 'url' => Url::toRoute('/product'), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['index', 'create', 'update'] ])],
 		
 		
 		]];
@@ -47,7 +47,7 @@ if(User::hasRole('accounts'))
 	{
 	$items[] = ['label' => 'Accounts', 'icon' => 'usd', 'items' => 
 		[
-			['label' => 'Price Lists', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['production-active-list', 'update-production-active']])],
+			['label' => 'Price Lists', 'icon' => 'file', 'url' => Url::toRoute('/product/update-pricing'), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['update-pricing'] ])],
 		
 		
 		

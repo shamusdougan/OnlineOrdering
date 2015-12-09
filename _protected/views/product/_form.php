@@ -45,6 +45,9 @@ $this->registerJs(
  	
 
  	echo $form->field($model, 'Mix_Percentage_Total', ['template' => '{input}'])->hiddenInput()->label(false); 
+ 	
+ 	
+ 	
  //Customer Select options
 		    echo Form::widget([
 		    	'model'=>$model,
@@ -112,6 +115,11 @@ $this->registerJs(
 	    				[
 	    				'type' => FORM::INPUT_TEXT,
 						'hAlign'=>'right',
+						'options'=>
+							[
+							'readonly' => true,
+							],
+						
 	    				]
 					]
 				]);

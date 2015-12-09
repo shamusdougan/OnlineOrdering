@@ -40,33 +40,37 @@ function getIngredientSum()
            	sum += parseFloat($(this).text());
        		}
 		});
-	$('#".Html::getInputId($product, 'Mix_Percentage_Total')."').val(sum);
+	$('#".Html::getInputId($product, 'Mix_Percentage_Total')."').val(sum.toFixed(3));
 	
 	
 	
 	return sum;
 }
 
-
-function updatePricePerTonne()
-{
-	$.ajax
-  		({
-  		url: '".yii\helpers\Url::toRoute("product/ajax-get-price")."',
-		data: {product_id: ".$product->id."},
-		success: function (data, textStatus, jqXHR) 
-			{
-			$('#".Html::getInputId($product, 'price_pT')."').val(data);
-			},
-        error: function (jqXHR, textStatus, errorThrown) 
-        	{
-            console.log('An error occured!');
-            alert('Error in ajax request' );
-        	}
-		});
-}
 ");
 
+if(isset($product->id)){
+	
+	$this->registerJs("
+	function updatePricePerTonne()
+	{
+		$.ajax
+	  		({
+	  		url: '".yii\helpers\Url::toRoute("product/ajax-get-price")."',
+			data: {product_id: ".$product->id."},
+			success: function (data, textStatus, jqXHR) 
+				{
+				$('#".Html::getInputId($product, 'price_pT')."').val(data);
+				},
+	        error: function (jqXHR, textStatus, errorThrown) 
+	        	{
+	            console.log('An error occured!');
+	            alert('Error in ajax request' );
+	        	}
+			});
+	}
+	");
+	}
 
 //Action on adding an ingredient
 $this->registerJs(
@@ -104,25 +108,7 @@ $this->registerJs(
 	});"
    );
 
-//Action on adding an ingredient
-$this->registerJs(
-    "$(document).on('click', '#import_ingredient_button', function() 
-    	{
-    	
-    	var allowAdd = ".(isset($product->id)  ? 1 : 0).";
-    	if(!allowAdd)
-    		{
-			alert('Please save the Product to the database first');
-			return;
-			}
-    	
-    	
-		var product_id =  ($(this).attr('product_id'));
-		
-		alert(product_id);
-		
-	});"
-   );
+
 
 
 
@@ -306,7 +292,7 @@ echo GridView::widget(
 				'toolbar'=> 
 					[
 						['content'=>
-							(User::hasRole('Admin') ? Html::button('<i class="glyphicon glyphicon-download-alt"></i>', ['type'=>'button', 'title'=>'Import Ingredients', 'id' => 'import_ingredient_button', 'class'=>'btn btn-success', 'product_id' => $product->id]) : ' '). ' '.
+							(User::hasRole('Admin') ? Html::a('<i class="glyphicon glyphicon-download-alt"></i>', '/import-functions/import-ingredient?product_id='.$product->id, ['type'=>'button', 'title'=>'Import Ingredients', 'class'=>'btn btn-success', 'data-pjax' => 0, 'product_id' => $product->id]) : ' '). ' '.
 							($readOnly ? ' ' : Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success', 'product_id' => $product->id])). ' '.
 							Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh', 'id' => 'refresh_ingredient_grid', 'class'=>'btn btn-success', ])
 						],
