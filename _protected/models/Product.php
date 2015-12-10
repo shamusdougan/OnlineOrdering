@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ArrayDataProvider;
+
 
 /**
  * This is the model class for table "products".
@@ -167,7 +169,7 @@ class Product extends \yii\db\ActiveRecord
 			die("Recursive situation found in calculating proudct pricing");
 		}
 		
-		
+		return $this->price_pT;
 		
 	}
 	
@@ -180,4 +182,112 @@ class Product extends \yii\db\ActiveRecord
 			}
 	}
 	
+	
+	public function getBaseProductList()
+		{
+		return Product::find()
+							->where(['Status' => Product::ACTIVE, 'Mix_Type' => Product::MIXTYPE_BASE])
+							->all();
+		}
+	
+	
+	public function getBaseProductListLookup()
+	{
+		$baseProductList = Product::getBaseProductList();
+		
+	}
+	
+	
+	public function getBaseProductsPrices()
+		{
+			
+		$baseProducts = Product::getBaseProductList();
+		
+		$PastDataMonths = 6;			
+		$prices = ProductsPrices::getPriceData(time(), $PastDataMonths);
+		
+		
+		//get the pricing data
+		$pricingMatrix = array();
+		foreach($prices as $itemPrice)
+			{
+			$phpDate = strtotime($itemPrice->date_valid_from);
+			if(array_key_exists($phpDate, $pricingMatrix))
+				{
+				$pricingMatrix[$phpDate][$itemPrice->product_id] = $itemPrice->price_pt;
+				}
+			else{
+				$pricingMatrix[$phpDate] = array();
+				$pricingMatrix[$phpDate][$itemPrice->product_id] = $itemPrice->price_pt;
+				}
+			}
+		ksort($pricingMatrix);
+		reset($pricingMatrix);
+		
+		
+		//we now need to back fill the relevant data for each of the base items
+		//If the earlest array isn't fully populated from the pricing data, then go through each unpriced item and get the price at that date.
+		$startingDate = key($pricingMatrix);
+		foreach($baseProducts as $productObj)
+			{
+			if(!array_key_exists($productObj->id, $pricingMatrix[$startingDate]))
+				{
+				$pricingMatrix[$startingDate][$productObj->id] = $productObj->getCurrentPrice($startingDate);
+				}
+			}
+		
+		
+		//go through the remaining array, if an entry isn't populated then get the previous price/date entries value
+		$previousDate = $startingDate;
+		foreach($pricingMatrix as $priceDate => $priceObjArray)
+			{
+			foreach($baseProducts as $productObj)
+				{
+				if(!array_key_exists($productObj->id, $priceObjArray))
+					{
+					$pricingMatrix[$priceDate][$productObj->id] = $pricingMatrix[$previousDate][$productObj->id];
+					}
+				}
+			$previousDate = $priceDate;
+			}
+	
+	
+		return $pricingMatrix;
+	
+		
+
+		
+		}
+		
+		
+		public function convertPricingToDataProvider($pricingMatrix)
+		{
+		
+		//tranform the pricing matrix into a yii DataProvider result to be displayed in a datagrid
+		$resultSet = [];
+		$baseProducts = Product::getBaseProductList();
+		foreach($baseProducts as $productObj)
+			{
+			$newArray = ["product_id" => $productObj->id];
+			foreach($pricingMatrix as $priceDate => $priceObjArray)
+				{
+				$newArray[$priceDate] = $priceObjArray[$productObj->id];
+				}
+				
+			$resultSet[] = $newArray;	
+			}
+			
+			
+		$dataProvider = new ArrayDataProvider([
+	        'key'=>'product_id',
+	        'allModels' => $resultSet,
+	        'sort' => [
+	            'attributes' => ['product_id'],
+	        	],
+			]); 
+			
+			
+		return $dataProvider;
+		}
+		
 }

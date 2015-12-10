@@ -54,4 +54,25 @@ class ProductsPrices extends \yii\db\ActiveRecord
     {
 		 return $this->hasOne(Product::className(), ['id' => 'product_id' ]);
 	}
+	
+	
+	
+	public function getPriceData($startingDate, $pastMonthInt = null)
+	{
+		if($pastMonthInt != null)
+			{
+			$dateFrom = mktime(0,0,0,date("m", $startingDate) - $pastMonthInt, date("d", $startingDate), date("Y", $startingDate));
+			}
+		
+		$priceData = ProductsPrices::find()
+						->where(['and', 'date_valid_from >=\''.date("Y-m-d", $dateFrom).'\'', 'date_valid_from <=\''.date("Y-m-d", $startingDate).'\''])
+						->all();
+		
+		return $priceData;			
+		
+		
+			
+		
+	}
+	
 }

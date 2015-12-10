@@ -340,9 +340,19 @@ class ProductController extends Controller
 	public function actionUpdatePricing()
 	{
 		
-		
-	$productList = Product::getBaseProducts();	
-	return $this->render('updatePricing');
+	$baseProductsLookup = Product::getBaseProductListLookup();
+	$basePricingMatrix = Product::getBaseProductsPrices();	//return the pricing matrix
+	$dataProvider = Product::convertPricingToDataProvider($basePricingMatrix);
+	
+	$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product'];
+	
+	return $this->render('updatePricing',
+							[
+							'dataProvider' => $dataProvider,
+							'actionItems' => $actionItems,
+							'baseProducts' => $baseProducts,
+							'basePricingMatrix' => $basePricingMatrix,
+							]);
 		
 	}
 	
