@@ -340,18 +340,28 @@ class ProductController extends Controller
 	public function actionUpdatePricing()
 	{
 		
-	$baseProductsLookup = Product::getBaseProductListLookup();
 	$basePricingMatrix = Product::getBaseProductsPrices();	//return the pricing matrix
-	$dataProvider = Product::convertPricingToDataProvider($basePricingMatrix);
+	
+	
+	$codefilter = Yii::$app->request->getQueryParam('filtercode', '');
+	$namefilter = Yii::$app->request->getQueryParam('filtername', '');
+	$dataProvider = Product::convertPricingToDataProvider($basePricingMatrix, $namefilter, $codefilter);
 	
 	$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product'];
+	
+	
+	
+	
+	$filterModel = ['proudct_id' => null, 'product_name' => $namefilter, 'product_code' => $codefilter];
+	
+	
 	
 	return $this->render('updatePricing',
 							[
 							'dataProvider' => $dataProvider,
 							'actionItems' => $actionItems,
-							'baseProducts' => $baseProducts,
 							'basePricingMatrix' => $basePricingMatrix,
+							'filterModel' => $filterModel,
 							]);
 		
 	}

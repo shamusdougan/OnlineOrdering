@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 
 
 /**
@@ -194,7 +195,7 @@ class Product extends \yii\db\ActiveRecord
 	public function getBaseProductListLookup()
 	{
 		$baseProductList = Product::getBaseProductList();
-		
+		return ArrayHelper::map($baseProductList, 'id', 'Name');
 	}
 	
 	
@@ -259,8 +260,11 @@ class Product extends \yii\db\ActiveRecord
 		
 		}
 		
-		
-		public function convertPricingToDataProvider($pricingMatrix)
+		/*
+		Returns the array of arrays like the following
+		array(product_id, Date1, Date2, Date3, ....)
+		*/
+		public function convertPricingToDataProvider($pricingMatrix, $productNameFilter = null, $productCodeFilter = null)
 		{
 		
 		//tranform the pricing matrix into a yii DataProvider result to be displayed in a datagrid
@@ -268,13 +272,28 @@ class Product extends \yii\db\ActiveRecord
 		$baseProducts = Product::getBaseProductList();
 		foreach($baseProducts as $productObj)
 			{
-			$newArray = ["product_id" => $productObj->id];
-			foreach($pricingMatrix as $priceDate => $priceObjArray)
+				
+			$useValue = true;
+			if($productNameFilter && stripos($productObj->Name, $productNameFilter) === false)
 				{
-				$newArray[$priceDate] = $priceObjArray[$productObj->id];
+				$useValue = false;
+				}
+			if($productCodeFilter && stripos($productObj->Product_ID, $productCodeFilter) === false)
+				{
+				$useValue = false;	
 				}
 				
-			$resultSet[] = $newArray;	
+			if($useValue)
+				{
+				$newArray = ["product_id" => $productObj->id, "product_name" => $productObj->Name, "product_code" => $productObj->Product_ID];
+				foreach($pricingMatrix as $priceDate => $priceObjArray)
+					{
+					$newArray[$priceDate] = $priceObjArray[$productObj->id];
+					}
+					
+				$resultSet[] = $newArray;		
+				}
+			
 			}
 			
 			
@@ -282,8 +301,11 @@ class Product extends \yii\db\ActiveRecord
 	        'key'=>'product_id',
 	        'allModels' => $resultSet,
 	        'sort' => [
-	            'attributes' => ['product_id'],
+	            'attributes' => ['product_code', 'product_name'],
 	        	],
+	        'pagination' => [
+        		'pageSize' => 20,
+    			],
 			]); 
 			
 			

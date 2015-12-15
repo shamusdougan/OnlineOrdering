@@ -2,26 +2,47 @@
 use yii\helpers\Html;
 use vendor\actionButtons\actionButtonsWidget;
 use kartik\grid\GridView;
+
+
+
+
+/*
+'dataProvider' => $dataProvider,
+'actionItems' => $actionItems,
+'basePricingMatrix' => $basePricingMatrix,
+
+
+
+*/
 ?>
 
 
 <?= actionButtonsWidget::widget(['items' => $actionItems]) ?> 
 <? 
 
+
+
 $gridColumns = 
 	[
 		[
-		'attribute' => 'product_id'
-		'value' => function ($data)
-			{
-			return "blah";
-			}
+		'attribute' => 'product_code',
+		'filter' => '<input class="form-control" name="filtercode" value="'. $filterModel['product_code'] .'" type="text">'
+		],
+		[
+		'attribute' => 'product_name',
+		'filter' => '<input class="form-control" name="filtername" value="'. $filterModel['product_name'] .'" type="text">'
 		],
 	];
 	
 foreach($basePricingMatrix as $dateIndex => $pricingArray )
 	{
-	$gridColumns[] = ['attribute' => $dateIndex];
+	$gridColumns[] = 
+		[
+		'attribute' => $dateIndex,
+		'header' => date("d M Y", $dateIndex),
+		'hAlign' => 'right',
+		
+		];
 		
 	}
 
@@ -29,8 +50,25 @@ foreach($basePricingMatrix as $dateIndex => $pricingArray )
 echo GridView::widget(
 	[
 	'dataProvider' => $dataProvider,
-	'filterModel' => null,
-	'export' => false,
+	'filterModel' => $filterModel,
+	'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+	'pjax'=>true, 
+	'toolbar'=> [
+	    [
+	    'content' => null,
+	    ],
+        '{export}',
+        ],
+	'autoXlFormat'=>true,
+    'export'=>[
+        'fontAwesome'=>true,
+        'showConfirmAlert'=>false,
+        'target'=>GridView::TARGET_BLANK
+    ],
+    'panel'=>[
+        'type'=>GridView::TYPE_PRIMARY,
+        'heading'=>"Product Pricing",
+    ],
 	'columns' => $gridColumns,
 
 	]
