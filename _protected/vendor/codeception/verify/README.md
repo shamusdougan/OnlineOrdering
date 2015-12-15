@@ -27,7 +27,7 @@ $rate = $user->getRate();
 verify('first user rate is 7', $rate)->equals(7);
 
 verify($rate)->greaterThan(5);
-verify($rate)->lessThen(10);
+verify($rate)->lessThan(10);
 verify($rate)->lessOrEquals(7);
 verify($rate)->lessOrEquals(8);
 verify($rate)->greaterOrEquals(7);
@@ -81,17 +81,6 @@ With Composer:
 ## Usage
 
 Use in any test `verify` function instead of `$this->assert*` methods.
-
-## Aliases
-
-Functions `v` and `e` available as short-hand aliases:
-
-``` php
-<?php
-v("hello")->equals("hello");       
-e("hello")->equals("hello");       
-?>
-```
 
 ## Extending
 

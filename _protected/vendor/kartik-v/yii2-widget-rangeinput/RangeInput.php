@@ -4,7 +4,7 @@
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014
  * @package yii2-widgets
  * @subpackage yii2-widget-rangeinput
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace kartik\range;
@@ -27,11 +27,11 @@ class RangeInput extends \kartik\base\Html5Input
     /**
      * @inherit doc
      */
-    public function init() {
+    public function run() {
         if ($this->orientation == 'vertical') {
             Html::addCssClass($this->containerOptions, 'kv-range-vertical');
             $this->html5Options['orient'] = 'vertical';
         }
-        parent::init();
+        parent::run();
     }
 }

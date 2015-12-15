@@ -176,7 +176,9 @@ class AuthHelper
 	 */
 	public static function getChildrenByType($itemName, $childType)
 	{
-		$children = (new DbManager())->getChildren($itemName);
+		$dbManager = Yii::$app->authManager instanceof DbManager ? Yii::$app->authManager : new DbManager();
+
+		$children = $dbManager->getChildren($itemName);
 
 		$result = [];
 

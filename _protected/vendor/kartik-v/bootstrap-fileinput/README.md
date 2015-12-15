@@ -12,7 +12,7 @@ An enhanced HTML 5 file input for Bootstrap 3.x with file preview for various fi
 
 This plugin was initially inspired by [this blog article](http://www.abeautifulsite.net/blog/2013/08/whipping-file-inputs-into-shape-with-bootstrap-3/) and [Jasny's File Input plugin](http://jasny.github.io/bootstrap/javascript/#fileinput). But the plugin has now matured with various additional features and enhancements to be a complete (yet simple) file management tool and solution for web developers. 
 
-> NOTE: The latest version of the plugin is v4.2.7 (dev-master). Refer the [CHANGE LOG](https://github.com/kartik-v/bootstrap-fileinput/blob/master/CHANGE.md) for details. 
+> NOTE: The latest version of the plugin is v4.2.8 (dev-master). Refer the [CHANGE LOG](https://github.com/kartik-v/bootstrap-fileinput/blob/master/CHANGE.md) for details. 
 
 ## Features  
 
@@ -187,6 +187,9 @@ _boolean_ whether to persist display of the uploaded file thumbnails in the prev
 
 ### autoReplace
 _boolean_ whether to automatically replace the files in the preview after the `maxFileCount` limit is reached and a new set of file(s) is/are selected. This will only work if a valid  `maxFileCount` is set. Defaults to `false`.
+
+### buttonLabelClass
+_string_ CSS class to be set for the button labels (i.e. browse, remove, upload, and cancel). Defaults to `hidden-xs`, whereby labels are hidden for small screen devices.
 
 ### captionClass
 _string_ any additional CSS class to append to the caption container.

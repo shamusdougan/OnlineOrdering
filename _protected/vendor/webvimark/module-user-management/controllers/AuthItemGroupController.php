@@ -22,22 +22,6 @@ class AuthItemGroupController extends AdminDefaultController
 	 */
 	public $modelSearchClass = 'webvimark\modules\UserManagement\models\rbacDB\search\AuthItemGroupSearch';
 
-
-public function beforeAction($action)
-	{
-	    if (!parent::beforeAction($action)) {
-	        return false;
-	    }
-
-
-		
-	    $this->view->params['menuItem'] = 'customer-order';
-
-	    return true; // or false to not run the action
-	}
-
-
-
 	/**
 	 * Define redirect page after update, create, delete, etc
 	 *
