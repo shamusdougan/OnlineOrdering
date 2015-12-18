@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use vendor\actionButtons\actionButtonsWidget;
 use kartik\grid\GridView;
-
+use kartik\export\ExportMenu;
 
 
 
@@ -47,30 +47,60 @@ foreach($basePricingMatrix as $dateIndex => $pricingArray )
 	}
 
 
+$exportButton = ExportMenu::widget([
+    'dataProvider' => $dataProviderFull,
+    'columns' => $gridColumns,
+    'fontAwesome' => true,
+    'dropdownOptions' => [
+        'label' => 'Export All',
+        'class' => 'btn btn-default'
+    	],
+    'exportConfig' =>
+    	[
+    	ExportMenu::FORMAT_HTML => false,
+    	ExportMenu::FORMAT_TEXT => false,
+    	ExportMenu::FORMAT_PDF => false,
+    	ExportMenu::FORMAT_EXCEL => false,
+    	
+    	]
+]) ;
+
+
 echo GridView::widget(
 	[
-	'dataProvider' => $dataProvider,
+	'dataProvider' => $dataProviderFull,
 	'filterModel' => $filterModel,
 	'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 	'pjax'=>true, 
 	'toolbar'=> [
 	    [
-	    'content' => null,
+	    'content' => $exportButton,
 	    ],
-        '{export}',
         ],
 	'autoXlFormat'=>true,
     'export'=>[
         'fontAwesome'=>true,
         'showConfirmAlert'=>false,
-        'target'=>GridView::TARGET_BLANK
+        'target'=>GridView::TARGET_BLANK,
+        
     ],
     'panel'=>[
         'type'=>GridView::TYPE_PRIMARY,
         'heading'=>"Product Pricing",
     ],
 	'columns' => $gridColumns,
-
+	
+	'floatHeader' => true,
+	'perfectScrollbar' => true,
+	'perfectScrollbarOptions' => 
+		[
+		'height' => '8',
+		],
+	'tableOptions' =>
+		[
+		'height' => 800,
+		]
+		
 	]
 );
 

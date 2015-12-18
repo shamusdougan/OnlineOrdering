@@ -346,6 +346,9 @@ class ProductController extends Controller
 	$codefilter = Yii::$app->request->getQueryParam('filtercode', '');
 	$namefilter = Yii::$app->request->getQueryParam('filtername', '');
 	$dataProvider = Product::convertPricingToDataProvider($basePricingMatrix, $namefilter, $codefilter);
+	$dataProviderFull = Product::convertPricingToDataProvider($basePricingMatrix, $namefilter, $codefilter);
+	$dataProviderFull->pagination = false;
+	
 	
 	$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product'];
 	
@@ -359,6 +362,7 @@ class ProductController extends Controller
 	return $this->render('updatePricing',
 							[
 							'dataProvider' => $dataProvider,
+							'dataProviderFull' => $dataProviderFull,
 							'actionItems' => $actionItems,
 							'basePricingMatrix' => $basePricingMatrix,
 							'filterModel' => $filterModel,
