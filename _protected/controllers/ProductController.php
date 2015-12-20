@@ -341,20 +341,15 @@ class ProductController extends Controller
 	{
 		
 	$basePricingMatrix = Product::getBaseProductsPrices();	//return the pricing matrix
-	
+	$populatedPricingMatrix = Product::autoFillPricingMatrix($basePricingMatrix);
 	
 	$codefilter = Yii::$app->request->getQueryParam('filtercode', '');
 	$namefilter = Yii::$app->request->getQueryParam('filtername', '');
-	$dataProvider = Product::convertPricingToDataProvider($basePricingMatrix, $namefilter, $codefilter);
-	$dataProviderFull = Product::convertPricingToDataProvider($basePricingMatrix, $namefilter, $codefilter);
-	$dataProviderFull->pagination = false;
+	$dataProvider = Product::convertPricingToDataProvider($populatedPricingMatrix, $namefilter, $codefilter);
+	$dataProvider->pagination = false;
 	
 	
-	$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product'];
-	
-	
-	
-	
+	$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product/add-bulk-pricing'];
 	$filterModel = ['proudct_id' => null, 'product_name' => $namefilter, 'product_code' => $codefilter];
 	
 	
@@ -362,12 +357,56 @@ class ProductController extends Controller
 	return $this->render('updatePricing',
 							[
 							'dataProvider' => $dataProvider,
-							'dataProviderFull' => $dataProviderFull,
+							'basePricingMatrix' => $basePricingMatrix,
 							'actionItems' => $actionItems,
 							'basePricingMatrix' => $basePricingMatrix,
 							'filterModel' => $filterModel,
 							]);
 		
 	}
+	
+	
+	public function actionAddBulkPricing($useDateInt = null)
+	{
+		  
+		  
+		
+
+        if ($post = Yii::$app->request->post() ) {
+           
+           echo "POSTED values";
+           print_r($post);
+           
+           
+          // $get = Yii::$app->request->get();
+          // if(isset($get['exit']) && $get['exit'] == 'false' )
+	    	//	{
+		//		return $this->redirect(['update-pricing']);
+		//		}
+		//	else{
+		//		return $this->redirect(['index']);
+	//			}
+         	} 
+  
+        	
+        	
+        	$dataProvider = Product::getBulkAddDataProvider();
+        	
+			$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
+			
+      		
+      		
+        	
+            return $this->render('_addPricing', [
+                'actionItems' => $actionItems,
+             
+                'dataProvider' => $dataProvider,
+            ]);
+        
+		
+	
+		
+	}
+	
 	
 }

@@ -199,6 +199,15 @@ class Product extends \yii\db\ActiveRecord
 	}
 	
 	
+	
+	
+	
+	//Returns a product pricing matrix of the following FORMAT_DATE
+	
+	//array(
+	//	['dateInt'] => array(['product_id' => 'price', 'product_id2' => 'price2'] )
+	//	['dateInt'] => array(['product_id' => 'price', 'product_id2' => 'price2'] )
+	//	)
 	public function getBaseProductsPrices()
 		{
 			
@@ -222,9 +231,18 @@ class Product extends \yii\db\ActiveRecord
 				$pricingMatrix[$phpDate][$itemPrice->product_id] = $itemPrice->price_pt;
 				}
 			}
+			
+		ksort($pricingMatrix);
+		return $pricingMatrix;
+	}
+	
+	
+	public function autoFillPricingMatrix($pricingMatrix)
+		{
+
 		ksort($pricingMatrix);
 		reset($pricingMatrix);
-		
+		$baseProducts = Product::getBaseProductList();
 		
 		//we now need to back fill the relevant data for each of the base items
 		//If the earlest array isn't fully populated from the pricing data, then go through each unpriced item and get the price at that date.
@@ -252,12 +270,7 @@ class Product extends \yii\db\ActiveRecord
 			$previousDate = $priceDate;
 			}
 	
-	
 		return $pricingMatrix;
-	
-		
-
-		
 		}
 		
 		/*
@@ -266,7 +279,6 @@ class Product extends \yii\db\ActiveRecord
 		*/
 		public function convertPricingToDataProvider($pricingMatrix, $productNameFilter = null, $productCodeFilter = null)
 		{
-		
 		//tranform the pricing matrix into a yii DataProvider result to be displayed in a datagrid
 		$resultSet = [];
 		$baseProducts = Product::getBaseProductList();
@@ -311,5 +323,34 @@ class Product extends \yii\db\ActiveRecord
 			
 		return $dataProvider;
 		}
+	
+	
+	
+	public function getBulkAddDataProvider()
+	{
+		$baseProducts = Product::getBaseProductList();
 		
+		
+		$resultSet = [];
+		foreach($baseProducts as $productObj)
+			{
+			$productPricing = new productsPrices();
+			$productPricing->product_id = $productObj->id;
+			
+			
+			$resultSet[] = $productPricing;
+			
+			}
+			
+			
+		$dataProvider = new ArrayDataProvider([
+	        'key'=>'product_id',
+	        'allModels' => $resultSet,
+	
+	        'pagination' => false,
+			]); 
+		return $dataProvider;
+		
+	}
+	
 }

@@ -20,12 +20,15 @@ use kartik\export\ExportMenu;
 <?= actionButtonsWidget::widget(['items' => $actionItems]) ?> 
 <? 
 
-
-
 $gridColumns = 
 	[
 		[
 		'attribute' => 'product_code',
+		'format' => 'raw',
+		'value' => function($data)
+			{
+			return "<A href='/product/update?id=".$data['product_id']."'>".$data['product_code']."</A>";
+			},
 		'filter' => '<input class="form-control" name="filtercode" value="'. $filterModel['product_code'] .'" type="text">'
 		],
 		[
@@ -41,6 +44,21 @@ foreach($basePricingMatrix as $dateIndex => $pricingArray )
 		'attribute' => $dateIndex,
 		'header' => date("d M Y", $dateIndex),
 		'hAlign' => 'right',
+		'format'=>'raw',
+		'filter' => '<A>Copy Me</A>',
+		'value' => function($data) use ($basePricingMatrix, $dateIndex)
+			{
+				
+			//return $dateIndex." -> ".$data['product_code'];
+			
+			if(array_key_exists($data['product_id'], $basePricingMatrix[$dateIndex]))
+				{
+				return "<font size='+1'><b>".$data[$dateIndex]."</b></font>";
+				}
+			else{
+				return "<span title='Price Set Previously'><i>".$data[$dateIndex]."</i></span>";
+				}
+			}
 		
 		];
 		
@@ -48,7 +66,7 @@ foreach($basePricingMatrix as $dateIndex => $pricingArray )
 
 
 $exportButton = ExportMenu::widget([
-    'dataProvider' => $dataProviderFull,
+    'dataProvider' => $dataProvider,
     'columns' => $gridColumns,
     'fontAwesome' => true,
     'dropdownOptions' => [
@@ -65,10 +83,11 @@ $exportButton = ExportMenu::widget([
     	]
 ]) ;
 
-
-echo GridView::widget(
+?> 
+<div style='height: 700px; overflow-y: auto'> 
+<?= GridView::widget(
 	[
-	'dataProvider' => $dataProviderFull,
+	'dataProvider' => $dataProvider,
 	'filterModel' => $filterModel,
 	'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 	'pjax'=>true, 
@@ -90,57 +109,15 @@ echo GridView::widget(
     ],
 	'columns' => $gridColumns,
 	
-	'floatHeader' => true,
-	'perfectScrollbar' => true,
-	'perfectScrollbarOptions' => 
-		[
-		'height' => '8',
-		],
-	'tableOptions' =>
-		[
-		'height' => 800,
-		]
+
+	
 		
 	]
 );
-
-
-/*
-<table width='100%' border=1>
-	<tr>
-		<th>Product2</th>
-		<? foreach($pricingMatrix as $priceDate => $productPricingArray)
-			{
-			echo "<th>".date("d M Y", $priceDate)."</th>";
-			}
-		?>
-	</tr>
-
-	<?
-	foreach($baseProducts as $productObj)
-		{
-		echo "<tr>";
-		echo "	<TD>".$productObj->Name." (".$productObj->Product_ID.") </TD>";
-		foreach($pricingMatrix as $productPricingArray)
-			{
-			echo "<td>".$productPricingArray[$productObj->id]."</td>";
-			}
-		echo "</tr>";
-			
-			
-			
-		}
-	
-	?>
-	
-	
-</table>
-
-*/
+?>
+</div> 
 
 
   
 
 
-
-?>
