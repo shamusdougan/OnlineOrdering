@@ -18,7 +18,7 @@ use kartik\widgets\DatePicker;
 
 <?= actionButtonsWidget::widget(['items' => $actionItems]) ?> 
   <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'bulk-pricing-form']); ?>
-
+  <?= $form->errorSummary($model); ?>
 <br>
 <div style='width: 400px'>
 <?= "<h3>Pricing Valid From: </h3>".DatePicker::widget([

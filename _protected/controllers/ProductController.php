@@ -369,7 +369,7 @@ class ProductController extends Controller
 	public function actionAddBulkPricing($useDateInt = null)
 	{
 		  
-		  
+		
 		
 
         if ($post = Yii::$app->request->post() ) {
@@ -377,7 +377,29 @@ class ProductController extends Controller
            echo "POSTED values";
            print_r($post);
            
-           
+           //verify the inputs for each price is correct if any fail then return an error
+           $errorsArray = [];
+           $dateFrom = date("Y-m-d", strtotime($post['price_date']));
+           foreach($post['price'] as $product_id => $price)
+				{
+				$model = new ProductsPrices();
+				$model->date_valid_from = $dateFrom;
+				$model->product_id = $product_id;
+				
+				if(!isset($price) || $price == null)
+					{
+					$price = 0;
+					}
+				$model->price_pt = $price;
+				
+				
+				if(!$model->validate())
+					{
+					//$priceModel->errors[] = "Error adding the price for ". $model->product->Name;
+					print_r($model->errors);
+					$errorsArray[$product_id] = $model->errors;
+					}
+				}
           // $get = Yii::$app->request->get();
           // if(isset($get['exit']) && $get['exit'] == 'false' )
 	    	//	{
@@ -399,7 +421,7 @@ class ProductController extends Controller
         	
             return $this->render('_addPricing', [
                 'actionItems' => $actionItems,
-             
+             	'model' => $model,
                 'dataProvider' => $dataProvider,
             ]);
         
