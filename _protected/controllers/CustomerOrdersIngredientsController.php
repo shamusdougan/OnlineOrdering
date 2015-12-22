@@ -32,10 +32,9 @@ class CustomerOrdersIngredientsController extends Controller
 	{
 	    if (!parent::beforeAction($action)) {
 	        return false;
-	    }
+	   	 	}
 
 	    $this->view->params['menuItem'] = 'customer-order-ingredients';
-
 	    return true; // or false to not run the action
 	}
 

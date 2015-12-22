@@ -370,7 +370,8 @@ class ProductController extends Controller
 	{
 		  
 		
-		
+		$priceModel = new ProductsPrices();
+		$errorDisplay = [];
 
         if ($post = Yii::$app->request->post() ) {
            
@@ -378,7 +379,7 @@ class ProductController extends Controller
            print_r($post);
            
            //verify the inputs for each price is correct if any fail then return an error
-           $errorsArray = [];
+           $errorArray = [];
            $dateFrom = date("Y-m-d", strtotime($post['price_date']));
            foreach($post['price'] as $product_id => $price)
 				{
@@ -397,9 +398,28 @@ class ProductController extends Controller
 					{
 					//$priceModel->errors[] = "Error adding the price for ". $model->product->Name;
 					print_r($model->errors);
-					$errorsArray[$product_id] = $model->errors;
+					$errorArray[$product_id] = $model->errors;
 					}
 				}
+			
+			//If all the models passed the model validation rules
+			if(count($errorArray) === 0){
+				echo "Saving all the pricing models";
+				
+				}
+				
+			//Collate the model errors and format for display
+			else{
+				
+				$errorDisplay = [];
+				foreach($errorArray as $product_id => $errors)
+					{
+					$product = Product::findOne($product_id);
+					$errorDisplay[$product_id] = $product->Name.": Invalid Number";
+					}
+				
+			}
+				
           // $get = Yii::$app->request->get();
           // if(isset($get['exit']) && $get['exit'] == 'false' )
 	    	//	{
@@ -413,7 +433,6 @@ class ProductController extends Controller
         	
         	
         	$dataProvider = Product::getBulkAddDataProvider();
-        	
 			$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
 			
       		
@@ -421,8 +440,8 @@ class ProductController extends Controller
         	
             return $this->render('_addPricing', [
                 'actionItems' => $actionItems,
-             	'model' => $model,
                 'dataProvider' => $dataProvider,
+                'errorArray' => $errorDisplay,
             ]);
         
 		

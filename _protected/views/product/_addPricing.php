@@ -18,7 +18,30 @@ use kartik\widgets\DatePicker;
 
 <?= actionButtonsWidget::widget(['items' => $actionItems]) ?> 
   <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'bulk-pricing-form']); ?>
-  <?= $form->errorSummary($model); ?>
+  
+  
+  <div style='width: 100%; background-color:#F78181;  border-radius: 5px; margin-top: 5px;	'>
+  	
+  	<ul>
+  	 <?  
+  	 
+  	 foreach($errorArray as $errorMessage){
+	 	echo "<li>".$errorMessage."</li>";
+	 }
+  	 
+  	 
+  	 ?>	
+  	 </ul>
+  	 
+  	 <? 
+  	 print_r($errorArray);
+  	 ?>
+  </div>
+  
+ 
+  
+  
+  
 <br>
 <div style='width: 400px'>
 <?= "<h3>Pricing Valid From: </h3>".DatePicker::widget([
@@ -52,9 +75,17 @@ echo GridView::widget([
         'format' => 'raw',
         'attribute' => 'price_pT',
         'label' => 'Price per Tonne',
-      	'value' => function ($data)
+      	'value' => function ($data) use ($errorArray)
       		{
-			return "<input type='text' name='price[".$data->product_id."]' ";
+      		if(array_key_exists($data->product_id, $errorArray))
+      			{
+				return Html::input('text', 'price['.$data->product_id.']', '', ['class' => 'input_error']);	
+				
+				}
+			else{
+				return Html::input('text', 'price['.$data->product_id.']', '');
+				}
+			
 			},
       	],
 		],
@@ -66,4 +97,42 @@ echo GridView::widget([
 
 </div>
 
-<?php ActiveForm::end(); ?>
+
+
+
+
+
+
+<?php ActiveForm::end();
+
+
+
+
+
+$CSS =<<<CSS
+
+.input_error
+{
+border:1px #F78181 solid;	
+}
+
+
+
+
+CSS;
+
+$this->registerCss($CSS);
+
+
+
+
+
+
+
+
+
+
+
+
+
+ ?>
