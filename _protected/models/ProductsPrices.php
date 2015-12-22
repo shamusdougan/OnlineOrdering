@@ -57,7 +57,7 @@ class ProductsPrices extends \yii\db\ActiveRecord
 	
 	
 	
-	public function getPriceData($startingDate, $pastMonthInt = null)
+	public function getPriceData($startingDate, $pastMonthInt)
 	{
 		if($pastMonthInt != null)
 			{
@@ -69,6 +69,25 @@ class ProductsPrices extends \yii\db\ActiveRecord
 						->all();
 		
 		return $priceData;			
+	}
+	
+	public function getPriceDataOnDate($phpDateInt)
+	{
+		
+		
+		$priceData = ProductsPrices::find()
+						->where('date_valid_from =\''.date("Y-m-d", $phpDateInt).'\'')
+						->all();
+		//Index according to product ID
+		$returnArray = [];
+		foreach($priceData as $priceObject)
+			{
+			$returnArray[$priceObject->product_id] = $priceObject;
+			}
+		
+						
+		
+		return $returnArray;			
 		
 		
 			

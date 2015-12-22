@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 use vendor\actionButtons\actionButtonsWidget;
 use kartik\grid\GridView;
 use kartik\export\ExportMenu;
@@ -45,7 +46,9 @@ foreach($basePricingMatrix as $dateIndex => $pricingArray )
 		'header' => date("d M Y", $dateIndex),
 		'hAlign' => 'right',
 		'format'=>'raw',
-		'filter' => '<A>Copy Me</A>',
+		'filter' => '<span style=\' text-align: right; float: right; width: 100%;\'><A href=\''.Url::to(['product/add-bulk-pricing', 'useDateInt' => $dateIndex]).'\' title=\'Edit Price List\'><span class="glyphicon glyphicon-pencil"></span></A>'.
+					'<A href=\'#\' title=\'Copy Price List\'><span class="glyphicon glyphicon-file"></span></A>'.
+					'<A href=\'#\' title=\'Delete Price List\'><span class="glyphicon glyphicon-trash"></span></A></span>',
 		'value' => function($data) use ($basePricingMatrix, $dateIndex)
 			{
 				

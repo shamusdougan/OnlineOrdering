@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 
+
 /*
 'dataProvider' => $dataProvider,
 'actionItems' => $actionItems,
@@ -33,9 +34,7 @@ use kartik\widgets\DatePicker;
   	 ?>	
   	 </ul>
   	 
-  	 <? 
-  	 print_r($errorArray);
-  	 ?>
+  	
   </div>
   
  
@@ -47,7 +46,7 @@ use kartik\widgets\DatePicker;
 <?= "<h3>Pricing Valid From: </h3>".DatePicker::widget([
         'name' => 'price_date',
         'type' => DatePicker::TYPE_COMPONENT_APPEND,
-        'value' => date("d-M-Y"),
+        'value' => date("d-M-Y", $priceDate),
         'pluginOptions' => [
         	'autoclose'=>true,
             'format' => 'dd-M-yyyy'
@@ -79,11 +78,11 @@ echo GridView::widget([
       		{
       		if(array_key_exists($data->product_id, $errorArray))
       			{
-				return Html::input('text', 'price['.$data->product_id.']', '', ['class' => 'input_error']);	
+				return Html::input('text', 'update['.$data->product_id.']', $data->id).Html::input('text', 'price['.$data->product_id.']', $data->price_pt, ['class' => 'input_error']) . " <span style='color: red;'>".$errorArray[$data->product_id]."</span>";	
 				
 				}
 			else{
-				return Html::input('text', 'price['.$data->product_id.']', '');
+				return Html::input('text', 'update['.$data->product_id.']', $data->id).Html::input('text', 'price['.$data->product_id.']', $data->price_pt);
 				}
 			
 			},

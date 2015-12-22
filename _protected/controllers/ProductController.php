@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -375,30 +376,40 @@ class ProductController extends Controller
 
         if ($post = Yii::$app->request->post() ) {
            
-           echo "POSTED values";
+         
            print_r($post);
-           
            //verify the inputs for each price is correct if any fail then return an error
            $errorArray = [];
            $dateFrom = date("Y-m-d", strtotime($post['price_date']));
+           $priceLists = [];
            foreach($post['price'] as $product_id => $price)
 				{
-				$model = new ProductsPrices();
-				$model->date_valid_from = $dateFrom;
-				$model->product_id = $product_id;
-				
-				if(!isset($price) || $price == null)
+					
+				//if the price has been set to 0 then dont bother to store thge data object
+				if(isset($price) && $price != null && $price != '0' )
 					{
-					$price = 0;
-					}
-				$model->price_pt = $price;
+						
 				
-				
-				if(!$model->validate())
-					{
-					//$priceModel->errors[] = "Error adding the price for ". $model->product->Name;
-					print_r($model->errors);
-					$errorArray[$product_id] = $model->errors;
+					if($post['update'][$product_id] != null && $post['update'][$product_id] != "")
+						{
+						$model = ProductsPrices::findOne($post['update'][$product_id]);
+						}
+					else{
+						$model = new ProductsPrices();						
+						$model->product_id = $product_id;
+						}
+
+					$model->date_valid_from = $dateFrom;
+					$model->price_pt = $price;
+					
+					if(!$model->validate())
+						{
+						
+						$errorArray[$product_id] = $model->errors;
+						}
+					else{
+						$priceLists[] = $model;
+						}
 					}
 				}
 			
@@ -406,6 +417,12 @@ class ProductController extends Controller
 			if(count($errorArray) === 0){
 				echo "Saving all the pricing models";
 				
+				foreach($priceLists as $priceEntry)
+					{
+					$priceEntry->save();
+					}
+					
+				return $this->redirect(Url::to(['product/update-pricing']));
 				}
 				
 			//Collate the model errors and format for display
@@ -417,29 +434,30 @@ class ProductController extends Controller
 					$product = Product::findOne($product_id);
 					$errorDisplay[$product_id] = $product->Name.": Invalid Number";
 					}
+				}
 				
-			}
-				
-          // $get = Yii::$app->request->get();
-          // if(isset($get['exit']) && $get['exit'] == 'false' )
-	    	//	{
-		//		return $this->redirect(['update-pricing']);
-		//		}
-		//	else{
-		//		return $this->redirect(['index']);
-	//			}
+       
          	} 
   
         	
         	
-        	$dataProvider = Product::getBulkAddDataProvider();
+        	$dataProvider = Product::getBulkAddDataProvider($post, $useDateInt);
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>Url::to(['product/update-pricing'])];
 			$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
 			
-      		
+			
+			$priceDate = time();			
+			if(isset($useDateInt))
+				{
+				$priceDate = $useDateInt;
+				}
+      		//reload the post information if there was an error
+      
       		
         	
             return $this->render('_addPricing', [
                 'actionItems' => $actionItems,
+                'priceDate' => $priceDate,
                 'dataProvider' => $dataProvider,
                 'errorArray' => $errorDisplay,
             ]);

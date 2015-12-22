@@ -234,7 +234,7 @@ class Product extends \yii\db\ActiveRecord
 			
 		ksort($pricingMatrix);
 		return $pricingMatrix;
-	}
+		}
 	
 	
 	public function autoFillPricingMatrix($pricingMatrix)
@@ -326,21 +326,60 @@ class Product extends \yii\db\ActiveRecord
 	
 	
 	
-	public function getBulkAddDataProvider()
+	public function getBulkAddDataProvider($post = null, $useDateInt= null)
 	{
 		$baseProducts = Product::getBaseProductList();
 		
-		
 		$resultSet = [];
-		foreach($baseProducts as $productObj)
+		
+		if($post == null && $useDateInt != null)
 			{
-			$productPricing = new productsPrices();
-			$productPricing->product_id = $productObj->id;
+			$priceList = ProductsPrices::getPriceDataOnDate($useDateInt);
+		
+		
+			foreach($baseProducts as $productObj)
+				{
+				if(array_key_exists($productObj->id, $priceList))
+					{
+					$resultSet[] = $priceList[$productObj->id];
+					}
+				else{
+					$productPricing = new productsPrices();
+					$productPricing->product_id = $productObj->id;
+					$productPricing->price_pt = 0;
+					
+					$resultSet[] = $productPricing;
+					}
+				}
 			
 			
-			$resultSet[] = $productPricing;
 			
 			}
+		else{
+			
+		
+			foreach($baseProducts as $productObj)
+				{
+				$productPricing = new productsPrices();
+				$productPricing->product_id = $productObj->id;
+				
+				if(array_key_exists('price', $post) && array_key_exists($productObj->id, $post['price']))
+					{
+					$productPricing->price_pt = $post['price'][$productObj->id];
+					}
+			
+				
+				$resultSet[] = $productPricing;
+				
+				}
+			}	
+			
+			
+			
+			
+			
+			
+			
 			
 			
 		$dataProvider = new ArrayDataProvider([
