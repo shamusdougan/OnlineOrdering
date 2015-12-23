@@ -244,7 +244,55 @@ class ImportFunctionsController extends Controller
 		]); 
 	}
     
-    
+
+
+	public function actionImportPriceSheet()
+	   	{
+		$importPricingModelId = 8;
+		$model = $this->findModel($importPricingModelId);
+		
+		$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update-pricing'];
+		
+		
+		if ($model->load(Yii::$app->request->post()) )
+				{
+					
+				$model->file = UploadedFile::getInstance($model, 'file');
+					
+				if ( $model->file )
+					{
+						
+						//render the choose column screen
+						echo "rendering the file view to select the corrent column<br>";
+						
+						
+					}
+					
+				/*	
+				if($model->recordsFailed > 0)
+					{
+					return $this->render('import-ingredient', 
+						[
+						'model' => $model,
+						'product' => $product,
+						'actionItems' => $actionItems,
+						]); 		
+					}	
+				else{
+					return $this->redirect(['/product/update', 'id' => $product_id]); 		
+					}
+				*/
+				}
+		
+		
+		
+		return $this->render('import-pricing', 
+			[
+			'model' => $model, 
+			'actionItems' => $actionItems,
+			
+			]); 
+		}
     
     public function actionCreateTemplateCsv()
     {

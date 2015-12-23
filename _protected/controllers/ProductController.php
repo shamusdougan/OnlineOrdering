@@ -351,6 +351,7 @@ class ProductController extends Controller
 	
 	
 	$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/product/add-bulk-pricing'];
+	$actionItems[] = ['label'=>'Import Excel', 'button' => 'copy', 'url'=>Url::to(['import-functions/import-price-sheet', 'id' => '8'])];
 	$filterModel = ['proudct_id' => null, 'product_name' => $namefilter, 'product_code' => $codefilter];
 	
 	
@@ -542,7 +543,7 @@ class ProductController extends Controller
          //If the form hasn't been submitted pre populate the form withthe required DataColumn
          else{
 		 	
-		 	 $priceData = getPriceDataOnDate($priceDateInt);
+		 	 $priceData = ProductsPrices::getPriceDataOnDate($priceDateInt);
 		 	 foreach($priceData as $product_id => $priceObj)
 		 	 	{
 				$post['price'][$product_id] = $priceObj->price_pt;
@@ -552,19 +553,13 @@ class ProductController extends Controller
   
         	
         	
-    	$dataProvider = Product::getBulkAddDataProvider($post, $useDateInt);
+    	$dataProvider = Product::getBulkAddDataProvider($post, $priceDateInt);
     	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>Url::to(['product/update-pricing'])];
 		$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
+
 		
 		
 		$priceDate = time();			
-		if(isset($useDateInt))
-			{
-			$priceDate = $useDateInt;
-			}
-  		//reload the post information if there was an error
-  
-  		
     	
         return $this->render('_addPricing', [
             'actionItems' => $actionItems,
@@ -572,8 +567,24 @@ class ProductController extends Controller
             'dataProvider' => $dataProvider,
             'errorArray' => $errorDisplay,
         ]);
-        
-	
+
 	}
+	
+	
+	
+	public function actionBulkDelete($priceDateInt)
+	{
+		 $priceData = ProductsPrices::getPriceDataOnDate($priceDateInt);
+	 	 foreach($priceData as $product_id => $priceObj)
+	 	 	{
+			$priceObj->delete();
+			}
+	
+		return $this->redirect(Url::to(['product/update-pricing']));
+	}
+	
+	
+	
+	
 	
 }
