@@ -377,6 +377,106 @@ class ProductController extends Controller
         if ($post = Yii::$app->request->post() ) {
            
          
+           //print_r($post);
+           //verify the inputs for each price is correct if any fail then return an error
+           $errorArray = [];
+           $dateFrom = date("Y-m-d", strtotime($post['price_date']));
+           $priceLists = [];
+           foreach($post['price'] as $product_id => $price)
+				{
+					
+				//if the price has been set to 0 then dont bother to store thge data object
+				if(isset($price) && $price != null && $price != '0' )
+					{
+						
+				
+					if($post['update'][$product_id] != null && $post['update'][$product_id] != "")
+						{
+						$model = ProductsPrices::findOne($post['update'][$product_id]);
+						}
+					else{
+						$model = new ProductsPrices();						
+						$model->product_id = $product_id;
+						}
+
+					$model->date_valid_from = $dateFrom;
+					$model->price_pt = $price;
+					
+					if(!$model->validate())
+						{
+						
+						$errorArray[$product_id] = $model->errors;
+						}
+					else{
+						$priceLists[] = $model;
+						}
+					}
+				}
+			
+			//If all the models passed the model validation rules
+			if(count($errorArray) === 0){
+				//echo "Saving all the pricing models";
+				
+				foreach($priceLists as $priceEntry)
+					{
+					$priceEntry->save();
+					}
+					
+				return $this->redirect(Url::to(['product/update-pricing']));
+				}
+				
+			//Collate the model errors and format for display
+			else{
+				
+				$errorDisplay = [];
+				foreach($errorArray as $product_id => $errors)
+					{
+					$product = Product::findOne($product_id);
+					$errorDisplay[$product_id] = $product->Name.": Invalid Number";
+					}
+				}
+				
+       
+         	} 
+  
+        	
+        	
+        	$dataProvider = Product::getBulkAddDataProvider($post, $useDateInt);
+        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>Url::to(['product/update-pricing'])];
+			$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
+			
+			
+			$priceDate = time();			
+			if(isset($useDateInt))
+				{
+				$priceDate = $useDateInt;
+				}
+      		//reload the post information if there was an error
+      
+      		
+        	
+            return $this->render('_addPricing', [
+                'actionItems' => $actionItems,
+                'priceDate' => $priceDate,
+                'dataProvider' => $dataProvider,
+                'errorArray' => $errorDisplay,
+            ]);
+        
+		
+	
+		
+	}
+	
+	
+	public function actionCopyPriceSheet($priceDateInt)
+	{
+		
+		$priceModel = new ProductsPrices();
+		$errorDisplay = [];
+
+        if ($post = Yii::$app->request->post() ) {
+           
+         
            print_r($post);
            //verify the inputs for each price is correct if any fail then return an error
            $errorArray = [];
@@ -437,35 +537,43 @@ class ProductController extends Controller
 				}
 				
        
-         	} 
+         	}
+         
+         //If the form hasn't been submitted pre populate the form withthe required DataColumn
+         else{
+		 	
+		 	 $priceData = getPriceDataOnDate($priceDateInt);
+		 	 foreach($priceData as $product_id => $priceObj)
+		 	 	{
+				$post['price'][$product_id] = $priceObj->price_pt;
+				}
+		 	
+		 } 
   
         	
         	
-        	$dataProvider = Product::getBulkAddDataProvider($post, $useDateInt);
-        	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>Url::to(['product/update-pricing'])];
-			$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
-			
-			
-			$priceDate = time();			
-			if(isset($useDateInt))
-				{
-				$priceDate = $useDateInt;
-				}
-      		//reload the post information if there was an error
-      
-      		
-        	
-            return $this->render('_addPricing', [
-                'actionItems' => $actionItems,
-                'priceDate' => $priceDate,
-                'dataProvider' => $dataProvider,
-                'errorArray' => $errorDisplay,
-            ]);
+    	$dataProvider = Product::getBulkAddDataProvider($post, $useDateInt);
+    	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>Url::to(['product/update-pricing'])];
+		$actionItems[] = ['label'=>'Save Pricing', 'button' => 'save', 'url'=>null, 'submit'=> 'bulk-pricing-form', 'confirm' => 'Add Prices to all products?'];
+		
+		
+		$priceDate = time();			
+		if(isset($useDateInt))
+			{
+			$priceDate = $useDateInt;
+			}
+  		//reload the post information if there was an error
+  
+  		
+    	
+        return $this->render('_addPricing', [
+            'actionItems' => $actionItems,
+            'priceDate' => $priceDate,
+            'dataProvider' => $dataProvider,
+            'errorArray' => $errorDisplay,
+        ]);
         
-		
 	
-		
 	}
-	
 	
 }
