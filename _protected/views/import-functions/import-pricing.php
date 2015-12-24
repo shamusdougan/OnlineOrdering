@@ -1,6 +1,7 @@
 <?php
 
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
+use kartik\widgets\FileInput;
 use yii\helpers\html;
 use vendor\actionButtons\actionButtonsWidget;
 
@@ -19,7 +20,15 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); 
 
 
 
-<?= $form->field($model, 'file')->fileInput() ?>
+<?= FileInput::widget([
+    'name' => 'attachment_50',
+    'pluginOptions' => [
+        'showPreview' => false,
+        'showCaption' => true,
+        'showRemove' => true,
+        'showUpload' => false
+    ]
+]); ?>
 
 
 
