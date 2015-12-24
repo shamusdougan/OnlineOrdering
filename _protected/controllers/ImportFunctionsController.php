@@ -10,6 +10,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use app\models\ProductsPrices;
+
 
 /**
  * ImportFunctionsController implements the CRUD actions for ImportFunctions model.
@@ -251,47 +253,84 @@ class ImportFunctionsController extends Controller
 		$importPricingModelId = 8;
 		$model = $this->findModel($importPricingModelId);
 		
-		$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update-pricing'];
 		
 		
-		if ($model->load(Yii::$app->request->post()) )
-				{
-					
-				$model->file = UploadedFile::getInstance($model, 'file');
-					
-				if ( $model->file )
-					{
-						
-						//render the choose column screen
-						echo "rendering the file view to select the corrent column<br>";
-						
-						
-					}
-					
-				/*	
-				if($model->recordsFailed > 0)
-					{
-					return $this->render('import-ingredient', 
-						[
-						'model' => $model,
-						'product' => $product,
-						'actionItems' => $actionItems,
-						]); 		
-					}	
-				else{
-					return $this->redirect(['/product/update', 'id' => $product_id]); 		
-					}
-				*/
-				}
+		//Check the state of the data inport, entry state is upload->to upload the excel file
+		$post = Yii::$app->request->post();
+		$importState = "upload";
+		if(array_key_exists("importState", $post))
+			{
+			$importState = $post['importState'];
+			}
 		
-		
-		
-		return $this->render('import-pricing', 
-			[
-			'model' => $model, 
-			'actionItems' => $actionItems,
+		//Render the for to upload the excel file 
+		if($importState == "upload")
+			{
+				
+			$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update-pricing'];				
+				
+			return $this->render('import-pricing', 
+				[
+				'model' => $model, 
+				'actionItems' => $actionItems,
+				'currentState' => $importState,
+				'nextState' => "selectColumns",
+				]); 
+			}
 			
-			]); 
+		//render the form to select which (if any) to import the prcing data from
+		elseif($importState == 'selectColumns')
+			{
+			$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/import-functions/import-price-sheet?id=8'];				
+				
+			$model->load(Yii::$app->request->post());
+			$model->file = UploadedFile::getInstance($model, 'file');
+			if ($model->file)
+				{
+				$time = date("Ymd Hi");
+				$model->file->saveAs(Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension);
+                $model->file = Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension;
+                $handle = fopen($model->file, "r");
+					
+				//parse the excel file, if any thing is a little off then redisplay the file upload screen
+				$dataProvider = ProductsPrices::getDataProviderFromExcel($model->file);
+				if(is_string($dataProvider))
+					{
+					Yii::$app->session->setFlash('error', $dataProvider);
+					$actionItems = [];
+					$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update-pricing'];	
+					return $this->render('import-pricing', 
+						[
+						'model' => $model, 
+						'actionItems' => $actionItems,
+						'currentState' => "upload",
+						'nextState' => "selectColumns",
+						]); 	
+						
+					}
+					
+				
+				
+				return $this->render('import-pricing', 
+					[
+					'model' => $model, 
+					'actionItems' => $actionItems,
+					'currentState' => $importState,
+					'nextState' => "importData",
+					'dataProvider' => $dataProvider,
+					]); 
+				
+				}
+			}
+		else{
+			die("unknown Import state");
+			}
+	
+		
+		
+		
+		
+		
 		}
     
     public function actionCreateTemplateCsv()

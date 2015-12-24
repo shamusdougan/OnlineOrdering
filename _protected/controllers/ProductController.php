@@ -476,9 +476,7 @@ class ProductController extends Controller
 		$errorDisplay = [];
 
         if ($post = Yii::$app->request->post() ) {
-           
-         
-           print_r($post);
+          
            //verify the inputs for each price is correct if any fail then return an error
            $errorArray = [];
            $dateFrom = date("Y-m-d", strtotime($post['price_date']));
@@ -584,7 +582,14 @@ class ProductController extends Controller
 	}
 	
 	
-	
+	public function actionImportExceldata($filename, $columnName)
+	{
+		
+		
+		echo $filename.": ".$columnName."<br>";
+		
+		
+	}
 	
 	
 }

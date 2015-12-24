@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9ddff9bdd495ef3e8ed9d7875baefc07",
+    "hash": "dbfcbbe9d2b3766e12ea18f132f557ae",
+    "content-hash": "ce2fabad793ce06f31248ee1c66f2722",
     "packages": [
         {
             "name": "bower-asset/bootstrap",

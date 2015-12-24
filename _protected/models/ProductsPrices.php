@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use yii\data\ArrayDataProvider;
 
 use Yii;
 
@@ -93,5 +94,67 @@ class ProductsPrices extends \yii\db\ActiveRecord
 			
 		
 	}
+	
+	
+	
+	public function getDataProviderFromExcel($filename)
+		{
+		$objPHPExcel = \PHPExcel_IOFactory::load($filename);
+		$sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+		
+		//Check that the header row is correct
+		$newKeysLookup = array_shift($sheetData);
+		foreach($newKeysLookup as $index => $headerValue)
+			{
+			if($index == 'A')
+				{
+				if($headerValue != "Product Code")
+					{
+					return "Invalid Execel File Structure, Missing Product Code Column";		
+					}
+				}
+			elseif($index == 'B')
+				{
+				if($headerValue != "Product Name")
+					{
+					return "Invalid Execel File Structure, Missing Product Name Column";	
+					}
+				}	
+			else{
+				if(!strtotime($headerValue))
+					{
+					return "Invalid Excel File Structure, Date Column not correct";
+					}
+				}
+			}
+		
+		
+		
+		
+		$resultArray = [];
+		
+		foreach($sheetData as $rowIndex => $dataRow)
+			{
+			foreach($dataRow as $index => $dataCell)
+				{
+				$resultArray[$rowIndex][$newKeysLookup[$index]] = $dataCell;
+				}
+			}
+		
+	
+		
+		$dataProvider = new ArrayDataProvider([
+			        'key'=>'Product Code',
+			        'allModels' => $resultArray,
+			        'pagination' => false,
+					]); 
+					
+					
+		return $dataProvider;
+		
+		
+		}
+	
+	
 	
 }
