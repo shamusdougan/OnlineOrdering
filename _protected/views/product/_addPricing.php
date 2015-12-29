@@ -78,11 +78,11 @@ echo GridView::widget([
       		{
       		if(array_key_exists($data->product_id, $errorArray))
       			{
-				return Html::input('text', 'update['.$data->product_id.']', $data->id).Html::input('text', 'price['.$data->product_id.']', $data->price_pt, ['class' => 'input_error']) . " <span style='color: red;'>".$errorArray[$data->product_id]."</span>";	
+				return Html::input('hidden', 'update['.$data->product_id.']', $data->id).Html::input('text', 'price['.$data->product_id.']', $data->price_pt, ['class' => 'input_error']) . " <span style='color: red;'>".$errorArray[$data->product_id]."</span>";	
 				
 				}
 			else{
-				return Html::input('text', 'update['.$data->product_id.']', $data->id).Html::input('text', 'price['.$data->product_id.']', $data->price_pt);
+				return Html::input('hidden', 'update['.$data->product_id.']', $data->id).Html::input('text', 'price['.$data->product_id.']', $data->price_pt);
 				}
 			
 			},

@@ -572,21 +572,51 @@ class ProductController extends Controller
 	
 	public function actionBulkDelete($priceDateInt)
 	{
-		 $priceData = ProductsPrices::getPriceDataOnDate($priceDateInt);
-	 	 foreach($priceData as $product_id => $priceObj)
-	 	 	{
-			$priceObj->delete();
-			}
 	
+	
+		ProductsPrices::bulkDeleteDate($priceDateInt);
+		
 		return $this->redirect(Url::to(['product/update-pricing']));
 	}
 	
 	
 	public function actionImportExceldata($filename, $columnName)
 	{
+						
+						
+		//parse the excel file, if any thing is a little off then redisplay the file upload screen
+		$basePath = Yii::getAlias('@runtime').'/csv/';
+		$dataProvider = ProductsPrices::getDataProviderFromExcel($basePath.$filename);
+		if(is_string(($dataProvider)))
+			{
+			Yii::$app->session->setFlash('error', $dataProvider);
+			$this->redirect('/import-functions/import-price-sheet');
+			}
+		
+		//Clear any existing Pricing for the given date
+		$targetDate = strtotime($columnName);
+		$productLookupList = Product::getBaseProductCodeLookup();
+		ProductsPrices::bulkDeleteDate($targetDate);
 		
 		
-		echo $filename.": ".$columnName."<br>";
+		foreach($dataProvider->getModels() as $productPriceArray)
+			{
+			if(!array_key_exists($columnName, $productPriceArray) || !array_key_exists('Product Code', $productPriceArray))
+				{
+				Yii::$app->session->setFlash('error', "Unable to get specified column data from Excel File, missing Column: ".$columnName);
+				$this->redirect('/import-functions/import-price-sheet');
+				}
+			$productPricingObj = new ProductsPrices();
+			$productPricingObj->product_id = $productLookupList[$productPriceArray['Product Code']];
+			$productPricingObj->date_valid_from = date("Y-m-d", $targetDate);
+			$productPricingObj->price_pt = $productPriceArray[$columnName];
+			if(!$productPricingObj->save())
+				{
+				print_r($productPricingObj->getErrors());
+				}
+			
+			}		
+		$this->redirect('/product/update-pricing');
 		
 		
 	}

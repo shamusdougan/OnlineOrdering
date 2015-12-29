@@ -1,0 +1,87 @@
+
+
+.progressWrapper
+{
+	width: 100%;
+	height: 80px;
+ 	border-top: 1px solid;
+	border-bottom: 1px solid;
+	margin-bottom: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	
+}
+
+.progressElement
+{
+	width: 200px;
+	height: 68px;
+	float: left;
+	
+	
+}
+
+.progressArrowWrapper
+{
+	width: 100%;
+	height: 50px;
+	
+	
+}
+
+.current_arrow
+{
+	background-image: url('../icons/progressArrow_blue.png');
+}
+
+.completed_arrow
+{
+	background-image: url('../icons/progressArrow_black.png');
+}
+
+.next_arrow
+{
+	background-image: url('../icons/progressArrow_grey.png');
+}
+
+.last_arrow
+{
+	background-image: url('../icons/finishArrow_grey.png');
+}
+
+.progressArrowIcon
+{
+	width: 25%;
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	background-size: 50px 50px;
+	text-align: center;
+	line-height: 45px;
+	font-size: 35px;
+	
+	
+}
+
+
+.current_icon
+{
+	background-image: url('../icons/iconwrap_blue.png');
+	color: #242498;
+}
+
+.completed_icon
+{
+	background-image: url('../icons/iconwrap_black.png');
+}
+
+.next_icon
+{
+	background-image: url('../icons/iconwrap_grey.png');
+	color: #858383;
+}
+
+.progressText
+{
+	text-align: center;
+}

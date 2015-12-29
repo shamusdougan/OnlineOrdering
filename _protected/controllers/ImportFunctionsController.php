@@ -253,7 +253,9 @@ class ImportFunctionsController extends Controller
 		$importPricingModelId = 8;
 		$model = $this->findModel($importPricingModelId);
 		
-		
+		$progress[] = ['label' => 'Select File', 'url'=>['/import-functions/import-price-sheet'], 'icon' => null, 'mouseOver' => 'Select a File to import to the Pricing Sheet. To get the Correct format first export an excel file from the price update page'];
+		$progress[] = ['label' => 'Choose Column', 'url'=>null, 'icon' => null,  'mouseOver' => 'this is a test popup'];
+		$progress[] = ['label' => 'Prices Imported', 'url'=>null, 'icon' => null,  'mouseOver' => 'this is a test popup'];
 		
 		//Check the state of the data inport, entry state is upload->to upload the excel file
 		$post = Yii::$app->request->post();
@@ -273,6 +275,8 @@ class ImportFunctionsController extends Controller
 				[
 				'model' => $model, 
 				'actionItems' => $actionItems,
+				'progress' => $progress,
+				'progressStep' => 0,
 				'currentState' => $importState,
 				'nextState' => "selectColumns",
 				]); 
@@ -303,6 +307,8 @@ class ImportFunctionsController extends Controller
 						[
 						'model' => $model, 
 						'actionItems' => $actionItems,
+						'progress' => $progress,
+						'progressStep' => 0,
 						'currentState' => "upload",
 						'nextState' => "selectColumns",
 						]); 	
@@ -315,6 +321,8 @@ class ImportFunctionsController extends Controller
 					[
 					'model' => $model, 
 					'actionItems' => $actionItems,
+					'progress' => $progress,
+					'progressStep' => 1,
 					'currentState' => $importState,
 					'nextState' => "importData",
 					'dataProvider' => $dataProvider,

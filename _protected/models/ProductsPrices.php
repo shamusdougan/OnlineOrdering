@@ -99,6 +99,14 @@ class ProductsPrices extends \yii\db\ActiveRecord
 	
 	public function getDataProviderFromExcel($filename)
 		{
+			
+		//check that the file exists
+		if(!file_exists($filename))
+			{
+			return "Unable to open Excel Document";
+			}
+			
+			
 		$objPHPExcel = \PHPExcel_IOFactory::load($filename);
 		$sheetData = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
 		
@@ -127,12 +135,8 @@ class ProductsPrices extends \yii\db\ActiveRecord
 					}
 				}
 			}
-		
-		
-		
-		
+	
 		$resultArray = [];
-		
 		foreach($sheetData as $rowIndex => $dataRow)
 			{
 			foreach($dataRow as $index => $dataCell)
@@ -140,8 +144,6 @@ class ProductsPrices extends \yii\db\ActiveRecord
 				$resultArray[$rowIndex][$newKeysLookup[$index]] = $dataCell;
 				}
 			}
-		
-	
 		
 		$dataProvider = new ArrayDataProvider([
 			        'key'=>'Product Code',
@@ -151,10 +153,26 @@ class ProductsPrices extends \yii\db\ActiveRecord
 					
 					
 		return $dataProvider;
-		
-		
 		}
 	
+	/**
+	* function clear Pricing Data
+	* Descirption: this will clear as prices for the given date.
+	**
+	*/
+	public function bulkDeleteDate($dateInt)
+		{
+			 
+		$priceData = ProductsPrices::getPriceDataOnDate($dateInt);
+	 	foreach($priceData as $product_id => $priceObj)
+			{
+			$priceObj->delete();
+			}
+	
+	
+			
+			
+		}
 	
 	
 }

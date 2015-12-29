@@ -198,7 +198,11 @@ class Product extends \yii\db\ActiveRecord
 		return ArrayHelper::map($baseProductList, 'id', 'Name');
 	}
 	
-	
+	public function getBaseProductCodeLookup()
+	{
+		$baseProductList = Product::getBaseProductList();
+		return ArrayHelper::map($baseProductList, 'Product_ID', 'id');
+	}
 	
 	
 	

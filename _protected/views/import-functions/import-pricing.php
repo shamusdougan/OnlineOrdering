@@ -4,27 +4,41 @@ use kartik\widgets\ActiveForm;
 use kartik\widgets\FileInput;
 use yii\helpers\html;
 use vendor\actionButtons\actionButtonsWidget;
+use vendor\progressbar\progressbarWidget;
 use kartik\grid\GridView;
 use yii\helpers\Url;
 
-
-echo actionButtonsWidget::widget(['items' => $actionItems]);
-
-
-
-
-$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+$this->title = 'Import Pricing from Excel';
+$this->params['breadcrumbs'][] = ['label' => 'Update Pricing', 'url' => ['product/update-pricing'],];
+$this->params['breadcrumbs'][] = $this->title;
 
 
-<?=	Html::input('text','importState',$nextState); ?>
+
+
+
+
+?>
+
+<?= actionButtonsWidget::widget(['items' => $actionItems,]); ?>
+
+<h1><?= Html::encode($this->title) ?></h1>
+
+
+<?= progressbarWidget::widget(['items' => $progress,  'current' => $progressStep]) ?>
+
+<? $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+
+
+<?=	Html::input('hidden','importState',$nextState); ?>
 
 <? 
 if($currentState == 'upload')
 	{
 		
+		
 	
 		
-	echo $form->field($model, 'file')->label('Select Excel File to upload')->widget(FileInput::classname(), [
+	echo $form->field($model, 'file')->label('Step 1: Select File to Upload')->widget(FileInput::classname(), [
 	'pluginOptions' => [
 		'showCaption' => true,
 		'showRemove' => true,
@@ -58,7 +72,7 @@ echo GridView::widget(
 	[
 	'dataProvider' => $dataProvider,
 	'headerRowOptions'=>['class'=>'kartik-sheet-style'],
-	'pjax'=>true, 
+	'pjax'=>false, 
     'export'=>false,
     'filterModel' => "hello",
     'panel'=>[
