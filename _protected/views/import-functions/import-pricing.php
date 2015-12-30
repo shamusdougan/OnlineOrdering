@@ -33,22 +33,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <? 
 if($currentState == 'upload')
-	{
+	{ ?>
 		
 		
-	
-		
-	echo $form->field($model, 'file')->label('Step 1: Select File to Upload')->widget(FileInput::classname(), [
-	'pluginOptions' => [
-		'showCaption' => true,
-		'showRemove' => true,
-		'showUpload' => false,
-		'showPreview' => false,
-		'allowedFileExtensions'=>['xlsx'],
-		],
-   'options' => ['accept' => '.xlsx'],
-   ]);
-   }
+	<div style='width: 600px;'>
+		<H1>Step 1: Select File to Upload</H1><br>
+		<div style='width: 600px; border-radius: 5px; border: 1px solid; background-color: #EFEFEF; padding: 5px'>
+			Select the Excel file to upload. <br>
+			To make sure the file is formatted correctly, you can export the data from the price lists page, modify or add price list entries as required then import the new prices in here. <br>
+			You can also download a blank excel spreadsheet and add the prices and then import from here.<br>
+			Blank Spreadsheet download <A href='<?= Url::to(['import-functions/download-pricing-template'])?>'>link</a>
+		</div>
+		<div style='width: 450px; float: left; padding-top: 10px'>
+			<?= $form->field($model, 'file')->label(false)->widget(FileInput::classname(), [
+			'pluginOptions' => [
+				'showCaption' => true,
+				'showRemove' => true,
+				'showUpload' => false,
+				'showPreview' => false,
+				'allowedFileExtensions'=>['xlsx'],
+				],
+			'options' => ['accept' => '.xlsx'],
+			]); ?>
+  		</div>
+  		<div style='width: 100px;  float: left; padding-top: 10px; padding-left: 10px'>
+   			<?= Html::submitButton("Upload",  ['type'=>'button', 'class'=>'btn btn-primary']); ?>
+   		</div>
+   </div>
+   
+   
+<?	}
 elseif($currentState == 'selectColumns'){ 
 
 	$gridColumns = [];
@@ -61,14 +75,21 @@ elseif($currentState == 'selectColumns'){
 			
 		if($columnName != "Product Code" && $columnName != "Product Name")
 			{
-			$gridColumn['filter'] = '<A href=\''.Url::to(['product/import-exceldata', 'filename' => basename($model->file), 'columnName' => $columnName]).'\' title=\'Import Column\'>Import Prices</A>';
+			$gridColumn['filter'] = '<A href=\''.Url::to(['product/import-exceldata', 'filename' => basename($model->file), 'columnName' => $columnName]).'\' title=\'Import Column\'>Import Column</A>';
 			}
 		$gridColumns[] = $gridColumn;
 		}
+	?>
 
-
-echo "<div style='height: 700px; overflow-y: auto'>"; 
-echo GridView::widget(
+	<H1>Step 2: Select Column from File to import</H1><br>
+	<div style='width: 600px; border-radius: 5px; border: 1px solid; background-color: #EFEFEF; padding: 5px'>
+		From the Uploaded Excel spreadsheet, select the Column of prices to import.<br>
+		Click on the <b>"import Column"</b> under the column date to import that column.<br>
+		A new pricing sheet will be created based on the Date at the the top of the column and with the prices for each product in that column.<br>
+		Any prices that are set to zero will not be added to the pricing sheet, the price for that product will instead come from a previous pricing sheet.
+	</div>
+	<?="<div style='height: 700px; overflow-y: auto; padding-top: 5px;'>";  ?>
+	<?= GridView::widget(
 	[
 	'dataProvider' => $dataProvider,
 	'headerRowOptions'=>['class'=>'kartik-sheet-style'],
@@ -81,14 +102,14 @@ echo GridView::widget(
 	    ],
 	   'toolbar' => false,
 	'columns' => $gridColumns,
-]
-);
+	]
+	); ?>
 
 
 
- } ?>
+<? } ?>
 </div>
-<button>Submit</button>
+
 
 <?php ActiveForm::end(); ?><?php
 

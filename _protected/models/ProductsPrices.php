@@ -168,11 +168,43 @@ class ProductsPrices extends \yii\db\ActiveRecord
 			{
 			$priceObj->delete();
 			}
-	
-	
-			
-			
 		}
 	
+
+	public function generatePricingExcelTemplate()
+		{
+			
+		$template = new \PHPExcel();
+		$template->getProperties()
+			->setCreator('Irwins Online Ordering')
+			->setTitle('Product Pricing Template')
+			->setLastModifiedBy('Shamus Dougan')
+			->setDescription('A Pricing Template to import back into the application')
+			->setSubject('Product Prciing');
+		$ws1 = $template->getSheet(0);
+		$ws1->setTitle('Pricing Template');
+		$ws1->setCellValue('A1', 'Product Code');
+		$ws1->setCellValue('B1', 'Product Name');
+		$ws1->setCellValue('C1', date("d M Y"));
+		
+		
+		$ws1->getStyle('A1:C1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('A0A0A0');
+		$ws1->getStyle('A1:C1')->applyFromArray(['font' => ['bold' => true]]);
+		$ws1->getColumnDimension('A')->setAutoSize(true);
+		$ws1->getColumnDimension('B')->setAutoSize(true);
+		$ws1->getColumnDimension('C')->setAutoSize(true);
+		
+		$baseProducts = Product::getBaseProductList();
+		$rowCount = 2; //Start the second row down
+		foreach($baseProducts as $product)
+			{
+			$ws1->setCellValue('A'.$rowCount, $product->Product_ID);
+			$ws1->setCellValue('B'.$rowCount, $product->Name);
+			$rowCount++;
+			}
+	
+		return $template;
+		}
+
 	
 }

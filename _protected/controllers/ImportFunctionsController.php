@@ -6,6 +6,7 @@ use Yii;
 use app\models\ImportFunctions;
 use app\models\ImportFunctionSearch;
 use app\models\Product;
+use app\models\ProductsIngredients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -144,7 +145,7 @@ class ImportFunctionsController extends Controller
 				
 				$model->file = UploadedFile::getInstance($model, 'file');
 				
-				if ( $model->file )
+				if ($model->file )
 					{
 						
 					//If we have a valid file input grab the file, move it to the CSV section of runtime and rename with data stamp
@@ -181,60 +182,51 @@ class ImportFunctionsController extends Controller
 	$model = $this->findModel($importIngredientId);
 	$product = Product::findOne($product_id);
 	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update?id='.$product_id];
+	$progress[] = ['label' => 'Select File', 'url'=>['/import-functions/import-ingredient', 'product_id' => $product_id], 'icon' => null, 'mouseOver' => 'Select a File to import to the Product Ingredients.'];
+	$progress[] = ['label' => 'Ingredients Imported', 'url'=>null, 'icon' => null,  'mouseOver' => 'Ingedients Imported'];
 	
 	
 	if ($model->load(Yii::$app->request->post()) )
 			{
 				
-				$model->file = UploadedFile::getInstance($model, 'file');
-				
-				if ( $model->file )
+			$model->file = UploadedFile::getInstance($model, 'file');
+			if ($model->file )
 				{
 				$time = date("Ymd Hi");
-					$model->file->saveAs(Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension);
-                    $model->file = Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension;
-                    $handle = fopen($model->file, "r");
-					
-					//Initialise the counters for the import
-					$model->initImport();
-					
-					//clear the existing product ingedients
-					
-					$product->clearIngredients();
+				$model->file->saveAs(Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension);
+                $model->file = Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension;
+                $handle = fopen($model->file, "r");
+				
+			
+				//clear the existing product ingedients
+				
+				$product->clearIngredients();
 
-
-					$sum = 0;
-					//iterate through each line of the csv file with and apply the import function to it.
-					//The import function will save the data.
-                    while (($fileLine = fgetcsv($handle, ",")) !== false) 
-						{
-						$functionName = $model->function;
-						$sum += $model->$functionName($fileLine, $product_id);
-						}
-					$model->closeImport();	
-					
-					if(bccomp($sum, 100) != 0)
-						{
-						$model->recordsFailed++;
-						$model->progress .= "Total Ingredients need to sum to 100, currently ingredient percentage is: ".bccomp($sum, 100)."\n";
-						}
+				$errorMessage = ProductsIngredients::getDataFromExcel($model->file, $product_id);
+				if(is_string($errorMessage))
+					{
+					Yii::$app->session->setFlash('error', $errorMessage);
+				
+				
+					return $this->render('import-ingredient', 
+						[
+						'model' => $model,
+						'product' => $product,
+						'actionItems' => $actionItems,
+						'progress' => $progress,
+						'progressStep' => 0,
+						]); 		
+						
+					}
+				else{
+					return $this->redirect(['/product/update', 'id' => $product_id]); 		
+					}
 				}
 				
-			if($model->recordsFailed > 0)
-				{
-				return $this->render('import-ingredient', 
-					[
-					'model' => $model,
-					'product' => $product,
-					'actionItems' => $actionItems,
-					]); 		
-				}	
-			else{
-				return $this->redirect(['/product/update', 'id' => $product_id]); 		
-				}
+			
+			
 			
 			}
-	
 	
 	
 	return $this->render('import-ingredient', 
@@ -242,7 +234,8 @@ class ImportFunctionsController extends Controller
 		'model' => $model, 
 		'product' => $product,
 		'actionItems' => $actionItems,
-		
+		'progress' => $progress,
+		'progressStep' => 0,
 		]); 
 	}
     
@@ -329,6 +322,20 @@ class ImportFunctionsController extends Controller
 					]); 
 				
 				}
+			else{
+				Yii::$app->session->setFlash('error', "Please Select File to upload");
+				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/product/update-pricing'];	
+				return $this->render('import-pricing', 
+					[
+					'model' => $model, 
+					'actionItems' => $actionItems,
+					'progress' => $progress,
+					'progressStep' => 0,
+					'currentState' => "upload",
+					'nextState' => "selectColumns",
+					]); 	
+				}
+
 			}
 		else{
 			die("unknown Import state");
@@ -348,5 +355,48 @@ class ImportFunctionsController extends Controller
 		return $this->renderPartial("csvTemplate", ['content' => $content]);
 	}
     
+    
+    public function actionDownloadPricingTemplate()
+    {
+		$template = ProductsPrices::generatePricingExcelTemplate();
+		$writer = \PHPExcel_IOFactory::createWriter($template, 'Excel2007');
+            
+		
+		
+		
+		$this->render('xlsxTemplate',
+			[
+			'excelWriter' => $writer,
+			'filename' => "Pricing Template.xlsx",
+			]);
+		
+		//Yii::$app->response->sendContentAsFile("blah", "pricing tempate.txt")->send();
+	}
+    
+    
+     public function actionDownloadIngedientTemplate()
+    {
+		$template = ProductsIngredients::generateIngedientExcelTemplate();
+		
+	
+		$writer = \PHPExcel_IOFactory::createWriter($template, 'Excel2007');
+		//$writer->setPreCalculateFormulas(false);
+		
+		
+		
+		$this->render('xlsxTemplate',
+			[
+			'excelWriter' => $writer,
+			'filename' => "Ingredient Import Template.xlsx",
+			]);
+		
+	
+	}
+    
+    
+    public function createDownloadFile($content)
+    {
+		
+	}
     
 }

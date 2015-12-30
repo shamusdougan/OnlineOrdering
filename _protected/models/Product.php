@@ -251,14 +251,24 @@ class Product extends \yii\db\ActiveRecord
 		//we now need to back fill the relevant data for each of the base items
 		//If the earlest array isn't fully populated from the pricing data, then go through each unpriced item and get the price at that date.
 		$startingDate = key($pricingMatrix);
+		
+		//If the pricing matrix is empty
+		if($startingDate == null)
+			{
+			$startingDate = time();
+			$pricingMatrix[$startingDate] = array();
+			}
+		
+		
 		foreach($baseProducts as $productObj)
 			{
+			
 			if(!array_key_exists($productObj->id, $pricingMatrix[$startingDate]))
 				{
 				$pricingMatrix[$startingDate][$productObj->id] = $productObj->getCurrentPrice($startingDate);
 				}
 			}
-		
+
 		
 		//go through the remaining array, if an entry isn't populated then get the previous price/date entries value
 		$previousDate = $startingDate;
@@ -277,11 +287,11 @@ class Product extends \yii\db\ActiveRecord
 		return $pricingMatrix;
 		}
 		
-		/*
-		Returns the array of arrays like the following
-		array(product_id, Date1, Date2, Date3, ....)
-		*/
-		public function convertPricingToDataProvider($pricingMatrix, $productNameFilter = null, $productCodeFilter = null)
+	/*
+	Returns the array of arrays like the following
+	array(product_id, Date1, Date2, Date3, ....)
+	*/
+	public function convertPricingToDataProvider($pricingMatrix, $productNameFilter = null, $productCodeFilter = null)
 		{
 		//tranform the pricing matrix into a yii DataProvider result to be displayed in a datagrid
 		$resultSet = [];

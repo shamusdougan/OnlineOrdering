@@ -128,6 +128,29 @@ $this->registerJs(
 
 </div>
 
+
+<div style='width: 100%'>
+<?php
+	
+  echo Form::widget([
+		    	'model'=>$model,
+		    	'form'=>$form,
+		    	'columns'=>1,
+				'attributes'=>
+					[
+					'Feed_notes' => 
+	    				[
+	    				'type' => FORM::INPUT_TEXTAREA,
+						
+	    				]
+					]
+				]);
+
+?>
+
+</div>
+
+
 <div style='width: 100%; <? if($model->Mix_Type != Product::MIXTYPE_BASE){ echo " display: none; ";} ?>' id='product_price_list' >
 	
 	<?= $this->render("/products-pricing/_pricingSingle", [

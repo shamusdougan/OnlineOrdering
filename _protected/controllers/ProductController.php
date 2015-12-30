@@ -606,15 +606,17 @@ class ProductController extends Controller
 				Yii::$app->session->setFlash('error', "Unable to get specified column data from Excel File, missing Column: ".$columnName);
 				$this->redirect('/import-functions/import-price-sheet');
 				}
-			$productPricingObj = new ProductsPrices();
-			$productPricingObj->product_id = $productLookupList[$productPriceArray['Product Code']];
-			$productPricingObj->date_valid_from = date("Y-m-d", $targetDate);
-			$productPricingObj->price_pt = $productPriceArray[$columnName];
-			if(!$productPricingObj->save())
+			if($productPriceArray[$columnName] != '')
 				{
-				print_r($productPricingObj->getErrors());
+				$productPricingObj = new ProductsPrices();
+				$productPricingObj->product_id = $productLookupList[$productPriceArray['Product Code']];
+				$productPricingObj->date_valid_from = date("Y-m-d", $targetDate);
+				$productPricingObj->price_pt = $productPriceArray[$columnName];
+				if(!$productPricingObj->save())
+					{
+					print_r($productPricingObj->getErrors());
+					}	
 				}
-			
 			}		
 		$this->redirect('/product/update-pricing');
 		
