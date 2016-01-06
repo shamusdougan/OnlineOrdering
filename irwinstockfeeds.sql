@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2015 at 04:18 PM
+-- Generation Time: Jan 06, 2016 at 01:19 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -59,11 +59,19 @@ CREATE TABLE IF NOT EXISTS `auth_assignment` (
 --
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
+('accounts', 23, 1452045839),
+('accounts', 29, 1452045828),
+('accounts', 30, 1452046040),
 ('Admin', 2, 1448578287),
+('Admin', 3, 1452046696),
 ('Admin', 19, 1448601546),
+('production', 10, 1452045926),
 ('production', 19, 1448601546),
+('production', 28, 1452044507),
 ('sales', 2, 1448578279),
-('sales', 3, 1448589714),
+('sales', 11, 1452045884),
+('sales', 13, 1452045875),
+('sales', 16, 1452045858),
 ('sales', 24, 1448601524),
 ('sales', 26, 1448601507);
 
@@ -392,9 +400,11 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/weighbridge-ticket/pdf', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
 ('/weighbridge-ticket/update', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
 ('/weighbridge-ticket/view', 3, NULL, NULL, NULL, 1448580335, 1448580335, NULL),
+('accounts', 1, 'Accounts', NULL, NULL, 1452043577, 1452043577, NULL),
 ('Admin', 1, 'Admin', NULL, NULL, 1448576990, 1448576990, NULL),
 ('assignRolesToUsers', 2, 'Assign roles to users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
 ('bindUserToIp', 2, 'Bind user to IP', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('canCreateInvoice', 2, 'Can Create Invoice', NULL, NULL, 1452045773, 1452045773, 'accounts'),
 ('changeOwnPassword', 2, 'Change own password', NULL, NULL, 1448576991, 1448576991, 'userCommonPermissions'),
 ('changeUserPassword', 2, 'Change user password', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
 ('commonPermission', 2, 'Common permission', NULL, NULL, 1448576986, 1448576986, NULL),
@@ -472,12 +482,14 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('Admin', 'changeOwnPassword'),
 ('sales', 'changeOwnPassword'),
 ('Admin', 'changeUserPassword'),
+('accounts', 'createCustomer'),
 ('sales', 'createCustomer'),
 ('production', 'createCustomerOrder'),
 ('sales', 'createCustomerOrder'),
 ('production', 'createDelivery'),
 ('Admin', 'createUsers'),
 ('Admin', 'deleteUsers'),
+('accounts', 'editCustomer'),
 ('production', 'editCustomer'),
 ('production', 'editOrders'),
 ('production', 'editOwnCustomer'),
@@ -485,6 +497,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('production', 'editOwnOrder'),
 ('sales', 'editOwnOrder'),
 ('Admin', 'editUsers'),
+('accounts', 'setCreditHold'),
 ('production', 'setCreditHold'),
 ('production', 'submitCustomerOrder'),
 ('sales', 'submitCustomerOrder'),
@@ -517,6 +530,7 @@ CREATE TABLE IF NOT EXISTS `auth_item_group` (
 --
 
 INSERT INTO `auth_item_group` (`code`, `name`, `created_at`, `updated_at`) VALUES
+('accounts', 'Accounts', 1452044624, 1452044624),
 ('customerOrders', 'Customer Orders', 1448580814, 1448580829),
 ('customers', 'Customers', 1448590000, 1448590000),
 ('production', 'Production', 1448580852, 1448580852),
@@ -2236,7 +2250,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Percent_ingredients` float DEFAULT NULL,
   `verify_notes` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=271 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=272 ;
 
 --
 -- Dumping data for table `customer_orders`
@@ -2260,7 +2274,8 @@ INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Typ
 (267, 'ORD3267', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
 (268, 'ORD3268', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
 (269, 'ORD3269', 908, 'test 2  Pellet - Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 34, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Order delivery from the Order Page', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '3730.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, NULL, '2015-12-09', NULL, NULL, NULL, 4, 1239, NULL, NULL, 100, 1),
-(270, 'ORD3270', 908, 'test 2  Pellet 19T', NULL, 19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 35, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '7087.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-12-01', NULL, NULL, NULL, 3, 1239, NULL, NULL, 100, 1);
+(270, 'ORD3270', 908, 'test 2  Pellet 19T', NULL, 19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 35, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '7087.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-12-01', NULL, NULL, NULL, 3, 1239, NULL, NULL, 100, 1),
+(271, 'ORD3271', 6, 'A. Bezzina Pellet 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-06', 36, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Must phone Alfie as truck leaves Mill, 0419 970 334. Auger Truck Only, take 4 Bulka bags', NULL, NULL, NULL, '216.39', NULL, NULL, NULL, NULL, '216.39', NULL, '2380.29', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2016-01-21', NULL, NULL, NULL, 4, 103, NULL, NULL, 100, 1);
 
 -- --------------------------------------------------------
 
@@ -2277,7 +2292,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=171 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=172 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -2324,7 +2339,8 @@ INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, 
 (167, '2015-12-01', 84, '0.002', NULL, NULL, 269),
 (168, '2015-12-01', 2, '99.998', NULL, NULL, 270),
 (169, '2015-12-01', 84, '0.002', NULL, NULL, 270),
-(170, '2015-12-01', 2, '3.000', NULL, NULL, 263);
+(170, '2015-12-01', 2, '3.000', NULL, NULL, 263),
+(171, '2016-01-06', 2, '100.000', NULL, NULL, 271);
 
 -- --------------------------------------------------------
 
@@ -2344,7 +2360,7 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `status` int(10) NOT NULL,
   `num_batches` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `delivery`
@@ -2356,7 +2372,8 @@ INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `deli
 (32, 'DEL00032', NULL, NULL, 55, '2015-11-19', NULL, 239, 1, 12),
 (33, 'DEL00033', NULL, NULL, 10, '2015-11-19', NULL, 265, 1, 2),
 (34, 'DEL00034', NULL, NULL, 10, '2015-12-14', NULL, 269, 2, 3),
-(35, 'DEL00035', NULL, NULL, 19, '2015-12-31', NULL, 270, 1, 4);
+(35, 'DEL00035', NULL, NULL, 19, '2015-12-31', NULL, 270, 1, 4),
+(36, 'DEL00036', NULL, NULL, 11, '2016-01-20', NULL, 271, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -2373,7 +2390,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `truck_id` int(5) DEFAULT NULL,
   `delivery_run_num` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=48 ;
 
 --
 -- Dumping data for table `delivery_load`
@@ -2385,7 +2402,8 @@ INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `de
 (41, 29, 11, '2015-11-12', NULL, 92, 1),
 (42, 34, 10, '2015-12-14', NULL, 92, 1),
 (43, 31, 10, '2015-11-12', NULL, 92, 1),
-(45, 35, 19, '2015-12-31', NULL, 92, 1);
+(45, 35, 19, '2015-12-31', NULL, 92, 1),
+(47, 36, 11, '2016-01-20', NULL, 92, 1);
 
 -- --------------------------------------------------------
 
@@ -2399,7 +2417,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=72 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
 
 --
 -- Dumping data for table `delivery_load_bin`
@@ -2419,7 +2437,8 @@ INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bi
 (66, 43, 368, 2),
 (67, 43, 369, 3),
 (70, 45, 456, 6.90909),
-(71, 45, 457, 12.0909);
+(71, 45, 457, 12.0909),
+(73, 47, 456, 11);
 
 -- --------------------------------------------------------
 
@@ -2432,7 +2451,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
 
 --
 -- Dumping data for table `delivery_load_trailer`
@@ -2448,7 +2467,9 @@ INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VAL
 (65, 42, 19),
 (66, 43, 19),
 (67, 43, 1),
-(69, 45, 19);
+(69, 45, 19),
+(72, 47, 19),
+(73, 47, 1);
 
 -- --------------------------------------------------------
 
@@ -2461,7 +2482,7 @@ CREATE TABLE IF NOT EXISTS `import_functions` (
   `name` varchar(100) DEFAULT NULL,
   `function` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `import_functions`
@@ -2474,7 +2495,8 @@ INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
 (4, 'Import Trailer Bins', 'importTrailerBinsCRM'),
 (5, 'import CRM Users', 'importCRMUsers'),
 (6, 'correctOwnerDetails', 'correctOwnerDetails'),
-(7, 'Import Ingredients', 'importIngredients');
+(7, 'Import Ingredients', 'importIngredients'),
+(8, 'Import Pricing Sheet', 'ImportPriceSheet');
 
 -- --------------------------------------------------------
 
@@ -2605,7 +2627,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `price_pT` decimal(8,2) DEFAULT NULL,
   `Mix_Percentage_Total` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=172 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=173 ;
 
 --
 -- Dumping data for table `products`
@@ -2613,7 +2635,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 
 INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp`, `Decimals_Supported`, `Default_Unit`, `Feed_notes`, `me`, `Mix_Margin`, `Mix_Margin_Base`, `Mix_Type`, `ndf`, `Product_Category`, `price_pT`, `Mix_Percentage_Total`) VALUES
 (1, 'Stock Pellet', 1000, NULL, 1, '0.00', 2, 1, NULL, '0.00', '318.00', '318.00', 2, '0.00', 1, '318.00', 100),
-(2, 'Production Pellet', 1002, NULL, 1, '0.00', 2, 1, NULL, '0.00', '373.00', '373.00', 2, '0.00', 1, '373.00', 0),
+(2, 'PRODUCTION PELLET  DP 12', 1002, NULL, 1, '0.00', 2, 1, 'Settings: Feeder 28t, Steam 82, Amps 450-500', '0.00', '373.00', '373.00', 2, '0.00', 1, '216.39', 100),
 (3, 'Performance Pellet', 1003, NULL, 1, '0.00', 2, 1, NULL, '0.00', '388.00', '388.00', 2, '0.00', 1, '388.00', 0),
 (4, 'Premium Pellet', 1004, NULL, 1, '0.00', 2, 1, NULL, '0.00', '389.00', '389.00', 2, '0.00', 1, '389.00', 0),
 (5, 'Premium Plus Pellet', 1005, NULL, 1, '0.00', 2, 1, NULL, '0.00', '391.00', '391.00', 2, '0.00', 1, '391.00', 0),
@@ -2779,7 +2801,8 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 (165, 'Orego Stim', 4105, NULL, 1, NULL, 2, 3, NULL, NULL, NULL, NULL, 1, NULL, 4, '0.00', 0),
 (166, 'Pharma-Lead/Close up Premix + Bovatec', 4106, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 4, '1634.00', 0),
 (167, 'Irwins Premix', 2040, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 3, '10.00', 0),
-(171, 'Lead Feed (Non Grain)', 3021, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, 2, '10.22', 100);
+(171, 'Lead Feed (Non Grain)', 3021, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, 2, '10.22', 100),
+(172, 'Irwins Mineral Mix', 4107, NULL, 1, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, NULL, 4, '0.00', 0);
 
 -- --------------------------------------------------------
 
@@ -2796,17 +2819,13 @@ CREATE TABLE IF NOT EXISTS `products_ingredients` (
   `modified_on` date DEFAULT NULL,
   `product_ingredient_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=476 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=514 ;
 
 --
 -- Dumping data for table `products_ingredients`
 --
 
 INSERT INTO `products_ingredients` (`id`, `created_on`, `product_id`, `ingredient_percent`, `modified_by`, `modified_on`, `product_ingredient_id`) VALUES
-(1, '2015-12-03', 2, '22.000', NULL, NULL, 16),
-(7, '2015-12-03', 2, '0.003', NULL, NULL, 19),
-(8, '2015-12-03', 2, '0.006', NULL, NULL, 47),
-(9, '2015-12-03', 2, '77.991', NULL, NULL, 15),
 (10, '2015-12-03', 1, '55.000', NULL, NULL, 15),
 (12, '2015-12-03', 1, '1.000', NULL, NULL, 17),
 (13, '2015-12-03', 1, '1.000', NULL, NULL, 36),
@@ -2971,7 +2990,16 @@ INSERT INTO `products_ingredients` (`id`, `created_on`, `product_id`, `ingredien
 (472, '2015-12-09', 66, '15.000', NULL, NULL, 32),
 (473, '2015-12-09', 66, '15.000', NULL, NULL, 42),
 (474, '2015-12-09', 66, '1.000', NULL, NULL, 37),
-(475, '2015-12-09', 66, '1.000', NULL, NULL, 92);
+(475, '2015-12-09', 66, '1.000', NULL, NULL, 92),
+(505, '0000-00-00', 2, '24.340', NULL, NULL, 167),
+(506, '0000-00-00', 2, '18.500', NULL, NULL, 15),
+(507, '0000-00-00', 2, '24.000', NULL, NULL, 32),
+(508, '0000-00-00', 2, '15.000', NULL, NULL, 33),
+(509, '0000-00-00', 2, '15.000', NULL, NULL, 16),
+(510, '0000-00-00', 2, '2.000', NULL, NULL, 37),
+(511, '0000-00-00', 2, '0.500', NULL, NULL, 123),
+(512, '0000-00-00', 2, '0.160', NULL, NULL, 172),
+(513, '0000-00-00', 2, '0.500', NULL, NULL, 92);
 
 -- --------------------------------------------------------
 
@@ -2985,20 +3013,130 @@ CREATE TABLE IF NOT EXISTS `products_prices` (
   `date_valid_from` date NOT NULL,
   `price_pt` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2048 ;
 
 --
 -- Dumping data for table `products_prices`
 --
 
 INSERT INTO `products_prices` (`id`, `product_id`, `date_valid_from`, `price_pt`) VALUES
-(3, 15, '2015-11-10', 33),
-(4, 15, '2015-11-03', 0),
-(5, 15, '2015-11-19', 44),
-(6, 9, '2015-12-01', 66),
-(7, 9, '2015-12-02', 77),
-(8, 16, '2015-10-25', 30),
-(9, 167, '2015-12-08', 10);
+(10, 17, '2015-01-01', 66),
+(1932, 15, '2015-07-01', 305),
+(1933, 16, '2015-07-01', 285),
+(1934, 17, '2015-07-01', 300),
+(1935, 18, '2015-07-01', 250),
+(1936, 19, '2015-07-01', 310),
+(1937, 20, '2015-07-01', 460),
+(1938, 21, '2015-07-01', 500),
+(1939, 22, '2015-07-01', 360),
+(1940, 23, '2015-07-01', 460),
+(1941, 24, '2015-07-01', 325),
+(1942, 25, '2015-07-01', 237),
+(1943, 26, '2015-07-01', 50),
+(1944, 27, '2015-07-01', 300),
+(1945, 28, '2015-07-01', 300),
+(1946, 29, '2015-07-01', 160),
+(1947, 30, '2015-07-01', 250),
+(1948, 31, '2015-07-01', 60),
+(1949, 32, '2015-07-01', 285),
+(1950, 33, '2015-07-01', 280),
+(1951, 34, '2015-07-01', 500),
+(1952, 35, '2015-07-01', 180),
+(1953, 36, '2015-07-01', 220),
+(1954, 37, '2015-07-01', 53),
+(1955, 38, '2015-07-01', 226),
+(1956, 39, '2015-07-01', 306),
+(1957, 40, '2015-07-01', 126),
+(1958, 41, '2015-07-01', 300),
+(1959, 42, '2015-07-01', 101),
+(1960, 43, '2015-07-01', 250),
+(1961, 45, '2015-07-01', 300),
+(1962, 46, '2015-07-01', 275),
+(1963, 47, '2015-07-01', 210),
+(1964, 49, '2015-07-01', 475),
+(1965, 50, '2015-07-01', 60),
+(1966, 52, '2015-07-01', 300),
+(1967, 70, '2015-07-01', 1040),
+(1968, 71, '2015-07-01', 12650),
+(1969, 72, '2015-07-01', 9020),
+(1970, 73, '2015-07-01', 9955),
+(1971, 74, '2015-07-01', 594),
+(1972, 75, '2015-07-01', 12375),
+(1973, 76, '2015-07-01', 25570),
+(1974, 77, '2015-07-01', 4637),
+(1975, 78, '2015-07-01', 15345),
+(1976, 79, '2015-07-01', 748),
+(1977, 80, '2015-07-01', 665),
+(1978, 81, '2015-07-01', 5445),
+(1979, 82, '2015-07-01', 363),
+(1980, 83, '2015-07-01', 6600),
+(1981, 84, '2015-07-01', 352),
+(1982, 85, '2015-07-01', 6820),
+(1983, 86, '2015-07-01', 13035),
+(1984, 87, '2015-07-01', 1865),
+(1985, 88, '2015-07-01', 7645),
+(1986, 89, '2015-07-01', 16550),
+(1987, 90, '2015-07-01', 8305),
+(1988, 92, '2015-07-01', 264),
+(1989, 93, '2015-07-01', 24255),
+(1990, 94, '2015-07-01', 7865),
+(1991, 95, '2015-07-01', 575),
+(1992, 96, '2015-07-01', 10615),
+(1993, 97, '2015-07-01', 3850),
+(1994, 98, '2015-07-01', 3850),
+(1995, 99, '2015-07-01', 2701),
+(1996, 100, '2015-07-01', 630),
+(1997, 101, '2015-07-01', 8321),
+(1998, 102, '2015-07-01', 8960),
+(1999, 103, '2015-07-01', 4928),
+(2000, 104, '2015-07-01', 1920),
+(2001, 105, '2015-07-01', 1558),
+(2002, 106, '2015-07-01', 1865),
+(2003, 107, '2015-07-01', 2045),
+(2004, 108, '2015-07-01', 2198),
+(2005, 109, '2015-07-01', 1593),
+(2006, 110, '2015-07-01', 1212),
+(2007, 111, '2015-07-01', 1384),
+(2008, 112, '2015-07-01', 1430),
+(2009, 113, '2015-07-01', 1865),
+(2010, 114, '2015-07-01', 2621),
+(2011, 115, '2015-07-01', 1574),
+(2012, 116, '2015-07-01', 1018),
+(2013, 117, '2015-07-01', 1065),
+(2014, 119, '2015-07-01', 2519),
+(2015, 120, '2015-07-01', 1562),
+(2016, 121, '2015-07-01', 1177),
+(2017, 122, '2015-07-01', 1190),
+(2018, 123, '2015-07-01', 854.7),
+(2019, 124, '2015-07-01', 598),
+(2020, 125, '2015-07-01', 1430),
+(2021, 126, '2015-07-01', 1197),
+(2022, 129, '2015-07-01', 1000),
+(2023, 131, '2015-07-01', 1645),
+(2024, 134, '2015-07-01', 940.5),
+(2025, 135, '2015-07-01', 13750),
+(2026, 137, '2015-07-01', 1424.5),
+(2027, 138, '2015-07-01', 2970),
+(2028, 139, '2015-07-01', 10340),
+(2029, 140, '2015-07-01', 285),
+(2030, 141, '2015-07-01', 5.8),
+(2031, 142, '2015-07-01', 1000),
+(2032, 147, '2015-07-01', 518),
+(2033, 149, '2015-07-01', 1113),
+(2034, 150, '2015-07-01', 11.22),
+(2035, 151, '2015-07-01', 1090),
+(2036, 152, '2015-07-01', 1815),
+(2037, 153, '2015-07-01', 1683.88),
+(2038, 154, '2015-07-01', 3617.4),
+(2039, 156, '2015-07-01', 3105),
+(2040, 159, '2015-07-01', 325),
+(2041, 160, '2015-07-01', 382),
+(2042, 161, '2015-07-01', 5100),
+(2043, 162, '2015-07-01', 1349.15),
+(2044, 163, '2015-07-01', 24.1),
+(2045, 164, '2015-07-01', 81.68),
+(2046, 166, '2015-07-01', 1634),
+(2047, 172, '2015-07-01', 100);
 
 -- --------------------------------------------------------
 
@@ -4477,7 +4615,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(128) DEFAULT NULL,
   `email_confirmed` smallint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `user`
@@ -4487,26 +4625,20 @@ INSERT INTO `user` (`id`, `username`, `firstname`, `surname`, `auth_key`, `passw
 (1, 'superadmin', 'Super Admin', ' Account', 'swt6wX19TxrZe-w3OtWulm3rPJx9ivZ2', '$2y$13$FkudpKwx5hbEEDgYT5Io7.P71DOVyiPVYNkjsT5zjJjfbBfQV/UHy', NULL, 1, 1, 1448576986, 1448598445, NULL, '', '', 1),
 (2, 'admin', 'Admin', 'Account', 'fq5NUjiiiY563CoyEt4NIPExDJHjjXx4', '$2y$13$5TCThdDbrHvxRS426od8aeZ1HWZf85NTQL4kADit1ZpF1QNthsLMW', NULL, 1, 0, 1448578078, 1448598421, '127.0.0.1', '', '', 0),
 (3, 'shamus.dougan@sapient-tech.com.au', 'Shamus', 'Dougan', 'svGWhZuJbWiZ_7Br4__VwaLYERMlYriQ', '$2y$13$o7I6dfH/YnrsQk2lnXavw.iPoUsZGppuOGbn8XpqXYQch33MCj3Ne', NULL, 1, 0, 1448589362, 1448598402, '127.0.0.1', '', 'shamus.dougan@sapient-tech.com.au', 1),
-(4, 'brad@irwinstockfeeds.com.au', 'Brad', 'Egan', '32iAKtH_ktPqukS9K3zhIHCb4jyjU3Ap', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600450, 1448601456, '127.0.0.1', '', 'brad@irwinstockfeeds.com.au', 1),
 (5, 'bryan@irwinstockfeeds.com.au', 'Bryan', 'Irwin', 'MWq8jI5z-BrOncI5g9DVyQ_mRfiFzymp', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600450, 1448601445, '127.0.0.1', '', 'bryan@irwinstockfeeds.com.au', 1),
-(7, 'davidwalters@irwinstockfeeds.com.au', 'David', 'Walters', 'Zg4kUzv3yPcdZhHFgzX43n3z0LPq7Z3u', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600450, 1448601433, '127.0.0.1', '', 'davidwalters@irwinstockfeeds.com.au', 1),
-(8, 'david@irwinstockfeeds.com.au', 'David', 'Walters', 'ptdrbg5XrUdAgMUxuwNnck7VljQMvFFN', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600450, 1448601420, '127.0.0.1', '', 'david@irwinstockfeeds.com.au', 1),
-(9, 'elle@irwinstockfeeds.com.au', 'Elle', 'Lockey', 'R6YWTbTHePbTVitN8LPY_U-AVEldbPS_', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600450, 1448601408, '127.0.0.1', '', 'elle@irwinstockfeeds.com.au', 1),
-(10, 'Georgina@irwinstockfeeds.com.au', 'Georgina', 'Account', '4IS2PW3H6nE5n--RPmDnSn2EOObaqftE', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600450, 1448601399, '127.0.0.1', '', 'Georgina@irwinstockfeeds.com.au', 1),
+(8, 'david@irwinstockfeeds.com.au', 'David', 'Walters', 'ptdrbg5XrUdAgMUxuwNnck7VljQMvFFN', '$2y$13$7nkWHjeliY8JvLqavfa8h.1.wDKdkyOJSI3mw8Iq3L8H/WrayU6gG', NULL, 1, 0, 1448600450, 1452046670, '127.0.0.1', '', 'david@irwinstockfeeds.com.au', 1),
+(9, 'elle@irwinstockfeeds.com.au', 'Elle', 'Lockey', 'R6YWTbTHePbTVitN8LPY_U-AVEldbPS_', '$2y$13$rMvHzKjchlhKJ/NkP1JT9eg6q.0qr.xQJVEKTXsBxYXPaN2O3PLaK', NULL, 1, 0, 1448600450, 1452046655, '127.0.0.1', '', 'elle@irwinstockfeeds.com.au', 1),
+(10, 'Georgina@irwinstockfeeds.com.au', 'Georgina', 'Account', '4IS2PW3H6nE5n--RPmDnSn2EOObaqftE', '$2y$13$rFvDqyhxcM7GOB18ywPD/uaZQpBuBAOdv1O1A5ROGTh3qm7h8F6J6', NULL, 1, 0, 1448600450, 1452046245, '127.0.0.1', '', 'Georgina@irwinstockfeeds.com.au', 1),
 (11, 'heath@irwinstockfeeds.com.au', 'Heath', 'Killeen', 'wum_PvJ7Da13hCqrXU1M_edxh_bYUk7R', '', NULL, 1, 0, 1448600450, 1448601388, '127.0.0.1', '', 'heath@irwinstockfeeds.com.au', 1),
 (13, 'jake@irwinstockfeeds.com.au', 'Jake', 'Frecklington', 'UXdkzJzI2u_PHncLln1CXTtWtK4_05Y3', '', NULL, 1, 0, 1448600450, 1448601368, '127.0.0.1', '', 'jake@irwinstockfeeds.com.au', 1),
-(15, 'julia@irwinstockfeeds.com.au', 'Julia', 'Poletti', 'fBqtPb4k2wIp9F_mSCpPYLCowvokH5RH', '', NULL, 1, 0, 1448600450, 1448601344, '127.0.0.1', '', 'julia@irwinstockfeeds.com.au', 1),
 (16, 'kim@irwinstockfeeds.com.au', 'Kim', 'Worrell', 'PwVMki4cLJ1xBFUhWDE-ZH--2krYkxJb', '', NULL, 1, 0, 1448600450, 1448601333, '127.0.0.1', '', 'kim@irwinstockfeeds.com.au', 1),
-(17, 'kristyevans@irwinstockfeeds.com.au', 'Kristy', 'Evans', 'rEXpcQTudcue1X7ywb9Ru7RTYktXsTmE', '', NULL, 1, 0, 1448600450, 1448601322, '127.0.0.1', '', 'kristyevans@irwinstockfeeds.com.au', 1),
-(18, 'Langlang@irwinstockfeeds.com.au', 'Langlang', 'Account', 'aBfOhEoDZ0APXFhReMAVdsFMjsubx7cv', '', NULL, 1, 0, 1448600450, 1448601312, '127.0.0.1', '', 'Langlang@irwinstockfeeds.com.au', 1),
-(19, 'madeleine@irwinstockfeeds.com.au', 'Madeleine', 'Pinnuck', 'AWayFOFDtZVHc2_MgxcBs5ZD2JUWel-v', '', NULL, 1, 0, 1448600450, 1448601301, '127.0.0.1', '', 'madeleine@irwinstockfeeds.com.au', 1),
-(20, 'mal@irwinstockfeeds.com.au', 'Mal', 'Rogers', 'c40rq0stX5Cjm5fuq-h2WbYf17tDL02f', '', NULL, 1, 0, 1448600450, 1448601228, '127.0.0.1', '', 'mal@irwinstockfeeds.com.au', 1),
-(22, 'Michael.Hoolahan@irwinstockfeeds.com.au', 'Michael', 'Hoolihan', 'CE4zC3jqdyQdZA_hX0rpV2NuvjIvJAO3', '', NULL, 1, 0, 1448600450, 1448601108, '127.0.0.1', '', 'Michael.Hoolahan@irwinstockfeeds.com.au', 1),
-(23, 'molly@irwinstockfeeds.com.au', 'Molly', 'Pinnuck', 'dCKo0I4Hlo8wYlgM1XD5qaI5qbJQjNHk', '', NULL, 1, 0, 1448600450, 1448601067, '127.0.0.1', '', 'molly@irwinstockfeeds.com.au', 1),
-(24, 'pete@irwinstockfeeds.com.au', 'Peter', 'Lowry', 'WF_CHs3rD0fz9lmw3UH40Yv9zNmjHzyK', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600451, 1448601005, '127.0.0.1', '', 'pete@irwinstockfeeds.com.au', 1),
-(26, 'shane@irwinstockfeeds.com.au', 'Shane', 'Doherty', 'c_9OdM41ZiqtBDA8ZZGLidifN5MiDWQr', '', NULL, 1, 0, 1448600451, 1448601500, '127.0.0.1', '', 'shane@irwinstockfeeds.com.au', 1),
+(19, 'madeleine@irwinstockfeeds.com.au', 'Madeleine', 'Pinnuck', 'AWayFOFDtZVHc2_MgxcBs5ZD2JUWel-v', '$2y$13$qdtOykUtXercyQphkXjuZeqI/EpU6ND2oAhcAJ9KC5MCxxKp3EGA.', NULL, 1, 0, 1448600450, 1452046227, '127.0.0.1', '', 'madeleine@irwinstockfeeds.com.au', 1),
+(23, 'molly@irwinstockfeeds.com.au', 'Molly', 'Pinnuck', 'dCKo0I4Hlo8wYlgM1XD5qaI5qbJQjNHk', '$2y$13$YZbj2ohBRXc2Vp8HrQKjXOgrqK/fFss7dA5Zn0CnUukNU5BkTruP6', NULL, 1, 0, 1448600450, 1452046448, '127.0.0.1', '', 'molly@irwinstockfeeds.com.au', 1),
+(24, 'pete@irwinstockfeeds.com.au', 'Peter', 'Lowry', 'WF_CHs3rD0fz9lmw3UH40Yv9zNmjHzyK', '$2y$13$rV9KudncuO1Smycrq6cKY.MRotO38WBxL02/8z8rj.ZXrxa.WdG7u', NULL, 1, 0, 1448600451, 1452046424, '127.0.0.1', '', 'pete@irwinstockfeeds.com.au', 1),
+(26, 'shane@irwinstockfeeds.com.au', 'Shane', 'Doherty', 'c_9OdM41ZiqtBDA8ZZGLidifN5MiDWQr', '$2y$13$391v9Ibe.3a6bqlwHKq2quvYQ/zowt.pztDjUPGsA8pvQNdPWHBky', NULL, 1, 0, 1448600451, 1452046400, '127.0.0.1', '', 'shane@irwinstockfeeds.com.au', 1),
 (28, 'trevor@irwinstockfeeds.com.au', 'Trevor', 'Paul', 'qdKxichfStP2FGNDghYrfO6gbeO3xHZ_', '', NULL, 1, 0, 1448600451, 1448600926, '127.0.0.1', '', 'trevor@irwinstockfeeds.com.au', 1),
-(29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', 'lMbXMYi0DEzkacsNaYh3yd5CM7MionK1', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600451, 1448843671, '127.0.0.1', '', 'vicky@irwinstockfeeds.com.au', 1);
+(29, 'vicky@irwinstockfeeds.com.au', 'Vicky', 'Kardas', 'lMbXMYi0DEzkacsNaYh3yd5CM7MionK1', '$2y$13$pqv0cdxlWRxHR3zOB6JpmOuSolwjZOkQAd/QXEN1qIFWh.7aCYdO6', NULL, 1, 0, 1448600451, 1448843671, '127.0.0.1', '', 'vicky@irwinstockfeeds.com.au', 1),
+(30, 'robin@irwinstockfeeds.com.au', 'Robin', 'Davies', 'TznlhR_S_6Dzoa6IYw1eucIYzNWA3rmp', '$2y$13$g3CbqqGpkGLwp3OcdsOv2eiiEfIritN21iif9LqLDBnfrMLHHOQ1S', NULL, 1, 0, 1452046031, 1452046031, '127.0.0.1', '', 'robin@irwinstockfeeds.com.au', 1);
 
 -- --------------------------------------------------------
 
@@ -4551,7 +4683,7 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `testWeight` float DEFAULT NULL,
   `screenings` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `weighbridge_ticket`
@@ -4560,7 +4692,8 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
 INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_id`, `date`, `driver`, `smo_number`, `gross`, `tare`, `net`, `Notes`, `Moisture`, `Protein`, `testWeight`, `screenings`) VALUES
 (17, 'WB00001', 34, 92, '2015-12-14', 'Shamus', '1234', 10, 2, 8, 'blah blah blah', NULL, NULL, NULL, NULL),
 (18, 'WB00018', 29, 92, '2015-11-12', 'Shamus', '12345', 15, 2, 13, 'again blah blah', NULL, NULL, NULL, NULL),
-(19, 'WB00019', 31, 92, '2015-11-12', 'Joe', '1234', 14, 2, 12, '', NULL, NULL, NULL, NULL);
+(19, 'WB00019', 31, 92, '2015-11-12', 'Joe', '1234', 14, 2, 12, '', NULL, NULL, NULL, NULL),
+(20, 'WB00020', 36, 92, '2016-01-20', 'Shamus', '1234', 1, 2, 3, 'blah', 1, 1, 1, 1);
 
 --
 -- Constraints for dumped tables
