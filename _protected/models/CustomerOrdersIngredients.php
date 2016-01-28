@@ -33,7 +33,7 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
     {
         return [
             [['created_on', 'ingredient_id', 'ingredient_percent', 'order_id'], 'required'],
-            [['created_on', 'modified_on'], 'safe'],
+            [['created_on', 'modified_on', 'price_pT'], 'safe'],
             [['ingredient_id', 'modified_by', 'order_id'], 'integer'],
             [['ingredient_percent'], 'number']
         ];
@@ -52,6 +52,7 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
             'modified_by' => 'Modified By',
             'modified_on' => 'Modified On',
             'order_id' => 'Order ID',
+            'price_pT' => 'Price p/T',
         ];
     }
     
@@ -70,6 +71,18 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
 	
 	public function getWeightedCost()
 	{
-		return ($this->ingredient_percent /100) *$this->product->price_pT;
+		return ($this->ingredient_percent /100) * $this->product->price_pT;
 	}
+	
+	/**
+	* This function takes the order ingredient object, performs a lookup on the product and updates the
+	* unit price based on the the created on date.
+	* 
+	* @return
+	*/
+	public function updatePrice()
+	{
+		$this->price_pT = $this->product->getCurrentPrice(strtotime($this->created_on));
+	}
+	
 }

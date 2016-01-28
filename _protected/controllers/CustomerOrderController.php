@@ -574,6 +574,10 @@ class CustomerOrderController extends Controller
 		//Form has been submitted process accordingly
 		if ($orderIngredient->load(Yii::$app->request->post()))
 			{
+				
+			//we also want to look up the product price and add this to the ingredient
+			$orderIngredient->updatePrice();
+			
 			if($orderIngredient->save()) 
 				{
 				return print_r($orderIngredient);

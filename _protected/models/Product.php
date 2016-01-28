@@ -127,7 +127,7 @@ class Product extends \yii\db\ActiveRecord
 		return Product::find()->where(['Status' => Product::ACTIVE]);
 	}
 
-	public function getCurrentPrice($priceDate = null, $recurseCheck = false)
+	public function getCurrentPrice($priceDate = null, $recurseCheck = 0)
 	{
 		if($priceDate == null)
 			{
@@ -151,16 +151,22 @@ class Product extends \yii\db\ActiveRecord
 				$this->price_pT = 0;	
 			}
 		}
-		elseif($recurseCheck == false && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
+		elseif($recurseCheck < 2 && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
 			{
 				
 			$sum = 0;
 			foreach($this->ingredients as $productIngredient)
 				{
+					
+					
+					
 				$percent = $productIngredient->ingredient_percent;
-				$productIngredient->ingredient->getCurrentPrice($priceDate, true);
-				$price = $productIngredient->ingredient->price_pT;
+				$price = $productIngredient->ingredient->getCurrentPrice($priceDate, $recurseCheck++);
 				$sum += ($price * ($percent/100));
+				
+				
+				
+				
 				}
 				
 			$this->price_pT = $sum;

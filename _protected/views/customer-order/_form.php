@@ -47,7 +47,7 @@ function getIngredientSum()
        		}
 		});
 	$(\"#".Html::getInputId($model, 'Percent_ingredients')."\").val(sum);
-	$('tfoot td:eq(1)').text(sum);
+	$('tfoot td:eq(2)').text(sum);
 	
 	
 	return sum;
@@ -66,6 +66,7 @@ function getIngredientWeightedCost()
 		});
 	$(\"#".Html::getInputId($model, 'Price_pT_Base')."-disp\").maskMoney('mask',weightedCost);	
 	$(\"#".Html::getInputId($model, 'Price_pT_Base')."\").val(weightedCost);
+	$('tfoot td:eq(4)').text(weightedCost.toFixed(2));
 	
 	return weightedCost;
 }
@@ -631,13 +632,11 @@ $this->registerJs("$('.sap_print').on('click',function(){
 			
 		    $gridColumns = 
 		    	[
-			    	[
-			    		'attribute' => 'product.Name',
-			    		'pageSummary' => "Total",
-			    	],
-			    
+		    		'product.Product_ID',
+			    	'product.Name',
 			    	[
 						'attribute' => 'Percent_ingredients',
+						'label' => 'Ingredient Percent',
         				'pageSummary'=>true,
 						'format'=>'raw',
 						'hAlign'=>'right',
@@ -652,13 +651,9 @@ $this->registerJs("$('.sap_print').on('click',function(){
 								}
         					
     						},
-
-
-        				
-        				
 					],
 					[
-			    		'attribute' => 'product.price_pT',
+			    		'attribute' => 'price_pT',
 			    		'contentOptions' => ['class' => 'pricePerTon'],
 			    		'hAlign'=>'right',
 			    	],
@@ -672,6 +667,8 @@ $this->registerJs("$('.sap_print').on('click',function(){
 						'contentOptions' => ['class' => 'weightedCost'],
 						'pageSummary' => True,
 					],
+					//'created_on',
+					//'modified_on',
 			    	[
 			    	'class' => '\kartik\grid\ActionColumn',
 			    	'template' => '{delete}',

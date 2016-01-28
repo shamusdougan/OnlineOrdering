@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2016 at 01:19 PM
+-- Generation Time: Jan 28, 2016 at 04:39 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -2250,32 +2250,28 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Percent_ingredients` float DEFAULT NULL,
   `verify_notes` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=272 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
 INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`, `verify_notes`) VALUES
-(232, 'ORD3232', 6, 'A. Bezzina Mix - Custom 2T', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 69, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasdf', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '750.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-26', NULL, NULL, NULL, 4, 103, NULL, NULL, 100, 0),
-(235, 'ORD3235', 559, 'Mark Lyons Mix - Custom 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-09-02', 70, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-09-23', NULL, NULL, NULL, 4, 394, NULL, NULL, 100, 0),
-(239, 'ORD3239', 4, 'A J & AG Lamb- Lamb 2 Mix 55T', NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-22', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blah blah blah', NULL, NULL, NULL, '381.10', NULL, NULL, NULL, NULL, '381.10', NULL, '20960.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 2, 1018, NULL, NULL, 100, 0),
-(242, 'ORD3242', 596, 'MJ & DR Whitford Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-28', 29, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '412.70', NULL, NULL, NULL, NULL, '412.70', NULL, '4539.70', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-31', NULL, NULL, NULL, 3, 227, NULL, NULL, 100, 0),
-(252, 'ORD3235', 559, 'Mark Lyons Mix 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-29', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'asdfasf asdfas f ', NULL, NULL, NULL, '375.00', NULL, NULL, NULL, NULL, '375.00', NULL, '4125.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, '2015-10-29', NULL, NULL, NULL, 1, 394, NULL, NULL, 100, 0),
-(253, 'ORD3253', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-10-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(254, 'ORD3254', 61, 'Andrew Fyfe Commodity 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-11', 31, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Take a right turn', NULL, NULL, NULL, '294.25', NULL, NULL, NULL, NULL, '294.25', NULL, '2942.50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, NULL, '2015-11-12', NULL, NULL, NULL, 4, 611, NULL, NULL, 100, 0),
-(255, 'ORD3255', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(256, 'ORD3256', 3, 'A & W Cotchins Custom 15T', NULL, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-13', NULL, NULL, NULL, 2, 1224, NULL, NULL, 100, 1),
-(257, 'ORD3257', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-13', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(263, 'ORD3263', 61, 'Andrew Fyfe Pellet 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', NULL, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, '296.44', NULL, NULL, NULL, NULL, '296.44', NULL, '3260.84', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-11-16', NULL, NULL, NULL, 1, 408, NULL, NULL, 100, 1),
-(264, 'ORD3264', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(265, 'ORD3265', 1, 'A & CJ Huts - Aristin Park (1) Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-16', 33, '9.47', 25, NULL, 'because', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Call Arie 0428 311 370 prior to delivery', NULL, NULL, NULL, '264.00', NULL, NULL, NULL, NULL, '264.00', NULL, '2390.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2015-11-20', NULL, NULL, NULL, 3, 98, NULL, NULL, 100, 1),
-(266, 'ORD3266', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(267, 'ORD3267', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-11-27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(268, 'ORD3268', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(269, 'ORD3269', 908, 'test 2  Pellet - Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 34, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Order delivery from the Order Page', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '3730.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, NULL, '2015-12-09', NULL, NULL, NULL, 4, 1239, NULL, NULL, 100, 1),
-(270, 'ORD3270', 908, 'test 2  Pellet 19T', NULL, 19, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2015-12-01', 35, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, '373.00', NULL, NULL, NULL, NULL, '373.00', NULL, '7087.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2015-12-01', NULL, NULL, NULL, 3, 1239, NULL, NULL, 100, 1),
-(271, 'ORD3271', 6, 'A. Bezzina Pellet 11T', NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-06', 36, '0.00', NULL, NULL, '', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Must phone Alfie as truck leaves Mill, 0419 970 334. Auger Truck Only, take 4 Bulka bags', NULL, NULL, NULL, '216.39', NULL, NULL, NULL, NULL, '216.39', NULL, '2380.29', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2016-01-21', NULL, NULL, NULL, 4, 103, NULL, NULL, 100, 1);
+(1, 'ORD3001', 6, 'A. Bezzina Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, '2.00', 10, NULL, 'test discount', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Must phone Alfie as truck leaves Mill, 0419 970 334. Auger Truck Only, take 4 Bulka bags', NULL, NULL, NULL, '500.00', NULL, NULL, NULL, NULL, '500.00', NULL, '4900.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2016-01-31', NULL, NULL, NULL, 1, 103, NULL, NULL, 100, 1),
+(2, 'ORD3002', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(3, 'ORD3003', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(4, 'ORD3004', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(5, 'ORD3005', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(6, 'ORD3006', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(7, 'ORD3007', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(8, 'ORD3008', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(9, 'ORD3009', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(10, 'ORD3010', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(11, 'ORD3011', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(12, 'ORD3012', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(13, 'ORD3013', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(14, 'ORD3014', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
+(15, 'ORD3015', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -2291,56 +2287,17 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `modified_by` int(5) DEFAULT NULL,
   `modified_on` date DEFAULT NULL,
   `order_id` int(5) NOT NULL,
+  `price_pT` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=172 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
 --
 
-INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, `ingredient_percent`, `modified_by`, `modified_on`, `order_id`) VALUES
-(124, '2015-09-02', 2, '100.000', NULL, NULL, 230),
-(125, '2015-09-02', 12, '100.000', NULL, NULL, 232),
-(126, '2015-09-02', 71, '100.000', NULL, NULL, 234),
-(127, '2015-09-02', 12, '100.000', NULL, NULL, 235),
-(128, '2015-10-22', 54, '100.000', NULL, NULL, 239),
-(129, '2015-10-27', 53, '100.000', NULL, NULL, 240),
-(130, '2015-10-28', 58, '100.000', NULL, NULL, 242),
-(131, '2015-09-02', 12, '100.000', NULL, NULL, 245),
-(132, '2015-09-02', 12, '100.000', NULL, NULL, 246),
-(133, '2015-09-02', 12, '100.000', NULL, NULL, 247),
-(134, '2015-09-02', 12, '100.000', NULL, NULL, 248),
-(135, '2015-10-28', 58, '100.000', NULL, NULL, 249),
-(136, '2015-10-28', 58, '100.000', NULL, NULL, 250),
-(137, '2015-10-22', 54, '100.000', NULL, NULL, 251),
-(138, '2015-09-02', 12, '100.000', NULL, NULL, 252),
-(139, '2015-11-11', 15, '44.000', NULL, NULL, 254),
-(140, '2015-11-11', 16, '53.000', NULL, NULL, 254),
-(141, '2015-11-11', 17, '3.000', NULL, NULL, 254),
-(142, '2015-11-12', 158, '100.000', NULL, NULL, 255),
-(143, '2015-11-13', 2, '100.000', NULL, NULL, 256),
-(144, '2015-11-11', 15, '44.000', NULL, NULL, 258),
-(145, '2015-11-11', 16, '53.000', NULL, NULL, 258),
-(146, '2015-11-11', 17, '3.000', NULL, NULL, 258),
-(151, '2015-11-16', 1, '99.005', NULL, NULL, 259),
-(152, '2015-11-16', 14, '0.995', NULL, NULL, 259),
-(153, '2015-11-11', 15, '44.000', NULL, NULL, 260),
-(154, '2015-11-11', 16, '53.000', NULL, NULL, 260),
-(155, '2015-11-11', 17, '3.000', NULL, NULL, 260),
-(156, '2015-11-11', 15, '44.000', NULL, NULL, 262),
-(157, '2015-11-11', 16, '53.000', NULL, NULL, 262),
-(158, '2015-11-11', 17, '3.000', NULL, NULL, 262),
-(159, '2015-11-11', 15, '44.000', NULL, NULL, 263),
-(160, '2015-11-11', 16, '53.000', NULL, NULL, 263),
-(162, '2015-11-16', 1, '100.000', NULL, NULL, 264),
-(164, '2015-11-16', 92, '99.993', NULL, NULL, 265),
-(165, '2015-11-16', 1, '0.007', NULL, NULL, 265),
-(166, '2015-12-01', 2, '99.998', NULL, NULL, 269),
-(167, '2015-12-01', 84, '0.002', NULL, NULL, 269),
-(168, '2015-12-01', 2, '99.998', NULL, NULL, 270),
-(169, '2015-12-01', 84, '0.002', NULL, NULL, 270),
-(170, '2015-12-01', 2, '3.000', NULL, NULL, 263),
-(171, '2016-01-06', 2, '100.000', NULL, NULL, 271);
+INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, `ingredient_percent`, `modified_by`, `modified_on`, `order_id`, `price_pT`) VALUES
+(6, '2016-01-28', 3, '95.000', NULL, NULL, 1, 282.142),
+(7, '2016-01-28', 92, '5.000', NULL, NULL, 1, 264);
 
 -- --------------------------------------------------------
 
@@ -2360,20 +2317,7 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `status` int(10) NOT NULL,
   `num_batches` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=37 ;
-
---
--- Dumping data for table `delivery`
---
-
-INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`, `num_batches`) VALUES
-(29, 'DEL00029', NULL, NULL, 11, '2015-11-12', NULL, 242, 2, 3),
-(31, 'DEL00031', NULL, NULL, 10, '2015-11-12', NULL, 254, 2, 2),
-(32, 'DEL00032', NULL, NULL, 55, '2015-11-19', NULL, 239, 1, 12),
-(33, 'DEL00033', NULL, NULL, 10, '2015-11-19', NULL, 265, 1, 2),
-(34, 'DEL00034', NULL, NULL, 10, '2015-12-14', NULL, 269, 2, 3),
-(35, 'DEL00035', NULL, NULL, 19, '2015-12-31', NULL, 270, 1, 4),
-(36, 'DEL00036', NULL, NULL, 11, '2016-01-20', NULL, 271, 2, 3);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2390,20 +2334,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `truck_id` int(5) DEFAULT NULL,
   `delivery_run_num` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=48 ;
-
---
--- Dumping data for table `delivery_load`
---
-
-INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `delivery_completed_on`, `truck_id`, `delivery_run_num`) VALUES
-(37, 32, 55, '2015-11-19', NULL, 92, 1),
-(38, 33, 10, '2015-11-19', NULL, 92, 1),
-(41, 29, 11, '2015-11-12', NULL, 92, 1),
-(42, 34, 10, '2015-12-14', NULL, 92, 1),
-(43, 31, 10, '2015-11-12', NULL, 92, 1),
-(45, 35, 19, '2015-12-31', NULL, 92, 1),
-(47, 36, 11, '2016-01-20', NULL, 92, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2417,28 +2348,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
-
---
--- Dumping data for table `delivery_load_bin`
---
-
-INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
-(46, 37, 456, 16),
-(47, 37, 457, 28),
-(48, 37, 380, 11),
-(49, 38, 381, 8),
-(50, 38, 383, 2),
-(61, 41, 456, 11),
-(62, 42, 456, 10),
-(63, 43, 365, 0),
-(64, 43, 366, 3),
-(65, 43, 367, 2),
-(66, 43, 368, 2),
-(67, 43, 369, 3),
-(70, 45, 456, 6.90909),
-(71, 45, 457, 12.0909),
-(73, 47, 456, 11);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2451,25 +2361,7 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
-
---
--- Dumping data for table `delivery_load_trailer`
---
-
-INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
-(55, 37, 19),
-(56, 37, 4),
-(57, 38, 19),
-(58, 38, 4),
-(63, 41, 19),
-(64, 41, 1),
-(65, 42, 19),
-(66, 43, 19),
-(67, 43, 1),
-(69, 45, 19),
-(72, 47, 19),
-(73, 47, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2627,7 +2519,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `price_pT` decimal(8,2) DEFAULT NULL,
   `Mix_Percentage_Total` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=173 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=175 ;
 
 --
 -- Dumping data for table `products`
@@ -2636,7 +2528,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp`, `Decimals_Supported`, `Default_Unit`, `Feed_notes`, `me`, `Mix_Margin`, `Mix_Margin_Base`, `Mix_Type`, `ndf`, `Product_Category`, `price_pT`, `Mix_Percentage_Total`) VALUES
 (1, 'Stock Pellet', 1000, NULL, 1, '0.00', 2, 1, NULL, '0.00', '318.00', '318.00', 2, '0.00', 1, '318.00', 100),
 (2, 'PRODUCTION PELLET  DP 12', 1002, NULL, 1, '0.00', 2, 1, 'Settings: Feeder 28t, Steam 82, Amps 450-500', '0.00', '373.00', '373.00', 2, '0.00', 1, '216.39', 100),
-(3, 'Performance Pellet', 1003, NULL, 1, '0.00', 2, 1, NULL, '0.00', '388.00', '388.00', 2, '0.00', 1, '388.00', 0),
+(3, 'Performance Pellet DP14', 1003, NULL, 1, '0.00', 2, 1, '', '0.00', '388.00', '388.00', 2, '0.00', 1, '282.14', 100),
 (4, 'Premium Pellet', 1004, NULL, 1, '0.00', 2, 1, NULL, '0.00', '389.00', '389.00', 2, '0.00', 1, '389.00', 0),
 (5, 'Premium Plus Pellet', 1005, NULL, 1, '0.00', 2, 1, NULL, '0.00', '391.00', '391.00', 2, '0.00', 1, '391.00', 0),
 (6, 'Calf Starter Pellet', 1006, NULL, 1, '0.00', 2, 1, NULL, '0.00', '451.00', '451.00', 2, '0.00', 1, '451.00', 0),
@@ -2697,7 +2589,7 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 (61, '20% Calf Beginner Meal', 3011, NULL, 1, '18.89', 2, 1, NULL, '11.45', '92.69', '92.69', 2, '17.60', 2, '11.27', 100),
 (62, '18% Calf Rearer Meal', 3012, NULL, 1, '16.55', 0, 1, NULL, '11.58', '104.53', '104.53', 2, '18.52', 2, '25.00', 100),
 (63, 'Lead Feed Meal', 3013, NULL, 1, '15.86', 2, 1, NULL, '9.49', '84.80', '84.80', 2, '13.14', 2, '10.22', 100),
-(64, 'Irwin Blend', 3015, NULL, 1, '13.50', 2, 1, NULL, '8.50', NULL, NULL, 2, '22.50', 2, '203.50', 0),
+(64, 'Irwin Blend', 3015, NULL, 1, '13.50', 2, 1, '', '8.50', NULL, NULL, 2, '22.50', 2, '209.70', 100),
 (65, 'Palm Blend Mix', 3016, NULL, 1, '9.55', 2, 1, NULL, '8.75', '83.00', '83.00', 2, '17.00', 2, '7.50', 100),
 (66, 'Spring Special', 3017, NULL, 1, '11.23', 2, 1, NULL, '10.67', '80.00', '80.00', 2, '10.56', 2, '16.12', 100),
 (67, 'Lupin Blend', 3018, NULL, 1, '28.50', 0, 1, NULL, '12.50', NULL, NULL, 2, '25.00', 2, '410.00', 0),
@@ -2802,7 +2694,9 @@ INSERT INTO `products` (`id`, `Name`, `Product_ID`, `Description`, `Status`, `cp
 (166, 'Pharma-Lead/Close up Premix + Bovatec', 4106, NULL, 1, NULL, 2, 1, NULL, NULL, NULL, NULL, 1, NULL, 4, '1634.00', 0),
 (167, 'Irwins Premix', 2040, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 3, '10.00', 0),
 (171, 'Lead Feed (Non Grain)', 3021, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, 2, '10.22', 100),
-(172, 'Irwins Mineral Mix', 4107, NULL, 1, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, NULL, 4, '0.00', 0);
+(172, 'Irwins Mineral Mix', 4107, NULL, 1, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, NULL, 4, '0.00', 0),
+(173, 'Energy Blend', 4108, NULL, 1, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, NULL, 4, '0.00', 0),
+(174, 'Rumensin 100', 4109, NULL, 1, NULL, NULL, NULL, '', NULL, NULL, NULL, 1, NULL, 4, '0.00', 0);
 
 -- --------------------------------------------------------
 
@@ -2819,7 +2713,7 @@ CREATE TABLE IF NOT EXISTS `products_ingredients` (
   `modified_on` date DEFAULT NULL,
   `product_ingredient_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=514 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=533 ;
 
 --
 -- Dumping data for table `products_ingredients`
@@ -2999,7 +2893,24 @@ INSERT INTO `products_ingredients` (`id`, `created_on`, `product_id`, `ingredien
 (510, '0000-00-00', 2, '2.000', NULL, NULL, 37),
 (511, '0000-00-00', 2, '0.500', NULL, NULL, 123),
 (512, '0000-00-00', 2, '0.160', NULL, NULL, 172),
-(513, '0000-00-00', 2, '0.500', NULL, NULL, 92);
+(513, '0000-00-00', 2, '0.500', NULL, NULL, 92),
+(516, '2016-01-28', 64, '10.000', NULL, NULL, 36),
+(517, '2016-01-28', 64, '10.000', NULL, NULL, 28),
+(518, '2016-01-28', 64, '35.000', NULL, NULL, 40),
+(519, '2016-01-28', 64, '20.000', NULL, NULL, 32),
+(520, '2016-01-28', 64, '10.000', NULL, NULL, 29),
+(521, '2016-01-28', 64, '15.000', NULL, NULL, 33),
+(522, '2016-01-28', 3, '15.000', NULL, NULL, 64),
+(523, '2016-01-28', 3, '24.440', NULL, NULL, 15),
+(524, '2016-01-28', 3, '24.000', NULL, NULL, 32),
+(525, '2016-01-28', 3, '12.000', NULL, NULL, 16),
+(526, '2016-01-28', 3, '1.500', NULL, NULL, 37),
+(527, '2016-01-28', 3, '0.300', NULL, NULL, 149),
+(528, '2016-01-28', 3, '1.000', NULL, NULL, 123),
+(529, '2016-01-28', 3, '0.160', NULL, NULL, 172),
+(530, '2016-01-28', 3, '0.600', NULL, NULL, 100),
+(531, '2016-01-28', 3, '1.000', NULL, NULL, 92),
+(532, '2016-01-28', 3, '20.000', NULL, NULL, 33);
 
 -- --------------------------------------------------------
 
@@ -3013,7 +2924,7 @@ CREATE TABLE IF NOT EXISTS `products_prices` (
   `date_valid_from` date NOT NULL,
   `price_pt` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2048 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2084 ;
 
 --
 -- Dumping data for table `products_prices`
@@ -3136,7 +3047,43 @@ INSERT INTO `products_prices` (`id`, `product_id`, `date_valid_from`, `price_pt`
 (2044, 163, '2015-07-01', 24.1),
 (2045, 164, '2015-07-01', 81.68),
 (2046, 166, '2015-07-01', 1634),
-(2047, 172, '2015-07-01', 100);
+(2047, 172, '2015-07-01', 100),
+(2048, 15, '2016-01-22', 306),
+(2049, 167, '2015-07-01', 2701),
+(2050, 42, '2015-12-01', 101),
+(2051, 40, '2015-12-01', 127),
+(2052, 16, '2015-12-01', 260),
+(2053, 31, '2015-12-01', 60),
+(2054, 38, '2015-12-01', 226),
+(2055, 75, '2015-12-01', 12375),
+(2056, 149, '2015-12-01', 1113),
+(2057, 23, '2015-12-01', 430),
+(2058, 28, '2015-12-01', 300),
+(2059, 45, '2015-12-01', 215),
+(2060, 80, '2015-12-01', 627),
+(2061, 32, '2015-12-01', 285),
+(2062, 173, '2015-12-01', 275),
+(2063, 47, '2015-12-01', 220),
+(2064, 41, '2015-12-01', 300),
+(2065, 167, '2015-12-01', 2701),
+(2066, 37, '2015-12-01', 53),
+(2067, 129, '2015-12-01', 1000),
+(2068, 20, '2015-12-01', 450),
+(2069, 19, '2015-12-01', 315),
+(2070, 33, '2015-12-01', 275),
+(2071, 89, '2015-12-01', 16550),
+(2072, 117, '2015-12-01', 944),
+(2073, 26, '2015-12-01', 50),
+(2074, 27, '2015-12-01', 250),
+(2075, 36, '2015-12-01', 210),
+(2076, 174, '2015-12-01', 7271),
+(2077, 92, '2015-12-01', 264),
+(2078, 74, '2015-12-01', 594),
+(2079, 100, '2015-12-01', 970),
+(2080, 17, '2015-12-01', 300),
+(2081, 94, '2015-12-01', 7865),
+(2082, 95, '2015-12-01', 575),
+(2083, 15, '2015-12-01', 300);
 
 -- --------------------------------------------------------
 

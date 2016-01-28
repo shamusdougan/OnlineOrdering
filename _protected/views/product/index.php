@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use app\models\Lookup;
 use vendor\actionButtons\actionButtonsWidget;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProductSearch */
@@ -11,6 +12,84 @@ use vendor\actionButtons\actionButtonsWidget;
 
 $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
+
+$gridColumns = 
+	[
+		 
+
+		'Product_ID',
+		[
+		'attribute' => 'Name',
+		'format' => 'raw',
+		'value' => function ($data)
+			{
+				return html::a($data->Name, "/product/update?id=".$data->id);
+				},
+
+		],
+	    [
+	    'attribute' => 'Status',
+	    'value' => function ($data)
+	    	{
+			return Lookup::item($data->Status, "PRODUCT_STATUS");
+			},
+		'filter' => Lookup::items("PRODUCT_STATUS"),
+	    ],
+
+	    'Description',
+	    // 'cp',
+	    // 'Decimals_Supported',
+	    // 'Default_Unit',
+	    // 'Feed_notes',
+	    [
+	    'attribute' => 'price_pT',
+	    'value' => function ($data)
+	    	{
+			$data->getCurrentPrice();
+			return number_format($data->price_pT, 2);
+			},
+	    'hAlign' => 'right',
+	    ],
+		    // 'me',
+		    // 'Mix_Margin',
+		    // 'Mix_Margin_Base',
+		    // 'Mix_Type',
+		    // 'ndf',
+	    [
+	        'attribute' => 'Product_Category',
+	        'value' => function($data) {
+				return Lookup::item($data->Product_Category, "ORDER_CATEGORY");
+				},
+			'filter' => Lookup::items("ORDER_CATEGORY"),
+		],
+	    [
+	    'class' => 'kartik\grid\ActionColumn',
+	   	'template' => '{update} {delete}',
+
+        
+        ]
+	];
+
+
+$exportButton = ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+    'fontAwesome' => true,
+    'dropdownOptions' => [
+        'label' => 'Export All',
+        'class' => 'btn btn-default'
+    	],
+    'exportConfig' =>
+    	[
+    	ExportMenu::FORMAT_HTML => false,
+    	ExportMenu::FORMAT_TEXT => false,
+    	ExportMenu::FORMAT_PDF => false,
+    	ExportMenu::FORMAT_EXCEL => false,
+    	
+    	]
+]) ;
+
+
 ?>
 <div class="product-index">
 
@@ -28,62 +107,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'export' => false,
-        'columns' => [
-         
-
- 			'Product_ID',
- 			[
- 			'attribute' => 'Name',
- 			'format' => 'raw',
-    		'value' => function ($data)
-    			{
-				return html::a($data->Name, "/product/update?id=".$data->id);
-				},
- 			
- 			],
-            [
-            'attribute' => 'Status',
-            'value' => function ($data)
-            	{
-				return Lookup::item($data->Status, "PRODUCT_STATUS");
-				},
-			'filter' => Lookup::items("PRODUCT_STATUS"),
-            ],
-
-            'Description',
-            // 'cp',
-            // 'Decimals_Supported',
-            // 'Default_Unit',
-            // 'Feed_notes',
-            [
-            'attribute' => 'price_pT',
-            'value' => function ($data)
-            	{
-				$data->getCurrentPrice();
-				return number_format($data->price_pT, 2);
-				},
-            'hAlign' => 'right',
-            ],
-            // 'me',
-            // 'Mix_Margin',
-            // 'Mix_Margin_Base',
-            // 'Mix_Type',
-            // 'ndf',
-            [
-	            'attribute' => 'Product_Category',
-	            'value' => function($data) {
-					return Lookup::item($data->Product_Category, "ORDER_CATEGORY");
-					},
-				'filter' => Lookup::items("ORDER_CATEGORY"),
-			],
-            [
-            'class' => 'kartik\grid\ActionColumn',
-           	'template' => '{update} {delete}',
-		
-            
-            ],
-        ],
+        'export'=>[
+	        'fontAwesome'=>true,
+	        'showConfirmAlert'=>false,
+	        'target'=>GridView::TARGET_BLANK,
+        	],
+    	'panel'=>[
+        	'type'=>GridView::TYPE_PRIMARY,
+        	'heading'=>"Product Pricing",
+    		],
+        'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+        'toolbar'=> [
+		    [
+		    'content' => $exportButton,
+		    ],
+       	 ],
+       'columns' => $gridColumns,
+       
     ]); ?>
 
 </div>

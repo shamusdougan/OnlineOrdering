@@ -284,7 +284,7 @@ class ProductController extends Controller
 		 
 		 	$baseProducts = Product::find()
 	        				->where(['status' => Product::ACTIVE])
-	        				->where(['Mix_Type' => Product::MIXTYPE_BASE])
+	        				//->where(['Mix_Type' => Product::MIXTYPE_BASE])
 	        				->select(['id', 'Name', 'Product_Category'])
 	        				->all();
 		 	$productList = ArrayHelper::map($baseProducts, 'id', 'Name');
