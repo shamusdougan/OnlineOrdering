@@ -21,6 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
   
     <?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 
+
+	
+	
+	
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

@@ -406,4 +406,38 @@ class Product extends \yii\db\ActiveRecord
 		
 	}
 	
+	/**
+	* function us Used()
+	* Description: this function will check to see if a given product is current being used as an igredient in another product
+	* return: true/false
+	* 
+	* @return
+	*/
+	public function isUsed()
+		{
+			
+		//$sql = "SELECT COUNT(*) FROM ".Product::tablename();
+		$count = (new \yii\db\Query())
+   			->from(ProductsIngredients::tablename())
+   			->where(['product_ingredient_id' => $this->id])
+    		->count();
+		
+		if($count > 0)
+			{
+			return true; 
+			}
+		return false;
+		}
+		
+	
+	
+	public function getProductsUsedIn()
+		{
+			
+		return ProductsIngredients::findAll(['product_ingredient_id' => $this->id]);
+	
+			
+			
+			
+		} 
 }

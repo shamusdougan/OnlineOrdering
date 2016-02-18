@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -168,7 +169,27 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+    	
+    	//first check to see if the productg is used in another mic/PELLET
+    	$product =  $this->findModel($id);
+    	if($product->isUsed())
+    		{
+    		$results = $product->getProductsUsedIn();
+    		$errorText = "<ul>";
+    		foreach($results as $product_ingredient)
+    			{
+				$errorText .= "<li>".$product_ingredient->product->Name.": ".Html::a('View', ['update', 'id' => $product_ingredient->product_id])."</li>";
+				}
+				
+				
+			Yii::$app->getSession()->setFlash('error', 'Cant Delete this product it is being used in an ingredient, please remove as an ingredient in the below products before deleting:'.$errorText);
+			}
+		else{
+			Yii::$app->getSession()->setFlash('error', $product->Name.' deleted');
+			$product->delete();
+		}
+    	
+       
 
         return $this->redirect(['index']);
     }
