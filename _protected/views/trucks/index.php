@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use vendor\actionButtons\actionButtonsWidget;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\trucksSearch */
@@ -10,24 +11,16 @@ use vendor\actionButtons\actionButtonsWidget;
 
 $this->title = 'Trucks';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="trucks-index">
 
-	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
-    <h1><?= Html::encode($this->title) ?></h1>
-    
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'export' => false,
-        'columns' => [
+$gridColumns = [
 
             'registration',
             'description',
             'mobile',
-            'defaultTrailersList',
-          
+            [
+            'attribute' => 'defaultTrailersList',
+            'label' => 'Default Trailers'
+          	],
           
          
             // 'Status',
@@ -40,7 +33,50 @@ $this->params['breadcrumbs'][] = $this->title;
 				'template' => '{update} {delete}',
 				
 			],
-        ],
+        ];
+
+$exportButton = ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+    'fontAwesome' => true,
+    'dropdownOptions' => [
+        'label' => 'Export All',
+        'class' => 'btn btn-default'
+    	],
+    'exportConfig' =>
+    	[
+    	ExportMenu::FORMAT_HTML => false,
+    	ExportMenu::FORMAT_TEXT => false,
+    	ExportMenu::FORMAT_PDF => false,
+    	ExportMenu::FORMAT_EXCEL => false,
+    	
+    	]
+]) ;
+
+
+
+?>
+<div class="trucks-index">
+
+	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
+    <h1><?= Html::encode($this->title) ?></h1>
+    
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'export' => false,
+        'panel'=>[
+        	'type'=>GridView::TYPE_PRIMARY,
+        	'heading'=>"Irwin Trucks",
+    		],
+        'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+        'toolbar'=> [
+		    [
+		    'content' => $exportButton,
+		    ],
+		],
+        'columns' => $gridColumns,
     ]); ?>
 
 </div>

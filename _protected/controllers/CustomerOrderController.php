@@ -411,8 +411,9 @@ class CustomerOrderController extends Controller
         		$get = Yii::$app->request->get();
         		if(isset($get['processOrder']) && $get['processOrder'] == true)
         			{
-					$model->Status = CustomerOrders::STATUS_PROCESSING;
+					$model->Status = CustomerOrders::STATUS_INPRODUCTION;
 					$model->save();
+					return $this->redirect(['delivery/create', 'order_id' => $model->id]);
 					}
         		   		
 	    		if(isset($get['exit']) && $get['exit'] == 'false' )

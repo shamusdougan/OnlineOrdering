@@ -77,7 +77,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	const STATUS_SUBMITTED = 2;
 	const STATUS_INPRODUCTION = 3;
 	const STATUS_DISPATCHED = 4;
-	const STATUS_COMPLETED = 4;
+	const STATUS_COMPLETED = 5;
 	
 		
     /**

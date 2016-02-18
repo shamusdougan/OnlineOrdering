@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use vendor\actionButtons\actionButtonsWidget;
+use kartik\export\ExportMenu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\trailersSearch */
@@ -10,6 +11,62 @@ use vendor\actionButtons\actionButtonsWidget;
 
 $this->title = 'Trailers';
 $this->params['breadcrumbs'][] = $this->title;
+
+$gridColumns = [
+           
+            'Registration',
+            'Description',
+            'Max_Capacity',
+            'NumBins',
+            [
+            'attribute' => 'Auger',
+            'value' => function ($data)
+            	{
+				return $data->Auger ? "Yes" : "";
+				},
+            'filter' => ['1' => 'Yes', '0' => 'No'],
+            ],
+            [
+            'attribute' => 'Blower',
+            'value' => function ($data)
+            	{
+				return $data->Blower ? "Yes" : "";
+				},
+            'filter' => ['1' => 'Yes', '0' => 'No'],
+            ],
+           	[
+            'attribute' => 'Tipper',
+            'value' => function ($data)
+            	{
+				return $data->Tipper ? "Yes" : "";
+				},
+            'filter' => ['1' => 'Yes', '0' => 'No'],
+            ],
+     
+            
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ];
+
+$exportButton = ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+    'fontAwesome' => true,
+    'dropdownOptions' => [
+        'label' => 'Export All',
+        'class' => 'btn btn-default'
+    	],
+    'exportConfig' =>
+    	[
+    	ExportMenu::FORMAT_HTML => false,
+    	ExportMenu::FORMAT_TEXT => false,
+    	ExportMenu::FORMAT_PDF => false,
+    	ExportMenu::FORMAT_EXCEL => false,
+    	
+    	]
+]) ;
+
+
 ?>
 <div class="trailers-index">
 
@@ -20,19 +77,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'export' => false,
-        'columns' => [
-           
-            'Registration',
-            'Description',
-            'Max_Capacity',
-            'NumBins',
-            // 'Auger',
-            // 'Blower',
-            // 'Tipper',
-            // 'Status',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+        'columns' => $gridColumns,
+		'panel'=>[
+        	'type'=>GridView::TYPE_PRIMARY,
+        	'heading'=>"Irwin Trucks",
+    		],
+        'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+        'toolbar'=> 
+        	[
+			    [
+			    'content' => $exportButton,
+			    ],
+			],
     ]); ?>
 
 </div>
