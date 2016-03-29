@@ -69,7 +69,26 @@ class ImportFunctions extends \yii\db\ActiveRecord
     public function importCustomerOrdersCRM()
 		{
 			
-			
+		$headerRowColumns = 
+			[
+			'Order ID',
+			'Customer',
+			'Name',
+			'Qty (Tonnes)',
+			'Nearest Town',
+			'Date Submitted',
+			'Date Fulfilled',
+			'Discount %',
+			'Discount (p/T)',
+			'Discount notation',
+			'Discount type',
+			'Order instructions',
+			'Price (p/T)',
+			'Price production (p/T)',
+			'Price transport (p/T)',
+			'Price Total (p/T)',
+			'Storage Unit',
+			];
 		
 		if(!file_exists($this->file))
 			{
@@ -89,126 +108,60 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			}
 			
 		
-		//$sheet = $objPHPExcel->getSheet(0)->toArray(null, true, true, true);
-		
-		print_r($objPHPExcel);
-		
-		foreach ($objPHPExcel->getAllSheets() as $sheet) {
-            $this->progress .= $sheet->getTitle()."\n";
-        }
-
-		
+		$sheet = $objPHPExcel->getSheet(0)->toArray(null, true, true, true);
 		
 		//$highestRow = $sheet->getHighestRow(); 
 		//verify the structure of the file is correct and we have the importantant Column
 		//Check that the header row is correct
-		//$newKeysLookup = array_shift($sheetData);
-	//	print_R($sheets);
-		/*
-		foreach($newKeysLookup as $index => $headerValue)
+		$headerRow = array_shift($sheet);
+		
+		//This section will create an array of indexs, this allows the export out of CRM to not be as rigid, we only care that the export has
+		//the columns that we need to recreate the order in this application
+		$columnIndexs = array();
+		foreach($headerRowColumns as $headerColumn)
 			{
-			if($index == 'A')
+			$colIndex = array_search($headerColumn, $headerRow, TRUE);
+			if($colIndex === false)
 				{
-				if($headerValue != "Ingredient Code")
-					{
-					return "Invalid Execel File Structure, Missing Ingredient Code Column";		
-					}
+				$this->progress .= "unable to locate column: ".$headerColumn." in import file\n";
+				return;
 				}
-			elseif($index == 'B')
-				{
-				if($headerValue != "Ingredient")
-					{
-					return "Invalid Execel File Structure, Missing Ingredient Name Column";	
-					}
-				}	
-			elseif($index == 'C')
-				{
-				if($headerValue != "Ingredient %")
-					{
-					return "Invalid Execel File Structure, Missing Ingredient % Column";	
-					}
-				}	
-			}
-	
-		*/
-		
-		/*
-		//This array discribes the relationship between the database attribute and the column that atttribute is found in on the import CSV
-		$mapping = [
-			'Order_ID' => 0,
-			'Customer_id' => 1,
-			'Name' => 2,
-			'Mix_Type' => 3,
-			'Qty_Tonnes' => 4,
-			'Nearest_Town' => 5,
-			'Date_Fulfilled' => 6,
-  			'Date_Submitted' => 7,
-  			'Status_Reason' => 8,
-  			'Anticipated_Sales' => 9,
-  			'Billing_company' => 22,
-  			'Billing_type' => 26,
-  			'Created_By' => 28,
-  			'Created_On' => 30,
-  			'Delivery_created' => 35,
-  			'Discount_Percent' => 37,
-  			'Discount_pT' => 38,
-  			'Discount_pT_Base' => 39,
-  			'Discount_notation' => 40,
-  			'Discount_type' => 41,
-  			'Feed_Days_Remaining' => 43,
-  			'Feed_QOH_Tonnes' => 44,
-  			'Feed_Rate_Kg_Day' => 45,
-  			'Feed_Type' => 46,
-  			'Herd_Size' => 50,
-  			'Load_Due' => 57 ,
-  			'Modified_By' => 59,
-  			'Modified_On' => 61,
-  			'Order_instructions' => 66,
-  			'Order_notification' => 67,
-  			'Owner' => 68,
-  			'Price_pT' => 72,
-  			'Price_pT_Base' => 73,
-  			'Price_Production' => 75,
-  			'Price_Production_Base' => 76 ,
-  			'Price_production_pT' => 77,
-  			'Price_production_pT_Base' => 78,
-  			'Price_Sub_Total' => 79,
-  			'Price_Sub_Total_Base' => 80,
-  			'Price_Total' => 81,
-  			'Price_Total_Base' => 82,
-  			'Price_Total_pT' => 83,
-  			'Price_Total_pT_Base' => 84,
-  			'Price_Transport' => 85,
-  			'Price_Transport_Base' => 86,
-  			'Price_transport_pT' => 87,
-  			'Price_transport_pT_Base' => 88,
-  			'Process' => 91,
-  			'Process_Stage' => 92,
-  			'Product_Category' => 94,
-  			'Product_Name' => 95,
-  			'Requested_Delivery_by' => 98,
-  			'Second_Customer' => 99,
-  			'Second_customer_Order_percent' => 100,
-  			'Ship_To' => 101,
-  			'Status' => 119,
-  			'Storage_Unit' => 120,
-  			'Submitted_Status' =>121,
-  			'Submitted_Status_Description' => 122
-		];
-		
-		
-		
-		
-		$customerOrder = new CustomerOrders;
-		
-		
-		$customer = Clients::find()->where(['Company_Name' => $importArray[$mapping['Customer_id']]])->one();
-		if(!$customer){
-			$this->progress .= "WARNING: unable to locate customer record from name: ".$importArray[$mapping['Customer_id']]." for Order record: ".$importArray[$mapping['Order_ID']]."\n";
-			$this->recordsFailed++;
-			return null;
+			$columnIndexs[$headerColumn] = $colIndex;
 			}
 			
+		
+	
+		//iterate through the sheet rows creating an order per row
+		foreach($sheet as $rowNum => $rowArray)
+			{
+			$customerOrder = new CustomerOrders;
+			$customer = Clients::find()->where(['Company_Name' => $rowArray[$columnIndexs['Customer']]])->one();	
+			if(!$customer){
+				$this->progress .= "WARNING: unable to locate customer record from name: ".$rowArray[$columnIndexs['Customer']]." for Order record: ".$rowArray[$columnIndexs['Order ID']]."\n";
+				$this->recordsFailed++;
+				return null;
+				}
+				
+			$customerOrder->Customer_id = $customer->id;	
+			$customerOrder->Order_ID = $rowArray[$columnIndexs['Order ID']];
+			$customerOrder->Name = $rowArray[$columnIndexs['Name']];
+			$customerOrder->Qty_Tonnes =  $rowArray[$columnIndexs['Qty (Tonnes)']];
+			$customerOrder->Nearest_Town = $rowArray[$columnIndexs['Nearest Town']];
+			$customerOrder->Date_Submitted  = $this->exceltoepoch($rowArray[$columnIndexs['Date Submitted']]);
+			$customerOrder->Date_Fulfilled  = $this->exceltoepoch($rowArray[$columnIndexs['Date Fulfilled']]);
+			
+			
+			
+			$customerOrder->Mix_Type = $rowArray[$columnIndexs['Qty (Tonnes)']];
+			}
+		
+		
+		
+		
+		
+		
+		
+			/*
 		//$this->progress .=  $importArray[$mapping['Order_ID']];
 		$customerOrder->Order_ID = $importArray[$mapping['Order_ID']];
 		$customerOrder->Customer_id = $customer->id;
@@ -223,15 +176,14 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		//$this->progress .= "import record for customer id ".$customer->id."\n";
 		//$this->progress .= $customer->id."\n";
 		
-		
+		*/
 		
 		
 		
 		
 		
 			
-		$this->recordsImported++;
-		*/
+		
 		}
     
     
