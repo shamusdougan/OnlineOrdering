@@ -11,6 +11,7 @@ use kartik\widgets\datePicker;
 use kartik\widgets\DepDrop;
 use kartik\grid\GridView;
 use yii\bootstrap\Modal;
+use webvimark\modules\UserManagement\models\User;
 
 
 use yii\helpers\Url;
@@ -37,7 +38,7 @@ $this->registerJs("
 
 function getIngredientSum()
 {
-	
+
 	var sum = 0
 	$(\".ingredient_percent\").each(function() 
  		{
@@ -53,6 +54,32 @@ function getIngredientSum()
 	return sum;
 }
 
+
+function checkOverrideCost()
+{
+	var overrideCost = $(\"#".Html::getInputId($model, 'Price_pT_Base_override')."\").val();
+	if (!isNaN(overrideCost) && overrideCost.length != 0)
+		{
+		return true;
+		}
+	else{
+		return false;
+	}
+}
+
+function getOverridePrice()
+{
+	var overrideCost = $(\"#".Html::getInputId($model, 'Price_pT_Base_override')."\").val();
+	if (!isNaN(overrideCost) && overrideCost.length != 0)
+		{
+		return parseFloat(overrideCost);
+		}
+	else{
+		return 0;
+	}
+}
+
+
 function getIngredientWeightedCost()
 {
 	var weightedCost = 0
@@ -64,10 +91,20 @@ function getIngredientWeightedCost()
            	weightedCost += parseFloat(costString);
        		}
 		});
-	$(\"#".Html::getInputId($model, 'Price_pT_Base')."-disp\").maskMoney('mask',weightedCost);	
-	$(\"#".Html::getInputId($model, 'Price_pT_Base')."\").val(weightedCost);
+	
 	$('tfoot td:eq(4)').text(weightedCost.toFixed(2));
 	
+	
+	if(checkOverrideCost())
+		{
+		var overridePrice = getOverridePrice();
+		$(\"#".Html::getInputId($model, 'Price_pT_Base')."-disp\").maskMoney('mask',overridePrice);	
+		$(\"#".Html::getInputId($model, 'Price_pT_Base')."\").val(overridePrice);
+		return overridePrice;	
+		}
+	
+	$(\"#".Html::getInputId($model, 'Price_pT_Base')."-disp\").maskMoney('mask',weightedCost);	
+	$(\"#".Html::getInputId($model, 'Price_pT_Base')."\").val(weightedCost);
 	return weightedCost;
 }
 
@@ -124,7 +161,8 @@ function updateOrderCosts()
 		}
 	
 	
-	var basePricePerTon = weightedCost + (productionCost) + (transportCost);
+	var basePricePerTone = weightedCost + (productionCost) + (transportCost);
+	
 	if(basePricePerTone == 0)
 		{
 		var discountPercent = 0;
@@ -133,15 +171,23 @@ function updateOrderCosts()
 		var discountPercent = 100 * (baseDiscountPerTonne / basePricePerTone);
 		}
 	
-	var totalPricePerTon = basePricePerTon - baseDiscountPerTonne;
+	var totalPricePerTon = basePricePerTone - baseDiscountPerTonne;
 	//alert(weightedCost + '+' + productionCost + '+' + transportCost + '=' + basePricePerTon);
 	//alert(discountPercent + '= 100 * (' + baseDiscountPerTonne + ' / ' + basePricePerTon +')');
 	
-	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val(basePricePerTon);
-	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."-disp\").maskMoney('mask',basePricePerTon);	
+	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."\").val(basePricePerTone);
+	$(\"#".Html::getInputId($model, 'Price_Sub_Total')."-disp\").maskMoney('mask',basePricePerTone);	
 	$(\"#".Html::getInputId($model, 'Discount_Percent')."\").val(discountPercent.toFixed(2));
 	
-	
+	if(checkOverrideCost())
+		{
+		$(\"#override\").show();
+		}
+	else{
+		$(\"#override\").hide();
+		}
+		
+		
 	$(\"#orderdetails-basePricePT\").val(weightedCost.toFixed(2));
 	$(\"#orderdetails-productionPricePT\").val(productionCost.toFixed(2));
 	$(\"#orderdetails-transportPricePT\").val(transportCost.toFixed(2));
@@ -156,7 +202,7 @@ function updateOrderCosts()
 		
 		    		
 	
-	return basePricePerTon;
+	return basePricePerTone;
 }
 
 
@@ -365,6 +411,10 @@ $(document).on('pjax:end', function() {
 
 //recalculates the sub total price per ton of the ingredients
 $this->registerJs("
+	$('#".Html::getInputId($model, 'Price_pT_Base_override')."').on('change', function()
+		{
+			updateOrderCosts();
+		});
 	$('#".Html::getInputId($model, 'Price_production_pT')."').on('change', function()
 		{
 			updateOrderCosts();
@@ -442,7 +492,7 @@ $this->registerJs("$('.sap_print').on('click',function(){
 		    	<p>Order Pricing Details</p>
 		    	<table>
 		    		<tr>
-		    			<td width='200px'><b>Base Price P/T:</b></td>
+		    			<td width='200px'><b>Base Price P/T:</b><span id='override' style='color:red;'> (Manual) </span></td>
 		    			<td>$<input type='text' style='text-align: right;' id='orderdetails-basePricePT' class='infoInput' readonly></td>
 		    		</tr>
 		    		<tr>
@@ -623,6 +673,7 @@ $this->registerJs("$('.sap_print').on('click',function(){
 							]
 						],
 					
+					
 					],
 					
 				]);
@@ -722,10 +773,36 @@ $this->registerJs("$('.sap_print').on('click',function(){
 		 		'export' => false,
 		 		'showPageSummary' => true,
 				]);
-	
-		    
-		    
 		    ?>
+			
+		<? if (User::hasPermission('forceOrderBasePrice') || $model->Price_pT_Base_override > 0) { ?>
+			
+			<div class='customer_order_subheading'>Manually Set Product Base Price</div>
+			<?= Form::widget(
+				[
+				'model'=>$model,
+				'form'=>$form,
+			
+				'columns'=>1,
+				'attributes' => 
+					[
+					'Price_pT_Base_override' => 
+						[
+						'type' => FORM::INPUT_TEXT,
+						'columnOptions'=>['colspan'=>2],
+						'label' => false,
+						'fieldConfig' => ['addon' => ['prepend' => ['content'=>'$']]],
+						'options' => 
+							[
+							'disabled' => (!User::hasPermission('forceOrderBasePrice') || $readOnly),
+							]
+						],
+					],
+				]); ?>
+		<? } ?>
+		
+		
+		
 		    
 		  <div class='customer_order_subheading'>Pricing Information</div>	
 		
@@ -734,36 +811,37 @@ $this->registerJs("$('.sap_print').on('click',function(){
 				'model'=>$model,
 				'form'=>$form,
 			
-				'columns'=>6,
+				'columns'=>3,
 				'attributes' => 
 					[
 					'Price_pT_Base' => 
 						[
 						'type'=>Form::INPUT_WIDGET, 
 						'widgetClass' => '\kartik\money\MaskMoney',
-						'columnOptions'=>['colspan'=>2],
-						'options' => ['readonly' => true],
+						
+						'options' => ['disabled' => true],
 						],
 					'Price_production_pT' => 
 						[
-						'type'=>Form::INPUT_WIDGET, 
-						'widgetClass' => '\kartik\money\MaskMoney',
-						'columnOptions'=>['colspan'=>2],
-						'options' => ['readonly' => $readOnly],
+						'type'=>Form::INPUT_TEXT, 
+						'fieldConfig' => ['addon' => ['prepend' => ['content'=>'$']]],
+						'options' => 
+							[
+							'readonly' => $readOnly,
+							],
 						],
 					'Price_transport_pT' =>
 						[
-						'type'=>Form::INPUT_WIDGET, 
-						'widgetClass' => '\kartik\money\MaskMoney',
-						'columnOptions'=>['colspan'=>2],
+						'type'=>Form::INPUT_TEXT, 
+						'fieldConfig' => ['addon' => ['prepend' => ['content'=>'$']]],
 						'options' => ['readonly' => $readOnly],
 						],
 					'Price_Sub_Total' =>
 						[
 						'type'=>Form::INPUT_WIDGET, 
 						'widgetClass' => '\kartik\money\MaskMoney',
-						'columnOptions'=>['colspan'=>2],
-						'options' => ['readonly' => true],
+						
+						'options' => ['disabled' => true],
 						]
 					],
 					
