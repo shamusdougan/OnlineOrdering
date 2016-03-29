@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use vendor\actionButtons\actionButtonsWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ImportFunctionSearch */
@@ -12,12 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="import-functions-index">
 
+
+  <?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Import Functions', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+      
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

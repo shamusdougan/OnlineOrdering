@@ -51,10 +51,12 @@ class ImportFunctionsController extends Controller
     {
         $searchModel = new ImportFunctionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=>'/import-functions/create', ];	
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
     }
 
@@ -97,12 +99,16 @@ class ImportFunctionsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit Form?']; 
+		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'import-function-form', 'confirm' => 'Save import function and Exit?']; 
+		$actionItems[] = ['label'=>'Import', 'button' => 'copy', 'url'=> 'import?id='.$id,];
+		
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }
@@ -140,6 +146,10 @@ class ImportFunctionsController extends Controller
     public function actionImport($id){
 		
 		$model = $this->findModel($id);
+		
+		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit Form?']; 
+		$actionItems[] = ['label'=>'Edit', 'button' => 'edit', 'url'=> 'update?id='.$id]; 
+		
 		if ($model->load(Yii::$app->request->post()) )
 			{
 				
@@ -148,10 +158,17 @@ class ImportFunctionsController extends Controller
 				if ($model->file )
 					{
 						
+					$model->progress .= "uploading file: ".$model->file->name."\n";
+						
 					//If we have a valid file input grab the file, move it to the CSV section of runtime and rename with data stamp
 					$time = date("Ymd Hi");
 					$model->file->saveAs(Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension);
                     $model->file = Yii::getAlias('@runtime').'/csv/'.$time." ".$model->name.'.' . $model->file->extension;
+                    
+                    $functionName = $model->function;
+					$model->$functionName();
+                    
+                    /* REWrite for the excel and more flexible import functions
                     $handle = fopen($model->file, "r");
 					
 					//Initialise the counters for the import
@@ -164,15 +181,29 @@ class ImportFunctionsController extends Controller
 						$functionName = $model->function;
 						$model->$functionName($fileLine);
 						}
+						
+					*/
 					$model->closeImport();
+					
+					
 
 					}
 
 				
-			return $this->render('import', ['id' => $id, 'model' => $model]); 
+			return $this->render('import', 
+				[
+				'id' => $id, 
+				'model' => $model,
+				'actionItems' => $actionItems,
+				]); 
 			}
 			
-		 return $this->render('import', ['id' => $id, 'model' => $model]); 
+		return $this->render('import', 
+			[
+			'id' => $id, 
+			'model' => $model,
+			'actionItems' => $actionItems,
+			]);  
 	}
     
     

@@ -66,12 +66,73 @@ class ImportFunctions extends \yii\db\ActiveRecord
     	$this->progress .= "Inported ".$this->recordsFailed." records with ERRORS, check output for further information\n";
     	}
    
-    public function importCustomerOrdersCRM($importArray)
+    public function importCustomerOrdersCRM()
 		{
 			
-		//	var_dump($importArray);
-		//$this->progress .= "importing record for ".$importArray[3]." client"
+			
 		
+		if(!file_exists($this->file))
+			{
+			$this->progress .= "Unable to open Excel Document\n";
+			return;
+			}
+		
+		//Parse the file as an Excel file
+		$this->progress .= "importing records from ".$this->file."\n";
+		try {
+			$inputFileType = \PHPExcel_IOFactory::identify($this->file);
+ 			$objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+			$objPHPExcel = $objReader->load($this->file);
+			}
+		catch(Exception $e){
+			$this->progress .= 'ERROR loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage."\n";
+			}
+			
+		
+		//$sheet = $objPHPExcel->getSheet(0)->toArray(null, true, true, true);
+		
+		print_r($objPHPExcel);
+		
+		foreach ($objPHPExcel->getAllSheets() as $sheet) {
+            $this->progress .= $sheet->getTitle()."\n";
+        }
+
+		
+		
+		//$highestRow = $sheet->getHighestRow(); 
+		//verify the structure of the file is correct and we have the importantant Column
+		//Check that the header row is correct
+		//$newKeysLookup = array_shift($sheetData);
+	//	print_R($sheets);
+		/*
+		foreach($newKeysLookup as $index => $headerValue)
+			{
+			if($index == 'A')
+				{
+				if($headerValue != "Ingredient Code")
+					{
+					return "Invalid Execel File Structure, Missing Ingredient Code Column";		
+					}
+				}
+			elseif($index == 'B')
+				{
+				if($headerValue != "Ingredient")
+					{
+					return "Invalid Execel File Structure, Missing Ingredient Name Column";	
+					}
+				}	
+			elseif($index == 'C')
+				{
+				if($headerValue != "Ingredient %")
+					{
+					return "Invalid Execel File Structure, Missing Ingredient % Column";	
+					}
+				}	
+			}
+	
+		*/
+		
+		/*
 		//This array discribes the relationship between the database attribute and the column that atttribute is found in on the import CSV
 		$mapping = [
 			'Order_ID' => 0,
@@ -170,7 +231,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		
 			
 		$this->recordsImported++;
-			
+		*/
 		}
     
     

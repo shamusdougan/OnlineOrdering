@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
+use kartik\builder\Form;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ImportFunctions */
@@ -10,15 +11,23 @@ use yii\widgets\ActiveForm;
 
 <div class="import-functions-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+  <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'import-function-form']);
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'function')->textInput(['maxlength' => true]) ?>
+ 	echo Form::widget([
+		    	'model'=>$model,
+		    	'form'=>$form,
+		    	'columns'=>2,
+		    	'attributes'=>
+		    		[
+		    		'name' => ['type' => FORM::INPUT_TEXT],
+		    		'function' => ['type' => FORM::INPUT_TEXT],
+		    		],
+		    	]);
+		    	
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+    ?>
+    
 
     <?php ActiveForm::end(); ?>
 
