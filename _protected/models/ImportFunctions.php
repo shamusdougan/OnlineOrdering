@@ -88,6 +88,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			'Price transport (p/T)',
 			'Price Total (p/T)',
 			'Storage Unit',
+			'Status Reason',
 			];
 		
 		if(!file_exists($this->file))
@@ -134,7 +135,18 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		//iterate through the sheet rows creating an order per row
 		foreach($sheet as $rowNum => $rowArray)
 			{
-			$customerOrder = new CustomerOrders;
+			
+			
+			//check for any existing orders to overwrite
+			$customerOrder = CustomerOrders::findByOrderID($rowArray[$columnIndexs['Order ID'])
+			if($customerOrder)
+				{
+				$this->progress .= "Found Duplicate Order ID, removing existing order\n";
+				$customerOrder->delete();
+				}
+			
+			$customerOrder = new CustomerOrders();
+			
 			$customer = Clients::find()->where(['Company_Name' => $rowArray[$columnIndexs['Customer']]])->one();	
 			if(!$customer){
 				$this->progress .= "WARNING: unable to locate customer record from name: ".$rowArray[$columnIndexs['Customer']]." for Order record: ".$rowArray[$columnIndexs['Order ID']]."\n";
@@ -147,41 +159,198 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			$customerOrder->Name = $rowArray[$columnIndexs['Name']];
 			$customerOrder->Qty_Tonnes =  $rowArray[$columnIndexs['Qty (Tonnes)']];
 			$customerOrder->Nearest_Town = $rowArray[$columnIndexs['Nearest Town']];
-			$customerOrder->Date_Submitted  = $this->exceltoepoch($rowArray[$columnIndexs['Date Submitted']]);
-			$customerOrder->Date_Fulfilled  = $this->exceltoepoch($rowArray[$columnIndexs['Date Fulfilled']]);
+			
+			
+			$fulfilledDate = \DateTime::createFromFormat("m-d-y", $rowArray[$columnIndexs['Date Fulfilled']]);
+			if(!$fulfilledDate)
+				{
+				$customerOrder->Date_Fulfilled = date("Y-m-d", mktime(0,0,0,1,1,2012));
+				}
+			else{
+				$customerOrder->Date_Fulfilled = $fulfilledDate->format("Y-m-d");
+				}	
+			$submittedDate = \DateTime::createFromFormat("m-d-y", $rowArray[$columnIndexs['Date Submitted']]);
+			if(!$submittedDate)
+				{
+				$customerOrder->Date_Submitted = date("Y-m-d", mktime(0,0,0,1,1,2012));
+				}
+			else{
+				$customerOrder->Date_Submitted = $submittedDate->format("Y-m-d");
+				}
+			
+			$customerOrder->Created_On = $customerOrder->Date_Submitted;
+			$customerOrder->Requested_Delivery_by  = $customerOrder->Date_Fulfilled;
+			$customerOrder->Order_instructions = $rowArray[$columnIndexs['Order instructions']];
+			$customerOrder->verify_notes = 1;
 			
 			
 			
-			$customerOrder->Mix_Type = $rowArray[$columnIndexs['Qty (Tonnes)']];
+			
+			
+			$customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
+
+			
+			//Process the Name to get the mix type
+			$orderName = $rowArray[$columnIndexs['Name']];
+			if(stripos($orderName, "Custom"))
+				{
+				$customerOrder->Mix_Type = CustomerOrders::CUSTOM;
+				}
+			elseif(stripos($orderName, "Mix"))
+				{
+				$customerOrder->Mix_Type = CustomerOrders::MIX;
+				}
+			elseif(stripos($orderName, "Commodity"))
+				{
+				$customerOrder->Mix_Type = CustomerOrders::COMMODITY;
+				}
+			elseif(stripos($orderName, "Pellet"))
+				{
+				$customerOrder->Mix_Type = CustomerOrders::PELLET;
+				}
+			else{
+				$customerOrder->Mix_Type = CustomerOrders::CUSTOM;
+				}
+			
+			//Find the Storage unit for the Customer
+			$storageID = $customer->findStorageByName($rowArray[$columnIndexs['Storage Unit']]);
+			if(is_string($storageID))
+				{
+				$this->progress .= $storageID."\n";
+				return;
+				}
+			$customerOrder->Storage_Unit = $storageID;
+			
+			
+			//Discounting information
+			$customerOrder->Price_pT_Base_override = $rowArray[$columnIndexs['Price (p/T)']];
+			$customerOrder->Price_production_pT = (int)$rowArray[$columnIndexs['Price production (p/T)']];
+			$customerOrder->Price_transport_pT = (int)$rowArray[$columnIndexs['Price transport (p/T)']];
+			$customerOrder->Price_Sub_Total = $customerOrder->Price_pT_Base_override + $customerOrder->Price_production_pT + $customerOrder->Price_transport_pT;
+			$customerOrder->Created_By = 1;
+			
+			
+			$customerOrder->Discount_Percent = $rowArray[$columnIndexs['Discount (p/T)']];
+			if($customerOrder->Discount_Percent == "" || $customerOrder->Discount_Percent == 0)
+				{
+				$customerOrder->Discount_type = CustomerOrders::DISCOUNT_NONE;
+				$customerOrder->Discount_pT = 0;
+				}
+			else{
+				$customerOrder->Discount_pT = (int)$rowArray[$columnIndexs['Discount (p/T)']];
+				$discountType = $rowArray[$columnIndexs['Discount type']];
+				if($discountType )
+				if(stripos($discountType, "Contract"))
+					{
+					$customerOrder->Discount_type  = CustomerOrders::DISCOUNT_CONTRACT;
+					}
+				elseif(stripos($discountType, "Group"))
+					{
+					$customerOrder->Discount_type  = CustomerOrders::DISCOUNT_GROUP;
+					}
+				elseif(stripos($discountType, "INFERIOR"))
+					{
+					$customerOrder->Discount_type  = CustomerOrders::DISCOUNT_INFERIOR;
+					}
+				elseif(stripos($discountType, "MATCHING"))
+					{
+					$customerOrder->Discount_type  = CustomerOrders::DISCOUNT_MATCHING;
+					}
+				elseif(stripos($discountType, "VOLUME"))
+					{
+					$customerOrder->Discount_type  = CustomerOrders::DISCOUNT_VOLUME;
+					}
+				else{
+					$customerOrder->Discount_type  = CustomerOrders::DISCOUNT_OTHER;
+					}
+				$customerOrder->Discount_Percent = $rowArray[$columnIndexs['Discount (p/T)']];
+				$customerOrder->Discount_notation = $rowArray[$columnIndexs['Discount notation']];
+				}
+			
+			
+			$customerOrder->Price_Total = $rowArray[$columnIndexs['Price Total (p/T)']];
+			
+		
+			
+			if(!$customerOrder->Save())
+				{
+				$this->progress .= "Failed to Save Customer Order for client Name: ".$customerOrder->Name."\n ";
+				
+				foreach($customerOrder->getErrors() as $fieldname => $error)
+					{
+					$this->progress .= $fieldname.": ".$error[0]."\n";
+					}	
+				$this->recordsFailed++;
+				}
+			
 			}
 		
+		}
 		
 		
 		
 		
+	public function importCustomerOrdersIngredientsCRM()
+		{
+			
+		$headerRowColumns = 
+			[
+			'Order ID (Order) (Customer Order)',
+			'Product ID (Ingredient) (Product)',
+			'Ingredient %',
+			];	
 		
+		if(!file_exists($this->file))
+			{
+			$this->progress .= "Unable to open Excel Document\n";
+			return;
+			}
 		
-			/*
-		//$this->progress .=  $importArray[$mapping['Order_ID']];
-		$customerOrder->Order_ID = $importArray[$mapping['Order_ID']];
-		$customerOrder->Customer_id = $customer->id;
-		$customerOrder->Name = $importArray[$mapping['Name']];
-		$customerOrder->Mix_Type = $importArray[$mapping['Mix_Type']];
-		$customerOrder->Qty_Tonnes = $importArray[$mapping['Qty_Tonnes']];
-		$customerOrder->Nearest_Town = $importArray[$mapping['Nearest_Town']];
-		$customerOrder->Date_Fulfilled = $this->exceltoepoch($importArray[$mapping['Date_Fulfilled']]);
-		$customerOrder->Date_Submitted = $this->exceltoepoch($importArray[$mapping['Date_Submitted']]);
-		$customerOrder->Status_Reason = $importArray[$mapping['Status_Reason']];
+		//Parse the file as an Excel file
+		$this->progress .= "importing records from ".$this->file."\n";
+		try {
+			$inputFileType = \PHPExcel_IOFactory::identify($this->file);
+ 			$objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+			$objPHPExcel = $objReader->load($this->file);
+			}
+		catch(Exception $e){
+			$this->progress .= 'ERROR loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage."\n";
+			}
 		
-		//$this->progress .= "import record for customer id ".$customer->id."\n";
-		//$this->progress .= $customer->id."\n";
+		$sheet = $objPHPExcel->getSheet(0)->toArray(null, true, true, true);	
+		$headerRow = array_shift($sheet);
 		
-		*/
-		
-		
-		
-		
-		
+		//This section will create an array of indexs, this allows the export out of CRM to not be as rigid, we only care that the export has
+		//the columns that we need to recreate the order in this application
+		$columnIndexs = array();
+		foreach($headerRowColumns as $headerColumn)
+			{
+			$colIndex = array_search($headerColumn, $headerRow, TRUE);
+			if($colIndex === false)
+				{
+				$this->progress .= "unable to locate column: ".$headerColumn." in import file\n";
+				return;
+				}
+			$columnIndexs[$headerColumn] = $colIndex;
+			}	
+			
+		foreach($sheet as $rowNum => $rowArray)
+			{
+			$customerOrder = CustomerOrders::findByOrderOrderID( $rowArray[$columnIndexs['Order ID (Order) (Customer Order)']]);
+			if(!$customerOrder)
+				{
+				$this->progress .= "WARNING: unable to locate customer order from name: ".$rowArray[$columnIndexs['Order ID (Order) (Customer Order)']]."\n";
+				$this->recordsFailed++;
+				return null;
+				}
+			
+			
+			
+			}
+			
+			
+			
+			
 			
 		
 		}

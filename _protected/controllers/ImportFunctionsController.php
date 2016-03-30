@@ -80,12 +80,17 @@ class ImportFunctionsController extends Controller
     public function actionCreate()
     {
         $model = new ImportFunctions();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit Form?']; 
+		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'import-function-form', 'confirm' => 'Save import function and Exit?']; 
+       
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
             return $this->redirect(['index']);
-        } else {
+        	}
+        else {
             return $this->render('create', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }

@@ -321,4 +321,19 @@ class Clients extends \yii\db\ActiveRecord
         return $clientList;
 		}
 	
+	public function findStorageByName($storageName)
+	{
+		foreach($this->storage as $storageObject)
+		{
+		if($storageObject->Description == $storageName)
+			{
+			return $storageObject->id;	
+			}
+		}
+		
+		return "Unable to find Storage from Name: ".$storageName." for client: ".$this->Company_Name;
+		
+	}
+	
+	
 }

@@ -78,6 +78,24 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	const STATUS_INPRODUCTION = 3;
 	const STATUS_DISPATCHED = 4;
 	const STATUS_COMPLETED = 5;
+	const STATUS_CANCELED = 6;
+	
+	//Order Types
+	const COMMODITY = 3;
+	const MIX = 2;
+	const PELLET = 1;
+	const ADDITIVE = 4;
+	const CUSTOM = 5;
+	const PELLETCUSTOM = 6;
+	
+	const DISCOUNT_NONE =1 ;
+	const DISCOUNT_CONTRACT =2 ;
+	const DISCOUNT_GROUP = 3;
+	const DISCOUNT_INFERIOR = 4;
+	const DISCOUNT_MATCHING = 5;
+	const DISCOUNT_VOLUME = 6;
+	const DISCOUNT_OTHER = 7;
+	
 	
 		
     /**
@@ -390,6 +408,12 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		return $newOrder;
 		
 		
+	}
+	
+	
+	public function findByOrderOrderID($orderID)
+	{
+		return CustomerOrders::find()->where(['Order_ID' => $orderID])->one();
 	}
 	  
 }
