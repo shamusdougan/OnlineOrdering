@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2016 at 04:39 PM
+-- Generation Time: Mar 31, 2016 at 07:31 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -63,12 +63,12 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('accounts', 29, 1452045828),
 ('accounts', 30, 1452046040),
 ('Admin', 2, 1448578287),
-('Admin', 3, 1452046696),
 ('Admin', 19, 1448601546),
 ('production', 10, 1452045926),
 ('production', 19, 1448601546),
 ('production', 28, 1452044507),
 ('sales', 2, 1448578279),
+('sales', 3, 1459219325),
 ('sales', 11, 1452045884),
 ('sales', 13, 1452045875),
 ('sales', 16, 1452045858),
@@ -419,6 +419,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('editOwnOrder', 2, 'Edit Own Order', NULL, NULL, 1448594872, 1448594872, 'customerOrders'),
 ('editUserEmail', 2, 'Edit user email', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
 ('editUsers', 2, 'Edit users', NULL, NULL, 1448576991, 1448576991, 'userManagement'),
+('forceOrderBasePrice', 2, 'Force Order Base Price', NULL, NULL, 1459219033, 1459219033, 'customerOrders'),
 ('production', 1, 'Production', NULL, NULL, 1448595955, 1448595955, NULL),
 ('sales', 1, 'Sales', NULL, NULL, 1448577992, 1448594946, NULL),
 ('setCreditHold', 2, 'Set Customer Credit Hold', NULL, NULL, 1448594915, 1448594915, 'customers'),
@@ -497,6 +498,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('production', 'editOwnOrder'),
 ('sales', 'editOwnOrder'),
 ('Admin', 'editUsers'),
+('production', 'forceOrderBasePrice'),
 ('accounts', 'setCreditHold'),
 ('production', 'setCreditHold'),
 ('production', 'submitCustomerOrder'),
@@ -665,7 +667,7 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 (3, 'A & W Cotchins', 'A10793', '9408 1359', 0, b'1', b'0', b'0', '', '', '50 Lehmanns Rd Wollert', 1, '', 1111, '', '50 Lehmanns Rd', '', 'Wollert', 'Test City', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, NULL, '', 2, 'No', 'No', 25, '0000-00-00', b'1', 0, '', '50 Lehmanns Rd Wollert drive into yard inbetween two sheds. lid on top of one of the sheds will be open to auger into it.', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 40, '0000-00-00', 4, '0000-00-00', '2.0', '', 50, NULL, b'1', b'1', '', '', '', 0, '0000-00-00', 'Northern Victoria > WOLLERT (39.08 KMs)', 0, 26, '', 'New pending credit (7 days)', '', '', '', 1, 'Northern > Victoria', '', '', ''),
 (4, 'A J & AG Lamb- Lamb 2', 'A10554', '03 5148 6249', 0, b'1', b'0', b'0', '', '73 146 011 282', '853 Nambrok Road NAMBROK VIC 3847 AUSTRALIA', 1, 'AUSTRALIA', 3847, 'VIC', '853 Nambrok Road', '', '', 'NAMBROK', '', '', '', '853 Nambrok Road NAMBROK VIC 3847 AUSTRALIA', 2, 'AUSTRALIA', 3847, 'VIC', '853 Nambrok Road', '', '', '', '', '', 'NAMBROK', '', b'1', b'1', '', '', 0, 1, 1, '', 1, '', 'Ye', 20, '0000-00-00', b'1', 122, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', 'andrewandally@bigpond.com', '', '', 1, 'Andrew and Ally Lamb', '', 1, 14, '0000-00-00', 12, '0000-00-00', '1.5', '', 555, 1, b'1', b'0', '', '98 F2', '0419 560 668', 0, '0000-00-00', 'East Gippsland > Nambrok > NAMBROK (203.07 KMs)', 0, 26, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Nambrok', 'Bega', 'Lamb, Andrew & Ally', ''),
 (5, 'A L Garland - DO NOT USE', 'A10050', '03 5157 6334', 0, b'1', b'0', b'0', '0', '16 130 265 597', '1690 Fernbank-Glenaladale Road GLENALADALE VIC 3864 AUSTRALIA', 1, 'AUSTRALIA', 3864, 'VIC', '1690 Fernbank-Glenaladale Road', '', '', 'GLENALADALE', '', '', '', '1690 Fernbank-Glenaladale Road Bairnsdale VIC 3875 Australia', 2, 'Australia', 3875, 'VIC', '1690 Fernbank-Glenaladale Road', '', '', '', '', '', 'Bairnsdale', '', b'1', b'1', '', '', 0, 1, 2, '', 3, '', '', 20, '0000-00-00', b'1', 1360, '', 'From Stratford head towards Bairnsdale, turn left onto Dargo rd. Continue across the cross roads head down Fernbank Glenaladale road. Farm just over over small white bridge farm on right. (14.5km from highway)', '', b'0', b'0', b'0', b'0', b'0', b'0', 'anneg@wideband.net.au', '', '', 1, '', '', 1, 0, '0000-00-00', 0, '0000-00-00', '3.0', '', 150, 1, b'1', b'0', '', '83 G6', '0400 576 333', 0, '0000-00-00', 'East Gippsland > Outer East > GLENALADALE (265 KMs)', 0, 24, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Outer East', 'Rose', 'Garland, Anne', ''),
-(6, 'A. Bezzina', 'A10405', '', 0, b'1', b'0', b'0', '0', '', 'WHITTLESEA VIC 3757 AUSTRALIA', 1, 'AUSTRALIA', 3757, 'VIC', '', '', '', 'WHITTLESEA', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 23, '0000-00-00', b'1', 0, '', 'HEAD OUT TO DONNYBROOK TAKE YAN YEAN ROAD, AT YAN YEAN ROUND ABOUT TURN LEFT TO WHITTLESEA, SECOND FARM ON RIGHT. AUGER TRUCK ONLY. ALFIE 0419 970 334', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '0419 970 334', 0, '0000-00-00', 'Northern Victoria > WHITTLESEA (42.07 KMs)', 0, 24, '', '30 days from delivery', '', '', '', 1, 'Northern > Victoria', '', '', ''),
+(6, 'A.  Bezzina', 'A10405', '123 456 789', 0, b'1', b'0', b'0', '', '', 'WHITTLESEA VIC 3757 AUSTRALIA', 1, 'AUSTRALIA', 3757, 'VIC', '', '', '', 'WHITTLESEA', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, NULL, '', 1, 'No', 'No', 23, '0000-00-00', b'1', 0, '', 'HEAD OUT TO DONNYBROOK TAKE YAN YEAN ROAD, AT YAN YEAN ROUND ABOUT TURN LEFT TO WHITTLESEA, SECOND FARM ON RIGHT. AUGER TRUCK ONLY. ALFIE 0419 970 334', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, NULL, b'1', b'1', '', '', '0419 970 334', 0, '0000-00-00', 'Northern Victoria > WHITTLESEA (42.07 KMs)', 0, 24, '', '30 days from delivery', '', '', '', 1, 'Northern > Victoria', '', '', ''),
 (7, 'A. Slocombe & S Mitchem. MG ACCOUNT', 'A10494', '', 0, b'0', b'0', b'0', '0', '19631986270', '30 Robinsons Road NEREENA, VIC 3953', 1, '', 3953, 'VIC', '30 Robinsons Road', '', '', 'NEREENA', '', '', '', 'Murray Goulburn Trading 1 Cusack st', 2, '', 0, '', 'Murray Goulburn Trading', '1 Cusack st', '', '', '', '', '', '', b'1', b'1', '', '', 0, 2, 0, '', 1, 'No', 'No', 29, '0000-00-00', b'1', 0, '', 'Come into Leongatha from Korumburra on the Sth Gippsland Hwy at the "T" intersection turn Left over the railway line then Right up Long st next to the Yamaha dealer go to the end of the street and turn Left down Ogilvy St and head about 4.5km out of town..just past the big hill turn right up Christoffensons rd and then Right up Robinsons Rd Milking shed 150mt on the right Silo 1 is the small silo attached the dairy.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'chevie@bigpond.com', '', '', 1, '', '', 2, 15, '0000-00-00', 3, '0000-00-00', '2.0', '', 100, 1, b'1', b'1', 'Riverbank', '', '0400 670 632', 0, '0000-00-00', 'South Gippsland > Leongatha > NERRENA (143.61 KMs)', 0, 19, 'South Gippsland', '30 days from delivery', '', '', '', 1, 'South Gippsland > Leongatha', 'Murray Goulburn - Leongatha', 'A Slocombe & S Mitchem', ''),
 (8, 'A.J & D.E Thomas', 'A10487', '03 5657 7202', 3, b'1', b'0', b'0', '0', '28 865 522 924', '55 Garnhams Road KROWERA VIC 3945 AUSTRALIA', 1, 'AUSTRALIA', 3945, 'VIC', '55 Garnhams Road', '', '', 'KROWERA', '', '', '', '55 Garnham Road KROWERA VIC 3945 AUSTRALIA', 2, 'AUSTRALIA', 3945, 'VIC', '55 Garnham Road', '', '', '', '', '', 'KROWERA', '', b'1', b'1', '', '', 0, 1, NULL, '', 0, '', '', 12, '0000-00-00', b'1', 89, '', '3km past Krowera Hall on Loch - Wonthaggi Road, towards Wonthaggi, then turn left up hill onto Garnhams Road. Drieway on left half way up.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'thomasfarm@westnet.com.au', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '6.0', '', 220, 1, b'1', b'0', '', '', '0409 577 204', 0, '0000-00-00', 'South Gippsland > Korumburra > KROWERA (117.71 KMs)', 0, 11, 'South Gippsland', '30 days from delivery', '', '', '', 1, 'South Gippsland > Korumburra', 'Burra Foods', 'Thomas, Andy', ''),
 (9, 'A.J & T.J Burrowes - Fulham farm', 'A10486', '0488481772', 0, b'1', b'0', b'0', '0', '19421967920', '468 Myrtlebank Rd FULHAM VIC 3851 AUSTRALIA', 1, 'AUSTRALIA', 3851, 'VIC', '468 Myrtlebank Rd', '', '', 'FULHAM', '', '', '', '468 Myrtlebank Rd FULHAM VIC 3851 AUSTRALIA', 2, 'AUSTRALIA', 3851, 'VIC', '468 Myrtlebank Rd', '', '', '', '', '', 'FULHAM', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'Ye', 25, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 26, '0000-00-00', 16, '0000-00-00', '2.0', '', 300, 0, b'1', b'1', '', '', '0488 481 772', 0, '0000-00-00', 'East Gippsland > Nambrok > FULHAM (212.32 KMs)', 0, 11, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Nambrok', '', 'Burrowes, A.J & T.J (F)', ''),
@@ -1459,7 +1461,7 @@ INSERT INTO `clients` (`id`, `Company_Name`, `Account_Number`, `Main_Phone`, `Fa
 (784, 'Scholz Bulk Haulage Pty Ltd', 'A10532', '02 6024 0471', 0, b'0', b'0', b'1', '0', '', 'P O Box 1637', 1, '', 0, '', 'P O Box 1637', '', '', '', '', '', '', '', 2, '', 0, '', '', '', '', '', '', '', '', '', b'1', b'1', '', '', 0, 1, 0, '', 0, 'No', 'No', 29, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', 'admin@scholzbh.com.au', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '0428 600 904', 0, '0000-00-00', '', 0, 29, '', '', '', '', '', 1, '', '', 'Scholz Bulk Haulage Pty Ltd', ''),
 (785, 'Scott Langley', 'A10549', '', 0, b'1', b'0', b'0', '0', '', '935 Lower Cairnbrook Rd GLENGARRY, VIC 3854', 1, '', 3854, 'VIC', '935 Lower Cairnbrook Rd', '', '', 'GLENGARRY', '', '', '', '1132 Cairnbrook Rd GLENGARRY, VIC 3854', 2, '', 3854, 'VIC', '1132 Cairnbrook Rd', '', '', '', '', '', 'GLENGARRY', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 9, '0000-00-00', b'1', 0, '', 'LOWER CAIRNBROOK RD GLENGARRY. NEXT FARM ON RHS PAST CFA SHED.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'scottlangley83@hotmail.com', '', '', 1, '', '', 0, 33, '0000-00-00', 10, '0000-00-00', '3.0', '', 100, 2, b'1', b'1', '', '', '0438 924 980', 0, '0000-00-00', 'East Gippsland > Traralgon > GLENGARRY (172.13 KMs)', 0, 9, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Traralgon', '', 'Scott Langley', ''),
 (786, 'SD Matten', 'A10439', '03 5183 2417', 0, b'1', b'0', b'0', '0', '66 988 599 452', '267 Jones Lane TARRAVILLE VIC 3971 AUSTRALIA', 1, 'AUSTRALIA', 3971, 'VIC', '267 Jones Lane', '', '', 'TARRAVILLE', '', '', '', '267 Jones Lane TARRAVILLE VIC 3971 AUSTRALIA', 2, 'AUSTRALIA', 3971, 'VIC', '267 Jones Lane', '', '', '', '', '', 'TARRAVILLE', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'Ye', 29, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', '', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 0, b'1', b'1', '', '', '0457 411 043', 0, '0000-00-00', 'East Gippsland > Yarram > TARRAVILLE (223.97 KMs)', 0, 23, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Yarram', '', 'Shirley Matten', ''),
-(787, 'Sean Allen', 'A10450', '03 5627 5753', 0, b'1', b'0', b'0', '0', '48 223 580 960', '1103 Main South Road DROUIN SOUTH VIC 3818 AUSTRALIA', 1, 'AUSTRALIA', 3818, 'VIC', '1103 Main South Road', '', '', 'DROUIN SOUTH', '', '', '', '1103 Main south road DROUIN SOUTH VIC 3818 AUSTRALIA', 2, 'AUSTRALIA', 3818, 'VIC', '1103 Main south road', '', '', '', '', '', 'DROUIN SOUTH', '', b'1', b'1', '', '', 0, 1, 2, '', 1, '', '', 16, '0000-00-00', b'1', 0, '', 'Drive way to dairy on the LHS coming out from drouin. Silo at Dairy. Tanker track betwen Glenfyne and Brown brick house on Eastern Side of Main South Road.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'bullcowmilker@yahoo.com.au', '', '', 1, '', '', 0, 26, '0000-00-00', 4, '0000-00-00', '1.5', '', 100, 1, b'1', b'0', '', '', '0458 334 896', 0, '0000-00-00', 'West Gippsland > Drouin > DROUIN (99.08 KMs)', 0, 25, 'West Gippsland', '30 days from delivery', '', '', '', 1, 'West Gippsland > Drouin', 'Bega', 'Allen, Sean', ''),
+(787, 'Sean Allen', 'A10450', '03 5627 5753', 0, b'1', b'0', b'0', '', '48 223 580 960', '1103 Main South Road DROUIN SOUTH VIC 3818 AUSTRALIA', 1, 'AUSTRALIA', 3818, 'VIC', '1103 Main South Road', '', '', 'DROUIN SOUTH', '', '', '', '1103 Main south road DROUIN SOUTH VIC 3818 AUSTRALIA', 2, 'AUSTRALIA', 3818, 'VIC', '1103 Main south road', '', '', '', '', '', 'DROUIN SOUTH', '', b'1', b'1', '', '', 0, 1, 2, '', 1, '', '', 16, '0000-00-00', b'1', 0, '', 'Drive way to dairy on the LHS coming out from drouin. Silo at Dairy. Tanker track betwen Glenfyne and Brown brick house on Eastern Side of Main South Road.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'bullcowmilker@yahoo.com.au', '', '', 1, '', '', 0, 26, '0000-00-00', 4, '0000-00-00', '1.5', '', 100, 1, b'1', b'0', '', '', '0458 334 896', 0, '0000-00-00', 'West Gippsland > Drouin > DROUIN (99.08 KMs)', 0, 2, 'West Gippsland', '30 days from delivery', '', '', '', 1, 'West Gippsland > Drouin', 'Bega', 'Allen, Sean', ''),
 (788, 'Segafredo Family Trust', 'A10603', '0351492212', 351492264, b'1', b'0', b'0', '0', '83330460121', '604 Nambrok Hall Rd NAMBROK, VIC 3847', 1, '', 3847, 'VIC', '604 Nambrok Hall Rd', '', '', 'NAMBROK', '', '', '', '604 Nambrok Hall Rd NAMBROK, VIC 3847', 2, '', 3847, 'VIC', '604 Nambrok Hall Rd', '', '', '', '', '', 'NAMBROK', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'Ye', 9, '0000-00-00', b'1', 0, '', 'Turnoff Hwy, travelling towards Tinamba turn right onto Nambrok Hall Rd - Last farm on right before you reach T-Intersection.', '', b'0', b'0', b'0', b'0', b'0', b'0', 'segafredo@wideband.net.au', '', '', 1, '', '', 1, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 1, b'1', b'1', '', '', '0409492218', 0, '0000-00-00', 'East Gippsland > Nambrok > NAMBROK (203.07 KMs)', 0, 11, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Nambrok', 'United Dairy Power', 'Segafredo, Claudio', ''),
 (789, 'Setec Pty. Ltd.', 'A10818', '0392138400', 397638789, b'1', b'0', b'0', '0', '14006317817', '19 Henderson Road KNOXFIELD, VIC 3180', 1, '', 3180, 'VIC', '19 Henderson Road', '', '', 'KNOXFIELD', '', '', '', 'Karn Station 1390 Samaria Road BENALLA, VIC 3672', 2, '', 3672, 'VIC', 'Karn Station', '1390 Samaria Road', '', '', '', '', 'BENALLA', '', b'1', b'1', '', '', 0, 1, 0, '', 1, 'No', 'No', 22, '0000-00-00', b'1', 0, '', '', '', b'0', b'0', b'0', b'0', b'0', b'0', 'karnstation2@bigpond.com', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 0, 3, b'1', b'1', '', '', '0419298152', 0, '0000-00-00', 'Northern Victoria > BENALLA (210 KMs)', 0, 23, '', 'New pending credit (7 days)', '', '', '', 1, 'Northern > Victoria', '', 'Tim Stokes', ''),
 (790, 'SFT Investments Pty Ltd', 'A10309', '51918129', 51918129, b'1', b'0', b'0', '0', '46 212 768 374', '840A Cowwarr Seaeton Road DAWSON VIC 3858 AUSTRALIA', 1, 'AUSTRALIA', 3858, 'VIC', '840A Cowwarr Seaeton Road', '', '', 'DAWSON', '', '', '', '30 Monaro Drive Tyers VIC 3844 Australia', 2, 'Australia', 3844, 'VIC', '30 Monaro Drive', '', '', '', '', '', 'Tyers', '', b'1', b'1', '', '', 0, 1, 0, '', 0, '', '', 20, '0000-00-00', b'1', 0, '', 'Travel east down Boggy Creek Road first turn on right onto Fairchilds Road follow to end dairy on left', '', b'0', b'0', b'0', b'0', b'0', b'0', 'sales@springvalleypastoral.com.au', '', '', 1, '', '', 0, 0, '0000-00-00', 0, '0000-00-00', '0.0', '', 220, 1, b'1', b'0', '', '', '', 0, '0000-00-00', 'East Gippsland > Maffra > MAFFRA (223.52 KMs)', 0, 24, 'East Gippsland', '30 days from delivery', '', '', '', 1, 'East Gippsland > Maffra', '', 'Mal Stasinowsky', ''),
@@ -2221,6 +2223,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Owner` int(11) DEFAULT NULL,
   `Price_pT` decimal(6,2) DEFAULT NULL,
   `Price_pT_Base` decimal(6,2) DEFAULT NULL,
+  `Price_pT_Base_override` decimal(6,2) DEFAULT NULL,
   `Price_Production` int(4) DEFAULT NULL,
   `Price_Production_Base` int(4) DEFAULT NULL,
   `Price_production_pT` int(3) DEFAULT NULL,
@@ -2250,28 +2253,28 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `Percent_ingredients` float DEFAULT NULL,
   `verify_notes` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=188 ;
 
 --
 -- Dumping data for table `customer_orders`
 --
 
-INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`, `verify_notes`) VALUES
-(1, 'ORD3001', 6, 'A. Bezzina Custom 10T', NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, '2.00', 10, NULL, 'test discount', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Must phone Alfie as truck leaves Mill, 0419 970 334. Auger Truck Only, take 4 Bulka bags', NULL, NULL, NULL, '500.00', NULL, NULL, NULL, NULL, '500.00', NULL, '4900.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, NULL, '2016-01-31', NULL, NULL, NULL, 1, 103, NULL, NULL, 100, 1),
-(2, 'ORD3002', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(3, 'ORD3003', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(4, 'ORD3004', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(5, 'ORD3005', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(6, 'ORD3006', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(7, 'ORD3007', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(8, 'ORD3008', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(9, 'ORD3009', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(10, 'ORD3010', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(11, 'ORD3011', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(12, 'ORD3012', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(13, 'ORD3013', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(14, 'ORD3014', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0),
-(15, 'ORD3015', 666, 'DUMMY ACCOUNT - DO NOT USE  T', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2016-01-15', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `customer_orders` (`id`, `Order_ID`, `Customer_id`, `Name`, `Mix_Type`, `Qty_Tonnes`, `Nearest_Town`, `Date_Fulfilled`, `Date_Submitted`, `Status_Reason`, `Anticipated_Sales`, `Billing_company`, `Billing_type`, `Created_By`, `Created_On`, `Delivery_id`, `Discount_Percent`, `Discount_pT`, `Discount_pT_Base`, `Discount_notation`, `Discount_type`, `Feed_Days_Remaining`, `Feed_QOH_Tonnes`, `Feed_Rate_Kg_Day`, `Feed_Type`, `Herd_Size`, `Load_Due`, `Modified_By`, `Modified_On`, `Order_instructions`, `Order_notification`, `Owner`, `Price_pT`, `Price_pT_Base`, `Price_pT_Base_override`, `Price_Production`, `Price_Production_Base`, `Price_production_pT`, `Price_production_pT_Base`, `Price_Sub_Total`, `Price_Sub_Total_Base`, `Price_Total`, `Price_Total_Base`, `Price_Total_pT`, `Price_Total_pT_Base`, `Price_Transport`, `Price_Transport_Base`, `Price_transport_pT`, `Price_transport_pT_Base`, `Process`, `Process_Stage`, `Product_Category`, `Product_Name`, `Requested_Delivery_by`, `Second_Customer`, `Second_customer_Order_percent`, `Ship_To`, `Status`, `Storage_Unit`, `Submitted_Status`, `Submitted_Status_Description`, `Percent_ingredients`, `verify_notes`) VALUES
+(173, 'ORD11589', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-08-29', '2012-08-27', NULL, NULL, NULL, NULL, 1, '2012-08-27', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew prior to delivery 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$334/T HK', NULL, NULL, NULL, '0.00', '254.33', NULL, NULL, 45, NULL, '80.00', NULL, '334.33', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-08-29', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(174, 'ORD11916', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-09-20', '2012-09-17', NULL, NULL, NULL, NULL, 1, '2012-09-17', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew if needed 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$340/T HK', NULL, NULL, NULL, '0.00', '259.78', NULL, NULL, 45, NULL, '80.00', NULL, '339.78', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-09-20', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(175, 'ORD11765', 4, 'A J & AG Lamb- Lamb 2  6T', 5, 6, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-09-07', '2012-09-07', NULL, NULL, NULL, NULL, 1, '2012-09-07', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '6T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew if needed 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$340/T HK', NULL, NULL, NULL, '0.00', '259.78', NULL, NULL, 45, NULL, '80.00', NULL, '339.78', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-09-07', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(176, 'ORD12763', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-11-15', '2012-11-09', NULL, NULL, NULL, NULL, 1, '2012-11-09', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew if needed 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$348/T HK    Moved from 14 to 15 Nov 2012  HK', NULL, NULL, NULL, '0.00', '268.46', NULL, NULL, 45, NULL, '80.00', NULL, '348.46', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-11-15', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(177, 'ORD12353', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-10-16', '2012-10-12', NULL, NULL, NULL, NULL, 1, '2012-10-12', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew if needed 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$348/T HK', NULL, NULL, NULL, '0.00', '268.46', NULL, NULL, 45, NULL, '80.00', NULL, '348.46', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-10-16', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(178, 'ORD12481', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-10-29', '2012-10-22', NULL, NULL, NULL, NULL, 1, '2012-10-22', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew if needed 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$348/T HK', NULL, NULL, NULL, '0.00', '268.46', NULL, NULL, 45, NULL, '80.00', NULL, '348.46', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-10-29', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(179, 'ORD12219', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-10-05', '2012-10-05', NULL, NULL, NULL, NULL, 1, '2012-10-05', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger truck please, Silo#3\nPhone Andrew if needed 0419 560 668.\nPlease invoice A /and/ A lamb 853 Nambrok road Nambrok 3847\n$340/T HK', NULL, NULL, NULL, '0.00', '259.78', NULL, NULL, 45, NULL, '80.00', NULL, '339.78', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-10-05', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(180, 'ORD13011', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-11-28', '2012-11-26', NULL, NULL, NULL, NULL, 1, '2012-11-26', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Can go 27/11\n12T Custom mix. Prefer Auger truck please, Silo#3\nPlease invoice A & A lamb 853 Nambrok road Nambrok 3847\n$348/T HK', NULL, NULL, NULL, '0.00', '266.26', NULL, NULL, 47, NULL, '82.00', NULL, '348.26', NULL, NULL, NULL, NULL, NULL, 35, NULL, NULL, NULL, NULL, NULL, '2012-11-28', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(181, 'ORD13241', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2012-12-14', '2012-12-11', NULL, NULL, NULL, NULL, 1, '2012-12-11', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger - Silo#3\nPlease invoice A & A lamb 853 Nambrok road Nambrok 3847\n$351/T HK', NULL, NULL, NULL, '0.00', '268.80', NULL, NULL, 50, NULL, '82.00', NULL, '350.80', NULL, NULL, NULL, NULL, NULL, 32, NULL, NULL, NULL, NULL, NULL, '2012-12-14', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(182, 'ORD13497', 4, 'A J & AG Lamb- Lamb 2  12T', 5, 12, 'East Gippsland > Nambrok  > NAMBROK (203.07 KMs)', '2013-01-02', '2012-12-31', NULL, NULL, NULL, NULL, 1, '2012-12-31', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12T Custom mix. Prefer Auger - Silo#3\nPlease invoice A & A lamb 853 Nambrok road Nambrok 3847\n$351/T HK', NULL, NULL, NULL, '0.00', '277.70', NULL, NULL, 52, NULL, '82.00', NULL, '359.70', NULL, NULL, NULL, NULL, NULL, 30, NULL, NULL, NULL, NULL, NULL, '2013-01-02', NULL, NULL, NULL, 5, 1018, NULL, NULL, NULL, 1),
+(183, 'ORD11291', 6, 'A.  Bezzina  4T', 2, 4, 'Northern Victoria > WHITTLESEA (42.07 KMs)', '2012-08-09', '2012-08-07', NULL, NULL, NULL, NULL, 1, '2012-08-07', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Delivery Wed 8/8. 4/T Irmix, Small Auger Truck, delivery into Bulka Bags.\n$350/T\nPL  7/8', NULL, NULL, NULL, '0.00', '344.59', NULL, NULL, 0, NULL, '0.00', NULL, '344.59', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2012-08-09', NULL, NULL, NULL, 5, 103, NULL, NULL, NULL, 1),
+(184, 'ORD10507', 12, 'A.R & L.P Pattison  28T', 3, 28, 'East Gippsland > Sale > AIRLY (225.43 KMs)', '2012-06-19', '2012-06-18', NULL, NULL, NULL, NULL, 1, '2012-06-18', NULL, '9.00', 9, NULL, 'Contracted price discount', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Del Tues 19/6\n28T Whole Triticale $248T Margin $37 HK', NULL, NULL, NULL, '0.00', '220.00', NULL, NULL, 10, NULL, '37.00', NULL, '248.00', NULL, NULL, NULL, NULL, NULL, 27, NULL, NULL, NULL, NULL, NULL, '2012-06-19', NULL, NULL, NULL, 5, 485, NULL, NULL, NULL, 1),
+(185, 'ORD10509', 12, 'A.R & L.P Pattison  28T', 3, 28, 'East Gippsland > Sale > AIRLY (225.43 KMs)', '2012-06-25', '2012-06-18', NULL, NULL, NULL, NULL, 1, '2012-06-18', NULL, '9.00', 9, NULL, 'Contracted price discount', 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Del Thurs 21/6\n28T Whole Triticale $248T Margin $37 HK', NULL, NULL, NULL, '0.00', '220.00', NULL, NULL, 10, NULL, '37.00', NULL, '248.00', NULL, NULL, NULL, NULL, NULL, 27, NULL, NULL, NULL, NULL, NULL, '2012-06-25', NULL, NULL, NULL, 5, 485, NULL, NULL, NULL, 1),
+(186, 'ORD10144', 787, 'Sean Allen  8T', 5, 8, 'West Gippsland > Drouin > DROUIN (99.08 KMs)', '2012-01-01', '2012-01-01', NULL, NULL, NULL, NULL, 1, '2012-01-01', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'PLEASE ENSURE CRUSH FINE  AUGER ONLY  PH SEAN 0458 334 896 IF NEED BE.  $305 P/T  KE', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, 0, NULL, '0.00', NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2012-01-01', NULL, NULL, NULL, 5, 1240, NULL, NULL, NULL, 1),
+(187, 'ORD10144', 787, 'Sean Allen  8T', 5, 8, 'West Gippsland > Drouin > DROUIN (99.08 KMs)', '2012-01-01', '2012-01-01', NULL, NULL, NULL, NULL, 1, '2012-01-01', NULL, NULL, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'PLEASE ENSURE CRUSH FINE  AUGER ONLY  PH SEAN 0458 334 896 IF NEED BE.  $305 P/T  KE', NULL, NULL, NULL, '0.00', NULL, NULL, NULL, 0, NULL, '0.00', NULL, '0.00', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, '2012-01-01', NULL, NULL, NULL, 5, 1240, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -2289,7 +2292,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
   `order_id` int(5) NOT NULL,
   `price_pT` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `customer_orders_ingredients`
@@ -2297,7 +2300,11 @@ CREATE TABLE IF NOT EXISTS `customer_orders_ingredients` (
 
 INSERT INTO `customer_orders_ingredients` (`id`, `created_on`, `ingredient_id`, `ingredient_percent`, `modified_by`, `modified_on`, `order_id`, `price_pT`) VALUES
 (6, '2016-01-28', 3, '95.000', NULL, NULL, 1, 282.142),
-(7, '2016-01-28', 92, '5.000', NULL, NULL, 1, 264);
+(7, '2016-01-28', 92, '5.000', NULL, NULL, 1, 264),
+(8, '2016-02-19', 10, '95.000', NULL, NULL, 17, 0),
+(9, '2016-02-19', 92, '5.000', NULL, NULL, 17, 264),
+(10, '2016-02-19', 10, '95.000', NULL, NULL, 18, 0),
+(11, '2016-02-19', 92, '4.994', NULL, NULL, 18, 264);
 
 -- --------------------------------------------------------
 
@@ -2317,7 +2324,14 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `status` int(10) NOT NULL,
   `num_batches` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='delivery_completed_date' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`id`, `Name`, `weigh_bridge_ticket`, `weighed_by`, `delivery_qty`, `delivery_on`, `delivery_completed_on`, `order_id`, `status`, `num_batches`) VALUES
+(1, 'DEL00001', NULL, NULL, 10, '2016-02-23', NULL, 17, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -2334,7 +2348,14 @@ CREATE TABLE IF NOT EXISTS `delivery_load` (
   `truck_id` int(5) DEFAULT NULL,
   `delivery_run_num` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `delivery_load`
+--
+
+INSERT INTO `delivery_load` (`id`, `delivery_id`, `load_qty`, `delivery_on`, `delivery_completed_on`, `truck_id`, `delivery_run_num`) VALUES
+(2, 1, 10, '2016-02-23', NULL, 92, 1);
 
 -- --------------------------------------------------------
 
@@ -2348,7 +2369,14 @@ CREATE TABLE IF NOT EXISTS `delivery_load_bin` (
   `trailer_bin_id` int(11) NOT NULL,
   `bin_load` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `delivery_load_bin`
+--
+
+INSERT INTO `delivery_load_bin` (`id`, `delivery_load_id`, `trailer_bin_id`, `bin_load`) VALUES
+(2, 2, 456, 10);
 
 -- --------------------------------------------------------
 
@@ -2361,7 +2389,14 @@ CREATE TABLE IF NOT EXISTS `delivery_load_trailer` (
   `delivery_load_id` int(10) NOT NULL,
   `trailer_id` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `delivery_load_trailer`
+--
+
+INSERT INTO `delivery_load_trailer` (`id`, `delivery_load_id`, `trailer_id`) VALUES
+(2, 2, 19);
 
 -- --------------------------------------------------------
 
@@ -2374,7 +2409,7 @@ CREATE TABLE IF NOT EXISTS `import_functions` (
   `name` varchar(100) DEFAULT NULL,
   `function` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `import_functions`
@@ -2388,7 +2423,8 @@ INSERT INTO `import_functions` (`id`, `name`, `function`) VALUES
 (5, 'import CRM Users', 'importCRMUsers'),
 (6, 'correctOwnerDetails', 'correctOwnerDetails'),
 (7, 'Import Ingredients', 'importIngredients'),
-(8, 'Import Pricing Sheet', 'ImportPriceSheet');
+(8, 'Import Pricing Sheet', 'ImportPriceSheet'),
+(9, 'Import Customer Order Ingredients', 'importCustomerOrdersIngredientsCRM');
 
 -- --------------------------------------------------------
 
@@ -2403,7 +2439,7 @@ CREATE TABLE IF NOT EXISTS `lookup` (
   `type` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=54 ;
 
 --
 -- Dumping data for table `lookup`
@@ -2460,7 +2496,8 @@ INSERT INTO `lookup` (`id`, `name`, `code`, `type`, `position`) VALUES
 (49, 'Active', 1, 'PRODUCT_STATUS', 1),
 (50, 'Inactive', 2, 'PRODUCT_STATUS', 2),
 (51, 'Base Product', 1, 'PRODUCT_MIXTYPE', 1),
-(52, 'Composite', 2, 'PRODUCT_MIXTYPE', 2);
+(52, 'Composite', 2, 'PRODUCT_MIXTYPE', 2),
+(53, 'Canceled', 6, 'ORDER_STATUS', 6);
 
 -- --------------------------------------------------------
 
@@ -3105,7 +3142,7 @@ CREATE TABLE IF NOT EXISTS `storage` (
   `SuburbTown` varchar(100) DEFAULT NULL,
   `Tipper` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1240 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1241 ;
 
 --
 -- Dumping data for table `storage`
@@ -4270,7 +4307,8 @@ INSERT INTO `storage` (`id`, `Description`, `Capacity`, `company_id`, `Auger`, `
 (1236, 'Witchell farm Silo 1', '28.00', 334, b'1', b'1', 'Witchells Farm- Shane Kennedys old farm Jacksons Track Labertouche. any truck only silo at dairy', '', 2, 'Jacksons track', '', b'0'),
 (1237, 'Witchells Farm Silo 1', '28.00', 501, b'1', b'1', 'Witchells Farm- Shane Kennedys old farm Jacksons Track Labertouche. any truck only silo at dairy', '', 1, 'Jacksons Trk', '', b'0'),
 (1238, 'Yellow Silo @ Piggery', '4.00', 857, b'0', b'1', 'blower truck. once you have entered the front gates to property, the piggery is on the LHS. there are concrete water tanks on the LHS and piggery is behind them. Yellow silo is there. please call Chris to confirm you are at the right silo 0437 583 386', '3818', 1, '510 Gardner-Holeman Road', 'DROUIN', b'0'),
-(1239, 'Bulka Bags (25Kg)', '25.00', 908, b'0', b'0', '', '', 1, '', '', b'0');
+(1239, 'Bulka Bags (25Kg)', '25.00', 908, b'0', b'0', '', '', 1, '', '', b'0'),
+(1240, 'Silo 1- new big silo', '0.00', 787, b'0', b'0', '', '3818', 1, '1103 Main South Road', 'DROUIN SOUTH', b'0');
 
 -- --------------------------------------------------------
 
@@ -4630,7 +4668,7 @@ CREATE TABLE IF NOT EXISTS `weighbridge_ticket` (
   `testWeight` float DEFAULT NULL,
   `screenings` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `weighbridge_ticket`
@@ -4640,7 +4678,8 @@ INSERT INTO `weighbridge_ticket` (`id`, `ticket_number`, `delivery_id`, `truck_i
 (17, 'WB00001', 34, 92, '2015-12-14', 'Shamus', '1234', 10, 2, 8, 'blah blah blah', NULL, NULL, NULL, NULL),
 (18, 'WB00018', 29, 92, '2015-11-12', 'Shamus', '12345', 15, 2, 13, 'again blah blah', NULL, NULL, NULL, NULL),
 (19, 'WB00019', 31, 92, '2015-11-12', 'Joe', '1234', 14, 2, 12, '', NULL, NULL, NULL, NULL),
-(20, 'WB00020', 36, 92, '2016-01-20', 'Shamus', '1234', 1, 2, 3, 'blah', 1, 1, 1, 1);
+(20, 'WB00020', 36, 92, '2016-01-20', 'Shamus', '1234', 1, 2, 3, 'blah', 1, 1, 1, 1),
+(21, 'WB00021', 1, 92, '2016-02-23', 'sgdfdf', '', 1, 2, 3, '', NULL, NULL, NULL, NULL);
 
 --
 -- Constraints for dumped tables
