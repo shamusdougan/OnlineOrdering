@@ -415,5 +415,36 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	{
 		return CustomerOrders::find()->where(['Order_ID' => $orderID])->one();
 	}
+	
+	public function deleteIngredients()
+	{
+		foreach($this->ingredients as $ingredient)
+			{
+			$ingredient->delete();
+			}
+	}
+	
+	
+	public function checkIngredientsTotal()
+	{
+		$percentTarget = 100;
+		if((abs(($this->getIngredientsTotal() - $percentTarget)/$percentTarget) > 0.000001))
+			{
+			return false;
+			}
+		return True;
+	}
+	
+
+	public function getIngredientsTotal()
+	{
+		$ingredientSum = 0;
+		foreach($this->ingredients as $ingredient)
+			{
+			$ingredientSum += $ingredient->ingredient_percent;
+			}
+		return $ingredientSum;
+	}
+	
 	  
 }

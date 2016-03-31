@@ -439,11 +439,12 @@ class Product extends \yii\db\ActiveRecord
 	
 	public function getProductsUsedIn()
 		{
-			
 		return ProductsIngredients::findAll(['product_ingredient_id' => $this->id]);
-	
-			
-			
-			
 		} 
+		
+		
+	public function getProductByProductCode($productCode)
+		{
+		return Product::find()->where(['Product_ID' => $productCode])->One();
+		}
 }

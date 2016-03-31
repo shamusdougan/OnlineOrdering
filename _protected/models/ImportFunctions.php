@@ -69,6 +69,8 @@ class ImportFunctions extends \yii\db\ActiveRecord
     public function importCustomerOrdersCRM()
 		{
 			
+		
+		
 		$headerRowColumns = 
 			[
 			'Order ID',
@@ -89,6 +91,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			'Price Total (p/T)',
 			'Storage Unit',
 			'Status Reason',
+			'Price Total',
 			];
 		
 		if(!file_exists($this->file))
@@ -125,6 +128,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			if($colIndex === false)
 				{
 				$this->progress .= "unable to locate column: ".$headerColumn." in import file\n";
+				$this->progress .= "NO records imported\n";
 				return;
 				}
 			$columnIndexs[$headerColumn] = $colIndex;
@@ -138,7 +142,8 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			
 			
 			//check for any existing orders to overwrite
-			$customerOrder = CustomerOrders::findByOrderID($rowArray[$columnIndexs['Order ID'])
+			
+			$customerOrder = CustomerOrders::findByOrderOrderID($rowArray[$columnIndexs['Order ID']]);
 			if($customerOrder)
 				{
 				$this->progress .= "Found Duplicate Order ID, removing existing order\n";
@@ -147,11 +152,12 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			
 			$customerOrder = new CustomerOrders();
 			
-			$customer = Clients::find()->where(['Company_Name' => $rowArray[$columnIndexs['Customer']]])->one();	
+			$customerName = preg_replace('/\s+/', ' ', $rowArray[$columnIndexs['Customer']]);
+			$customer = Clients::find()->where(['Company_Name' => $customerName])->one();	
 			if(!$customer){
 				$this->progress .= "WARNING: unable to locate customer record from name: ".$rowArray[$columnIndexs['Customer']]." for Order record: ".$rowArray[$columnIndexs['Order ID']]."\n";
 				$this->recordsFailed++;
-				return null;
+				break;
 				}
 				
 			$customerOrder->Customer_id = $customer->id;	
@@ -160,33 +166,32 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			$customerOrder->Qty_Tonnes =  $rowArray[$columnIndexs['Qty (Tonnes)']];
 			$customerOrder->Nearest_Town = $rowArray[$columnIndexs['Nearest Town']];
 			
+		
 			
-			$fulfilledDate = \DateTime::createFromFormat("m-d-y", $rowArray[$columnIndexs['Date Fulfilled']]);
-			if(!$fulfilledDate)
+			
+			$fulfilledDate = $rowArray[$columnIndexs['Date Fulfilled']]; 
+			if($fulfilledDate == "" || $fulfilledDate == null)
 				{
 				$customerOrder->Date_Fulfilled = date("Y-m-d", mktime(0,0,0,1,1,2012));
 				}
 			else{
-				$customerOrder->Date_Fulfilled = $fulfilledDate->format("Y-m-d");
+				$customerOrder->Date_Fulfilled = date("Y-m-d" ,\PHPExcel_Shared_Date::ExcelToPHP($fulfilledDate ));
+
 				}	
-			$submittedDate = \DateTime::createFromFormat("m-d-y", $rowArray[$columnIndexs['Date Submitted']]);
-			if(!$submittedDate)
+				
+			$submittedDate = $rowArray[$columnIndexs['Date Submitted']];
+			if($submittedDate == "" || $submittedDate == null)
 				{
-				$customerOrder->Date_Submitted = date("Y-m-d", mktime(0,0,0,1,1,2012));
+				$customerOrder->Date_Submitted = $customerOrder->Date_Fulfilled;
 				}
 			else{
-				$customerOrder->Date_Submitted = $submittedDate->format("Y-m-d");
+				$customerOrder->Date_Submitted = date("Y-m-d", \PHPExcel_Shared_Date::ExcelToPHP($submittedDate ));
 				}
 			
 			$customerOrder->Created_On = $customerOrder->Date_Submitted;
 			$customerOrder->Requested_Delivery_by  = $customerOrder->Date_Fulfilled;
 			$customerOrder->Order_instructions = $rowArray[$columnIndexs['Order instructions']];
 			$customerOrder->verify_notes = 1;
-			
-			
-			
-			
-			
 			$customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
 
 			
@@ -216,8 +221,29 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			$storageID = $customer->findStorageByName($rowArray[$columnIndexs['Storage Unit']]);
 			if(is_string($storageID))
 				{
-				$this->progress .= $storageID."\n";
-				return;
+				$this->progress .= "OrderID: ".$customerOrder->Order_ID." -> ".$storageID."\n";
+				
+				$description = $rowArray[$columnIndexs['Storage Unit']];
+				if($description == "")
+					{
+					$description = "Unknown";
+					}
+				//create the storage Unit
+				$storageUnit = new Storage();
+				$storageUnit->Description = $description;
+				$storageUnit->company_id = $customer->id;
+				$storageUnit->Capacity = 0;
+				$storageUnit->Status = Storage::STATUS_ACTIVE ;
+				if(!$storageUnit->save())
+					{
+					$this->progress .= "Unable to create storage unit for customer\n";
+					foreach($storageUnit->getErrors() as $fieldname => $error)
+						{
+						$this->progress .= $fieldname.": ".$error[0]."\n";
+						}		
+					}
+				$storageID = $storageUnit->id;
+				$this->progress .= "Created new storage Unit id: ".$storageID." for Client: ".$customer->Company_Name."\n";
 				}
 			$customerOrder->Storage_Unit = $storageID;
 			
@@ -268,7 +294,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 				}
 			
 			
-			$customerOrder->Price_Total = $rowArray[$columnIndexs['Price Total (p/T)']];
+			$customerOrder->Price_Total = $rowArray[$columnIndexs['Price Total']];
 			
 		
 			
@@ -282,6 +308,10 @@ class ImportFunctions extends \yii\db\ActiveRecord
 					}	
 				$this->recordsFailed++;
 				}
+			else{
+				$this->recordsImported++;
+				}
+			
 			
 			}
 		
@@ -307,7 +337,6 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			}
 		
 		//Parse the file as an Excel file
-		$this->progress .= "importing records from ".$this->file."\n";
 		try {
 			$inputFileType = \PHPExcel_IOFactory::identify($this->file);
  			$objReader = \PHPExcel_IOFactory::createReader($inputFileType);
@@ -333,7 +362,9 @@ class ImportFunctions extends \yii\db\ActiveRecord
 				}
 			$columnIndexs[$headerColumn] = $colIndex;
 			}	
-			
+		
+		//Iterate through each of the records and create the ingredients for the record
+		$modifiedCustomerOrders = array();
 		foreach($sheet as $rowNum => $rowArray)
 			{
 			$customerOrder = CustomerOrders::findByOrderOrderID( $rowArray[$columnIndexs['Order ID (Order) (Customer Order)']]);
@@ -344,11 +375,50 @@ class ImportFunctions extends \yii\db\ActiveRecord
 				return null;
 				}
 			
+			//Check to see if we have modified this customer order before, if not wipe all the existing ingredients
+			if(!array_key_exists($customerOrder->id, $modifiedCustomerOrders))
+				{
+				$this->progress .= "Removing any existing ingredients\n";
+				$customerOrder->deleteIngredients();
+				$modifiedCustomerOrders[$customerOrder->id] = $customerOrder;
+				}
+
 			
 			
+			//Create the new order ingredient			
+			$ingredient = new CustomerOrdersIngredients();
+			$product = Product::getProductByProductCode($rowArray[$columnIndexs['Product ID (Ingredient) (Product)']]);
+			if(!$product)
+				{
+				$this->progress .=  "ERROR unable to locate product by code, given code is: ".$rowArray[$columnIndexs['Product ID (Ingredient) (Product)']]."\n";
+				return null;
+				}
+			
+			
+			$ingredient->ingredient_id =  $product->id;
+			$ingredient->ingredient_percent =  $rowArray[$columnIndexs['Ingredient %']];
+			$ingredient->order_id = $customerOrder->id;
+			$ingredient->created_on = $customerOrder->Created_On;
+			if(!$ingredient->save())
+				{
+				$this->outputErrors($ingredient);
+				}
+			else{
+				$this->recordsImported++;
+				}
 			}
 			
 			
+		//Check that the ingredients are correctly added and the order is consistant
+		$this->progress .= "\nChecking the modified orders are correct\n";
+		foreach($modifiedCustomerOrders as $customerOrder)
+			{
+			$freshCustomerOrder = CustomerOrders::findOne($customerOrder->id);
+			if(!$freshCustomerOrder->checkIngredientsTotal())
+				{
+				$this->progress .= "Cusomter Order ID: ".$freshCustomerOrder->Order_ID." Failed ingredient sum check, returned total was: ".$freshCustomerOrder->getIngredientsTotal()."\n";
+				}
+			}
 			
 			
 			
@@ -734,7 +804,14 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		
    }
     
-    
+   public function outputErrors($model)
+   {
+   	$this->progress .= "Unable to Save Object\n";
+	foreach($model->getErrors() as $fieldname => $error)
+		{
+		$this->progress .= "   ".$fieldname.": ".$error[0]."\n";
+		}	
+   } 
     
     
     

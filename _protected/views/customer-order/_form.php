@@ -48,7 +48,7 @@ function getIngredientSum()
        		}
 		});
 	$(\"#".Html::getInputId($model, 'Percent_ingredients')."\").val(sum);
-	$('tfoot td:eq(2)').text(sum);
+	$('tfoot td:eq(2)').text(sum.toFixed(2));
 	
 	
 	return sum;
