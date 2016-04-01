@@ -337,6 +337,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			}
 		
 		//Parse the file as an Excel file
+		/*
 		try {
 			$inputFileType = \PHPExcel_IOFactory::identify($this->file);
  			$objReader = \PHPExcel_IOFactory::createReader($inputFileType);
@@ -347,6 +348,23 @@ class ImportFunctions extends \yii\db\ActiveRecord
 			}
 		
 		$sheet = $objPHPExcel->getSheet(0)->toArray(null, true, true, true);	
+		*/
+		
+		
+		try{
+			$fp=fopen($this->file, 'r');
+			}
+		catch(Exception $e){
+			$this->progress .= 'ERROR loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage."\n";
+			return;
+			}
+		
+		while(! feof($fp))
+		   {
+		   $sheet[] = fgetcsv($fp);
+		   }
+
+		
 		$headerRow = array_shift($sheet);
 		
 		//This section will create an array of indexs, this allows the export out of CRM to not be as rigid, we only care that the export has
@@ -365,6 +383,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		
 		//Iterate through each of the records and create the ingredients for the record
 		$modifiedCustomerOrders = array();
+		
 		foreach($sheet as $rowNum => $rowArray)
 			{
 			$customerOrder = CustomerOrders::findByOrderOrderID( $rowArray[$columnIndexs['Order ID (Order) (Customer Order)']]);
@@ -372,7 +391,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 				{
 				$this->progress .= "WARNING: unable to locate customer order from name: ".$rowArray[$columnIndexs['Order ID (Order) (Customer Order)']]."\n";
 				$this->recordsFailed++;
-				return null;
+				continue;
 				}
 			
 			//Check to see if we have modified this customer order before, if not wipe all the existing ingredients
