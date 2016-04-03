@@ -721,8 +721,10 @@ class CustomerOrderController extends Controller
 		else{
 			$newOrder = $order->copy();
 			
-			return $this->redirect(['update', 'id' => $newOrder->id]);
+			//print_r($newOrder);
 			
+			return $this->redirect(['update', 'id' => $newOrder->id]);
+			//return $this->render('copy');
 			
 			}
 		}

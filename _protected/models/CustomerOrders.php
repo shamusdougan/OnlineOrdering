@@ -113,8 +113,8 @@ class CustomerOrders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Customer_id', 'Name', 'Created_On', 'Qty_Tonnes', 'Requested_Delivery_by', 'Storage_Unit'], 'required'],
-            [['verify_notes'], 'required', 'requiredValue' => 1, 'message' => 'Please verify the Order Notes are correct and up to date'],
+            [['Customer_id', 'Name', 'Created_On', 'Qty_Tonnes', 'Requested_Delivery_by', 'Storage_Unit'], 'required', 'except' => 'copyOrder'],
+            [['verify_notes'], 'required', 'requiredValue' => 1, 'message' => 'Please verify the Order Notes are correct and up to date', 'except' => 'copyOrder'],
             [['Customer_id', 'Mix_Type', 'Qty_Tonnes', 'Billing_company', 'Billing_type', 'Created_By', 'Discount_pT', 'Discount_pT_Base', 'Discount_type', 'Feed_Days_Remaining', 'Feed_Type', 'Herd_Size', 'Modified_By', 'Order_notification', 'Owner', 'Price_Production', 'Price_Production_Base','Price_production_pT_Base', 'Price_Transport', 'Price_Transport_Base', 'Price_transport_pT_Base', 'Process', 'Process_Stage', 'Product_Category', 'Second_Customer', 'Second_customer_Order_percent', 'Ship_To', 'Status', 'Storage_Unit', 'Submitted_Status', 'Submitted_Status_Description'], 'integer'],
             [['Price_production_pT', 'Price_transport_pT'], 'integer', 'message' =>'Dollar Value only'],
             [['Discount_Percent', 'Date_Fulfilled', 'Date_Submitted', 'Created_On', 'Load_Due', 'Modified_On', 'Requested_Delivery_by'], 'safe'],
@@ -147,7 +147,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
     {
 		$scenarios = parent::scenarios();
         $scenarios['createDummy'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By'];//Scenario Values Only Accepted
-        $scenarios['copyOrder'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By'];//Scenario Values Only Accepted
+        $scenarios['copyOrder'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By', 'Price_Total', 'Status', 'Requested_Delivery_by', 'verify_notes', 'Qty_Tonnes', 'Order_instructions'];//Scenario Values Only Accepted
         return $scenarios;
     }
 
@@ -283,13 +283,20 @@ class CustomerOrders extends \yii\db\ActiveRecord
 			}
 		$this->Price_pT_Base = $sum;
 		
+		
 		//calculate the overall price per tone, added prodcution cost + transport cost
 		$this->Price_Sub_Total = $this->Price_pT_Base + $this->Price_production_pT + $this->Price_transport_pT;
-		
+
 		
    }
    
    
+   public function calculatePriceTotal()
+   {
+   		$this->calculatePricePT();
+   		$this->Price_Total = round((($this->Price_Sub_Total - $this->Discount_pT) * $this->Qty_Tonnes), 2);
+   		
+   }
    
    
    
@@ -298,7 +305,8 @@ class CustomerOrders extends \yii\db\ActiveRecord
     if (parent::beforeSave($insert)) 
     	{
 		$this->Name = $this->generateOrderName();
-		$this->calculatePricePT();
+		$this->calculatePriceTotal();
+	
 		return true;
     	} 
     else 
@@ -390,20 +398,40 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		$newOrder->attributes = $this->attributes;
 		$newOrder->Status = CustomerOrders::STATUS_ACTIVE;
 		$newOrder->Created_On = date("Y-m-d");
-		$newOrder->Requested_Delivery_by = date("Y-m-d");
+		$newOrder->Requested_Delivery_by = null;
 		$newOrder->verify_notes = 0;
-		$newOrder->save();
-		$newOrder->Order_ID = $newOrder->getOrderNumber();
-		$newOrder->save();
+		$newOrder->Qty_Tonnes = $this->Qty_Tonnes;
+		$newOrder->Order_instructions = $this->Order_instructions;
 		
-		//create a copy of all of the rder ingredients and save them to the database
+		
+		if(!$newOrder->save())
+			{
+			print_r($newOrder->getErrors());
+			}
+		$newOrder->Order_ID = $newOrder->getOrderNumber();
+		if(!$newOrder->save())
+			{
+			print_r($newOrder->getErrors());
+			}
+		
+		//create a copy of all of the order ingredients and save them to the database
 		foreach($this->ingredients as $ingredient)
 			{
 			$newIngredient = new CustomerOrdersIngredients();
 			$newIngredient->attributes = $ingredient->attributes;
 			$newIngredient->order_id = $newOrder->id;
+			$newIngredient->created_on = date("Y-m-d");
 			$newIngredient->save();
 			}
+		$newOrder->Price_Total = $this->Price_Total;
+		$newOrder = CustomerOrders::findOne($newOrder->id);
+		$newOrder->scenario = "copyOrder";
+		$newOrder->calculatePriceTotal();
+		if(!$newOrder->save())
+			{	
+			print_r($newOrder->getErrors());
+			}
+	
 		
 		return $newOrder;
 		

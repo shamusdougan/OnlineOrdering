@@ -29,7 +29,7 @@ $this->registerJs(
 	"
    );
 
-
+/*
 $this->registerJs(
     "$(document).on('click', '.order-copy-link', function() 
     	{
@@ -62,7 +62,7 @@ $this->registerJs(
 	"
    );
 
-
+*/
 
 
 
@@ -110,7 +110,7 @@ $gridColumns = [
 				},
 			'copy' => function ($url, $model, $key) 
 	   			{
-                return Html::a('<span class="glyphicon glyphicon-tags"></span>','#', 
+                return Html::a('<span class="glyphicon glyphicon-tags"></span>','/customer-order/copy?id='.$model->id, 
                 	[
                     'class' => 'order-copy-link',
                     'title' => 'Copy this order',

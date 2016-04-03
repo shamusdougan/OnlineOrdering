@@ -40,9 +40,23 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 			'attribute' => 'Created_On',
 			'value' => function ($data)
-			    			{
+			   			{
 							return date("d-M-Y", strtotime($data->Created_On));
 							},
+			//'format'=>'date',
+			'filterType'=> \kartik\grid\GridView::FILTER_DATE_RANGE,
+			'filterWidgetOptions' => 
+				[
+				'presetDropdown' => true,
+				//'useWithAddon'=>true,
+				'pluginOptions' => 
+					[
+					'format' => 'dd-MM-YYYY',
+					'seperator' => ' TO ',
+					'opens'=>'right',
+					],
+				
+				],
 			],
             [
     		'attribute' => 'Order_ID',
@@ -76,6 +90,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			'attribute' => 'Requested_Delivery_by',
 			'value' => function ($data)
     			{
+    			if($data->Requested_Delivery_by == null)
+    				{
+					return "";
+					}
 				return date("d-M-Y", strtotime($data->Requested_Delivery_by));
 				},
 			],
@@ -123,7 +141,8 @@ $this->params['breadcrumbs'][] = $this->title;
 					'delete' => function ($url, $model)
 						{
 							return $model->isActive() ?  html::a('<span class="glyphicon glyphicon-trash"></span>', Url::toRoute(['delete', 'id' => $model->id]), [
-                                        'title' => 'Delete Order',
+                                        'title' => 'Delete Order', 
+                                        'data-confirm' => 'Are you sure to delete this order?',
                                         ]) : "";
 
 						}
