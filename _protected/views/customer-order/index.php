@@ -40,22 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 			'attribute' => 'Created_On',
 			'value' => function ($data)
-			   			{
+			  			{
 							return date("d-M-Y", strtotime($data->Created_On));
 							},
 			//'format'=>'date',
-			'filterType'=> \kartik\grid\GridView::FILTER_DATE_RANGE,
-			'filterWidgetOptions' => 
+			'filterType'=> GridView::FILTER_DATE,
+			'filterWidgetOptions' =>
 				[
-				'presetDropdown' => true,
-				//'useWithAddon'=>true,
 				'pluginOptions' => 
 					[
-					'format' => 'dd-MM-YYYY',
-					'seperator' => ' TO ',
-					'opens'=>'right',
+			        'format' => 'dd-M-yyyy',
+        			'todayHighlight' => true
 					],
-				
 				],
 			],
             [

@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
  * @package yii2-widgets
  * @subpackage yii2-widget-colorinput
- * @version 1.0.1
+ * @version 1.0.3
  */
 
 namespace kartik\color;
@@ -12,7 +12,6 @@ namespace kartik\color;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 use yii\web\View;
 use kartik\base\Html5Input;
@@ -39,6 +38,11 @@ class ColorInput extends Html5Input
      * @var boolean whether to show a default palette of colors
      */
     public $showDefaultPalette = true;
+
+    /**
+     * @var string the name of the jQuery plugin
+     */
+    public $pluginName = 'spectrum';
 
     /**
      * @var array default plugin options
@@ -150,11 +154,22 @@ class ColorInput extends Html5Input
      */
     public function run()
     {
-        $this->type = 'color';
-        $this->width = '60px';
         $this->_msgCat = 'kvcolor';
-        $this->html5Options['value'] = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
+        if (!isset($this->type)) {
+            $this->type = $this->useNative ? 'color' : 'text';
+        }
+        $this->width = '60px';
         $this->initI18N(__DIR__);
+        if (empty($this->html5Container['id'])) {
+            $this->html5Container['id'] = $this->options['id'] . '-cont';
+        }
+        if ($this->type === 'text') {
+            Html::addCssStyle($this->html5Options, 'display:none');
+            if ($this->pluginLoading) {
+                Html::addCssClass($this->html5Container, 'kv-center-loading');
+            }
+        }
+        $this->html5Options['value'] = $this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value;
         if (substr($this->language, 0, 2) !== 'en') {
             $this->_defaultOptions += [
                 'cancelText' => Yii::t('kvcolor', 'cancel'),
@@ -195,6 +210,8 @@ class ColorInput extends Html5Input
         Html5InputAsset::register($view);
         $input = 'jQuery("#' . $this->html5Options['id'] . '")';
         $el = 'jQuery("#' . $this->options['id'] . '")';
-        $this->registerPlugin('spectrum', $input, "function(){{$input}.spectrum('set',{$el}.val());}");
+        $cont = 'jQuery("#' . $this->html5Container['id'] . '")';
+        $doneJs = "function(){{$input}.spectrum('set',{$el}.val());{$cont}.removeClass('kv-center-loading');}";
+        $this->registerPlugin($this->pluginName, $input, $doneJs);
     }
 }

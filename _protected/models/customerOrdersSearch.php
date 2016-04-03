@@ -209,14 +209,8 @@ public function dataQuery($params, $query)
 
 		if(isset($this->Created_On) && $this->Created_On !='')
 			{
-				
-			var_dump($this->Created_On);
-				
-			$date_explode = explode(" - ", $this->Created_On);
-			$date1 = trim($date_explode[0]);
-			$date2= trim($date_explode[1]);
-			
-			$query->andFilterWhere(['between', 'customer_orders.Created_On', $date1,$date2]);
+			$filterDate = strtotime($this->Created_On);
+			$query->andFilterWhere(['customer_orders.Created_On' => date("Y-m-d", $filterDate)]);
 			}
 
         $query->andFilterWhere([
@@ -229,7 +223,7 @@ public function dataQuery($params, $query)
             'Billing_company' => $this->Billing_company,
             'Billing_type' => $this->Billing_type,
             'customer_orders.Created_By' => $this->Created_By,
-           // 'customer_orders.Created_On' => $this->Created_On,
+            //'customer_orders.Created_On' => $this->Created_On,
             'Discount_Percent' => $this->Discount_Percent,
             'Discount_pT' => $this->Discount_pT,
             'Discount_pT_Base' => $this->Discount_pT_Base,

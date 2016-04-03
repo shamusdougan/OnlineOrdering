@@ -1,6 +1,29 @@
 Change Log: `yii2-grid`
 =======================
 
+## Version 3.1.0
+
+**Date:** 13-Jan-2016
+
+1. (enh #402): Correct casting of primary key in EditableColumn for composite and MongoId scenario.
+2. (enh #407): Correct casting of primary key in ExpandRowColumn for composite and MongoId scenario.
+3. (bug #434): Correct pjax validation for DataColumn.
+4. (enh #436): Add branch alias for dev-master latest release.
+5. (enh #437): Update Brazilian Portuguese Translations
+6. (bug #438): Correct pjax validation for DataColumn.
+
+## Version 3.0.9
+
+**Date:** 10-Jan-2016
+
+1. (enh #410, #413): Add Thai translations.
+2. (bug #415): Fix double quote replace in csv export.
+3. (enh #419): Create new `EditableColumnAction` class.
+4. (enh #420): Enhance EditableColumn to pass current model `attribute` as ajax posted data.
+5. Sort entries in message files.
+6. (enh #431): Disable PJAX pushState by default to avoid plugin conflict on browser back forward.
+7. (enh #432): Enhancements for PJAX reinitialization.
+
 ## Version 3.0.8
 
 **Date:** 05-Dec-2015

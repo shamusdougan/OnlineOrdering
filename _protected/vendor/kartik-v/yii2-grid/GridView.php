@@ -3,8 +3,8 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.8
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
+ * @version   3.1.0
  */
 
 namespace kartik\grid;
@@ -1319,6 +1319,9 @@ HTML;
         }
         if ($js != $container) {
             $view->registerJs("{$js};");
+        }
+        if (!isset($this->pjaxSettings['options']['enablePushState'])) {
+            $this->pjaxSettings['options']['enablePushState'] = false;
         }
         Pjax::begin($this->pjaxSettings['options']);
         echo ArrayHelper::getValue($this->pjaxSettings, 'beforeGrid', '');

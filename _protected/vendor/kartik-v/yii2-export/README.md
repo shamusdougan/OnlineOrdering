@@ -1,7 +1,8 @@
 yii2-export
 ===========
 
-[![Latest Stable Version](https://poser.pugx.org/kartik-v/yii2-export/v/stable)](https://packagist.org/packages/kartik-v/yii2-export)
+[![Stable Version](https://poser.pugx.org/kartik-v/yii2-export/v/stable)](https://packagist.org/packages/kartik-v/yii2-export)
+[![Unstable Version](https://poser.pugx.org/kartik-v/yii2-export/v/unstable)](https://packagist.org/packages/kartik-v/yii2-export)
 [![License](https://poser.pugx.org/kartik-v/yii2-export/license)](https://packagist.org/packages/kartik-v/yii2-export)
 [![Total Downloads](https://poser.pugx.org/kartik-v/yii2-export/downloads)](https://packagist.org/packages/kartik-v/yii2-export)
 [![Monthly Downloads](https://poser.pugx.org/kartik-v/yii2-export/d/monthly)](https://packagist.org/packages/kartik-v/yii2-export)
@@ -32,7 +33,7 @@ The extension offers configurable user interfaces for advanced cases using view 
 You can see detailed [documentation](http://demos.krajee.com/export) and [demonstration](http://demos.krajee.com/export-demo) on usage of the extension.
 
 ## Latest Release
->NOTE: The latest version of the extension is v1.2.3. Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-export/blob/master/CHANGE.md) for details.
+>NOTE: The latest version of the extension is v1.2.4. Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-export/blob/master/CHANGE.md) for details.
 
 ## Installation
 

@@ -12,7 +12,6 @@
             "homepage": "http://www.krajee.com/"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
         "kartik-v/yii2-krajee-base": "*",
         "kartik-v/bootstrap-star-rating": "*"
@@ -20,6 +19,11 @@
     "autoload": {
         "psr-4": {
             "kartik\\rating\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     }
 }

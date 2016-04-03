@@ -1,6 +1,57 @@
 Change Log: `yii2-widget-select2`
 =================================
 
+## Version 2.0.8
+
+**Date:** 17-Feb-2016
+
+- Add branch alias for dev-master latest release.
+- (enh #117): Add Dutch Translations.
+- (enh #119): Add Slovak Translations.
+- (enh #124): Maintain order of selected values for an update scenario.
+- (enh #125): Update to latest release of the select2 plugin (v4.0.2-rc.1).
+- (enh #126): Enhance jQuery event handling for Krajee's additional features.
+
+## Version 2.0.7
+
+**Date:** 10-Jan-2016
+
+- (enh #108): Remove navbar styling from Krajee theme.
+- (enh #109): Add Hungarian Translations.
+- (enh #110): Enhancements for PJAX based reinitialization. Complements enhancements in kartik-v/yii2-krajee-base#52 and kartik-v/yii2-krajee-base#53.
+
+## Version 2.0.6
+
+**Date:** 22-Dec-2015
+
+- (enh #100): Update Russian translations.
+- (enh #101): Consolidate asset bundles.
+- (enh #102): Enhance toggle all auto-reset based on each option clear, change, or form reset.
+- (enh #103): Enhance maintaining order of multi select tags.
+- (enh #104): Enhance Select2 custom init routines to work with jQuery, AMD and CommonJS.
+
+## Version 2.0.5
+
+**Date:** 21-Dec-2015
+
+- (enh #69): Add ability to select and unselect all options for multiple select.
+- (enh #97): Allow maintaining order of pills selected for multiple select.
+- (enh #98): Various enhancements to the Select2 widget.
+    - Fix the plugin bug which does not close the dropdown when a value is cleared using the `x` clear indicator.
+    - Enhance widget to show bootstrap `success` and `error` states for active field trapped errors
+    - Better and more dynamic theming support
+    - Allow select2 to be reset correctly when parent form is reset (controlled by boolean property `changeOnReset`)
+    - (ref enh #69): Enable SELECT ALL and UNSELECT ALL to toggle all options for multiple select (new property `toggleAllSettings`). Allow complete configuration and styling of the same .
+    - (ref enh #97): Enable select2 dropdown to maintain the right order of tags/options for multiple select (new boolean property `maintainOrder` which defaults to `false`. Set this to `true` to maintain order)
+    - Consolidate and refactor code to just call one additional JS initialization script after plugin initialization. A new data-attribute `data-s2-options` is now stored in parent select input. This will store the global variable that will maintain the additional Json encoded options to be used by `initS2Loading` method.
+- (enh #99): Add messages and translations support.
+
+## Version 2.0.4
+
+**Date:** 22-Sep-2015
+
+- (enh #67): Remove redundant code in embedAddon.
+
 ## Version 2.0.3
 
 **Date:** 13-Sep-2015
