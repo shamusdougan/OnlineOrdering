@@ -56,8 +56,16 @@ class CustomerOrdersIngredients extends \yii\db\ActiveRecord
         ];
     }
     
+   // public function afterFind ()
+   // 	{
+	//	parent::afterFind();	
+	//	
+	//	$this->updatePrice();
+	//	}
+    	
     
     
+         
     public function getOrder()
 	{
 		return $this->hasOne(CustomerOrders::className(), ['id' => 'Order_id']);

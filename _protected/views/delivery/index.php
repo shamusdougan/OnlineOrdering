@@ -20,8 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -41,7 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	    		'format' => 'raw',
 	    		'value' => function ($data)
 	    			{
-					return date("D - d M Y", strtotime($data->customerOrder->Requested_Delivery_by));
+	    			if(isset($data->customerOrder))
+	    				{
+						return date("D - d M Y", strtotime($data->customerOrder->Requested_Delivery_by));		
+						}
+					else{
+						return "Not Set";
+					}
 					},
 				'width' => '10%',
     		],
@@ -80,7 +84,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	    		'format' => 'raw',
 	    		'value' => function ($data)
 	    			{
-					return ($data->customerOrder->Qty_Tonnes - $data->delivery_qty);
+	    			if(isset($data->customerOrder))
+	    				{
+						return ($data->customerOrder->Qty_Tonnes - $data->delivery_qty);
+						}
+					else{
+						return "Not Set";
+						}
 					},
 				'width' => '5%'
     		],

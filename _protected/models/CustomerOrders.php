@@ -148,6 +148,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		$scenarios = parent::scenarios();
         $scenarios['createDummy'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By'];//Scenario Values Only Accepted
         $scenarios['copyOrder'] = ['Customer_id','Created_On', 'Status', 'Name', 'Created_By', 'Price_Total', 'Status', 'Requested_Delivery_by', 'verify_notes', 'Qty_Tonnes', 'Order_instructions'];//Scenario Values Only Accepted
+        $scenarios['setOwner'] = ['Customer_id','Created_By'];//Scenario Values Only Accepted
         return $scenarios;
     }
 

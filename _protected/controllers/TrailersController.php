@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\trailers;
 use app\models\trailersSearch;
+use app\models\TrailerBins;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -48,7 +49,7 @@ class TrailersController extends Controller
         $searchModel = new trailersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
- 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/trucks/create'];
+ 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/trailers/create'];
 
 
         return $this->render('index', [
@@ -79,11 +80,18 @@ class TrailersController extends Controller
     {
         $model = new trailers();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+		$actionItems[] = ['label'=>'Cancel', 'button' => 'back', 'url'=>'/trailers/index', 'confirm' => 'Cancel Changes?'];
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'trailer-form', 'confirm' => 'Save Trailers?'];
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+            return $this->redirect(['update', 'id' => $model->id]);
+        	}
+        else {
             return $this->render('create', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }
@@ -97,12 +105,22 @@ class TrailersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+		
+		$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/trailers/index', 'confirm' => 'Cancel Changes?'];
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'trailer-form', 'confirm' => 'Save Trailers?'];
+				
+		
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+            return $this->redirect(['index']);
+        	} 
+        else {
+        
+        
+        
             return $this->render('update', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }
@@ -135,4 +153,67 @@ class TrailersController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    
+    public function actionAjaxAddBin($trailer_id)
+    {
+    	
+	$trailer_bin = new TrailerBins();
+	var_dump($_POST);
+	if (array_key_exists("Add_Trailers", $_POST)) 
+		{
+	    $bins = explode(',', $_POST['Add_Trailers']['Bin Squence']);
+	    
+	    $trailer = Trailers::findOne($trailer_id);
+	    $startingBinNumber = count($trailer->trailerBins)+1;
+	    
+	    foreach($bins as $bin)
+	    	{
+			$newTrailerBin = new TrailerBins();
+			$newTrailerBin->trailer_id = $trailer_id;
+			$newTrailerBin->Status = TrailerBins::STATUS_ACTIVE;
+			$newTrailerBin->MaxCapacity = $bin;
+			$newTrailerBin->BinNo = (string)$startingBinNumber;
+			$startingBinNumber++;
+			if(!$newTrailerBin->save())
+				{
+				var_dump($newTrailerBin->getErrors());
+				}
+			}
+	    
+	    return;
+	    
+		} 
+	else {
+		$trailer_bin->trailer_id = $trailer_id;
+		$trailer_bin->Status = TrailerBins::STATUS_ACTIVE;
+		return $this->renderAjax("_trailerBin", ['model' => $trailer_bin]);
+		}
+	}
+	
+	
+	 public function actionAjaxDeleteBin($id)
+    {
+	$trailer_bin = TrailerBins::findOne($id)->delete();
+	}
+
+
+    public function actionAjaxUpdateBin($id)
+    {
+    	
+	$trailer_bin = TrailerBins::findOne($id);
+
+	if ($trailer_bin->load(Yii::$app->request->post()) && $trailer_bin->save()) 
+		{
+	    return ;
+		} 
+	else {
+
+		return $this->renderAjax("_trailerBin", ['model' => $trailer_bin]);
+		}
+	}
+
+
+	
 }

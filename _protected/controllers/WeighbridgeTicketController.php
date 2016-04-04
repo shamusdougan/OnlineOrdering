@@ -223,8 +223,16 @@ class WeighbridgeTicketController extends Controller
     {
     	
     	$weighbridgeTicket = $this->findModel($id);
-    	$weighbridgeTicket->delivery->setStatusInprogress();
-    	$weighbridgeTicket->delivery->customerOrder->setStatusInProduction();
+    	
+    	if(isset($weighbridgeTicket->dleivery))
+    		{
+			$weighbridgeTicket->delivery->setStatusInprogress();
+			if(isset($weighbridgeTicket->delivery->customerOrder))
+				{
+				$weighbridgeTicket->delivery->customerOrder->setStatusInProduction();
+				}
+			}
+    	
        	$weighbridgeTicket->delete();
         
 

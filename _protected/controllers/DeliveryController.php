@@ -394,7 +394,11 @@ class DeliveryController extends Controller
     {
         $model = $this->findModel($id);
         $model->removeAllLoads();
-        $model->customerOrder->unsetStatusDelivery();
+       	if(isset($model->customerOrder))
+       	{
+		$model->customerOrder->unsetStatusDelivery();	
+		}
+        
        
        if($model->weighbridgeTicket)
         	{

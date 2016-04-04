@@ -2,6 +2,7 @@
 
 namespace app\models;
 use webvimark\modules\UserManagement\models\User;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -833,8 +834,44 @@ class ImportFunctions extends \yii\db\ActiveRecord
    } 
     
     
+
+	public function assignOrdersToOwners()
+	{
+		
+		
+	$clientList = $clientObjects = Clients::find()
+    				->where('id != :id', ['id'=>Clients::DUMMY])
+    				->select(['id', 'Company_Name', 'Owner_id'])
+    				->all();
+    $clientList = ArrayHelper::map($clientObjects, 'id', 'Owner_id') ;
+	$customerOrders = CustomerOrders::find()->select(['Created_By', 'Customer_id'])->all();
+	 
+	 $recordCount = 0;
+	 foreach($customerOrders as $customerOrder)
+	 	{
+	 	
+		$customerOrder->Created_By = $clientList[$customerOrder->Customer_id];
+		$customerOrder->scenario = 'setOwner';
+		if(!$customerOrder->save())
+			{
+			$this->outputErrors($customerOrder);
+			}
+		
+		
+		
+		$recordCount++;
+		}
+	 
+	$this->progress .= $recordCount." Record(s) modifed\n";		
+	}
+
+
+	public function renameAllOrders()
+	{
+		
+	}
     
     
     
-   }
+}
 

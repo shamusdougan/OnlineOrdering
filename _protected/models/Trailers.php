@@ -40,7 +40,7 @@ class Trailers extends \yii\db\ActiveRecord
     {
         return [
             [['Registration', 'Description', 'Max_Capacity', 'NumBins', 'Auger', 'Blower', 'Tipper', 'Status'], 'required'],
-            [['Max_Capacity', 'NumBins', 'Auger', 'Blower', 'Tipper', 'Status'], 'integer'],
+            [['Max_Capacity', 'NumBins', 'Auger', 'Blower', 'Tipper', 'Status'], 'integer', 'message' => "Value must be a Number"],
             [['Registration', 'Description'], 'string', 'max' => 200]
         ];
     }
@@ -226,6 +226,8 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 				
 			return $usedBinsArray;
 		}
+	
+	
 	
 		
 }
