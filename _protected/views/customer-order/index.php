@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
         			'todayHighlight' => true
 					],
 				],
+			'width' => '200px'
 			],
             [
     		'attribute' => 'Order_ID',
@@ -61,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
     			{
 				return html::a($data->Order_ID, "/customer-order/update?id=".$data->id);
 				},
+			'width' => '100px',
     		],
             [
             'attribute' => 'Customer_id',
@@ -73,17 +75,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'filter' => $customerList,
             'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
     		'filterInputOptions'=>['placeholder'=>'Any Client'],
+    		'width' => '200px',
             ],
             [
             'attribute' =>'Name',
             'label' => 'Order Name',
+            'width' => '300px',
             ],
             [
             'attribute' => 'Qty_Tonnes',
             'hAlign'=>'right', 
+            'width' => '50px',
 			],
 			[
 			'attribute' => 'Requested_Delivery_by',
+			'width' => '200px',
 			'value' => function ($data)
     			{
     			if($data->Requested_Delivery_by == null)
@@ -95,8 +101,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 			'attribute' => 'Created_By',
+			'width' => '200px',
 			'label' => 'Created By',
+			'filterType'=>GridView::FILTER_SELECT2,
 			'filter' => $userList,
+			'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
+    		'filterInputOptions'=>['placeholder'=>'Everyone'],
 			'value' => function ($data) use ($userList) 
 				{
 				return $userList[$data->Created_By];
@@ -104,6 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
             [
             'attribute' => 'Price_Total',
+            'width' => '100px',
             'value' => function($data)
             	{
 					return "$".number_format($data->Price_Total, 2, ".", ",");

@@ -26,7 +26,7 @@ if(User::hasRole('sales'))
 	{
 	$items[] = ['label' => 'Sales', 'icon' => 'shopping-cart', 'items' => 
 					[
-					['label' => 'My Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order']), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['index', 'create', 'update']])],
+					['label' => 'Customer Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order/index', 'CustomerOrdersSearch[Created_By]' => $user->id]), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['index', 'create', 'update']])],
 					]
 				];
 	}
