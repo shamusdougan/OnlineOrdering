@@ -394,9 +394,12 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	*/
 	public function copy()
 	{
+		
+		$user = User::getCurrentUser();
 		//create a copy of the order and save it to the database
 		$newOrder = new CustomerOrders(['scenario' => 'copyOrder']);
 		$newOrder->attributes = $this->attributes;
+		$newOrder->Created_By = $user->id;
 		$newOrder->Status = CustomerOrders::STATUS_ACTIVE;
 		$newOrder->Created_On = date("Y-m-d");
 		$newOrder->Requested_Delivery_by = null;
@@ -420,6 +423,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 			{
 			$newIngredient = new CustomerOrdersIngredients();
 			$newIngredient->attributes = $ingredient->attributes;
+			$newIngredient->price_pT = $newIngredient->product->getCurrentPrice();
 			$newIngredient->order_id = $newOrder->id;
 			$newIngredient->created_on = date("Y-m-d");
 			$newIngredient->save();

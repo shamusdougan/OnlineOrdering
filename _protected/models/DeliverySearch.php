@@ -44,9 +44,23 @@ class DeliverySearch extends Delivery
     {
         $query = Delivery::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+      	return $this->dataQuery($params, $query);
+    }
+    
+    public function getDashboardDeliveries()
+    {
+		$query =  Delivery::find()
+			->where(['delivery_on' => date("Y-m-d")]);
+
+		return $this->dataQuery(null, $query);
+	}
+    
+    public function dataQuery($params, $query)
+    	{
+		
+		$dataProvider = new ActiveDataProvider([
+        	'query' => $query,
+        	]);
 
         $this->load($params);
 
@@ -76,5 +90,5 @@ class DeliverySearch extends Delivery
             ->andFilterWhere(['like', 'weighed_by', $this->weighed_by]);
 
         return $dataProvider;
-    }
+		}
 }

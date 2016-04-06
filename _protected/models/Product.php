@@ -129,6 +129,9 @@ class Product extends \yii\db\ActiveRecord
 
 	public function getCurrentPrice($priceDate = null, $recurseCheck = 0)
 	{
+		
+		$MAX_RECURSIONS = 2;
+		//echo $recurseCheck." ".$this->Name.": Recurse Check: ".$recurseCheck."<br>";
 		if($priceDate == null)
 			{
 			$priceDate = time();
@@ -138,6 +141,7 @@ class Product extends \yii\db\ActiveRecord
 		//If its a base proudct type just grab the relevant price data from the pricing table
 		if($this->Mix_Type == Product::MIXTYPE_BASE)
 		{
+			//echo $recurseCheck." checking base product Cost<br>";
 			$result = ProductsPrices::find()
 						->where(['product_id' => $this->id])
 						->andWhere('`date_valid_from` <= :date_val', [':date_val' => date("Y-m-d", $priceDate)])
@@ -151,9 +155,10 @@ class Product extends \yii\db\ActiveRecord
 				$this->price_pT = 0;	
 			}
 		}
-		elseif($recurseCheck < 2 && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
+		elseif($recurseCheck < $MAX_RECURSIONS && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
 			{
-				
+			//$recurseCheck." Check composite product price<br>";
+			$recurseCheck++;
 			$sum = 0;
 			foreach($this->ingredients as $productIngredient)
 				{
@@ -161,7 +166,7 @@ class Product extends \yii\db\ActiveRecord
 					
 					
 				$percent = $productIngredient->ingredient_percent;
-				$price = $productIngredient->ingredient->getCurrentPrice($priceDate, $recurseCheck++);
+				$price = $productIngredient->ingredient->getCurrentPrice($priceDate, $recurseCheck);
 				$sum += ($price * ($percent/100));
 				
 				
@@ -173,7 +178,7 @@ class Product extends \yii\db\ActiveRecord
 				
 			}
 		else{
-			die("Recursive situation found in calculating proudct pricing");
+			die($recurseCheck. " Recursions, Product Name: ".$this->Name." Product Type Detected is: :".$this->getProductMixType()." Recursive situation found in calculating proudct pricing");
 		}
 		
 		return $this->price_pT;
@@ -446,5 +451,21 @@ class Product extends \yii\db\ActiveRecord
 	public function getProductByProductCode($productCode)
 		{
 		return Product::find()->where(['Product_ID' => $productCode])->One();
+		}
+		
+		
+	public function getProductMixType()
+		{
+		if($this->Mix_Type == Product::MIXTYPE_BASE)
+			{
+			return "Base Product";	
+			}
+		else if ($this->Mix_Type == Product::MIXTYPE_COMPOSITE)
+			{
+			return "Composite";
+			}
+		else{
+			return "Unknown Type";
+		}
 		}
 }

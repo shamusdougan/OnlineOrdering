@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use kartik\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\trailers */
@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
+    	'export' => false,
         'model' => $model,
         'attributes' => [
             'id',

@@ -45,7 +45,12 @@ $gridColumns = [
      
             
 
-            ['class' => 'yii\grid\ActionColumn'],
+			[
+		    'class' => 'kartik\grid\ActionColumn',
+		   	'template' => '{update} {delete}',
+			'width' => '5%',
+        
+       		],
         ];
 
 $exportButton = ExportMenu::widget([

@@ -2,6 +2,7 @@
 use kartik\grid\GridView;
 use yii\helpers\Html;
 use webvimark\modules\UserManagement\models\User;
+use app\Model\Product;
 
 
 //This handles the clicking of the refresh button on the grid
@@ -194,6 +195,15 @@ $this->registerJs(
 $gridColumns = 	[
 			    	[
 			    	'attribute' => 'ingredient.Name',
+			    	'value' => function ($data)
+			    		{
+						if(isset($data->ingredient))
+							{
+							return $data->ingredient->Name. " (".$data->ingredient->getProductMixType().")";
+							
+							
+							}
+						},
 			    	'pageSummary'=>'Total',
 			    	],
 			    	[

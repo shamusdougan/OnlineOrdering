@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\CustomerOrders;
+use webvimark\modules\UserManagement\models\User;
 
 /**
  * CustomerOrdersSearch represents the model behind the search form about `app\models\CustomerOrders`.
@@ -175,9 +176,40 @@ class CustomerOrdersSearch extends CustomerOrders
 		
 	}
 	
+	public function getActiveDashboardOrders($user)
+	{
+		
+		
+		$query = CustomerOrders::find()
+			->where('Customer_id != :id', ['id'=>Clients::DUMMY]);
+		
+		if(!user::hasRole("Production"))
+			{
+			$query->andWhere('customer_orders.Created_By = '.$user->id);
+			}
+		$query->andWhere('customer_orders.Status = '.CustomerOrders::STATUS_ACTIVE );
+		
+		
+			
+		return $this->dataQuery(null, $query);
+		
+	}
 	
-	
-	
+	public function getRecentDashboardOrders($user)
+	{
+		
+		
+		$query = CustomerOrders::find()
+			->where('Customer_id != :id', ['id'=>Clients::DUMMY]);
+		
+		if(!user::hasRole("Production"))
+			{
+			$query->andWhere('customer_orders.Created_By = '.$user->id);
+			}
+
+		return $this->dataQuery(null, $query);
+		
+	}
 	
 public function dataQuery($params, $query)
 		{

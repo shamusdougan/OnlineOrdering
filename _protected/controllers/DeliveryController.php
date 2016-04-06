@@ -348,7 +348,7 @@ class DeliveryController extends Controller
     else{
     	
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-    	$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id]; 
+    	$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id."&autoPrint=1"]; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
 		if($model->hasWeighbridgeTicket())
@@ -878,8 +878,10 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/
-    public function actionPrintAdditiveLoaderPdf($id, $autoPrint = false, $saveLocation=false)
+    public function actionPrintAdditiveLoaderPdf($id, $autoPrint = false, $saveLocal=false)
 	{
+		
+	$defaultLocalSaveLocation = "C:\\IrwinsOrders\\a4Printer\\";
 		
 	$delivery = Delivery::findOne($id);
 	
@@ -898,18 +900,30 @@ class DeliveryController extends Controller
 		$methods['SetJS'] = "'this.print();'"	;
 		}
 		
+	if($saveLocal)
+		{
+		$localPdf = new Pdf([
+			'content' => $content,  
+			'destination' => Pdf::DEST_FILE, 
+			'filename' => $defaultLocalSaveLocation.$delivery->Name.'.pdf',
+			'format' => Pdf::FORMAT_A4, 
+			'options' => ['title' => 'Additive Loader Sheet'],
+			'methods' => $methods,
+	    	]);
+	    	
+	    $localPdf->render();
+		}
+
+
 	$pdf = new Pdf([
 		'content' => $content,  
-		//'destination' => Pdf::DEST_FILE, 
-		//'filename' => 'c:\temp\test.pdf',
+		
 		'format' => Pdf::FORMAT_A4, 
  		'destination' => Pdf::DEST_BROWSER, 
 		'options' => ['title' => 'Additive Loader Sheet'],
 
 		'methods' => $methods,
     	]);
-
-	
 	
 	
 	

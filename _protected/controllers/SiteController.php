@@ -1,7 +1,10 @@
 <?php
 namespace app\controllers;
 
-use app\models\User;
+//use app\models\User;
+use app\models\CustomerOrders;
+use app\models\CustomerOrdersSearch;
+use app\models\DeliverySearch;
 use app\models\LoginForm;
 use app\models\AccountActivation;
 use app\models\PasswordResetRequestForm;
@@ -14,6 +17,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use webvimark\modules\UserManagement\models\User;
 use Yii;
 
 /**
@@ -81,7 +85,36 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+    	
+    	$user = User::getCurrentUser();
+    	
+    	
+		$orderSearchModel = new customerOrdersSearch();
+        $orderDataProvider = $orderSearchModel->getActiveDashboardOrders($user);
+    	
+    	$deliverySearchModel = new DeliverySearch();
+    	$deliveryDataProvider = $deliverySearchModel->getDashboardDeliveries();
+    	
+    	$recentOrdersSearchModel = new CustomerOrdersSearch();
+    	$recentOrdersDataProvider = $orderSearchModel->getRecentDashboardOrders($user);
+    	$recentOrdersDataProvider->setPagination(['pageSize' => 10]);
+    	$recentOrdersDataProvider->setSort(['defaultOrder' => ['Created_On'=>SORT_DESC]]);
+    	$recentOrdersDataProvider->setTotalCount(20);
+    	
+        return $this->render('index', 
+        	[
+        	'orderSearchModel' => $orderSearchModel,
+        	'orderDataProvider' => $orderDataProvider,
+        	'deliverySearchModel' => $deliverySearchModel,
+        	'deliveryDataProvider' => $deliveryDataProvider,
+        	'recentOrdersSearchModel' => $recentOrdersSearchModel,
+        	'recentOrdersDataProvider' => $recentOrdersDataProvider,
+        	'user' => $user,
+        	
+        	
+        	]
+        
+        );
     }
 
     /**

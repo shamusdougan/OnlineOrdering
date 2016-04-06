@@ -164,6 +164,7 @@ class CustomerOrderController extends Controller
 				$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
 				$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
 				$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
+				$actionItems[] = ['label'=>'Print', 'button' => 'print', 'url'=>null];
 				$readOnly = false;
 				}
 			else{

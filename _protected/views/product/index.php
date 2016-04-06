@@ -17,9 +17,13 @@ $gridColumns =
 	[
 		 
 
-		'Product_ID',
+		[
+		'attribute' => 'Product_ID',
+		'width' => '5%',
+		],
 		[
 		'attribute' => 'Name',
+		'width' => '15%',
 		'format' => 'raw',
 		'value' => function ($data)
 			{
@@ -29,20 +33,20 @@ $gridColumns =
 		],
 	    [
 	    'attribute' => 'Status',
+	    'width' => '10%',
 	    'value' => function ($data)
 	    	{
 			return Lookup::item($data->Status, "PRODUCT_STATUS");
 			},
 		'filter' => Lookup::items("PRODUCT_STATUS"),
 	    ],
-
-	    'Description',
-	    // 'cp',
-	    // 'Decimals_Supported',
-	    // 'Default_Unit',
-	    // 'Feed_notes',
+		[
+	    'attribute' => 'Description',
+	    'width' => '25%',
+	    ],
 	    [
 	    'attribute' => 'price_pT',
+	    'width' => '10%',
 	    'value' => function ($data)
 	    	{
 			$data->getCurrentPrice();
@@ -50,13 +54,9 @@ $gridColumns =
 			},
 	    'hAlign' => 'right',
 	    ],
-		    // 'me',
-		    // 'Mix_Margin',
-		    // 'Mix_Margin_Base',
-		    // 'Mix_Type',
-		    // 'ndf',
 	    [
 	        'attribute' => 'Product_Category',
+	        'width' => '10%',
 	        'value' => function($data) {
 				return Lookup::item($data->Product_Category, "ORDER_CATEGORY");
 				},
@@ -65,7 +65,7 @@ $gridColumns =
 	    [
 	    'class' => 'kartik\grid\ActionColumn',
 	   	'template' => '{update} {delete}',
-
+		'width' => '5%',
         
         ]
 	];

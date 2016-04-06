@@ -267,7 +267,7 @@ class WeighbridgeTicketController extends Controller
 			
             'SetFooter'=>['{PAGENO}'],
 
-			//"SetJS" => "'this.print();'",
+			"SetJS" => "'this.print();'",
 			]
     	]);
 
