@@ -319,7 +319,72 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		}
 		
 		
+	public function importCustomerOrdersBC()
+		{
+			
 		
+		
+		$columnMappings = 
+			[
+			'Order_ID' => 'orderNo',
+			'Customer_id' => '',
+			'Name',
+			'Requested_Delivery_by',
+			'Storage_Unit',
+			'Order_instructions',
+			'verify_notes',
+			'Qty_Tonnes',
+			'Product_Category',
+			'Price_pT_Base_override',
+			'Price_pT_Base',
+			'Price_production_pT',
+			'Price_transport_pT',
+			'Price_Sub_Total',
+			'Price_Total',
+			
+			
+			'Discount_type',
+			'Discount_pT',
+			'Discount_Percent',
+			'Discount_notation',
+			
+			'Nearest_Town',
+			'Date_Fulfilled',
+			'Date_Submitted',
+			'Created_By',
+			'Status',
+			
+			];
+
+
+		//	array ( "Blue Cow id", "name", "onlineordering_id")
+		$orderPersonID =
+			[
+			[1, 'Stephen', 2],
+			[4, 'Jesse', 2],
+			[9, 'Robin ', 30],
+			[12, 'trevor', 28],
+			[14, 'Madeleine', 19],
+			[15, 'Katrina', 2],
+			[16, 'Kylie', 2],
+			[21, 'Andrew', 2],
+			[23, 'Vicky', 29],
+			[32, 'Sally', 2],
+			[25, 'Jake', 13],
+			[28, 'Kristy', 2],
+			[29, 'Peter', 24],
+			[30, 'Mark', 2],
+			[31, 'Bryan', 5],
+			[33, 'Adam', 2],
+			[34, 'Tim', 2],
+			[36, 'Molly', 23],
+			[37, 'Heath', 11],
+			[38, 'Shane', 26],
+			[40, 'Georgina', 10],
+			];
+		
+		}
+			
 		
 	public function importCustomerOrdersIngredientsCRM()
 		{
