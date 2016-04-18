@@ -360,31 +360,362 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		//	array ( "Blue Cow id", "name", "onlineordering_id")
 		$orderPersonID =
 			[
-			[1, 'Stephen', 2],
-			[4, 'Jesse', 2],
-			[9, 'Robin ', 30],
-			[12, 'trevor', 28],
-			[14, 'Madeleine', 19],
-			[15, 'Katrina', 2],
-			[16, 'Kylie', 2],
-			[21, 'Andrew', 2],
-			[23, 'Vicky', 29],
-			[32, 'Sally', 2],
-			[25, 'Jake', 13],
-			[28, 'Kristy', 2],
-			[29, 'Peter', 24],
-			[30, 'Mark', 2],
-			[31, 'Bryan', 5],
-			[33, 'Adam', 2],
-			[34, 'Tim', 2],
-			[36, 'Molly', 23],
-			[37, 'Heath', 11],
-			[38, 'Shane', 26],
-			[40, 'Georgina', 10],
+			1 => ['Stephen', 2],
+			4 => ['Jesse', 2],
+			9 => ['Robin ', 30],
+			12 => ['trevor', 28],
+			14 => ['Madeleine', 19],
+			15 => ['Katrina', 2],
+			16 => ['Kylie', 2],
+			21 => ['Andrew', 2],
+			23 => ['Vicky', 29],
+			32 => ['Sally', 2],
+			25 => ['Jake', 13],
+			28 => ['Kristy', 2],
+			29 => ['Peter', 24],
+			30 => ['Mark', 2],
+			31 => ['Bryan', 5],
+			33 => ['Adam', 2],
+			34 => ['Tim', 2],
+			36 => ['Molly', 23],
+			37 => ['Heath', 11],
+			38 => ['Shane', 26],
+			40 => ['Georgina', 10],
 			];
 		
-		}
+
+
+		$orderComponents = 
+			[
+			1 =>[ 
+				[27, 'Economix', 3002],
+				[28,'Irmix', 3000],
+				[29,'Premium Mix', 3003],
+				[30,'Sustain Mix', 3004],
+				[31,'Super Mix', 3005],
+				[32,'Beef Feedlot Mix', 3006],
+				[34,'20% Calf Starter Meal', 3010],
+				[35,'18% Calf Rearer Meal', 3012],
+				[36,'Lead Feed Meal', 3013],
+				[37,'Unimix', 3001],
+				[38,'Production', 1002],
+				[39,'Performance', 1003],
+				[40,'Premium', 1004],
+				[41,'Premium Plus', 1005],
+				[48,'3 Way Mix', 0],
+				[49,'Calf Starter Pellet', 1006],
+				[50,'Calf Rearer Pellet', 0],
+				[52,'Leed Feed pellet', 00],
+				[53,'Irwin Blend', 3015],
+				[54,'20% Calf Beginner Meal', 3010],
+				[56,'Oaten Hay', 0],
+				[57,'Autumn Special Mix', 0 ],
+				[58,'Palm Blend Mix', 3016],
+				[59,'Summer Special', 0],
+				[60,'Grain Free Pellet', 1013],
+				[61,'ACE Farms Mix', 0],
+				[62,'Lamb Pellet', 0],
+				[66,'Summer Pellet', 1011],
+				[65,'Energy Plus Pellets', 0],
+				],
+			2 => [
+				[1,'Wheat', 2001],
+				[2,'Barley', 2002],
+				[3,'Stock Pellet', 0],
+				[4,'Lupins', 2006],
+				[5,'Peas', 2008],
+				[6,'Canola Meal', 2009],
+				[7,'Maize', 2005],
+				[8,'PKE', 2013],
+				[9,'Biscuit Meal', 2016],
+				[11,'Lucerne Chaff', 0],
+				[12,'Pea 2nds', 0],
+				[13,'Pea Pollards', 2023],
+				[14,'Malt Combings', 2015],
+				[17,'Oat Bran', 2012],
+				[26,'Limestone', 2024],
+				[27,'Bentonite', 2025],
+				[29,'Choc Malt', 2014],
+				[30,'Sorghum', 2004],
+				[32,'Sugar', 2039],
+				[33,'Oats', 0],
+				[34,'barley 2nds', 2017],
+				[35,'Cold Pressed Canola Meal', 0],
+				[36,'DDG', 2018],
+				[37,'Mill Run', 2019],
+				[38,'Irwin Blend', 2040],
+				[39,'Triticale', 2003],
+				[40,'Oaten Hay Milker', 0],
+				[41,'Vetch Hay', 2033],
+				[42,'Grass Hay',2030],
+				[43,'Lucerne Hay', 0],
+				[44,'Cotton Seed Meal', 2010],
+				[45,'Almond Meal', 2027],
+				[46,'Copra Meal', 2011],
+				[52,'Veg Oil', 0],
+				[48,'Hominie', 2028],
+				[49,'Energy Blend', 0],
+				[50,'Almond Hulls', 2029],
+				[51,'Grape Meal', 2034],
+				[53,'Freight', 0],
+				[55,'Oaten Hay Feeder', 0],
+				[57,'N/F Calciprill DEB596', 0],
+				],
+			4 => [
+				[3,'Availa4 100 (10%)', 4004],
+				[4,'Availa4&Cr 100 (10%)', 4004],
+				[5,'AvailaCu 100 (10%)', 4001],
+				[6,'AvailaZn 100 (10%)', 4003],
+				[8,'BIO MOS', 4013],
+				[9,'DCP', 4018],
+				[10,'Bioplex High five', 0],
+				[11,'Biotin', 4014],
+				[12,'Bloat Guard', 0],
+				[14,'Bloat Oil', 0],
+				[15,'Veg Oil', 4034],
+				[16,'AL8 Causmag', 4017],
+				[17,'Copper Sulphate', 0],
+				[19,'Diamond V XPC', 4019],
+				[20,'Dolomite', 4020],
+				[21,'Epsom Salts', 4022],
+				[22,'Eskalin 20 (2%)', 4023],
+				[23,'Eskalin 500 (50%)', 0],
+				[25,'Mycosorb', 4029],
+				[26,'Niacin', 0],
+				[27,'Rumensin 100 (10%) Cow', 4109],
+				[29,'Salt', 4031],
+				[30,'Sel-Plex 2 (0.2%)', 4032],
+				[31,'Sodium Bicarb', 4010],
+				[32,'Tylan 50 (5%)', 4033],
+				[33,'Zinc Oxide', 4036],
+				[35,'Irwins Mineral Premix DEB383', 4107],
+				[37,'Sugar', 4040],
+				[38,'DFM Powder (Yeast)', 4041],
+				[39,'Fire Up', 4043],
+				[40,'Megalac', 4026],
+				[41,'N/F Hi Milker ', 4050],
+				[42,'N/F Performer DEB010', 4052],
+				[43,'N/F TM2MT DEB013', 4054],
+				[44,'N/F Performer+Availa4', 0],
+				[45,'N/F Bicarb250 DEB005', 4056],
+				[46,'N/F Anionic DEB099', 4057],
+				[47,'Best fed Leed Feed', 0],
+				[48,'Best Fed Leed Feed Plus', 0],
+				[49,'Best Fed First Base', 0],
+				[50,'Best Fed Base', 0 ],
+				[51,'Best Fed Base Plus', 0 ],
+				[54,'Go Cow Tylan', 0],
+				[55,'Healthy Herd', 4042],
+				[56,'Glo Cow', 4059],
+				[57,'Rumensin 100 (10%) Calves', 4109],
+				[58,'N/F Performer  Availa4& Cr', 0],
+				[61,'Molasses', 0],
+				[62,'N/F  ZINC 70  & TM2MT', 0],
+				[63,'Get Set Cow', 4061],
+				[64,'Soy Chlor', 4077],
+				[65,'N/F  TM2M ', 4053],
+				[66,'Bloat Shield', 0],
+				[67,'Action Yeast', 0],
+				[68,'Vitamin E', 0],
+				[69,'Notman Pellet', 0],
+				[70,'Vitamin B', 4035],
+				[71,'Best Fed Finish', 0],
+				[72,'Bovatec', 4016],
+				[73,'MintrexB',  4027],
+				[74,'N/F Summer HiZinc DEB029', 4049],
+				[75,'N/F Performer&Biotin DEB018', 4055],
+				[76,'Acid Buff', 4000],
+				[77,'Elitox', 4021],
+				[78,'Eco Go Cow', 4060],
+				[79,'5STAR MINERAL PELLET CRC', 0],
+				[80,'Absorb 5', 0],
+				[81,' 230', 4066],
+				[82,'Molasses Sweetener Combo', 4028],
+				[83,'Dairy 220 Plus', 4044],
+				[84,'N/F Zinc DEB045', 4047],
+				[85,'Dairy Max 300', 4071],
+				[86,'Dairytech 50 Pellet', 0],
+				[87,'Bloat Control E50', 4015],
+				[88,'N/F Summer', 4048],
+				[89,'AL4 Causmag', 0],
+				[90,'A/MAX Yeast', 4068],
+				[91,'Ammonium Sulfate', 4064],
+				[92,'Protein Plus', 4070],
+				[93,'Dairy PreLac 300', 4046],
+				[94,'Dairy 200', 0],
+				[95,'Rumen Calm - Dairy Tech', 4073],
+				[96,'Rumicare-Aus Pac', 4074],
+				[97,'Optimin Lacto Max 5', 4079],
+				[98,'OmyaCarb 50', 4080],
+				[99,'Action Powder', 4084],
+				[100,'N/F TM2 Monensin + Magnesium DEB011', 0],
+				[101,'N/F Fusion Pellet', 4086],
+				[102,'Magnesium Chloride', 4087],
+				[104,'Levucell SC10 ME Titan', 4104],
+				[105,'Orego Stim', 4105],
+				[106,'N/F TM2+MON+MAG+LEVUCEL DEB130', 0],
+				[107,'Udder Mate 25 + Se Pellets', 4103],
+				[108,'N/F Ellinbank 250 DEBW007', 4091],
+				[109, 'unknown Additive', 0],
+				[110,'N/F Omnigen DEB111', 4094],
+				[111,'Urea', 4089],
+				[112,'N/F TM2ME-DEB1504', 0],
+				[113,'Ammonium Chloride', 0],
+				[114,'Gypsum', 4098],
+				[115,'Dairy Prelac 400 + Vicomb', 4078],
+				[116,'Pellet Binder', 0],
+				[117,'Pharma-lead Close up Premix + Bovatec', 4106],
+				[118,'BioPro BPM 125P', 0]
+				],
+			];			
 			
+		try{
+			$file = fopen("BCclientsOnline.csv","r");	
+			}
+		catch(Exception $e){
+			$this->progress .= 'ERROR loading file "BCclientsOnline.csv": '.$e->getMessage."\n";
+			}
+		$clientTranslation = array();
+		while(! feof($file))
+		  {
+		  $clientArray = fgetcsv($file);
+		  $clientTranslation[$clientArray[0]] = $clientArray;
+		  }
+		fclose($file);
+		$this->progress .= "Starting the import process from the Bluecow Ordering System\n";
+		
+		$startingDate = "2015-06-01";
+		
+		$bcOrders = bc_Ordermaster::find()
+						->where("orderDate > '".$startingDate."' And peopleID = 481"  )
+						//->where("id = 22141")
+						->all();
+		$this->progress .= count($bcOrders)." Order(s) Found from ".$startingDate."\n";
+		
+		$newOrderComponents = array();
+		foreach($orderComponents as $orderType => $componentArray)
+			{
+			foreach($componentArray as $component)	
+				{
+				$newOrderComponents[$orderType][$component[0]] = $component;
+				}
+			}
+		
+		foreach($bcOrders as $bcOrder)
+			{
+			if(array_key_exists($bcOrder->peopleID, $clientTranslation))
+				{
+				
+				$ooClientID = $clientTranslation[$bcOrder->peopleID][2];
+				if($ooClientID == 0)
+					{
+					$this->progress .= "Unmapped Client: ".$clientTranslation[$bcOrder->peopleID][1]."\n";
+					}
+				else{
+					
+					
+					$this->progress .= $bcOrder->orderDate."\n";
+					
+					$customerOrder = new CustomerOrders();
+					$customerOrder->Name = "BC".$bcOrder->orderNo;
+					$customerOrder->Order_ID = "B".$bcOrder->orderNo;
+					
+					$customerOrder->Created_On = $bcOrder->orderDate;
+					$customerOrder->Customer_id = $ooClientID;
+					$customerOrder->Requested_Delivery_by = $bcOrder->reqDate;
+					$customerOrder->Storage_Unit = 0;
+					$customerOrder->Order_instructions = $bcOrder->deliveryInstructions;
+					$customerOrder->verify_notes = true;
+					$customerOrder->Qty_Tonnes = $bcOrder->orderQty;
+					$customerOrder->Product_Category = CustomerOrders::CUSTOM;
+					$customerOrder->Price_pT_Base_override = $bcOrder->salePrice;
+					$customerOrder->Price_pT_Base = 0;
+					$customerOrder->Price_production_pT = 0;
+					$customerOrder->Price_transport_pT = $bcOrder->deliveryPrice;
+					$customerOrder->Discount_type = customerOrders::DISCOUNT_OTHER;
+					$customerOrder->Discount_pT = $bcOrder->discount;
+					$customerOrder->Discount_notation = $bcOrder->discountReason;
+					$customerOrder->Date_Fulfilled = $bcOrder->reqDate;
+					$customerOrder->Created_By = $orderPersonID[$bcOrder->orderPersonID][1];
+					$customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
+					if(!$customerOrder->save())
+						{
+						$this->outputErrors($customerOrder);
+						}				
+
+					
+					foreach($bcOrder->orderlines as $orderLine)
+						{
+				
+						$orderIngredient = new CustomerOrdersIngredients();
+						$orderIngredient->created_on = $bcOrder->orderDate;
+						
+						if($orderLine->orderType == 0)
+							{
+							$orderLine->orderType = 1;
+							}
+						elseif($orderLine->orderType == 3)
+							{
+							continue;
+							}
+						
+					
+						//if the product doesn't exist
+						if(!array_key_exists($orderLine->componentID, $newOrderComponents[$orderLine->orderType]))
+							{
+
+							continue;
+							}
+						
+						$productID = $newOrderComponents[$orderLine->orderType][$orderLine->componentID][2];
+						
+						//for the case where there is no equivilent product
+						if($productID == 0)
+							{
+							$customerOrder->Order_instructions = "Unknown Product: ".$newOrderComponents[$orderLine->orderType][$orderLine->componentID][1]."\n".$customerOrder->Order_instructions;
+							continue;
+							}
+						
+						$product = Product::find()->Where('Product_ID = '.$productID)->one();
+						if(!$product)
+							{
+							print_R($newOrderComponents);
+							$this->progress .= "Unable to locate product from orderType: ".$orderLine->orderType." and ComponentID: ".$orderLine->componentID."\n";
+							return;
+							}
+						
+						$orderIngredient->ingredient_id = $product->id;
+						$orderIngredient->ingredient_percent = $orderLine->orderPercent;
+						$orderIngredient->order_id = $customerOrder->id;
+						if(!$orderIngredient->save())
+							{
+							$this->outputErrors($orderIngredient);	
+							}
+						
+						}
+
+					$refreshedOrder = CustomerOrders::findOne($customerOrder->id);
+					$refreshedOrder->save();
+
+
+
+					
+					}
+				}
+			else{
+				$this->progress .= "Unable to find Client for PeopleID :".$bcOrder->peopleID."\n";
+				}
+			
+
+
+			}
+		
+		
+		
+		}
+		
+		
+		
 		
 	public function importCustomerOrdersIngredientsCRM()
 		{

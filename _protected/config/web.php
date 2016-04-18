@@ -126,7 +126,13 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-    ],
+        'db2' => [
+		        'class' => 'yii\db\Connection',
+		        'dsn' => 'mysql:host=localhost;dbname=irwin', //maybe other dbms such as psql,...
+		        'username' => 'irwin_dbuser',
+		        'password' => 'BnsSfbfXVnSH7yVE',
+			    ],
+    	],
     'params' => $params,
 ];
 
