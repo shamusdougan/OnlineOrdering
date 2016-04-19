@@ -319,7 +319,7 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		}
 		
 		
-	public function importCustomerOrdersBC()
+	public function importCustomerOrdersBC($client)
 		{
 			
 		
@@ -579,19 +579,29 @@ class ImportFunctions extends \yii\db\ActiveRecord
 		while(! feof($file))
 		  {
 		  $clientArray = fgetcsv($file);
-		  $clientTranslation[$clientArray[0]] = $clientArray;
+		  $clientTranslation[$clientArray[2]] = $clientArray;
 		  }
 		fclose($file);
 		$this->progress .= "Starting the import process from the Bluecow Ordering System\n";
 		
-		$startingDate = "2015-06-01";
 		
+		if(!array_key_exists($client->id, $clientTranslation))
+			{
+			$this->progress .= "Unable to find the client: ".$client->Company_Name." in the Blue Cow ordering system\n";
+			return;
+			}
+		
+	
+	
+		
+		//Get the records for the client from the Blue cow, have set a starting arbituay point		
+		$startingDate = "2015-06-01";
 		$bcOrders = bc_Ordermaster::find()
-						->where("orderDate > '".$startingDate."' And peopleID = 481"  )
-						//->where("id = 22141")
+						->where("orderDate > '".$startingDate."' And peopleID = ".$clientTranslation[$client->id][0]  )
 						->all();
 		$this->progress .= count($bcOrders)." Order(s) Found from ".$startingDate."\n";
 		
+		//Reindex the array for the components becase I hard coded the array and not really keen on recoding the array again :(
 		$newOrderComponents = array();
 		foreach($orderComponents as $orderType => $componentArray)
 			{
@@ -601,115 +611,116 @@ class ImportFunctions extends \yii\db\ActiveRecord
 				}
 			}
 		
+		//For each order fetched, translate into the current system
 		foreach($bcOrders as $bcOrder)
 			{
-			if(array_key_exists($bcOrder->peopleID, $clientTranslation))
+			
+				
+					
+			
+			$this->progress .= "Translateing order from the ".$bcOrder->orderDate."\n";
+			
+			$customerOrder = CustomerOrders::find()->where("Order_ID = 'B".$bcOrder->orderNo."'")->one();
+			if(!$customerOrder)
 				{
+				$this->progress .= "Creating a new online ordering order\n";
+				$customerOrder = new CustomerOrders();		
+				}
+			
+			
+			$customerOrder->Name = "BC".$bcOrder->orderNo;
+			$customerOrder->Order_ID = "B".$bcOrder->orderNo;
+			
+			$customerOrder->Created_On = $bcOrder->orderDate;
+			$customerOrder->Customer_id = $client->id;
+			$customerOrder->Requested_Delivery_by = $bcOrder->reqDate;
+			$customerOrder->Storage_Unit = 0;
+			$customerOrder->Order_instructions = $bcOrder->deliveryInstructions;
+			$customerOrder->verify_notes = true;
+			$customerOrder->Qty_Tonnes = $bcOrder->orderQty;
+			$customerOrder->Product_Category = CustomerOrders::CUSTOM;
+			$customerOrder->Price_pT_Base_override = $bcOrder->salePrice;
+			$customerOrder->Price_pT_Base = 0;
+			$customerOrder->Price_production_pT = 0;
+			$customerOrder->Price_transport_pT = $bcOrder->deliveryPrice;
+			$customerOrder->Discount_type = customerOrders::DISCOUNT_OTHER;
+			$customerOrder->Discount_pT = $bcOrder->discount;
+			$customerOrder->Discount_notation = $bcOrder->discountReason;
+			$customerOrder->Date_Fulfilled = $bcOrder->reqDate;
+			$customerOrder->Created_By = $orderPersonID[$bcOrder->orderPersonID][1];
+			$customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
+			if(!$customerOrder->save())
+				{
+				$this->outputErrors($customerOrder);
+				}				
+
+			//Remove any of the existing ingredients from the database
+			$customerOrder->deleteIngredients();
+			
+			//Recreate each of the ingredients
+			foreach($bcOrder->orderlines as $orderLine)
+				{
+		
+				$orderIngredient = new CustomerOrdersIngredients();
+				$orderIngredient->created_on = $bcOrder->orderDate;
 				
-				$ooClientID = $clientTranslation[$bcOrder->peopleID][2];
-				if($ooClientID == 0)
+				if($orderLine->orderType == 0)
 					{
-					$this->progress .= "Unmapped Client: ".$clientTranslation[$bcOrder->peopleID][1]."\n";
+					$orderLine->orderType = 1;
 					}
-				else{
-					
-					
-					$this->progress .= $bcOrder->orderDate."\n";
-					
-					$customerOrder = new CustomerOrders();
-					$customerOrder->Name = "BC".$bcOrder->orderNo;
-					$customerOrder->Order_ID = "B".$bcOrder->orderNo;
-					
-					$customerOrder->Created_On = $bcOrder->orderDate;
-					$customerOrder->Customer_id = $ooClientID;
-					$customerOrder->Requested_Delivery_by = $bcOrder->reqDate;
-					$customerOrder->Storage_Unit = 0;
-					$customerOrder->Order_instructions = $bcOrder->deliveryInstructions;
-					$customerOrder->verify_notes = true;
-					$customerOrder->Qty_Tonnes = $bcOrder->orderQty;
-					$customerOrder->Product_Category = CustomerOrders::CUSTOM;
-					$customerOrder->Price_pT_Base_override = $bcOrder->salePrice;
-					$customerOrder->Price_pT_Base = 0;
-					$customerOrder->Price_production_pT = 0;
-					$customerOrder->Price_transport_pT = $bcOrder->deliveryPrice;
-					$customerOrder->Discount_type = customerOrders::DISCOUNT_OTHER;
-					$customerOrder->Discount_pT = $bcOrder->discount;
-					$customerOrder->Discount_notation = $bcOrder->discountReason;
-					$customerOrder->Date_Fulfilled = $bcOrder->reqDate;
-					$customerOrder->Created_By = $orderPersonID[$bcOrder->orderPersonID][1];
-					$customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
-					if(!$customerOrder->save())
-						{
-						$this->outputErrors($customerOrder);
-						}				
-
-					
-					foreach($bcOrder->orderlines as $orderLine)
-						{
+				elseif($orderLine->orderType == 3)
+					{
+					continue;
+					}
 				
-						$orderIngredient = new CustomerOrdersIngredients();
-						$orderIngredient->created_on = $bcOrder->orderDate;
-						
-						if($orderLine->orderType == 0)
-							{
-							$orderLine->orderType = 1;
-							}
-						elseif($orderLine->orderType == 3)
-							{
-							continue;
-							}
-						
-					
-						//if the product doesn't exist
-						if(!array_key_exists($orderLine->componentID, $newOrderComponents[$orderLine->orderType]))
-							{
+			
+				//if the product doesn't exist
+				if(!array_key_exists($orderLine->componentID, $newOrderComponents[$orderLine->orderType]))
+					{
 
-							continue;
-							}
-						
-						$productID = $newOrderComponents[$orderLine->orderType][$orderLine->componentID][2];
-						
-						//for the case where there is no equivilent product
-						if($productID == 0)
-							{
-							$customerOrder->Order_instructions = "Unknown Product: ".$newOrderComponents[$orderLine->orderType][$orderLine->componentID][1]."\n".$customerOrder->Order_instructions;
-							continue;
-							}
-						
-						$product = Product::find()->Where('Product_ID = '.$productID)->one();
-						if(!$product)
-							{
-							print_R($newOrderComponents);
-							$this->progress .= "Unable to locate product from orderType: ".$orderLine->orderType." and ComponentID: ".$orderLine->componentID."\n";
-							return;
-							}
-						
-						$orderIngredient->ingredient_id = $product->id;
-						$orderIngredient->ingredient_percent = $orderLine->orderPercent;
-						$orderIngredient->order_id = $customerOrder->id;
-						if(!$orderIngredient->save())
-							{
-							$this->outputErrors($orderIngredient);	
-							}
-						
-						}
-
-					$refreshedOrder = CustomerOrders::findOne($customerOrder->id);
-					$refreshedOrder->save();
-
-
-
-					
+					continue;
 					}
+				
+				$productID = $newOrderComponents[$orderLine->orderType][$orderLine->componentID][2];
+				
+				//for the case where there is no equivilent product
+				if($productID == 0)
+					{
+					$customerOrder->Order_instructions = "Unknown Product: ".$newOrderComponents[$orderLine->orderType][$orderLine->componentID][1]."\n".$customerOrder->Order_instructions;
+					$customerOrder->save();
+					continue;
+					}
+				
+				$product = Product::find()->Where('Product_ID = '.$productID)->one();
+				if(!$product)
+					{
+					$this->progress .= "Unable to locate product from orderType: ".$orderLine->orderType." and ComponentID: ".$orderLine->componentID."\n";
+					return;
+					}
+				
+				$orderIngredient->ingredient_id = $product->id;
+				$orderIngredient->ingredient_percent = $orderLine->orderPercent;
+				$orderIngredient->order_id = $customerOrder->id;
+				if(!$orderIngredient->save())
+					{
+					$this->outputErrors($orderIngredient);	
+					}
+				
 				}
-			else{
-				$this->progress .= "Unable to find Client for PeopleID :".$bcOrder->peopleID."\n";
-				}
+
+			$refreshedOrder = CustomerOrders::findOne($customerOrder->id);
+			$refreshedOrder->save();
+
+
+
+				
+				
+				
 			
 
 
 			}
-		
+	
 		
 		
 		}

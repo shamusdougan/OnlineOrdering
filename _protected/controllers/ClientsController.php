@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use webvimark\modules\UserManagement\models\User;
+use app\models\ImportFunctions;
 
 
 /**
@@ -163,7 +164,11 @@ class ClientsController extends Controller
         	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/clients/update?id='.$model->id.'&exit=false', 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information?']; 
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'client_edit_form', 'confirm' => 'Save Customer Information and Exit?']; 
-			
+			if(User::hasPermission('importFromBC')){
+				$actionItems[] = ['label'=>'Import BC', 'button' => 'save', 'url'=>'/clients/import-blue-cow?id='.$model->id, 'confirm' => 'Import orders from Blue Cow for this client?']; 
+				}
+				
+				
 			$user = User::getCurrentUser();
 			
 			
@@ -198,6 +203,25 @@ class ClientsController extends Controller
 
         return $this->redirect(['index']);
     }
+    
+    
+    public function actionImportBlueCow($id)
+    {
+		$model = $this->findModel($id);
+		$importModel = new ImportFunctions();
+		$importModel->name = "Import Orders from Blue Cow Ordering System";
+		$importModel->importCustomerOrdersBC($model);
+		
+		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> '/clients/update?id='.$id, 'confirm' => 'Exit?']; 
+		return $this->render('_importBCOrders', [
+						'model' => $model,
+						'importModel' => $importModel,
+						'actionItems' => $actionItems,
+						]);
+						
+		
+		
+	}
 
     /**
      * Finds the clients model based on its primary key value.

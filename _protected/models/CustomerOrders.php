@@ -276,17 +276,25 @@ class CustomerOrders extends \yii\db\ActiveRecord
    public function calculatePricePT()
    {
    	
-		//First calculate the price per ton, which is the sum of the ingedients->product price per tom
-   		$sum = 0;
-		foreach($this->ingredients as $ingredientItem)
-			{
-			$sum += $ingredientItem->weightedCost;
-			}
-		$this->Price_pT_Base = $sum;
+		
 		
 		
 		//calculate the overall price per tone, added prodcution cost + transport cost
-		$this->Price_Sub_Total = $this->Price_pT_Base + $this->Price_production_pT + $this->Price_transport_pT;
+		if(isset($this->Price_pT_Base_override))
+			{
+			$this->Price_Sub_Total = $this->Price_pT_Base_override + $this->Price_production_pT + $this->Price_transport_pT;	
+			}
+		else{
+			//First calculate the price per ton, which is the sum of the ingedients->product price per tom
+	   		$sum = 0;
+			foreach($this->ingredients as $ingredientItem)
+				{
+				$sum += $ingredientItem->weightedCost;
+				}
+			$this->Price_pT_Base = $sum;
+			$this->Price_Sub_Total = $this->Price_pT_Base + $this->Price_production_pT + $this->Price_transport_pT;
+		}
+		
 
 		
    }
@@ -404,7 +412,8 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		$newOrder->Created_On = date("Y-m-d");
 		$newOrder->Requested_Delivery_by = null;
 		$newOrder->verify_notes = 0;
-		$newOrder->Qty_Tonnes = $this->Qty_Tonnes;
+		$newOrder->Qty_Tonnes = null;
+		$newOrder->Storage_Unit = $this->Storage_Unit;
 		$newOrder->Order_instructions = $this->Order_instructions;
 		
 		

@@ -75,6 +75,7 @@ $gridColumns = [
 					return date("D d-M-Y", strtotime($data->Created_On));
 					},
 	],
+	['attribute' => 'Order_ID'],
 	['attribute' => 'Name'],
 	['attribute' => 'Qty_Tonnes'],
 	

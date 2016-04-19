@@ -48,7 +48,7 @@
 		</tr>
 		<tr>
 			<td width='25%' valign='top'><b>Delivery Location:</b></td>
-			<td width='25%' valign='top'><?= $order->storage->Description ?></td>
+			<td width='25%' valign='top'><? if($order->Storage_Unit != 0 && isset($order->Storage_Unit)) { echo $order->storage->Description; } else { echo "Not Set"; }  ?></td>
 			<td width='25%' valign='top'><b>Order Placed By:</b></td>
 			<td width='25%' valign='top'><?= $order->createdByUser->fullname ?></td>
 		</tr>

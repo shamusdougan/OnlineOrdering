@@ -258,6 +258,8 @@ $this->registerJs("$('#customerorders-customer_id').on('change',function(){
 	updateOrderDetails();
 });"); 
 
+
+/*
 $this->registerJs("$('#".Html::getInputId($model, 'Storage_Unit')."').on('change',function(){
 	
 	var storage_id = $(this).val();
@@ -276,7 +278,7 @@ $this->registerJs("$('#".Html::getInputId($model, 'Storage_Unit')."').on('change
         	}
         });
 });"); 
-
+*/
 
 
 //Action on adding an ingredient
@@ -599,6 +601,7 @@ $this->registerJs("$('.sap_print').on('click',function(){
 						[
 						'type' => FORM::INPUT_WIDGET,
 						'widgetClass' => DepDrop::classname(), 
+					
 						'options'=>[
 							'disabled' => $readOnly,
 							'pluginOptions'=>
@@ -610,7 +613,6 @@ $this->registerJs("$('.sap_print').on('click',function(){
 								'initialize'=>false,
 								],
 							'data' => $storageList,
-							
 							],
 						],
 					'Order_instructions' =>
