@@ -421,13 +421,19 @@ hr.article-devider {
  
 .delivery-load-form
 {
-	width:1000px;
+	width:1105px;
 	height:200px;
 	background: #F0F0F0  ;
 	margin:auto;
 	border-radius: 10px;
 	box-shadow: 0 10px 6px -6px #777;
 	margin-top: 10px;
+}
+
+.delivery-load-info
+{
+	width: 100px;
+	float: left;
 }
 
 .delivery-load-truck

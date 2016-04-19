@@ -169,7 +169,7 @@ if(!isset($truckList)){ $truckList = array();}
 
 			<div id='delivery_load_section'>
 				
-				sadas
+			
 				
 				
 			</div>	
@@ -278,36 +278,7 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 				});
 				
 				
-		//Check to see if any of the truck 2nd runs have been used
-		var usedTrucks = new Array();
-		$('.truck_details').each(function() 
-			{
-			used_truck_id = $(this).attr('truck_id');
-			used_delivery_run_num = $(this).attr('delivery_run_num');
-
-			if(used_delivery_run_num > 1)
-				{
-				usedTrucks.push(used_truck_id + '_' + used_delivery_run_num);	
-				}
-			});
-		usedTrucks = usedTrucks.join(',');
 		
-		
-		$.ajax
-	  		({
-	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
-			data: {requested_date: requestedDate, target_delivery_load: next_delivery_count, extra_used_trucks: usedTrucks},
-			success: function (data, textStatus, jqXHR) 
-				{
-				$('#select-modal').modal();
-				$('.modal-body').html(data);
-				},
-	        error: function (jqXHR, textStatus, errorThrown) 
-	        	{
-	            console.log('An error occured!');
-	            alert('Error in ajax request' );
-	        	}
-			});
 		
 	});
 	");

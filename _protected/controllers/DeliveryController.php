@@ -497,7 +497,7 @@ class DeliveryController extends Controller
 		$deliveryLoad->delivery_on = $requestedDate;
 	
 		
-		return $this->renderPartial("/delivery-load/_form", [
+		return $this->renderPartial("/delivery-load/_delivery_load_form", [
 								'deliveryLoad' => $deliveryLoad,
 								'deliveryCount' => $deliveryCount,
 								]);
