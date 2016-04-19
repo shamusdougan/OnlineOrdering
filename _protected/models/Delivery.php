@@ -39,7 +39,7 @@ class Delivery extends \yii\db\ActiveRecord
     {
         return [
             [['delivery_qty', 'order_id'], 'number'],
-            [['delivery_on'], 'required'],
+            [['delivery_on', 'load_from_bin_id'], 'required'],
             [['delivery_on', 'delivery_completed_on', 'status'], 'safe'],
             [['weigh_bridge_ticket', 'weighed_by'], 'string', 'max' => 100],
             [['num_batches'], 'batchCheck'],

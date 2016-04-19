@@ -137,17 +137,7 @@ $otherDeliveryLoadsBins = Trailers::getUsedBinsOtherLoads($delivery_run_num, $re
 * 		Trailer Render for an available trailer select
 * 
 */
-} elseif(isset($blank)) { ?>
-	
-	<div class='trailer_empty_select'>
-		
-	</div>
-	
-		
-	
-
-
- <? }  else { ?>
+} else { ?>
 
 
 	<div class='trailer_empty_select'>
