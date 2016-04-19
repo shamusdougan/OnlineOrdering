@@ -168,7 +168,7 @@ class CustomerOrderController extends Controller
 					$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
 					$actionItems[] = ['label'=>'Print', 'button' => 'print', 'url'=>null];	
 					}
-				
+				$model->clearErrors();
 				$readOnly = false;
 				}
 			else{
