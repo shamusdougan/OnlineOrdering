@@ -34,7 +34,7 @@ class DeliveryLoad extends \yii\db\ActiveRecord
         return [
             [['delivery_id'], 'required'],
             [['delivery_id', ], 'integer'],
-            [['load_qty', 'delivery_run_num'], 'number'],
+            [['load_qty', 'delivery_load_trailer1', 'delivery_load_trailer2'], 'number'],
             [['delivery_on', 'delivery_completed_on'], 'safe']
         ];
     }
@@ -59,20 +59,24 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		return $this->hasOne(Delivery::className(), ['id' => 'delivery_id'] );
 	}
 	
-	public function getDeliveryLoadBin()
-	{
-		return $this->hasMany(DeliveryLoadBin::className(), ['delivery_load_id' => 'id'] );
-	}
+	
 	
 	public function getTruck()
 	{
-		return $this->hasOne(Trucks::className(), ['id' => 'truck_id'] );
+		return $this->hasOne(Trucks::className(), ['id' => 'delivery_load_truck_id'] );
 	}
 	
-	public function getDeliveryLoadTrailer()
+	public function getDeliveryLoadTrailer1()
 	{
-		return $this->hasMany(DeliveryLoadTrailer::className(), ['delivery_load_id' => 'id'] );
+		return $this->hasOne(DeliveryLoadTrailer::className(), ['id' => 'delivery_load_trailer1_id'] );
 	}
+	
+	public function getDeliveryLoadTrailer2()
+	{
+		return $this->hasOne(DeliveryLoadTrailer::className(), ['id' => 'delivery_load_trailer2_id'] );
+	}
+	
+	
 	
 	
 	/**
@@ -83,9 +87,13 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	public function getTrailerCapacity()
 	{
 		$trailerCapacity = 0;
-		foreach($this->deliveryLoadTrailer as $deliveryLoadTrailer)
+		if(isset($this->deliveryLoadTrailer1))
 			{
-			$trailerCapacity += $deliveryLoadTrailer->trailer->Max_Capacity;
+			$trailerCapacity = $deliveryLoadTrailer1->trailer->Max_Capacity;
+			}
+		if(isset($this->deliveryLoadTrailer2))
+			{
+			$trailerCapacity += $deliveryLoadTrailer1->trailer->Max_Capacity;
 			}
 			
 		return $trailerCapacity;

@@ -150,15 +150,14 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 	* 
 	* @return a list of trailers that are being used on that day. The array returned looks like
 	* 
-	* array( trailer_id => [deliveries => "DELZZZZ, DELXXSD", used_space => 5T])
+	* //this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y]
 	*/
-    public function getTrailersUsed($requestedDate, $delivery_run_num = 1)
+    public function getTrailersUsed($requestedDate)
     	{
 		
 	
 		$deliveryLoads = DeliveryLoad::find()
 						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
-						->andWhere(['delivery_run_num' => $delivery_run_num])
 						->all();
 		
 		$usedTrailerList = array();
@@ -166,10 +165,14 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 		//iterate through each delivery and collect the info as required
 		foreach($deliveryLoads as $deliveryLoad)
 			{
-			foreach($deliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailerObject)
+			if(isset($deliveryLoad->deliveryLoadTrailer1))
 				{
-				$usedTrailerList[$deliveryLoadTrailerObject->trailer_id] = $deliveryLoadTrailerObject->trailer;
+				$usedTrailerList[$deliveryLoad->deliveryLoadTrailer1->delivery_run_num][$deliveryLoad->deliveryLoadTrailer1->trailer_id] = 
+					['binsUsed' => $deliveryLoad->deliveryLoadTrailer1->getBinsUsed(),
+					'tonsUsed' => $deliveryLoad->deliveryLoadTrailer1->getTonsUsed(),
+					];
 				}
+			
 			}
 		
 		

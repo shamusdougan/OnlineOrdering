@@ -53,5 +53,31 @@ class DeliveryLoadTrailer extends \yii\db\ActiveRecord
     {
 		return $this->hasOne(Trailers::className(), ['id' => 'trailer_id'] );	
 	}
+	
+	public function getDeliveryLoadBins()
+	{
+		return $this->hasMany(DeliveryLoadBin::className(), ['delivery_load_trailer_id' => 'id'] );
+	}
+	
+	
+	
+	
+	
+	
+	public function getBinsUsed()
+		{
+		return count($this->deliveryLoadBins);
+		}
+		
+	public function getTonsUsed()
+		{
+		$tonsUsed = 0;
+		foreach($this->deliveryLoadBins as $deliveryLoadBin)
+			{
+			$tonsUsed += $deliveryLoadBin->trailerBin->maxCapacity;
+			}
+			
+		return $tonsUsed;
+		}
     
 }

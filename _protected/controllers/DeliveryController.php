@@ -19,6 +19,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use kartik\mpdf\Pdf;
+use yii\data\ArrayDataProvider;
 
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
@@ -814,36 +815,65 @@ class DeliveryController extends Controller
 	* @param undefined $truck_id
 	* 
 	* @return
-	*/	
-    public function actionAjaxSelectTrailers($target_delivery_load, $delivery_run_num, $requestedDate, $usedTrailers, $trailer_slot_num)
+	*/
+    public function actionAjaxSelectTrailers($requested_date, $deliveryCount, $trailerSlot, $selectedTrailers)
     	{
+    		
+    		
+    	//A list of all the currently active trailers
 		$trailerList = Trailers::getAllActiveTrailers();
-		$trailersUsed = Trailers::getTrailersUsed(strtotime($requestedDate), $delivery_run_num);
-		$trailersUsed=  ArrayHelper::map($trailersUsed, 'id', 'Registration');
 		
-		$usedTrailers = explode(",", $usedTrailers); // should be an array of trailer_id + "_" + delivery_run_num
 		
-		//need to write a function that removes any trailers that are in the trailersUsed or usedTrailer arrays
+		
+		//this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y]
+		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
+		
+		
+	
+		//a list of the trailers already on the page, a trailer cannot be selected twice
+		$selectedTrailerList = explode(",", $selectedTrailers); // should be an array of trailer_id + "_" + delivery_run_num
+		
+		
+		
+
+		
+		
+		//Ok if there are no trailers currently being used then just spit out the trail list with no modification
+		//The $data array needs to have an index like trailerid_runnum, 
 		$data = array();
-		foreach($trailerList as $trailerObject)
+		if(count($trailersUsed == 0))
 			{
-			$searchString = $trailerObject->id."_".$delivery_run_num;
-			
-			//If the trailer isnt in the database as having been used and the not in the current display trailers then use it
-			if(!array_key_exists($trailerObject->id, $trailersUsed) && array_search($searchString, $usedTrailers) === false)
+			foreach($trailerList as $trailerObject)
 				{
-				$data[$trailerObject->id] = $trailerObject->Registration;
-				}
+				$data[] = [
+					'id' => $trailerObject->id, 
+					'delivery_run_num' => 1,
+					'trailer' => substr($trailerObject->Registration." (".$trailerObject->Description.")", 0, 40),
+					'bins' => $trailerObject->NumBins,
+					'tons' => $trailerObject->Max_Capacity,
+					];
+				}	
 			}
 		
 		
-		return $this->renderPartial("/trailers/_trailerList", [
+		/*$dataProvider = new ArrayDataProvider([
+   			'allModels' => $data,
+		    'sort' => [
+		        'attributes' => ['id', 'username', 'email'],
+		    	],
+		    'pagination' => false
+		]);
+		*/
+		
+		return $this->renderPartial("/trailers/_selectTrailers", [
 			'data' => $data,
-			'target_delivery_load' => $target_delivery_load,
-			'trailer_slot_num' => $trailer_slot_num,
+			'trailerList' => $trailerList,
+			'deliveryCount' => $deliveryCount,
+			'trailerSlot' => $trailerSlot,
+			'selectionDate' => $requested_date,
 			
 			]);
-			
+		
 		}
     
     /**

@@ -16,13 +16,9 @@ use yii\helpers\Html;
 ?>
 
 <div class="delivery-load-form" id='delivery_count_<?= $deliveryCount ?>' delivery_count='<?= $deliveryCount ?>'>
-	<div class='delivery-load-info'>
-		Date: <?= $deliveryLoad->delivery_on ?>
-		Run: 
-		
-	</div>
-		
-	<div class='delivery-load-truck'>
+
+	<div style='width: 100%; padding-left: 10px'><?= "(".$deliveryCount.")" ?> Delivery Date: <?= date("d M Y" ,strtotime($deliveryLoad->delivery_on)) ?></div>
+	<div class='delivery-load-truck' delivery_load_truck_id=''>
 		<?
 		//echo $this->render('/Trucks/_truck', [
 		//	'truck' => $deliveryLoad->truck,
@@ -39,7 +35,14 @@ use yii\helpers\Html;
 	<div class='delivery-load-trailer1'>
 		
 		<?
-	
+		echo $this->render('/Trailers/_trailer',
+				[
+				'deliveryLoadtrailer' => $deliveryLoad->deliveryLoadTrailer1,
+				'trailer_slot_num' => 1,
+				'deliveryCount' => $deliveryCount, 
+				]
+			
+		)
 		
 		?>
 		
