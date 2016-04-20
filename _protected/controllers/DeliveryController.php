@@ -779,24 +779,24 @@ class DeliveryController extends Controller
 	}
     
     
-    public function actionAjaxGetTrailer($trailer_id, $delivery_run_num, $requestedDate, $target_delivery_load, $trailer_slot_num, $delivery_load_id)
+    public function actionAjaxGetDeliveryLoadTrailer($trailer_id, $delivery_run_num, $delivery_load_id)
     {
 		
 	
-		$requestedDate = strtotime($requestedDate);
+		
 		$trailer = Trailers::findOne($trailer_id);
+		$deliveryLoadTrailer = new DeliveryLoadTrailer();
+		$deliveryLoadTrailer->trailer_id = $trailer_id;
+		$deliveryLoadTrailer->delivery_run_num = $delivery_run_num;
+		$deliveryLoadTrailer->delivery_load_id = $delivery_load_id;
 		
 		//$usedTrailerOtherLoads = Trailers::getUsedTrailersBinOtherLoads($trailer_id, $delivery_run_num, $requestedDate, $delivery_load_id);
 	
 		
 		
-		return $this->renderPartial("/trailers/_trailer", [
+		return $this->renderPartial("/delivery-load-trailer/_delivery_load_trailer", [
 			'trailer' => $trailer,
-			'delivery_run_num' => $delivery_run_num,
-			'target_delivery_load' => $target_delivery_load,
-			'trailer_slot_num' => $trailer_slot_num,
-			'delivery_load_id' => $delivery_load_id,
-			'requestedDate' => $requestedDate,
+			'deliveryLoadTrailer' => $deliveryLoadTrailer,
 			]);
 		
 		

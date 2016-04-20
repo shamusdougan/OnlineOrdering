@@ -360,6 +360,35 @@ function getSelectedTrailers()
 }
 
 
+// render trailer section
+function renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num)
+{
+
+	//get the place the trailer is to be rendered too	
+	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer1');
+	
+	//get the delivery_load_id, this will allow us to exclude the current delivery load from the displaying used bins
+	var delivery_load_id = $(\"[name='deliveryLoad[\"+deliveryCount+\"][id]']\").attr('value');
+
+	
+	
+	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("delivery/ajax-get-delivery-load-trailer")."',
+		data: {trailer_id: trailer_id, delivery_run_num: delivery_run_num, delivery_load_id: delivery_load_id},
+		success: function (data, textStatus, jqXHR) 
+			{
+			target.html(data);;
+			},
+		error: function (jqXHR, textStatus, errorThrown) 
+			{
+			console.log('An error occured!');
+			alert('Error in ajax request' );
+			}
+		});
+	
+	
+}
 
 
 
@@ -395,7 +424,8 @@ $this->registerJs("$(document).on('click', '#select_trailer_button', function(ev
 	var delivery_run_num = $('input[name=trailer_row_select]:checked').attr('delivery_run_num');
 	var trailerSlot = $('input[name=trailer_row_select]:checked').attr('trailerSlot');
 		
-	alert(trailerSlot);
+	$('#select-modal').modal('hide');
+	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num)
 
 	
 	

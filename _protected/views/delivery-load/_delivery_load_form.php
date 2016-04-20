@@ -5,7 +5,7 @@ use yii\helpers\Html;
 
 	
 /*	truck - Truck Object
-*	deliveryCount - target_delivery_load
+*	deliveryCount - the unique reference to this delivery load form
 *   deliveryLoad - DeliveryLoad object being rendered in this page
 
 
@@ -18,6 +18,8 @@ use yii\helpers\Html;
 <div class="delivery-load-form" id='delivery_count_<?= $deliveryCount ?>' delivery_count='<?= $deliveryCount ?>'>
 
 	<div style='width: 100%; padding-left: 10px'><?= "(".$deliveryCount.")" ?> Delivery Date: <?= date("d M Y" ,strtotime($deliveryLoad->delivery_on)) ?></div>
+	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][id]' value='<?= $deliveryLoad->id ?>'>
+	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][delivery_on]' value='<?= $deliveryLoad->delivery_on ?>'>
 	<div class='delivery-load-truck' delivery_load_truck_id=''>
 		<?
 		//echo $this->render('/Trucks/_truck', [
