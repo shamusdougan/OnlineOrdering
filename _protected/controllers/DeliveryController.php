@@ -828,7 +828,7 @@ class DeliveryController extends Controller
 		
 		
 		
-		//this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y]
+		//this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'trailer_slot_2_id' => YY]
 		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
 		
 		
