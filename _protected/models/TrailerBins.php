@@ -69,7 +69,7 @@ class TrailerBins extends \yii\db\ActiveRecord
 	
 	
 	
-	public function getUsedBins($requestedDate)
+	public function getUsedBins($requestedDate, $excludeOrderId = null)
 		{
 			
 		

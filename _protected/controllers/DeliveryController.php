@@ -491,7 +491,7 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/	
-	public function actionAjaxAddDeliveryLoad($deliveryCount, $requestedDate)
+	public function actionAjaxAddDeliveryLoad($deliveryCount, $requestedDate, $delivery_id)
 	{
 		
 		$deliveryLoad =  new DeliveryLoad();
@@ -501,6 +501,7 @@ class DeliveryController extends Controller
 		return $this->renderPartial("/delivery-load/_delivery_load_form", [
 								'deliveryLoad' => $deliveryLoad,
 								'deliveryCount' => $deliveryCount,
+								'delivery_id' => $delivery_id,
 								]);
 		
     }
@@ -779,25 +780,27 @@ class DeliveryController extends Controller
 	}
     
     
-    public function actionAjaxGetDeliveryLoadTrailer($trailer_id, $delivery_run_num, $delivery_load_id)
+    public function actionAjaxGetDeliveryLoadTrailer($trailerSlot, $deliveryCount, $trailer_id, $trailer_run_num, $delivery_load_id)
     {
 		
-	
+		
 		
 		$trailer = Trailers::findOne($trailer_id);
-		$deliveryLoadTrailer = new DeliveryLoadTrailer();
-		$deliveryLoadTrailer->trailer_id = $trailer_id;
-		$deliveryLoadTrailer->delivery_run_num = $delivery_run_num;
-		$deliveryLoadTrailer->delivery_load_id = $delivery_load_id;
+		$usedBins = array();
+		$selectedBins = array();
 		
-		//$usedTrailerOtherLoads = Trailers::getUsedTrailersBinOtherLoads($trailer_id, $delivery_run_num, $requestedDate, $delivery_load_id);
+		
+		
+		return $this->renderPartial('/Trailers/_trailer',
+				[
+				'trailer_slot_num' => $trailerSlot,
+				'deliveryCount' => $deliveryCount, 
+				'trailer' => $trailer,
+				'trailer_run_num' => $trailer_run_num,
+				'usedBins' => $usedBins,
+				'selectedBins' => $selectedBins,
+				]);
 	
-		
-		
-		return $this->renderPartial("/delivery-load-trailer/_delivery_load_trailer", [
-			'trailer' => $trailer,
-			'deliveryLoadTrailer' => $deliveryLoadTrailer,
-			]);
 		
 		
 		
@@ -831,7 +834,7 @@ class DeliveryController extends Controller
 		
 	
 		//a list of the trailers already on the page, a trailer cannot be selected twice
-		$selectedTrailerList = explode(",", $selectedTrailers); // should be an array of trailer_id + "_" + delivery_run_num
+		$selectedTrailerList = explode(",", $selectedTrailers); // should be an array of trailer_id + "_" + trailer_run_num
 		
 		
 		
@@ -851,6 +854,8 @@ class DeliveryController extends Controller
 					'trailer' => substr($trailerObject->Registration." (".$trailerObject->Description.")", 0, 40),
 					'bins' => $trailerObject->NumBins,
 					'tons' => $trailerObject->Max_Capacity,
+					//'default_truck_id' => $trailerObject->default_truck_id,
+					//'default_trailer_pair_id' => $trailerObject->default_trailer_pair_id,
 					];
 				}	
 			}

@@ -63,20 +63,23 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	
 	public function getTruck()
 	{
-		return $this->hasOne(Trucks::className(), ['id' => 'delivery_load_truck_id'] );
+		return $this->hasOne(Trucks::className(), ['id' => 'truck_id'] );
 	}
 	
-	public function getDeliveryLoadTrailer1()
+	public function getTrailer1()
 	{
-		return $this->hasOne(DeliveryLoadTrailer::className(), ['id' => 'delivery_load_trailer1_id'] );
+		return $this->hasOne(Trailers::className(), ['id' => 'trailer1_id'] );
 	}
 	
-	public function getDeliveryLoadTrailer2()
+	public function getTrailer2()
 	{
-		return $this->hasOne(DeliveryLoadTrailer::className(), ['id' => 'delivery_load_trailer2_id'] );
+		return $this->hasOne(Trailers::className(), ['id' => 'trailer2_id'] );
 	}
 	
-	
+	public function getBins()
+	{
+		return $this->hasMany(DeliveryLoadBin::className(), ['delivery_load_id' => 'id'] );
+	}
 	
 	
 	/**
@@ -239,5 +242,27 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 			return $returnString;
 		}
    
+   /**
+   * This function will return an array of bin_ids that have been selected for this deliveryLoad
+   * 
+   * @return
+   */
+   
+   
+   public function getSelectedBins()
+   {
+   
+   $binArray = array();
+   foreach($this->bins as $deliveryLoadBin)
+		{
+		$binArray[$deliveryLoadBin->trailer_bin_id] = $deliveryLoadBin->bin_load;
+		}
+		
+	return  $binArray;
+   
+   
+   
+   
+   }
     
 }

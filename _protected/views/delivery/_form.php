@@ -300,7 +300,7 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 		$.ajax
 		  		({
 		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-delivery-load")."',
-				data: {deliveryCount: next_delivery_count, requestedDate: requestedDate},
+				data: {deliveryCount: next_delivery_count, requestedDate: requestedDate, delivery_id: ".(isset($model->id) ? $model->id : 0 )."  },
 				success: function (data, textStatus, jqXHR) 
 					{
 					$('#delivery_load_section').append(data);
@@ -312,8 +312,8 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 		        	}
 				});
 		
-		getSelectedTrailers();		
-		usedTrailers = '';
+			
+		usedTrailers = getSelectedTrailers();
 		
 				
 		$.ajax
@@ -356,26 +356,21 @@ $this->registerJs("$(document).on('click', '.remove_delivery_load', function()
 $this->registerJs("
 function getSelectedTrailers()
 {
-	
+	return '';
 }
 
 
 // render trailer section
-function renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num)
+function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 {
 
 	//get the place the trailer is to be rendered too	
-	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer1');
-	
-	//get the delivery_load_id, this will allow us to exclude the current delivery load from the displaying used bins
-	var delivery_load_id = $(\"[name='deliveryLoad[\"+deliveryCount+\"][id]']\").attr('value');
+	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer' + trailerSlot);
 
-	
-	
 	$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("delivery/ajax-get-delivery-load-trailer")."',
-		data: {trailer_id: trailer_id, delivery_run_num: delivery_run_num, delivery_load_id: delivery_load_id},
+		data: {trailerSlot: trailerSlot, deliveryCount: deliveryCount, trailer_id: trailer_id, trailer_run_num: trailer_run_num, delivery_load_id: ".(isset($model->id) ? $model->id : 0 )."},
 		success: function (data, textStatus, jqXHR) 
 			{
 			target.html(data);;
@@ -386,8 +381,7 @@ function renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num)
 			alert('Error in ajax request' );
 			}
 		});
-	
-	
+
 }
 
 
@@ -427,17 +421,76 @@ $this->registerJs("$(document).on('click', '#select_trailer_button', function(ev
 	$('#select-modal').modal('hide');
 	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num)
 
+	});
+");	
+
+/**
+* 
+* Add and remove the trailers from the page
+* 
+*/	
 	
+$this->registerJs("$(document).on('click', '.remove_trailer_link', function() 
+	{
 	
+	deliveryCount =  $(this).attr('deliveryCount');
+	trailer_slot_num = $(this).attr('trailer_slot_num');
+	renderTrailer(deliveryCount, trailer_slot_num, 0, 0);
+		
+	});
+	");
 	
+$this->registerJs("$(document).on('click', '.add_trailer_link', function() 
+	{
+	
+	var deliveryCount =  $(this).attr('deliveryCount');
+	var trailer_slot_num = $(this).attr('trailer_slot_num');
+	var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
+	var usedTrailers = getSelectedTrailers();
+
+	
+	$.ajax
+	  		({
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
+			data: {requested_date: requestedDate, deliveryCount: deliveryCount, trailerSlot: trailer_slot_num, selectedTrailers: usedTrailers},
+			success: function (data, textStatus, jqXHR) 
+				{
+				$('#select-modal').modal();
+				$('.modal-body').html(data);
+				},
+	        error: function (jqXHR, textStatus, errorThrown) 
+	        	{
+	            console.log('An error occured!');
+	            alert('Error in ajax request' );
+	        	}
+			});
+	
+		
 	});
 	
 	
-");	
 	
+	
+	
+	
+	");
 
 
 
+/**********************************************************************
+* 
+* 			Truck Functions
+* 
+**********************************************************************/
+
+
+$this->registerJs("$(document).on('click', '.select_truck_button', function() 
+	{
+	
+	var deliveryCount =  $(this).attr('deliveryCount');
+	alert(deliveryCount);
+
+	})");
 
 /********************************************************************
 * 

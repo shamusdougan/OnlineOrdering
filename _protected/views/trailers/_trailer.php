@@ -5,11 +5,12 @@ use yii\helpers\Html;
 
 /*
 
-	@var - $trailer - trailer to be rendered
-	@var = $delivery_run_num
-	@var = $delivery_trailer_load_id - the Delivery Load this trailer is to be rendered for
-
-	
+	@var - trailer - 				//trailer to be rendered
+	@var = trailer_run_num			//The run number that is used for this trailer
+	@var - trailer_slot_num			//The trailer slot number
+	@var - deliveryCount			//The unique id of the deliveryLoad on the page
+	@var - usedBins					//a list of bins that have already been used not included the selected bins  array(trailerbin_id => bin_load)
+	@var - selectedBins				//a list of bins that has already selected for this array(trailerbin_id => bin_load)
 */
 
 
@@ -19,15 +20,16 @@ use yii\helpers\Html;
 * 
 */
 
-if(isset($deliveryLoadTrailer)) { ?>
+if(isset($trailer) && !is_int($trailer)) { ?>
 
 
-<div class='trailer_display_<?= $trailer->id ?> trailer_details' style='width: 350px; margin-right: 30px; float:left;'>
+<div class='trailer_display_<?= $trailer->id ?> trailer_details' style='width: 350px; padding-left: 5px; margin-right: 30px; float:left;'>
 	
 	<div style='width: 100%'>
 		<b><?= $trailer->Registration ?> </b>
 		<a class='remove_trailer_link' 
-			trailer_id='<?= $trailer->id ?>'
+			deliveryCount='<?= $deliveryCount ?>'
+			trailer_slot_num='<?= $trailer_slot_num ?>'
 			>(Remove)</a>
 		
 		
@@ -43,6 +45,64 @@ if(isset($deliveryLoadTrailer)) { ?>
 		
 		</div>
 		<div style='width: 75%; height: 100%; float: left'>
+			
+			<? 
+			
+			$binDivWidth = 100/$trailer->NumBins;
+			$count = 1;
+			foreach($trailer->trailerBins as  $trailerBin)
+				{
+					
+				//in case too many bins have been specified for the trailer
+				if($count > $trailer->NumBins)
+					{
+					exit;
+					}
+				
+				
+				//Trailer has been used in this delivery
+				if(array_key_exists($trailerBin->id, $selectedBins))
+					{
+					if($selectedBins[$trailerBin->id] < $trailerBin->MaxCapacity)
+						{
+						$class = 'sap_trailer_partial';
+						}
+					else{
+						$class = 'sap_trailer_full';
+						}	
+					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
+					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";					
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='deliveryLoad[".$deliveryCount."][truck_load][".$trailer->id."][".$trailerBin->id."][]' value='".$deliveryLoadBins[$trailerBin->id]."' checked type='checkbox' />";		
+					echo "</div>";	
+					}
+					
+				//Trailer bin is being used by another delivery load
+				elseif(array_key_exists($trailerBin->id, $usedBins))
+					{
+					echo "<div class='sap_trailer_used' style='background-color: grey; width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
+					echo "<input type='hidden' class='trailer_cb_id_".$trailer->id."' value='1'>";
+					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
+					
+					echo "</div>";	
+					}
+				//Trailer bin hasn't been used in this delivery or any other delviery.
+				else{
+					echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
+					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='deliveryLoad[".$deliveryCount."][truck_load][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
+					echo "</div>";
+					}
+				
+				
+	
+				
+				
+				$count++;
+				}
+			
+			
+			
+			?>
 			
 		</div>
 	</div>
@@ -65,7 +125,12 @@ if(isset($deliveryLoadTrailer)) { ?>
 		<div class='select_trailer_button' >
 				
 				
-			<a title='Add Trailer'><div class='sap_icon_large sap_new_truck'></div></a>
+			<a class='add_trailer_link' 
+				title='Add Trailer'
+				deliveryCount='<?= $deliveryCount ?>'
+				trailer_slot_num='<?= $trailer_slot_num ?>'
+				
+				><div class='sap_icon_large sap_new_truck'></div></a>
 		</div>
 	</div>
 
