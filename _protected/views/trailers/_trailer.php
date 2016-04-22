@@ -24,6 +24,11 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 
 
 <div class='trailer_display_<?= $trailer->id ?> trailer_details' style='width: 350px; padding-left: 5px; margin-right: 30px; float:left;'>
+
+
+	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>]' value='<?= $trailer->id ?>' >
+	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>_run_num]' value='<?= $trailer_run_num ?>' >
+	
 	
 	<div style='width: 100%'>
 		<b><?= $trailer->Registration ?> </b>
@@ -72,7 +77,13 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 						}	
 					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";					
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='deliveryLoad[".$deliveryCount."][truck_load][".$trailer->id."][".$trailerBin->id."][]' value='".$deliveryLoadBins[$trailerBin->id]."' checked type='checkbox' />";		
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' 
+								trailer_id='".$trailer->id."' 
+								trailerbin_id='".$trailerBin->id."' 
+								capacity='".$trailerBin->MaxCapacity."' 
+								name='deliveryLoadBins[".$deliveryCount."][bins][".$trailerBin->id."]' 
+								value='".$selectedBins[$trailerBin->id]."' 
+								checked type='checkbox' />";		
 					echo "</div>";	
 					}
 					
@@ -89,7 +100,13 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 				else{
 					echo "<div class='sap_trailer_empty' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' trailer_id='".$trailer->id."' trailerbin_id='".$trailerBin->id."' capacity='".$trailerBin->MaxCapacity."' name='deliveryLoad[".$deliveryCount."][truck_load][".$trailer->id."][".$trailerBin->id."][]' value='0' type='checkbox' />";	
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' 
+							trailer_id='".$trailer->id."' 
+							trailerbin_id='".$trailerBin->id."' 
+							capacity='".$trailerBin->MaxCapacity."' 
+							name='deliveryLoadBins[".$deliveryCount."][bins][".$trailerBin->id."]' 
+							value='0' 
+							type='checkbox' />";	
 					echo "</div>";
 					}
 				

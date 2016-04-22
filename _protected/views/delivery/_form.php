@@ -360,6 +360,7 @@ function getSelectedTrailers()
 }
 
 
+
 // render trailer section
 function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 {
@@ -484,13 +485,108 @@ $this->registerJs("$(document).on('click', '.add_trailer_link', function()
 **********************************************************************/
 
 
-$this->registerJs("$(document).on('click', '.select_truck_button', function() 
+$this->registerJs("$(document).on('click', '.add_truck_link', function() 
 	{
 	
+	
 	var deliveryCount =  $(this).attr('deliveryCount');
-	alert(deliveryCount);
+	
+	var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
+	var usedTrucks = getSelectedTrucks();
+
+	
+	$.ajax
+	  		({
+	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
+			data: {requested_date: requestedDate, deliveryCount: deliveryCount, selectedTrucks: usedTrucks},
+			success: function (data, textStatus, jqXHR) 
+				{
+				$('#select-modal').modal();
+				$('.modal-body').html(data);
+				},
+	        error: function (jqXHR, textStatus, errorThrown) 
+	        	{
+	            console.log('An error occured!');
+	            alert('Error in ajax request' );
+	        	}
+			});
+	
+		
+
 
 	})");
+
+
+
+$this->registerJs("$(document).on('click', '.remove_delivery_load_truck', function() 
+	{
+	deliveryCount =  $(this).attr('deliveryCount');
+	renderTruck(deliveryCount, 0, 0);
+	});
+	");
+	
+	
+$this->registerJs("$(document).on('click', '#select_truck_button', function(event) 
+	{
+	
+	
+	//First lets check that a trailer has been selected if not alert and return to dialog
+	var truck_id = $('input[name=truck_row_select]:checked').val();
+	if(truck_id == undefined)
+		{
+		alert('Please select a Truck or close dialog');
+		return;
+		}
+	var deliveryCount = $('input[name=truck_row_select]:checked').attr('deliveryCount');
+	var truck_run_num = $('input[name=truck_row_select]:checked').attr('delivery_run_num');
+
+
+
+	var max_trailers=$('input[name=truck_row_select]:checked').attr('max_trailers');
+	var max_load=$('input[name=truck_row_select]:checked').attr('max_load');
+	var auger=$('input[name=truck_row_select]:checked').attr('auger');
+	var blower=$('input[name=truck_row_select]:checked').attr('blower');
+	var tipper=$('input[name=truck_row_select]:checked').attr('tipper');
+
+
+		
+	$('#select-modal').modal('hide');
+	renderTruck(deliveryCount, truck_id, truck_run_num)
+
+	});
+");	
+
+
+$this->registerJs("
+function getSelectedTrucks()
+{
+	return '';
+}
+
+// render truck section
+function renderTruck(deliveryCount, truck_id, truck_run_num)
+{
+
+	//get the place the trailer is to be rendered too	
+	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-truck');
+
+	$.ajax
+  		({
+  		url: '".yii\helpers\Url::toRoute("delivery/ajax-get-delivery-load-truck")."',
+		data: {deliveryCount: deliveryCount, truck_id: truck_id, truck_run_num: truck_run_num, delivery_load_id: ".(isset($model->id) ? $model->id : 0 )."},
+		success: function (data, textStatus, jqXHR) 
+			{
+			target.html(data);;
+			},
+		error: function (jqXHR, textStatus, errorThrown) 
+			{
+			console.log('An error occured!');
+			alert('Error in ajax request' );
+			}
+		});
+
+}
+");
 
 /********************************************************************
 * 

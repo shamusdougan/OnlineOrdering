@@ -114,16 +114,25 @@ class DeliveryController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
         	//create the Delivery Name other attributes already loaded such as the delivery date
+        	
+        	
+        
+        	print_r(Yii::$app->request->post());
+        	return;
+        	
+        	
         	$model->Name = Delivery::generateName($model->id); 
         	$model->status = Delivery::STATUS_INPROGRESS;
         	$model->delivery_qty = 0;
         	$model->save();			//save so we cna access the object id
 		
-			if(($deliveryLoadArray = Yii::$app->request->post("deliveryLoad")) !== null)
+		
+		
+			if(($deliveryLoadsArray = Yii::$app->request->post("deliveryLoadBins")) !== null)
 				{
 					
 				//Create the Basic Delivery Load Object
-				foreach($deliveryLoadArray as $deliveryLoad)	
+				foreach($deliveryLoadsArray as $deliveryLoad)	
 					{
 						
 					//Create the Delivery Load Object and 
@@ -185,6 +194,8 @@ class DeliveryController extends Controller
 				else{
 					return $this->redirect(['index']);
 					}
+					
+			
 					
         	} 
        
@@ -612,73 +623,66 @@ class DeliveryController extends Controller
     
     
     
-    public function actionAjaxSelectTruck($requested_date, $target_delivery_load, $extra_used_trucks)
+    public function actionAjaxSelectTruck($requested_date, $deliveryCount, $selectedTrucks)
     {
 		
-		$requested_date = strtotime($requested_date);
+		
 	
 		$truckList = Trucks::getActive();
-		$truckLoads = Trucks::getTrucksUsageArray($requested_date);
+		$trucksUsed = Trucks::getTrucksUsed($requested_date);
 		
 		
-		
-		//put all the active trucks in the first delivery run
-		$delivery_run_num = 1;
-		foreach($truckList as $truck)
+		//Ok if there are no trucks currently being used then just spit out the truck list with no modification
+		//The $data array needs to have an index like truckid_runnum, 
+		$data = array();
+		if(count($trucksUsed == 0))
 			{
-			$textDisplay = $truck->registration;
-			if(array_key_exists($delivery_run_num, $truckLoads) && array_key_exists($truck->id, $truckLoads[$delivery_run_num]))
+			foreach($truckList as $truckObject)
 				{
-				$textDisplay .= " (Remaining ".$truckLoads[$delivery_run_num][$truck->id]." )";
-				}
-			
-			$data['Available Trucks'][$truck->id."_".$delivery_run_num] = $textDisplay;
-			}
-		
-		//any additional delivery_runs from the database need to be added in here
-		
-
-
-
-
-
-
-
-
-
-
-
-		//any extra delivery runs only added on the page and not saved need to added in here
-		if($extra_used_trucks != "" && $extra_used_trucks != null)
-			{
-			$extra_runs_array = explode(",", $extra_used_trucks);
-			
-	
-			foreach($extra_runs_array as $extra_run)
-				{
-				$extra_delivery_run_array = explode("_", $extra_run);
-				$extra_truck_id = $extra_delivery_run_array[0];
-				$extra_delivery_run_id = $extra_delivery_run_array[1];
+				$data[] = [
+					'id' => $truckObject->id, 
+					'delivery_run_num' => 1,
+					'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
 				
-				//check to see if it already is in the data, if not add it
-				if(!(array_key_exists("Delivery Run ".$extra_delivery_run_id, $data) && array_key_exists($extra_truck_id, $data["Delivery Run ".$extra_delivery_run_id])))
-					{
-					$extra_truck = Trucks::findOne($extra_truck_id);
-					$data["Delivery Run ".$extra_delivery_run_id][$extra_truck_id."_".$extra_delivery_run_id] = $extra_truck->registration;
-					}
-				}
+					'max_trailers' => $truckObject->max_trailers,
+					'max_load' => $truckObject->max_load,
+					'Auger' => $truckObject->Auger,
+					'Blower' => $truckObject->Blower,
+					'Tipper' => $truckObject->Tipper,
+
+					];
+				}	
 			}
 		
 		
-		
-		
-		return $this->renderPartial ("/trucks/_selectTruck", [
-			"data" => $data,
-			"target_delivery_load" => $target_delivery_load,
-			
-		
-		
+		/*$dataProvider = new ArrayDataProvider([
+   			'allModels' => $data,
+		    'sort' => [
+		        'attributes' => ['id', 'username', 'email'],
+		    	],
+		    'pagination' => false
 		]);
+		*/
+		
+		return $this->renderPartial("/Trucks/_selectTruck", [
+			'data' => $data,
+			'deliveryCount' => $deliveryCount,
+			'selectionDate' => $requested_date,
+			
+			]);
+		
+		
+
+
+
+
+
+
+
+
+
+
+
 	}
     
     
@@ -806,7 +810,18 @@ class DeliveryController extends Controller
 		
 	}
     
-    
+    public function actionAjaxGetDeliveryLoadTruck($deliveryCount, $truck_id, $truck_run_num, $delivery_load_id)
+    {
+		$truck = Trucks::findOne($truck_id);
+		
+		return $this->renderPartial('/Trucks/_truck',
+			[
+			'truck' => $truck,
+			'deliveryCount' => $deliveryCount,
+			'truck_run_num' => $truck_run_num,
+			]
+		);
+	}
     
     
     /**

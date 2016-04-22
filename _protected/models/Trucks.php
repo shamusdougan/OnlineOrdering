@@ -256,4 +256,11 @@ class Trucks extends \yii\db\ActiveRecord
 		return $filterList;
 		
 	}
+	
+	
+	public function getTrucksUsed($requestedDate)
+	{
+		return array();
+	}
+	
 }

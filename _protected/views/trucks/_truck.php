@@ -11,10 +11,10 @@
 
 
 
-if($truck == null) { ?>
+if($truck == null || is_int($truck)) { ?>
 
 	<div class='truck_empty_select'>
-		<div class='select_truck_button' deliveryCount='<?=  $deliveryCount ?>'>
+		<div class='add_truck_link' deliveryCount='<?=  $deliveryCount ?>'>
 			<a title='Add Truck'><div class='sap_icon_large sap_new_truck'></div></a>
 		</div>
 		
@@ -29,7 +29,15 @@ if($truck == null) { ?>
 		<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][truck_run_num]'  value='<?= $truck_run_num ?>' >
 	
 		
-		<b>Truck: <?= $truck->registration." (".$truck->description.")" ?></b><br>
+		<div style='width: 100%; height: 20px;'>
+			<div style='padding-left: 5px; width: calc(100% - 30px); height:40px;float: left; overflow: hidden'>
+				<b><?= substr($truck->registration." (".$truck->description.")", 0 , 40) ?></b><br>	
+			</div>
+			<div style='width: 30px; height:100%; float: left'>
+				<div class='sap_icon_small sap_cross_small remove_delivery_load_truck' deliveryCount='<?= $deliveryCount ?>'></div>
+			</div>
+		</div>
+		
 		<? if($truck_run_num == 2 ) 
 				{
 				echo "2nd Delivery  Run<br>";
@@ -45,7 +53,7 @@ if($truck == null) { ?>
 				echo "<br>";
 				}
 			?>
-		<img src='../../images/truck_outline.png' height='130px'><br>	
+		<img src='../../images/truck_outline.png' height='120px'><br>	
 		
 	</div>
 	
