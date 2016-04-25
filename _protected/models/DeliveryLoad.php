@@ -32,9 +32,9 @@ class DeliveryLoad extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['delivery_id'], 'required'],
-            [['delivery_id', ], 'integer'],
-            [['load_qty', 'delivery_load_trailer1', 'delivery_load_trailer2'], 'number'],
+            [['delivery_id', 'delivery_on'], 'required'],
+            [['delivery_id', 'trailer1_id', 'trailer2_id', 'trailer1_run_num', 'trailer2_run_num', 'truck_id', 'truck_run_num'], 'integer'],
+            [['load_qty'], 'number'],
             [['delivery_on', 'delivery_completed_on'], 'safe']
         ];
     }
@@ -148,14 +148,11 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	
 	public function removeAllLoads()
 	{
-		foreach($this->deliveryLoadBin as $deliveryLoadBin)	
+		foreach($this->bins as $deliveryLoadBin)	
 			{
 			$deliveryLoadBin->delete();
 			}
-		foreach($this->deliveryLoadTrailer as $deliveryLoadTrailer)
-			{
-			$deliveryLoadTrailer->delete();
-			}
+		
 	}
     
     

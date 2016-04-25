@@ -26,7 +26,7 @@ To create an additional delivery Run on the same day, select a trailer and click
 	<div style='float: left; height: 600px; overflow-y: scroll'>
 			
 	<table style='wdith: 100%' id='trailer_select_table'>
-		<tr>
+		<tr style='size: 14px'>
 		<th>Trailer</th>
 		<th>Bins Left</th>
 		<th>Tons Left</th>

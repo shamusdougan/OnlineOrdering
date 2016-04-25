@@ -113,79 +113,42 @@ class DeliveryController extends Controller
 		//form has been submitted save the form accordingly
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
+        		
+        	//print_r(Yii::$app->request->post());
+        		
         	//create the Delivery Name other attributes already loaded such as the delivery date
-        	
-        	
-        
-        	print_r(Yii::$app->request->post());
-        	return;
-        	
-        	
         	$model->Name = Delivery::generateName($model->id); 
         	$model->status = Delivery::STATUS_INPROGRESS;
         	$model->delivery_qty = 0;
         	$model->save();			//save so we cna access the object id
-		
-		
-		
-			if(($deliveryLoadsArray = Yii::$app->request->post("deliveryLoadBins")) !== null)
-				{
-					
-				//Create the Basic Delivery Load Object
-				foreach($deliveryLoadsArray as $deliveryLoad)	
-					{
-						
-					//Create the Delivery Load Object and 
-					$deliveryLoadObject = new DeliveryLoad();
-					$deliveryLoadObject->delivery_id = $model->id;
-					$deliveryLoadObject->truck_id = $deliveryLoad['truck_id'];
-					$deliveryLoadObject->delivery_run_num = $deliveryLoad['delivery_run_num'];
-					$deliveryLoadObject->delivery_on = $model->delivery_on;
-					$deliveryLoadObject->save();
-					
-					//Create the deliveryLoad Trailer objects
-					if(array_key_exists('trailers', $deliveryLoad))
-						{
-						foreach($deliveryLoad['trailers'] as $trailer_id)
-							{
-							$deliveryLoadTrailerObject = new DeliveryLoadTrailer();
-							$deliveryLoadTrailerObject->delivery_load_id = $deliveryLoadObject->id;
-							$deliveryLoadTrailerObject->trailer_id = $trailer_id;
-							$deliveryLoadTrailerObject->save();
-							}		
-						}
-					
-					
-					//create the deliveryLoadBinObjects
-					if(array_key_exists('truck_load', $deliveryLoad))
-						{
-						foreach($deliveryLoad['truck_load'] as $trailer_id => $trailerBins)
-							{
-							foreach($trailerBins as $trailerbin_id => $binLoad)
-								{
-								$deliveryLoadBin = new DeliveryLoadBin();
-								$deliveryLoadBin->bin_load = $binLoad[0];
-								$deliveryLoadBin->trailer_bin_id = $trailerbin_id;
-								$deliveryLoadBin->delivery_load_id = $deliveryLoadObject->id;
-								$deliveryLoadBin->save();
-								}	
-							}
-						}
-					}
-					
-				//update the delivery details based on the deliveryLoad.bin just created
-				$model->updateDeliveryQty();
-        		$model->save();
-				}
-			
 	
-			
-        	
+			$deliveryLoads = Yii::$app->request->post("deliveryLoad");
+			$deliveryLoadBins = Yii::$app->request->post("deliveryLoadBins");
+			foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
+				{
+				$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
+				$deliveryLoadObject = new DeliveryLoad();
+				$deliveryLoadObject->load($deliveryLoadArray);
+				$deliveryLoadObject->delivery_id = $model->id;
+				$deliveryLoadObject->save();
+				//first check that bins have been selected for that load - can have a case where there are none selected
+				if(array_key_exists($deliveryCount, $deliveryLoadBins))
+					{
+					foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
+						{
+						$loadBin = new DeliveryLoadBin();
+						$loadBin->bin_load = $loadValue;
+						$loadBin->trailer_bin_id = $bin_id;
+						$loadBin->delivery_load_id = $deliveryLoadObject->id;
+						$loadBin->save();
+						}			
+					}		
+				}
+
         	//update the Customer Order as well
         	$model->customerOrder->setStatusDelivery($model->id);
 		
             //Once save, either stay on the page or exit. Controlled via the actiob buttons
-            
             $get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
 	    			{
@@ -194,9 +157,6 @@ class DeliveryController extends Controller
 				else{
 					return $this->redirect(['index']);
 					}
-					
-			
-					
         	} 
        
        
@@ -259,74 +219,57 @@ class DeliveryController extends Controller
     
     
 	//form has been submitted save the form accordingly
-    if ($model->load(Yii::$app->request->post()) && $model->save()) 
-    	{
-        
-		
-
-    	//remove the old loading data and create the new, even if it is the Same
-    	$model->removeAllLoads();
-    	$model = Delivery::findOne($model->id);
-    	
-    
-
-    	//this array contains all of the data about where the order has been loaded into.        		
-    	 if ($model->load(Yii::$app->request->post()) && $model->save()) 
+     if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
+        		
         	//create the Delivery Name other attributes already loaded such as the delivery date
+        	$model->Name = Delivery::generateName($model->id); 
+        	$model->status = Delivery::STATUS_INPROGRESS;
         	$model->delivery_qty = 0;
         	$model->save();			//save so we cna access the object id
-		
-			if(($deliveryLoadArray = Yii::$app->request->post("deliveryLoad")) !== null)
+	
+			//Clear all the existing child objects from the database and recreate based on form Data
+			$model->removeAllLoads();
+				
+	
+			$deliveryLoads = Yii::$app->request->post("deliveryLoad");
+			$deliveryLoadBins = Yii::$app->request->post("deliveryLoadBins");
+			foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
 				{
-					
-				//Create the Basic Delivery Load Object
-				foreach($deliveryLoadArray as $deliveryLoad)	
+				$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
+				$deliveryLoadObject = new DeliveryLoad();
+				$deliveryLoadObject->load($deliveryLoadArray);
+				$deliveryLoadObject->delivery_id = $model->id;
+				$deliveryLoadObject->save();
+				//first check that bins have been selected for that load - can have a case where there are none selected
+				if(array_key_exists($deliveryCount, $deliveryLoadBins))
 					{
-						
-					//Create the Delivery Load Object and 
-					$deliveryLoadObject = new DeliveryLoad();
-					$deliveryLoadObject->delivery_id = $model->id;
-					$deliveryLoadObject->truck_id = $deliveryLoad['truck_id'];
-					$deliveryLoadObject->delivery_run_num = $deliveryLoad['delivery_run_num'];
-					$deliveryLoadObject->delivery_on = $model->delivery_on;
-					$deliveryLoadObject->save();
-					
-					//Create the deliveryLoad Trailer objects
-					if(array_key_exists('trailers', $deliveryLoad))
+					foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
 						{
-						foreach($deliveryLoad['trailers'] as $trailer_id)
-							{
-							$deliveryLoadTrailerObject = new DeliveryLoadTrailer();
-							$deliveryLoadTrailerObject->delivery_load_id = $deliveryLoadObject->id;
-							$deliveryLoadTrailerObject->trailer_id = $trailer_id;
-							$deliveryLoadTrailerObject->save();
-							}		
-						}
-					
-					
-					//create the deliveryLoadBinObjects
-					if(array_key_exists('truck_load', $deliveryLoad))
-						{
-						foreach($deliveryLoad['truck_load'] as $trailer_id => $trailerBins)
-							{
-							foreach($trailerBins as $trailerbin_id => $binLoad)
-								{
-								$deliveryLoadBin = new DeliveryLoadBin();
-								$deliveryLoadBin->bin_load = $binLoad[0];
-								$deliveryLoadBin->trailer_bin_id = $trailerbin_id;
-								$deliveryLoadBin->delivery_load_id = $deliveryLoadObject->id;
-								$deliveryLoadBin->save();
-								}	
-							}
-						}
-					}
-					
-				//update the delivery details based on the deliveryLoad.bin just created
-				$model->updateDeliveryQty();
-        		$model->save();
+						$loadBin = new DeliveryLoadBin();
+						$loadBin->bin_load = $loadValue;
+						$loadBin->trailer_bin_id = $bin_id;
+						$loadBin->delivery_load_id = $deliveryLoadObject->id;
+						$loadBin->save();
+						}			
+					}		
 				}
-    		}
+
+        	//update the Customer Order as well
+        	$model->customerOrder->setStatusDelivery($model->id);
+		
+            //Once save, either stay on the page or exit. Controlled via the actiob buttons
+            $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
+        	
+       
+       
     	
         	//Once save, either stay on the page or exit. Controlled via the actiob buttons
         	$get = Yii::$app->request->get();
@@ -342,7 +285,7 @@ class DeliveryController extends Controller
    			else{
 				return $this->redirect(['index']);
 				}
-    	} 
+    		} 
         
         
         
@@ -639,7 +582,7 @@ class DeliveryController extends Controller
 			{
 			foreach($truckList as $truckObject)
 				{
-				$data[] = [
+				$data[1][] = [
 					'id' => $truckObject->id, 
 					'delivery_run_num' => 1,
 					'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),

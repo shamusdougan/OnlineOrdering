@@ -25,7 +25,7 @@ if($truck == null || is_int($truck)) { ?>
 
 	<div class='truck_details'>
 			
-		<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][truck_id]'  value='<?= $truck->id ?>' >
+		<input type='hidden' class='delivery_load_truck_id' truck_run_num='<?= $truck_run_num ?>' name='deliveryLoad[<?= $deliveryCount ?>][truck_id]'  value='<?= $truck->id ?>' >
 		<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][truck_run_num]'  value='<?= $truck_run_num ?>' >
 	
 		

@@ -166,7 +166,20 @@ if(!isset($truckList)){ $truckList = array();}
 			
 			
 			<div id='delivery_load_section'>
+				<? 
 				
+				$deliveryCount = 1;
+				foreach($model->deliveryLoad as $deliveryLoad)
+					{
+					echo $this->render('/delivery-load/_delivery_load_form',
+						[
+						'deliveryCount' => $deliveryCount,
+						'deliveryLoad' => $deliveryLoad,
+						'delivery_id' => $model->id,
+						]);
+					$deliveryCount++;
+					}
+				?>
 			</div>	
 
 		</div>
@@ -492,13 +505,13 @@ $this->registerJs("$(document).on('click', '.add_truck_link', function()
 	var deliveryCount =  $(this).attr('deliveryCount');
 	
 	var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
-	var usedTrucks = getSelectedTrucks();
+	var selectedTrucks = getSelectedTrucks();
 
 	
 	$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
-			data: {requested_date: requestedDate, deliveryCount: deliveryCount, selectedTrucks: usedTrucks},
+			data: {requested_date: requestedDate, deliveryCount: deliveryCount, selectedTrucks: selectedTrucks},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#select-modal').modal();
@@ -560,8 +573,37 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 $this->registerJs("
 function getSelectedTrucks()
 {
-	return '';
+	
+	var selectedTrucks = new Array();
+	$('.delivery_load_truck_id').each(function()
+		{
+		var truck_id = $(this).attr('value');
+		var truck_run_num = $(this).attr('truck_run_num');
+		
+		selectedTrucks.push(truck_id + '_' + truck_run_num);
+		});
+	selected_trucks = selectedTrucks.join(',');
+	
+
+	
+	return selected_trucks;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // render truck section
 function renderTruck(deliveryCount, truck_id, truck_run_num)
