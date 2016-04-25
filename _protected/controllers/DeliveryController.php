@@ -574,17 +574,37 @@ class DeliveryController extends Controller
 		$truckList = Trucks::getActive();
 		$trucksUsed = Trucks::getTrucksUsed($requested_date);
 		
+		//Ok unpack the information in the $selectedTrucks Variable. it should be an csv array of vairables
+		// truckid_truckrunnum
+		$selectedTruckRawArray = explode(",", $selectedTrucks);
+		
+		
+		$selectedTrucksArray = array();
+		foreach($selectedTruckRawArray as $truckDetails)
+			{
+			$details = explode("_", $truckDetails);
+			$selectedTrucksArray[$details[1]][$details[0]] = $details[0];
+			}
 		
 		//Ok if there are no trucks currently being used then just spit out the truck list with no modification
 		//The $data array needs to have an index like truckid_runnum, 
 		$data = array();
 		if(count($trucksUsed == 0))
 			{
+			$delivery_run_num = 1;
 			foreach($truckList as $truckObject)
 				{
+				//check to see if the truck has been selected on the form already
+				$used = false;
+				if(array_key_exists($truckObject->id, $selectedTrucksArray[$delivery_run_num]))
+					{
+					$used = true;
+					}
+					
+					
 				$data[1][] = [
 					'id' => $truckObject->id, 
-					'delivery_run_num' => 1,
+					'delivery_run_num' => $delivery_run_num,
 					'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
 				
 					'max_trailers' => $truckObject->max_trailers,
@@ -592,6 +612,7 @@ class DeliveryController extends Controller
 					'Auger' => $truckObject->Auger,
 					'Blower' => $truckObject->Blower,
 					'Tipper' => $truckObject->Tipper,
+					'used' => $used,
 
 					];
 				}	
