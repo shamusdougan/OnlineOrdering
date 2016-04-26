@@ -24,7 +24,7 @@ To create an additional delivery Run on the same day, select a Truck and click "
 	<div style='float: left; width: 60%; height: 500px; margin-right: 5px; overflow-y: scroll; border: 1px solid; padding: 2px'>
 		
 		
-		<table style='width: 100%; border: 1px solid' id='trailer_select_table'>
+		<table style='width: 100%; border: 1px solid' id='truck_select_table'>
 			<tr bgcolor='#003366' style='color: #FFFFFF'>
 			<th style='padding-left: 5px'><B>Truck</B></th>
 			<th style='padding-left: 5px'></th>
@@ -37,7 +37,7 @@ To create an additional delivery Run on the same day, select a Truck and click "
 		foreach($data as $delivery_run_num => $dataSection)
 			{
 			echo "<tr bgcolor='#6699ff'>";
-			echo "<td colspan='4' align=center><b>Delivery Run ".$delivery_run_num."</b></td>";
+			echo "<td colspan='4' class='run_num_header' truck_run_num='".$delivery_run_num."' align=center><b>Delivery Run ".$delivery_run_num."</b></td>";
 			echo "</tr>";
 			
 			$odd = true;
@@ -45,15 +45,20 @@ To create an additional delivery Run on the same day, select a Truck and click "
 				{
 				if($odd)
 					{
-					echo "<tr  bgcolor='#ccddff'>";	
+					echo "<tr class='select_truck_id_".$dataRow['id']."' bgcolor='#ccddff'>";	
 					}
 				else{
-					echo "<tr  bgcolor='#e6eeff'>";	
+					echo "<tr class='select_truck_id_".$dataRow['id']."' bgcolor='#e6eeff'>";	
 					}
 				echo "<td style='padding-left: 5px'>".$dataRow['truck']."</td>";
 				if($dataRow['used'])
 					{
-					echo "<td><A class='add_truck_run' style='cursor: pointer'>Add Run <span class='glyphicon glyphicon-arrow-down'></span></a></td>";					echo "<td></td>";
+					echo "<td><A class='add_truck_run' 
+							truck_name='".$dataRow['truck']."' 
+							next_truck_run_num='".($dataRow['delivery_run_num']+1)."' 
+							truck_id='".$dataRow['id']."' 
+							deliveryCount='".$deliveryCount."'
+							style='cursor: pointer'>Add Run <span class='glyphicon glyphicon-arrow-down'></span></a></td>";					echo "<td></td>";
 					}
 				else{
 					echo "<td></td>";
@@ -61,11 +66,7 @@ To create an additional delivery Run on the same day, select a Truck and click "
 						value='".$dataRow['id']."' 
 						delivery_run_num='".$dataRow['delivery_run_num']."' 
 						deliveryCount='".$deliveryCount."'
-						max_trailers='".$dataRow['max_trailers']."',
-						max_load='".$dataRow['max_load']."',
-						auger='".$dataRow['Auger']."',
-						blower='".$dataRow['Blower']."',
-						tipper='".$dataRow['Tipper']."',
+						
 						>";
 					}
 				echo "</td>";
@@ -76,7 +77,7 @@ To create an additional delivery Run on the same day, select a Truck and click "
 				}
 			}
 		
-		
+			
 		?>	
 		</table>			
 				

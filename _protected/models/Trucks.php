@@ -260,7 +260,17 @@ class Trucks extends \yii\db\ActiveRecord
 	
 	public function getTrucksUsed($requestedDate)
 	{
-		return array();
+		
+		
+		$deliveryLoads = DeliveryLoad::find()
+					->where(['delivery_on' => $requestedDate])
+					->all();		
+		$trucksUsedArray = array();	
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			$trucksUsedArray[$deliveryLoad->truck_run_num][$deliveryLoad->truck_id] = $deliveryLoad->truck_id;
+			}
+		return $trucksUsedArray;
 	}
 	
 }

@@ -555,11 +555,11 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 
 
 
-	var max_trailers=$('input[name=truck_row_select]:checked').attr('max_trailers');
-	var max_load=$('input[name=truck_row_select]:checked').attr('max_load');
-	var auger=$('input[name=truck_row_select]:checked').attr('auger');
-	var blower=$('input[name=truck_row_select]:checked').attr('blower');
-	var tipper=$('input[name=truck_row_select]:checked').attr('tipper');
+	//var max_trailers=$('input[name=truck_row_select]:checked').attr('max_trailers');
+	//var max_load=$('input[name=truck_row_select]:checked').attr('max_load');
+	//var auger=$('input[name=truck_row_select]:checked').attr('auger');
+	//var blower=$('input[name=truck_row_select]:checked').attr('blower');
+	//var tipper=$('input[name=truck_row_select]:checked').attr('tipper');
 
 
 		
@@ -594,16 +594,24 @@ function getSelectedTrucks()
 
 $this->registerJs("$(document).on('click', '.add_truck_run', function() 
 	{	
-		
 	
+		var truck_id =  $(this).attr('truck_id');
 		
-		table = document.getElementById('trailer_select_table');
-		var row = table.insertRow(0);
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-
-		cell1.innerHTML = 'NEW CELL1';
-		cell2.innerHTML = 'NEW CELL2';
+		var count = 1;
+		$('.select_truck_id_' + truck_id).each(function()
+			{
+			count = count +1;	
+			}
+		);
+		
+		truck_run_num = count;
+		
+		var truck_name =  $(this).attr('truck_name');
+		var deliveryCount = $(this).attr('deliveryCount');
+		
+		$('#truck_select_table tr:last').after('<tr bgcolor=\"#6699ff\"><td colspan=\"4\" class=\"run_num_header\" truck_run_num=\"'+ truck_run_num + '\" align=center><b>Delivery Run ' + truck_run_num + '</b></td></tr>');
+		$('#truck_select_table tr:last').after('<tr class=\"select_truck_id_' + truck_id + '\" bgcolor=\"#e6eeff\"><td style=\"padding-left: 5px\">' + truck_name + '</td><td></td><td align=center><input type=\"radio\" name=\"truck_row_select\" value=\"' + truck_id + '\" delivery_run_num=\"' + truck_run_num +'\" deliveryCount=\"' + deliveryCount +'\"></td></tr>');
+	
 	});
 	");
 

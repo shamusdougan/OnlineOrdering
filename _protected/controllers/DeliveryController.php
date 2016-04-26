@@ -132,7 +132,7 @@ class DeliveryController extends Controller
 				$deliveryLoadObject->delivery_id = $model->id;
 				$deliveryLoadObject->save();
 				//first check that bins have been selected for that load - can have a case where there are none selected
-				if(array_key_exists($deliveryCount, $deliveryLoadBins))
+				if(is_array($deliveryLoadBins) && array_key_exists($deliveryCount, $deliveryLoadBins))
 					{
 					foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
 						{
@@ -572,61 +572,98 @@ class DeliveryController extends Controller
 		
 	
 		$truckList = Trucks::getActive();
+		$indexedTruckList = array();
+		foreach($truckList as $truckObject)
+			{
+			$indexedTruckList[$truckObject->id] = $truckObject;
+			}
 		$trucksUsed = Trucks::getTrucksUsed($requested_date);
+		
+		
+		
 		
 		//Ok unpack the information in the $selectedTrucks Variable. it should be an csv array of vairables
 		// truckid_truckrunnum
 		$selectedTruckRawArray = explode(",", $selectedTrucks);
 		
-		
+	
 		$selectedTrucksArray = array();
-		foreach($selectedTruckRawArray as $truckDetails)
+		if($selectedTruckRawArray[0] != "") //if no trucks have been selected on the page
 			{
-			$details = explode("_", $truckDetails);
-			$selectedTrucksArray[$details[1]][$details[0]] = $details[0];
-			}
-		
-		//Ok if there are no trucks currently being used then just spit out the truck list with no modification
-		//The $data array needs to have an index like truckid_runnum, 
-		$data = array();
-		if(count($trucksUsed == 0))
-			{
-			$delivery_run_num = 1;
-			foreach($truckList as $truckObject)
+			foreach($selectedTruckRawArray as $truckDetails)
 				{
-				//check to see if the truck has been selected on the form already
-				$used = false;
-				if(array_key_exists($truckObject->id, $selectedTrucksArray[$delivery_run_num]))
-					{
-					$used = true;
-					}
-					
-					
-				$data[1][] = [
-					'id' => $truckObject->id, 
-					'delivery_run_num' => $delivery_run_num,
-					'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
-				
-					'max_trailers' => $truckObject->max_trailers,
-					'max_load' => $truckObject->max_load,
-					'Auger' => $truckObject->Auger,
-					'Blower' => $truckObject->Blower,
-					'Tipper' => $truckObject->Tipper,
-					'used' => $used,
-
-					];
+				$details = explode("_", $truckDetails);
+				$selectedTrucksArray[$details[1]][$details[0]] = $details[0];
 				}	
 			}
 		
 		
-		/*$dataProvider = new ArrayDataProvider([
-   			'allModels' => $data,
-		    'sort' => [
-		        'attributes' => ['id', 'username', 'email'],
-		    	],
-		    'pagination' => false
-		]);
-		*/
+		//Create the initial data array of all active trucks, if the truck has been used already on form or the truck has been used in another delivery then mark it as used.
+		//The $data array needs to $data[run_num][truck_id], 
+		$data = array();
+		$delivery_run_num = 1;
+		foreach($truckList as $truckObject)
+			{
+			
+			//check to see if the truck has been selected on the form already
+			$used = false;
+			if(array_key_exists($delivery_run_num, $selectedTrucksArray) && array_key_exists($truckObject->id, $selectedTrucksArray[$delivery_run_num]))
+				{
+				$used = true;
+				}
+			
+			//check to see if another order is using the Truck
+			if(array_key_exists($delivery_run_num, $trucksUsed) && array_key_exists($truckObject->id, $trucksUsed[$delivery_run_num]))	
+				{
+				$used = true;
+				}
+				
+			$data[1][] = [
+				'id' => $truckObject->id, 
+				'delivery_run_num' => $delivery_run_num,
+				'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
+				'used' => $used,
+				];
+			}
+		
+		//Add an entry in the selection for trucks that have been selected already on this order	
+		foreach($selectedTrucksArray as $truck_run_num => $truck_id_array)
+			{
+			if($truck_run_num > 1)
+				{
+				foreach($truck_id_array as $truck_id)
+					{
+					$data[$truck_run_num][] = 
+						[
+						'id' => $indexedTruckList[$truck_id]->id, 
+						'delivery_run_num' => $truck_run_num,
+						'truck' => substr($indexedTruckList[$truck_id]->registration." (".$indexedTruckList[$truck_id]->description.")", 0, 40),
+						'used' => true,
+						];
+					}	
+				}
+			}
+
+		//Add entries in the data for trucks after the first delivery run
+		foreach($trucksUsed as $truck_run_num => $trucksArray)
+			{
+				if($truck_run_num > 1)
+					{
+						foreach($trucksArray as $truck_id)
+						{
+						$data[$truck_run_num][] = 
+							[
+							'id' => $indexedTruckList[$truck_id]->id, 
+							'delivery_run_num' => $truck_run_num,
+							'truck' => substr($indexedTruckList[$truck_id]->registration." (".$indexedTruckList[$truck_id]->description.")", 0, 40),
+							'used' => true,
+							];
+						}	
+					}
+			}
+		
+		
+	
 		
 		return $this->renderPartial("/Trucks/_selectTruck", [
 			'data' => $data,
@@ -805,13 +842,9 @@ class DeliveryController extends Controller
     	//A list of all the currently active trailers
 		$trailerList = Trailers::getAllActiveTrailers();
 		
-		
-		
 		//this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'trailer_slot_2_id' => YY]
-		$trailersUsed = Trailers::getTrailersUsed(strtotime($requested_date));
-		
-		
-	
+		$trailersUsed = Trailers::getTrailersUsed($requested_date);
+
 		//a list of the trailers already on the page, a trailer cannot be selected twice
 		$selectedTrailerList = explode(",", $selectedTrailers); // should be an array of trailer_id + "_" + trailer_run_num
 		
@@ -823,21 +856,21 @@ class DeliveryController extends Controller
 		//Ok if there are no trailers currently being used then just spit out the trail list with no modification
 		//The $data array needs to have an index like trailerid_runnum, 
 		$data = array();
-		if(count($trailersUsed == 0))
+		$trailer_run_num = 1;
+		foreach($trailerList as $trailerObject)
 			{
-			foreach($trailerList as $trailerObject)
-				{
-				$data[] = [
-					'id' => $trailerObject->id, 
-					'delivery_run_num' => 1,
-					'trailer' => substr($trailerObject->Registration." (".$trailerObject->Description.")", 0, 40),
-					'bins' => $trailerObject->NumBins,
-					'tons' => $trailerObject->Max_Capacity,
-					//'default_truck_id' => $trailerObject->default_truck_id,
-					//'default_trailer_pair_id' => $trailerObject->default_trailer_pair_id,
-					];
-				}	
-			}
+			$data[$trailer_run_num][] = [
+				'id' => $trailerObject->id, 
+				'delivery_run_num' => 1,
+				'trailer' => substr($trailerObject->Registration." (".$trailerObject->Description.")", 0, 40),
+				'bins' => $trailerObject->NumBins,
+				'tons' => $trailerObject->Max_Capacity,
+				'used' => false,
+				//'default_truck_id' => $trailerObject->default_truck_id,
+				//'default_trailer_pair_id' => $trailerObject->default_trailer_pair_id,
+				];
+			}	
+
 		
 		
 		/*$dataProvider = new ArrayDataProvider([

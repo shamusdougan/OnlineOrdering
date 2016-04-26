@@ -157,7 +157,7 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 		
 	
 		$deliveryLoads = DeliveryLoad::find()
-						->where(['delivery_on' => date("Y-m-d", $requestedDate )])
+						->where(['delivery_on' => $requestedDate ])
 						->all();
 		
 		$usedTrailerList = array();
@@ -165,14 +165,10 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 		//iterate through each delivery and collect the info as required
 		foreach($deliveryLoads as $deliveryLoad)
 			{
-			if(isset($deliveryLoad->deliveryLoadTrailer1))
+			if(isset($deliveryLoad->trailer1_id))
 				{
-				$usedTrailerList[$deliveryLoad->deliveryLoadTrailer1->delivery_run_num][$deliveryLoad->deliveryLoadTrailer1->trailer_id] = 
-					['binsUsed' => $deliveryLoad->deliveryLoadTrailer1->getBinsUsed(),
-					'tonsUsed' => $deliveryLoad->deliveryLoadTrailer1->getTonsUsed(),
-					];
+				$usedTrailerList[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id] = 
 				}
-			
 			}
 		
 		
