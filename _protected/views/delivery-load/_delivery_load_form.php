@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\Trailers;
 
 
 	
@@ -14,7 +15,7 @@ use yii\helpers\Html;
 //The Used bin array is a list of all the used bins on a given date.
 //This used bins array also need to exclude any bins that have been used by this deliveryLoad, this allows removing the trailer and readding in the same page
 //$usedBins = TrailerBins::getUsedBins($deliveryLoad->delivery_on, $delivery_id);
-$usedBins = array();
+
 	
 
 ?>
@@ -40,6 +41,15 @@ $usedBins = array();
 	<div class='delivery-load-trailer1'>
 		
 		<?
+		
+	
+		
+		
+		$usedBins = Trailers::getUsedBins($deliveryLoad->trailer1_id, $deliveryLoad->trailer1_run_num, $deliveryLoad->delivery_on, $deliveryLoad->id);
+		
+		
+		
+		
 		echo $this->render('/Trailers/_trailer',
 				[
 				'trailer_slot_num' => 1,

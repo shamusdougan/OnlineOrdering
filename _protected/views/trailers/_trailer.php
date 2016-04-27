@@ -26,7 +26,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 <div class='trailer_display_<?= $trailer->id ?> trailer_details' style='width: 350px; padding-left: 5px; margin-right: 30px; float:left;'>
 
 
-	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>_id]' value='<?= $trailer->id ?>' >
+	<input type='hidden' class='delivery_load_trailer_id' trailer_run_num='<?= $trailer_run_num ?>' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>_id]' value='<?= $trailer->id ?>' >
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>_run_num]' value='<?= $trailer_run_num ?>' >
 	
 	

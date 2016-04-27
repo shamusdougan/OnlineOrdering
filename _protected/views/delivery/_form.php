@@ -332,7 +332,7 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 		$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-			data: {requested_date: requestedDate, deliveryCount: next_delivery_count, trailerSlot: 1, selectedTrailers: usedTrailers},
+			data: {requested_date: requestedDate, deliveryCount: next_delivery_count, trailerSlot: 1, selectedTrailers: usedTrailers, delivery_load_id: 0},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#select-modal').modal();
@@ -369,22 +369,39 @@ $this->registerJs("$(document).on('click', '.remove_delivery_load', function()
 $this->registerJs("
 function getSelectedTrailers()
 {
-	return '';
+	
+	var selectedTrailers = new Array();
+	$('.delivery_load_trailer_id').each(function()
+		{
+		var trailer_id = $(this).attr('value');
+		var trailer_run_num = $(this).attr('trailer_run_num');
+		
+		selectedTrailers.push(trailer_id + '_' + trailer_run_num);
+		});
+	selected_trailers = selectedTrailers.join(',');
+	
+
+	
+	return selected_trailers;
 }
 
+");
 
-
+$this->registerJs("
 // render trailer section
 function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 {
 
 	//get the place the trailer is to be rendered too	
 	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer' + trailerSlot);
+	
+	var requested_date = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
+	var delivery_load_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][id]\"]').attr('value');
 
 	$.ajax
   		({
   		url: '".yii\helpers\Url::toRoute("delivery/ajax-get-delivery-load-trailer")."',
-		data: {trailerSlot: trailerSlot, deliveryCount: deliveryCount, trailer_id: trailer_id, trailer_run_num: trailer_run_num, delivery_load_id: ".(isset($model->id) ? $model->id : 0 )."},
+		data: {trailerSlot: trailerSlot, deliveryCount: deliveryCount, trailer_id: trailer_id, trailer_run_num: trailer_run_num, requested_date: requested_date, delivery_load_id: delivery_load_id},
 		success: function (data, textStatus, jqXHR) 
 			{
 			target.html(data);;
@@ -404,17 +421,6 @@ function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 ");
 
 
-$this->registerJs("$(document).on('click', '#add_run', function() 
-	{	
-		table = document.getElementById('trailer_select_table');
-		var row = table.insertRow(0);
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-
-		cell1.innerHTML = 'NEW CELL1';
-		cell2.innerHTML = 'NEW CELL2';
-	});
-	");
 
 
 $this->registerJs("$(document).on('click', '#select_trailer_button', function(event) 
@@ -431,9 +437,30 @@ $this->registerJs("$(document).on('click', '#select_trailer_button', function(ev
 	var deliveryCount = $('input[name=trailer_row_select]:checked').attr('deliveryCount');
 	var delivery_run_num = $('input[name=trailer_row_select]:checked').attr('delivery_run_num');
 	var trailerSlot = $('input[name=trailer_row_select]:checked').attr('trailerSlot');
+	
+	var otherTrailerSlot = $('input[name=trailer_row_select]:checked').attr('otherTrailerSlot');
+	var truck_id = $('input[name=trailer_row_select]:checked').attr('truck_id');
+	
+	
 		
 	$('#select-modal').modal('hide');
-	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num)
+	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num);
+	
+	if(truck_id != '')
+		{
+		renderTruck(deliveryCount, truck_id, delivery_run_num);
+		}
+	if(otherTrailerSlot != '')
+		{
+		otherSlot = 1;
+		if(trailerSlot == 1)
+			{
+			otherSlot = 2;
+			}
+		renderTrailer(deliveryCount, otherSlot, otherTrailerSlot, delivery_run_num);
+		}
+	
+	
 
 	});
 ");	
@@ -461,12 +488,12 @@ $this->registerJs("$(document).on('click', '.add_trailer_link', function()
 	var trailer_slot_num = $(this).attr('trailer_slot_num');
 	var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
 	var usedTrailers = getSelectedTrailers();
-
+	var delivery_load_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][id]\"]').attr('value');
 	
 	$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-			data: {requested_date: requestedDate, deliveryCount: deliveryCount, trailerSlot: trailer_slot_num, selectedTrailers: usedTrailers},
+			data: {requested_date: requestedDate, deliveryCount: deliveryCount, trailerSlot: trailer_slot_num, selectedTrailers: usedTrailers, delivery_load_id: delivery_load_id},
 			success: function (data, textStatus, jqXHR) 
 				{
 				$('#select-modal').modal();
@@ -488,6 +515,33 @@ $this->registerJs("$(document).on('click', '.add_trailer_link', function()
 	
 	
 	");
+
+$this->registerJs("$(document).on('click', '.add_trailer_run', function() 
+	{	
+	
+		var trailer_id =  $(this).attr('trailer_id');
+		
+		var count = 1;
+		$('.select_trailer_id_' + trailer_id).each(function()
+			{
+			count = count +1;	
+			}
+		);
+		
+		trailer_run_num = count;
+		
+		var trailer_name =  $(this).attr('trailer_name');
+		var deliveryCount = $(this).attr('deliveryCount');
+		var bins =  $(this).attr('bins');
+		var tons =  $(this).attr('tons');
+		var trailerSlot = $(this).attr('trailerSlot');
+		
+		$('#trailer_select_table tr:last').after('<tr bgcolor=\"#6699ff\"><td colspan=\"5\" class=\"run_num_header\" trailer_run_num=\"'+ trailer_run_num + '\" align=center><b>Delivery Run ' + trailer_run_num + '</b></td></tr>');
+		$('#trailer_select_table tr:last').after('<tr class=\"select_trailer_id_' + trailer_id + '\" bgcolor=\"#e6eeff\"><td style=\"padding-left: 5px\">' + trailer_name + '</td><td>' + bins + '</td><td>' + tons + '</td><td></td><td align=center><input type=\"radio\" name=\"trailer_row_select\" value=\"' + trailer_id + '\" delivery_run_num=\"' + trailer_run_num +'\" deliveryCount=\"' + deliveryCount +'\" trailerSlot = \"' + trailerSlot + '\"></td></tr>');
+	
+	});
+	");
+
 
 
 

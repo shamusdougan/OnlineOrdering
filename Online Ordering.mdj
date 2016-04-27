@@ -8257,7 +8257,7 @@
 									"model": {
 										"$ref": "AAAAAAFUNZDcFUoLgc0="
 									},
-									"visible": false,
+									"visible": true,
 									"enabled": true,
 									"lineColor": "#000000",
 									"fillColor": "#ffffff",
@@ -8266,18 +8266,19 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 891,
-									"top": 114,
-									"width": 0,
+									"left": 840,
+									"top": 95,
+									"width": 81.30712890625,
 									"height": 13,
 									"autoResize": false,
-									"alpha": -0.5235987755982988,
-									"distance": 30,
+									"alpha": -0.7729527929487006,
+									"distance": 49.8196748283246,
 									"hostEdge": {
 										"$ref": "AAAAAAFUNZDcGEoNkE0="
 									},
 									"edgePosition": 0,
 									"underline": false,
+									"text": "+deliveryLoad",
 									"horizontalAlignment": 2,
 									"verticalAlignment": 5
 								},
@@ -18866,6 +18867,7 @@
 								"_parent": {
 									"$ref": "AAAAAAFUNZDcFEoJauw="
 								},
+								"name": "deliveryLoad",
 								"reference": {
 									"$ref": "PO+GSOLW1E6ieUHdL/NtAgAA"
 								},
@@ -19828,6 +19830,7 @@
 									"visibility": "public",
 									"isStatic": false,
 									"isLeaf": false,
+									"type": "",
 									"isReadOnly": false,
 									"isOrdered": false,
 									"isUnique": false,

@@ -23,24 +23,25 @@ To create an additional delivery Run on the same day, select a trailer and click
 
 <div style='width: 800px; height: 800px; '>
 
-	<div style='float: left; width: 60%; height: 500px; margin-right: 5px; overflow-y: scroll; border: 1px solid; padding: 2px'>
+	<div style='float: left; width: 70%; height: 500px; margin-right: 5px; overflow-y: scroll; border: 1px solid; padding: 2px'>
 			
-	<table style='wdith: 100%' id='trailer_select_table'>
+	<table style='width: 100%' id='trailer_select_table'>
 		<tr bgcolor='#003366' style='color: #FFFFFF; size: 14px'>
 		<th style='padding-left: 5px'>Trailer</th>
 		<th style='padding-left: 5px'>Bins Left</th>
 		<th style='padding-left: 5px'>Tons Left</th>
-		<th style='padding-left: 5px'>Select</th>
+		<th style='padding-right: 5px'></th>
+		<th align=center style='padding-left: 5px'>Select</th>
 		</tr>
 		
 		
 	<?
-	
+
 	foreach($data as $trailer_run_num => $dataSection)
 	
 	{
 		echo "<tr bgcolor='#6699ff'>";
-		echo "<td colspan='4' class='run_num_header' trailer_run_num='".$trailer_run_num."' align=center><b>Delivery Run ".$trailer_run_num."</b></td>";
+		echo "<td colspan='5' class='run_num_header' trailer_run_num='".$trailer_run_num."' align=center><b>Delivery Run ".$trailer_run_num."</b></td>";
 		echo "</tr>";
 		
 		
@@ -66,16 +67,29 @@ To create an additional delivery Run on the same day, select a trailer and click
 						trailer_id='".$dataRow['id']."' 
 						deliveryCount='".$deliveryCount."'
 						trailerSlot='".$trailerSlot."'
-						style='cursor: pointer'>Add Run <span class='glyphicon glyphicon-arrow-down'></span></a></td>";					echo "<td></td>";
+						bins = '".$dataRow['maxBins']."'
+						tons = '".$dataRow['maxTons']."'
+						style='cursor: pointer'>Add Run <span class='glyphicon glyphicon-arrow-down'></span></a></td>";					
 				}
 			else{
-					echo "<td><input type='radio' name='trailer_row_select' 
+				echo "<td></td>";
+				}
+			
+			//If there are no more bins available on that trailer you cant select it	
+			if($dataRow['allowSelect'])
+				{
+				echo "<td align=center><input type='radio' name='trailer_row_select' 
 						value='".$dataRow['id']."' 
 						delivery_run_num='".$dataRow['delivery_run_num']."' 
 						deliveryCount='".$deliveryCount."' 
-						trailerSlot='".$trailerSlot."' ></td>";
+						trailerSlot='".$trailerSlot."'
+						otherTrailerSlot='".$dataRow['other_trailer_slot']."'
+						truck_id= '".$dataRow['truck_id']."'
+						 ></td>";
 				}
-			
+			else{
+				echo "<td></td>";
+			}
 			
 		
 			echo "</tr>";
@@ -95,11 +109,15 @@ To create an additional delivery Run on the same day, select a trailer and click
 				
 	
 	</div>
-	<div style='width: 150px; float: left; height: 100%;'>
+	<div style='width: 5%; float: left; height: 500px; padding-top: 50px; margin-right: 5px;'>
+		<img src='/images/arrows.png' width='50px' height='50px'>
+		
+	</div>
+	<div style='width: 20%; float: left;  padding-top: 50px; height: 500px; '>
 
 		<div>
-			<button id='select_trailer_button' style='width: 100%' deliveryCount='<?= $deliveryCount ?>' trailerSlot='<?= $trailerSlot ?>'>Use Selected Trailer</button>
-			<button id='add_run'>Create Additional Delivery Run</button>
+			<button id='select_trailer_button' style='width: 100%; height: 60px' deliveryCount='<?= $deliveryCount ?>' >Use Selected Trailer</button>
+			
 		</div>
 	</div>
 </div>

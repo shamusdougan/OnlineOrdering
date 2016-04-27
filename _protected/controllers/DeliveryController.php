@@ -785,13 +785,13 @@ class DeliveryController extends Controller
 	}
     
     
-    public function actionAjaxGetDeliveryLoadTrailer($trailerSlot, $deliveryCount, $trailer_id, $trailer_run_num, $delivery_load_id)
+    public function actionAjaxGetDeliveryLoadTrailer($trailerSlot, $deliveryCount, $trailer_id, $trailer_run_num, $requested_date, $delivery_load_id)
     {
 		
 		
 		
 		$trailer = Trailers::findOne($trailer_id);
-		$usedBins = array();
+		$usedBins = Trailers::getUsedBins($trailer_id, $trailer_run_num, $requested_date, $delivery_load_id);
 		$selectedBins = array();
 		
 		
@@ -835,22 +835,28 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/
-    public function actionAjaxSelectTrailers($requested_date, $deliveryCount, $trailerSlot, $selectedTrailers)
+    public function actionAjaxSelectTrailers($requested_date, $deliveryCount, $trailerSlot, $selectedTrailers, $delivery_load_id)
     	{
     		
     		
     	//A list of all the currently active trailers
 		$trailerList = Trailers::getAllActiveTrailers();
 		
-		//this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'trailer_slot_2_id' => YY]
-		$trailersUsed = Trailers::getTrailersUsed($requested_date);
+		//this wil return an array // output array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'other_trailer_slot' => YY]
+		$trailersUsed = Trailers::getTrailersUsed($requested_date, $delivery_load_id);
 
 		//a list of the trailers already on the page, a trailer cannot be selected twice
 		$selectedTrailerList = explode(",", $selectedTrailers); // should be an array of trailer_id + "_" + trailer_run_num
+		$selectedTrailerArray = array();
+		if($selectedTrailerList[0] != "")
+			{
+			foreach($selectedTrailerList as $selectedTrailer)
+				{
+				$trailerArray = explode("_", $selectedTrailer);
+				$selectedTrailerArray[$trailerArray[1]][$trailerArray[0]] = $trailerArray[0];
+				}	
+			}
 		
-		
-		
-
 		
 		
 		//Ok if there are no trailers currently being used then just spit out the trail list with no modification
@@ -859,16 +865,40 @@ class DeliveryController extends Controller
 		$trailer_run_num = 1;
 		foreach($trailerList as $trailerObject)
 			{
-			$data[$trailer_run_num][] = [
+			$data[$trailer_run_num][$trailerObject->id] = [
 				'id' => $trailerObject->id, 
 				'delivery_run_num' => 1,
-				'trailer' => substr($trailerObject->Registration." (".$trailerObject->Description.")", 0, 40),
+				'trailer' => substr($trailerObject->Registration." (".$trailerObject->Description.")", 0, 30),
 				'bins' => $trailerObject->NumBins,
 				'tons' => $trailerObject->Max_Capacity,
 				'used' => false,
-				//'default_truck_id' => $trailerObject->default_truck_id,
-				//'default_trailer_pair_id' => $trailerObject->default_trailer_pair_id,
+				'allowSelect' => true,
+				'truck_id' => $trailerObject->getDefaultTruckId($requested_date, $trailer_run_num),
+				'other_trailer_slot' => $trailerObject->default_trailer_pair_id,
+				'maxBins' => $trailerObject->NumBins,
+				'maxTons' => $trailerObject->Max_Capacity,
 				];
+			
+			//if the trailer is in the list of trailers used by another order
+			if(array_key_exists($trailer_run_num, $trailersUsed) && array_key_exists($trailerObject->id, $trailersUsed[$trailer_run_num]))
+				{
+				$binsLeft = $trailerObject->NumBins - $trailersUsed[$trailer_run_num][$trailerObject->id]['binsUsed'];
+				$data[$trailer_run_num][$trailerObject->id]['bins'] = $binsLeft." (of ".$trailerObject->NumBins.")";
+				$data[$trailer_run_num][$trailerObject->id]['tons'] = ($trailerObject->Max_Capacity - $trailersUsed[$trailer_run_num][$trailerObject->id]['tonsUsed'])." (of ".$trailerObject->Max_Capacity.")";
+				$data[$trailer_run_num][$trailerObject->id]['truck_id'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['truck_id'];
+				$data[$trailer_run_num][$trailerObject->id]['other_trailer_slot'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['other_trailer_slot'];
+				$data[$trailer_run_num][$trailerObject->id]['used'] = true;
+				if($binsLeft == 0)
+					{
+					$data[$trailer_run_num][$trailerObject->id]['allowSelect'] = false;	
+					}
+				}
+				
+			if(array_key_exists($trailer_run_num, $selectedTrailerArray) && array_key_exists($trailerObject->id, $selectedTrailerArray[$trailer_run_num]))
+				{
+				$data[$trailer_run_num][$trailerObject->id]['allowSelect'] = false;	
+				}
+
 			}	
 
 		
