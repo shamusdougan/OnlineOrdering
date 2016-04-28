@@ -28,17 +28,21 @@ if($truck == null || is_int($truck)) { ?>
 		<input type='hidden' class='delivery_load_truck_id' truck_run_num='<?= $truck_run_num ?>' name='deliveryLoad[<?= $deliveryCount ?>][truck_id]'  value='<?= $truck->id ?>' >
 		<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][truck_run_num]'  value='<?= $truck_run_num ?>' >
 	
+		<span class='truck_auger' value='<?= $truck->Auger ?>'>
+		<span class='truck_tipper' value='<?= $truck->Tipper ?>'>
+		<span class='truck_blower' value='<?= $truck->Blower ?>'>
+		<span class='truck_maxtrailers' value='<?= $truck->max_trailers ?>'>
+		<span class='truck_maxload' value='<?= $truck->max_load ?>'>
 		
 		<div style='width: 100%; height: 20px;'>
-			<div style='padding-left: 5px; width: calc(100% - 30px); height:40px;float: left; overflow: hidden'>
+			<div style='padding-left: 5px; width: calc(100% - 30px); height:40px;float: left; overflow: hidden;'>
 				<b><?= substr($truck->registration." (".$truck->description.")", 0 , 40) ?></b><br>	
 			</div>
 			<div style='width: 30px; height:100%; float: left'>
 				<div class='sap_icon_small sap_cross_small remove_delivery_load_truck' deliveryCount='<?= $deliveryCount ?>'></div>
 			</div>
-		</div>
-		
-		<? if($truck_run_num == 2 ) 
+			<div style='width: 100%; height: 20px; float: left;'><b>
+			<? if($truck_run_num == 2 ) 
 				{
 				echo "2nd Delivery  Run<br>";
 				}
@@ -52,7 +56,11 @@ if($truck == null || is_int($truck)) { ?>
 			else{
 				echo "<br>";
 				}
-			?>
+			?></b>
+		</div>
+		</div>
+		
+		
 		<img src='../../images/truck_outline.png' height='120px'><br>	
 		
 	</div>

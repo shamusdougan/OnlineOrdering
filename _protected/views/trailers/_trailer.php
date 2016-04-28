@@ -29,16 +29,39 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 	<input type='hidden' class='delivery_load_trailer_id' trailer_run_num='<?= $trailer_run_num ?>' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>_id]' value='<?= $trailer->id ?>' >
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][trailer<?= $trailer_slot_num?>_run_num]' value='<?= $trailer_run_num ?>' >
 	
+	<span class='trailer<?= $trailer_slot_num?>_auger' value='<?= $trailer->Auger ?>'>
+	<span class='trailer<?= $trailer_slot_num?>_blower' value='<?= $trailer->Blower ?>'>
+	<span class='trailer<?= $trailer_slot_num?>_tipper' value='<?= $trailer->Tipper ?>'>
 	
 	<div style='width: 100%'>
 		<b><?= $trailer->Registration ?> </b>
-		<a class='remove_trailer_link' 
+		
+		<?
+		if(!count($usedBins))
+			{ ?>
+				
+			
+			<a class='remove_trailer_link' 
 			deliveryCount='<?= $deliveryCount ?>'
 			trailer_slot_num='<?= $trailer_slot_num ?>'
 			>(Remove)</a>
-		
-		
-		
+		<? } ?>
+		<b>
+			<? if($trailer_run_num == 2 ) 
+				{
+				echo "2nd Delivery  Run<br>";
+				}
+			elseif ($trailer_run_num == 3)
+				{
+				echo "3rd Delivery Run <br>";
+				}
+			elseif($trailer_run_num > 3){
+				echo $trailer_run_num. "th Delivery Run<br>";
+				}
+			else{
+				echo "<br>";
+				}
+			?></b>
 	</div>
 	<div style='width: 100%; height: 130px'>
 		<div style="width: 25%; height: 100%; float: left; padding-top: 10px;">
@@ -91,7 +114,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 				elseif(array_key_exists($trailerBin->id, $usedBins))
 					{
 					echo "<div class='sap_trailer_used' style='background-color: grey; width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
-					echo "<input type='hidden' class='trailer_cb_id_".$trailer->id."' value='1'>";
+					echo "<input type='hidden' class='bin_used_".$deliveryCount."' value='1'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
 					
 					echo "</div>";	

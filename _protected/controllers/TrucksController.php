@@ -86,20 +86,7 @@ class TrucksController extends Controller
         	{
            
            
-           	//assign the default trailers
-        	$defaultTrailerList = Yii::$app->request->post("trailer_select");
-        	if(isset($defaultTrailerList))
-        		{
-	            foreach($defaultTrailerList as $trailer_id)
-	            	{
-					$defaultTrailer = new TrucksDefaultTrailers();
-					$defaultTrailer->truck_id = $model->id;
-					$defaultTrailer->trailer_id = $trailer_id;
-					$defaultTrailer->save();
-					}
-					
-				}
-        	
+           	
         	 //Once save, either stay on the page or exit. Controlled via the actiob buttons
             $get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
@@ -147,27 +134,7 @@ class TrucksController extends Controller
 		
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-           
-            
-            
-            //clear any existing default trailers and add the new ones
-            $model = $model->removeDefaultTrailers();
-            $defaultTrailerList = Yii::$app->request->post("trailer_select");
-          	if(isset($defaultTrailerList))
-        		{
-	            foreach($defaultTrailerList as $trailer_id)
-	            	{
-					$defaultTrailer = new TrucksDefaultTrailers();
-					$defaultTrailer->truck_id = $model->id;
-					$defaultTrailer->trailer_id = $trailer_id;
-					$defaultTrailer->save();
-					}
-					
-				}
-           
-            
-            
-           
+                     
             
             $get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )

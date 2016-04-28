@@ -14,7 +14,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $gridColumns = [
            
-            'Registration',
+             [
+    		'attribute' => 'Registration',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return html::a($data->Registration, "/trailers/update?id=".$data->id);
+				},
+			'width' => '100px',
+    		],
             'Description',
             'Max_Capacity',
             'NumBins',

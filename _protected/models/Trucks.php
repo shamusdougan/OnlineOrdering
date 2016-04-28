@@ -58,7 +58,7 @@ class Trucks extends \yii\db\ActiveRecord
             'registration' => 'Registration',
             'description' => 'Description',
             'CreatedBy' => 'Created By',
-            'max_trailers' => 'Max Trailers2',
+            'max_trailers' => 'Max Trailers',
             'Status' => 'Status',
             'Auger' => 'Auger',
             'Blower' => 'Blower',
@@ -67,24 +67,9 @@ class Trucks extends \yii\db\ActiveRecord
     }
     
     
-    public function getDefaultTrailers()
-    	{
-			return $this->hasMany(TrucksDefaultTrailers::className(), ['truck_id' => 'id'] );
-		}
     
-   
-    public function getDefaultTrailersList()
-    	{
- 
- 			$returnArray = [];
-			foreach($this->defaultTrailers as $defaultTrailer)
-				{
-				$returnArray[] = $defaultTrailer->trailer->Registration;
-				}
-				
-			return implode($returnArray, ",");
-		}
     
+  
     /**
 	* 
 	* 
@@ -140,6 +125,14 @@ class Trucks extends \yii\db\ActiveRecord
 		return Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all();
 	}
     
+    public function getActiveList()
+    {
+		$truckList = ArrayHelper::map(Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all(), 'id', 'registration');
+		
+		return array(0 => 'None') + $truckList;
+		
+		
+	}
     
     /**
 	* 
@@ -218,34 +211,9 @@ class Trucks extends \yii\db\ActiveRecord
     
     
     
-    /**
-	* 
-	* 
-	* @return
-	*/
-	public function removeDefaultTrailers()
-	{
-	
-	foreach($this->defaultTrailers as $defaultTrailer)
-		{
-		$defaultTrailer->delete();
-		}
-
-	return Trucks::findOne($this->id);
-	}
+   
 
 
-	public function listDefaultTrailers()
-	{
-		$trailerList = [];
-		foreach($this->defaultTrailers as $defaultTrailer)
-		{
-		$trailerList[] = $defaultTrailer->trailer_id;
-		}
-		
-		return $trailerList;
-	}    
-    
     
     
     
@@ -270,7 +238,12 @@ class Trucks extends \yii\db\ActiveRecord
 			{
 			$trucksUsedArray[$deliveryLoad->truck_run_num][$deliveryLoad->truck_id] = $deliveryLoad->truck_id;
 			}
+			
+		
 		return $trucksUsedArray;
+		
+		
+		
 	}
 	
 }

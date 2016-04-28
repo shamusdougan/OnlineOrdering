@@ -126,7 +126,7 @@ if(!isset($truckList)){ $truckList = array();}
 									//'placeholder' => "Requested Delivery Date...",
 									'options' =>
 										[
-										
+										//'disabled' => true,
 										//'pluginEvents' =>
 										//	[
 										//	'changeDate' => "function(e) { clearAllLoads(); }",
@@ -134,7 +134,7 @@ if(!isset($truckList)){ $truckList = array();}
 										],
 									'pluginOptions' =>
 											[
-											'autoclose' => true,
+											
 											'todayHighlight' => true,
 											],
 									],
@@ -230,7 +230,7 @@ $this->registerJs("$(function () {
 $this->registerJs("
 	$( document ).ready(function() {
     	updateOrderRemaining();	
- 
+ 		checkDateInput();
 		});
 	");
  
@@ -284,6 +284,260 @@ $this->registerJs("function updateOrderRemaining()
 	
 }
 ");
+
+
+$this->registerJs("$(document).on('click', '.trailer_bin_checkbox', function()  
+ 		{
+		remainingQty = parseFloat($('#remaining_tonnes').html());
+		capacity = parseFloat($(this).attr('capacity'));
+		fillMethod = $('#fill_method').val();
+
+		if(fillMethod == 'fill_on_selection')
+			{
+				
+			
+			if(this.checked)
+				{
+				if(remainingQty < capacity)
+					{
+					$(this).attr('value', remainingQty);
+					$(this).parent().attr('class', 'sap_trailer_partial');
+					}
+				else{
+					$(this).attr('value', capacity);
+					$(this).parent().attr('class', 'sap_trailer_full');
+					}
+				updateOrderRemaining();
+				}
+			else{
+				$(this).attr('value', 0);
+				$(this).parent().attr('class', 'sap_trailer_empty');
+				updateOrderRemaining();
+				}
+			}
+			
+		if(fillMethod == 'select_first')
+			{
+			if(this.checked == false)
+				{
+				$(this).attr('value', 0);
+				$(this).parent().attr('class', 'sap_trailer_empty');
+				updateOrderRemaining();	
+				}
+			}
+		});
+		
+	");
+
+$this->registerJs("$('#fill_method').on('change', function()
+		{
+		if(this.value == 'fill_on_selection')
+			{
+			$('#fill_selected_bins').hide();
+			clearBinSelection();
+			}
+		else if(this.value == 'select_first')
+			{
+			$('#fill_selected_bins').show();
+			clearBinSelection();
+			}
+		
+		});
+		
+		
+	function clearBinSelection()
+	{
+	$('.trailer_bin_checkbox').each(function() {
+		$(this).attr('checked', false);
+		$(this).attr('value', 0);
+		$(this).parent().attr('class', 'sap_trailer_empty');
+		});
+	updateOrderRemaining();
+	}
+		
+		
+		
+	");
+
+
+$this->registerJs("$(document).on('click', '.trailer_bin_select_all', function()  
+	{
+	trailer_id = $(this).attr('trailer_id');
+	if(this.checked)
+		{	
+		
+			//First check to see what type of filling method has been selected
+			// Fill bin on selection - fills the bins to capacity from left to right
+			// Select Bins first then allocate - Selects all of the bins in the trailer
+			
+			fillMethod = $('#fill_method').val();
+			
+			//Fill bin on selection - select the bins from left to right until the entire order has been allocated
+			if(fillMethod == 'fill_on_selection')
+				{
+				remainingQty = parseFloat($('#remaining_tonnes').html());
+				$('.trailer_cb_id_'+trailer_id).each(function() {
+					if(this.checked == false)
+						{
+						capacity = parseFloat($(this).attr('capacity'));
+						if(isNaN(capacity))
+							{
+							
+							}
+						else if(remainingQty == 0)
+							{
+							updateOrderRemaining();		
+							}
+						else if(remainingQty < capacity)
+							{
+							this.checked = true;
+							$(this).attr('value', remainingQty);
+							$(this).parent().attr('class', 'sap_trailer_partial');
+							remainingQty = 0;
+							updateOrderRemaining();	
+							}
+						else{
+							this.checked = true;
+							$(this).attr('value', capacity);
+							$(this).parent().attr('class', 'sap_trailer_full');
+							remainingQty = remainingQty - capacity;
+							}
+						}
+					});
+				updateOrderRemaining();
+				}
+				
+				
+			//Select the bins first then allocate the load eveningly across the bins
+			else if(fillMethod == 'select_first')
+				{
+				$('.trailer_cb_id_'+trailer_id).each(function() 
+					{
+					if($(this).is(':disabled') == false)
+						{
+						this.checked = true;		
+						}
+					});
+				updateOrderRemaining();
+				}
+			
+		}
+		
+		
+		
+		
+		
+	//unticking the checkbox will clear all of the selected bins regardless of the selection method	
+	else{
+		$('.trailer_cb_id_'+trailer_id).each(function() {
+				
+				capacity = parseFloat($(this).attr('capacity'));
+				if(!isNaN(capacity))
+					{
+					this.checked = false;
+					$(this).parent().attr('class', 'sap_trailer_empty');
+				$(this).attr('value', 0);
+					}
+				
+				updateOrderRemaining();		
+				});
+		}
+	
+		
+		
+		
+		
+		
+		
+	});
+");
+
+
+$this->registerJs("$(document).on('click', '#fill_selected_bins', function(event) 
+		{
+			event.preventDefault(); 
+			
+			//Get the order amount in the order
+			orderQty = parseFloat($('#orderdetails-orderQTY').val());
+			
+			//go through each of the checkboxes and check how much has been allocated, need to make sure that
+			// there is enough room for the order. If there is more room then needed then it will spread the order out across
+			// all of the selected bins.	
+			selectedBinCapacity = 0;		
+			$('.trailer_bin_checkbox').each(function() {
+    			if(this.checked)
+    				{
+					selectedBinCapacity = selectedBinCapacity + parseFloat($(this).attr('capacity'));
+					}
+				});
+			
+			//check to see enough bins have been selected
+			if (selectedBinCapacity < orderQty)
+				{
+				alert('Not enough bins selected for Order, only enough bins selected for ' + selectedBinCapacity + ' tonnes');
+				}
+			else
+				{
+					
+				//work out the percentage of each bin
+				fillPercent = 	orderQty/selectedBinCapacity;
+				$('.trailer_bin_checkbox').each(function() {
+	    			if(this.checked)
+	    				{
+	    				binCapacity = $(this).attr('capacity');
+						$(this).attr('value', fillPercent * binCapacity);
+						$(this).parent().attr('class', 'sap_trailer_partial');
+						}
+					});	
+					
+				updateOrderRemaining();		
+				}
+			
+			
+		});
+
+
+");
+
+
+
+
+
+$this->registerJs("
+function checkDateInput()
+{
+	var dateSelect = $(\"#delivery-delivery_on-disp\");
+	
+	//if there are any delivery Loads on the page then disable the date select
+	var deliveryLoadPresent = false;
+	$('.delivery-load-form').each(function() 
+			{
+			deliveryLoadPresent = true;
+			});
+	
+	if(deliveryLoadPresent)
+		{
+		dateSelect.attr('disabled', true);		
+		}
+	else{
+		dateSelect.removeAttr('disabled');		
+	}
+}
+");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**********************************************************
 * 
 * Delivery Load Functions
@@ -345,6 +599,10 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 	        	}
 			});
 		
+		
+		checkDateInput();
+		
+		
 	});
 	");
 
@@ -356,6 +614,7 @@ $this->registerJs("$(document).on('click', '.remove_delivery_load', function()
 		delivery_count = $(this).attr('delivery_count');
 		$('#delivery_count_' + delivery_count).remove();
 		updateOrderRemaining();
+		checkDateInput();
 	});
 	");
 	
@@ -439,25 +698,26 @@ $this->registerJs("$(document).on('click', '#select_trailer_button', function(ev
 	var trailerSlot = $('input[name=trailer_row_select]:checked').attr('trailerSlot');
 	
 	var otherTrailerSlot = $('input[name=trailer_row_select]:checked').attr('otherTrailerSlot');
+	var otherTrailerRunNum = $('input[name=trailer_row_select]:checked').attr('otherTrailerRunNum');
 	var truck_id = $('input[name=trailer_row_select]:checked').attr('truck_id');
-	
+	var truck_run_num = $('input[name=trailer_row_select]:checked').attr('truck_run_num');
 	
 		
 	$('#select-modal').modal('hide');
 	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num);
-	
-	if(truck_id != '')
+	if(truck_id != '' && truck_id != null)
 		{
-		renderTruck(deliveryCount, truck_id, delivery_run_num);
+		
+		renderTruck(deliveryCount, truck_id, truck_run_num);
 		}
-	if(otherTrailerSlot != '')
+	if(otherTrailerSlot != '' && otherTrailerSlot != null)
 		{
 		otherSlot = 1;
 		if(trailerSlot == 1)
 			{
 			otherSlot = 2;
 			}
-		renderTrailer(deliveryCount, otherSlot, otherTrailerSlot, delivery_run_num);
+		renderTrailer(deliveryCount, otherSlot, otherTrailerSlot, otherTrailerRunNum);
 		}
 	
 	
@@ -587,8 +847,49 @@ $this->registerJs("$(document).on('click', '.add_truck_link', function()
 
 $this->registerJs("$(document).on('click', '.remove_delivery_load_truck', function() 
 	{
+	
 	deliveryCount =  $(this).attr('deliveryCount');
-	renderTruck(deliveryCount, 0, 0);
+	//check to see if this truck has already been allocated to another order. If it has been allocated in another order, then warn that this will remove the truck for all other orders
+	count = 0;
+	$('.bin_used_' + deliveryCount).each(function()
+		{
+		count = count + 1;
+		}
+	)
+		
+	if(count > 0)
+		{
+		if(confirm('This will remove the Truck from all currently allocated orders'))
+			{
+				
+			var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');	
+			var truck_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][truck_id]\"]').attr('value');	
+			var truck_run_num = $('input[name=\"deliveryLoad['+ deliveryCount + '][truck_run_num]\"]').attr('value');	
+				
+				
+			$.ajax
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-delete-truck")."',
+				data: {requested_date: requestedDate, truck_id: truck_id, truck_run_num: truck_run_num},
+				success: function (data, textStatus, jqXHR) 
+					{
+					alert('Truck Removed from all Delivery Runs');
+					},
+		        error: function (jqXHR, textStatus, errorThrown) 
+		        	{
+		            console.log('An error occured!');
+		            alert('Error in ajax request' );
+		        	}
+				});
+			renderTruck(deliveryCount, 0, 0);
+			}
+		
+		}		
+	else {
+		renderTruck(deliveryCount, 0, 0);
+		}	
+	
+	
 	});
 	");
 	
@@ -597,7 +898,7 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 	{
 	
 	
-	//First lets check that a trailer has been selected if not alert and return to dialog
+	//First lets check that a truck  has been selected if not alert and return to dialog
 	var truck_id = $('input[name=truck_row_select]:checked').val();
 	if(truck_id == undefined)
 		{
@@ -607,7 +908,43 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 	var deliveryCount = $('input[name=truck_row_select]:checked').attr('deliveryCount');
 	var truck_run_num = $('input[name=truck_row_select]:checked').attr('delivery_run_num');
 
-
+	//check to see if this truck needs to added to other existing orders as well
+	count = 0;
+	$('.bin_used_' + deliveryCount).each(function()
+			{
+			count = count + 1;
+			}
+		);
+		
+		
+	if(count > 0)
+		{
+		if(confirm('This will add the Truck from all delivey loads with these trailers currently allocated orders'))
+			{
+				
+			var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');	
+			var trailer1_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][trailer1_id]\"]').attr('value');	
+			var trailer1_run_num = $('input[name=\"deliveryLoad['+ deliveryCount + '][trailer1_run_num]\"]').attr('value');	
+				
+				
+			$.ajax
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-add-truck")."',
+				data: {requested_date: requestedDate, truck_id: truck_id, truck_run_num: truck_run_num, trailer1_id: trailer1_id, trailer1_run_num: trailer1_run_num},
+				success: function (data, textStatus, jqXHR) 
+					{
+					alert('Truck Removed from all Delivery Runs');
+					},
+		        error: function (jqXHR, textStatus, errorThrown) 
+		        	{
+		            console.log('An error occured!');
+		            alert('Error in ajax request' );
+		        	}
+				});
+			renderTruck(deliveryCount, 0, 0);
+			}
+		
+		}		
 
 	//var max_trailers=$('input[name=truck_row_select]:checked').attr('max_trailers');
 	//var max_load=$('input[name=truck_row_select]:checked').attr('max_load');

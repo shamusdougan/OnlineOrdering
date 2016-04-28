@@ -40,7 +40,7 @@ class Trailers extends \yii\db\ActiveRecord
     {
         return [
             [['Registration', 'Description', 'Max_Capacity', 'NumBins', 'Auger', 'Blower', 'Tipper', 'Status'], 'required'],
-            [['Max_Capacity', 'NumBins', 'Auger', 'Blower', 'Tipper', 'Status'], 'integer', 'message' => "Value must be a Number"],
+            [['Max_Capacity', 'NumBins', 'Auger', 'Blower', 'Tipper', 'Status', 'default_trailer_pair_id', 'default_truck_id'], 'integer', 'message' => "Value must be a Number"],
             [['Registration', 'Description'], 'string', 'max' => 200]
         ];
     }
@@ -60,6 +60,8 @@ class Trailers extends \yii\db\ActiveRecord
             'Blower' => 'Blower',
             'Tipper' => 'Tipper',
             'Status' => 'Status',
+            'default_trailer_pair_id' => 'Paired with Trailer',
+            'default_truck_id' => 'Normally Assigned to Truck'
         ];
     }
     
@@ -102,6 +104,20 @@ class Trailers extends \yii\db\ActiveRecord
 						
 		return $trailerList;
 		}
+    
+    
+     public function getActiveTrailersList()
+    	{
+		$trailerList = Trailers::find()
+						->where(['Status' => Trailers::STATUS_ACTIVE])
+						->all();
+						
+		
+		$trailerListArray = ArrayHelper::map($trailerList, 'id', 'Registration');	
+		array_unshift($trailerListArray, 'None');
+		return $trailerListArray;
+		}
+    
     
     
    /**
@@ -151,6 +167,7 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 	* @return a list of trailers that are being used on that day. The array returned looks like
 	* 
 	* //this wil return an array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y]
+	* [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'truck_run_num' => 1, 'other_trailer_slot' => YY, 'other_trailer_run_num' => Y]
 	*/
     public function getTrailersUsed($requestedDate, $delivery_load_id)
     	{
@@ -164,12 +181,12 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 		$usedTrailerList = array();
 		
 		
-		// output array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'other_trailer_slot' => TT]
+		// output array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'truck_run_num' => 1, 'other_trailer_slot' => YY, 'other_trailer_run_num' => Y]
 		//iterate through each delivery and collect the info as required
 		foreach($deliveryLoadsBins as $deliveryLoadBin)
 			{
 				
-			//ckip the record if it is from the same delivery load
+			//skip the record if it is from the same delivery load
 			if($delivery_load_id == $deliveryLoadBin->delivery_load_id)
 				{
 				continue;
@@ -178,15 +195,19 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 			$trailer_slot = ($deliveryLoadBin->deliveryLoad->trailer1_id == $trailer_id ? 1 : 2);
 			$trailer_run_num = ($trailer_slot == 1 ? $deliveryLoadBin->deliveryLoad->trailer1_run_num : $deliveryLoadBin->deliveryLoad->trailer2_run_num);
 			
+			//If the trailer already has an entry in the array, increment the values
 			if(array_key_exists($trailer_run_num, $usedTrailerList) && array_key_exists($trailer_id, $usedTrailerList[$trailer_run_num]))
 				{
 				$usedTrailerList[$trailer_run_num][$trailer_id]['binsUsed'] += 1;
 				$usedTrailerList[$trailer_run_num][$trailer_id]['tonsUsed'] += $deliveryLoadBin->bin_load;
 				}
+				
+			//Create the values in the array
 			else{
 				$usedTrailerList[$trailer_run_num][$trailer_id]['binsUsed'] = 1;
 				$usedTrailerList[$trailer_run_num][$trailer_id]['tonsUsed'] = $deliveryLoadBin->bin_load;
 				$usedTrailerList[$trailer_run_num][$trailer_id]['truck_id'] = $deliveryLoadBin->deliveryLoad->truck_id;
+				$usedTrailerList[$trailer_run_num][$trailer_id]['truck_run_num'] = $deliveryLoadBin->deliveryLoad->truck_run_num;
 				
 				if($trailer_slot == 1)
 					{
@@ -198,16 +219,19 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 					$otherTrailer_run_num = $deliveryLoadBin->deliveryLoad->trailer1_run_num;
 					}
 				$usedTrailerList[$trailer_run_num][$trailer_id]['other_trailer_slot'] = $otherTrailer;
+				$usedTrailerList[$trailer_run_num][$trailer_id]['other_trailer_run_num'] = $otherTrailer_run_num;
 				
 				
 				
-				//also need to account for 0 bins used trailer bins
+				//also need to account for 0 bins used trailer bins as there wont be any delivery+load_bins entrys for this trailer, yet it still has been assigned
 				if(!(array_key_exists($otherTrailer_run_num, $usedTrailerList) && array_key_exists($otherTrailer, $usedTrailerList[$otherTrailer_run_num])) )
 					{
 					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['binsUsed'] = 0;
 					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['tonsUsed'] = 0;
-					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['truck_id'] = $deliveryLoadBin->deliveryLoad->truck_id;	
+					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['truck_id'] = $deliveryLoadBin->deliveryLoad->truck_id;
+					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['truck_run_num'] = 	$deliveryLoadBin->deliveryLoad->truck_run_num;
 					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['other_trailer_slot'] = $trailer_id;
+					$usedTrailerList[$otherTrailer_run_num][$otherTrailer]['other_trailer_run_num'] = $trailer_run_num;
 					}
 				
 				}
@@ -328,12 +352,32 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 	
 	public function getDefaultTruckId($requestedDate, $delivery_run_num)
 	{
-	$trucks = DeliveryLoad::find()->where(['truck_id' => $this->default_truck_id, 'truck_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate]);
-	if(count($trucks) === 0)
+	$trucks = DeliveryLoad::find()->where(['truck_id' => $this->default_truck_id, 'truck_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+	if(count($trucks) == 0)
 		{
 		return $this->default_truck_id;
 		}
 	return null;
 	}
+	
+	public function getDefaultTrailerPairID($requestedDate, $delivery_run_num)
+	{
+		
+		$trailers = DeliveryLoad::find()->where(['trailer1_id' => $this->default_trailer_pair_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		if(count($trailers))
+			{
+			return null;
+			}
+			
+		$trailers = DeliveryLoad::find()->where(['trailer2_id' => $this->default_trailer_pair_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		if(count($trailers))
+			{
+			return null;
+			}
+		return $this->default_trailer_pair_id;
+	}
+	
+	
+	
 		
 }

@@ -25,37 +25,48 @@ use kartik\builder\Form;
 				'attributes' =>
 					[    
 					'registration' => ['type' => FORM::INPUT_TEXT, ],
-					'description' => ['type' => FORM::INPUT_TEXT, 'columnOptions' => ['colspan' => 2]],
+					'description' => ['type' => FORM::INPUT_TEXT],
 					'mobile' => ['type' => FORM::INPUT_TEXT, ],
-					'max_trailers' => ['type' => FORM::INPUT_TEXT, ],
+					
+					
 					],
 				]);
+		echo "<h2>Allowed Trailer Configurations</h2>";
+		echo "<div style='width: 300px'>";
 		echo Form::widget(
 				[
 				'model'=>$model,
 				'form'=>$form,
 			
-				'columns'=>3,
+				'columns'=>1,
 				'attributes' =>
 					[    
+					'max_trailers' => 
+						[
+		    			'type' => Form::INPUT_WIDGET,
+		    			'widgetClass' => '\kartik\widgets\TouchSpin',
+		    			'options' =>
+		    				[
+							'name' => 'Max Trailers',
+							'pluginOptions' => 
+								[
+								'min' => 0, 
+								'max' => 2, 
+								//'postfix' => '%',
+								'step' => 1,
+								'decimals' => 0,
+								],
+		    				],
+						],
 					'Auger' => ['type' => FORM::INPUT_CHECKBOX],
 					'Blower' => ['type' => FORM::INPUT_CHECKBOX],
 					'Tipper' => ['type' => FORM::INPUT_CHECKBOX],
 					],
 				]);		
+		echo "</div>";		
 				
-				
-		echo '<label class="control-label">Default Trailers (Max 2 Trailers)</label>';	
-		echo Select2::widget([
-		    'name' => 'trailer_select',
-		    'value' => $model->listDefaultTrailers(),
-		    'data' => $trailerList,
-		    'size' => Select2::MEDIUM,
-		    'options' => ['placeholder' => 'Select default trailers ...', 'multiple' => true],
-		    'pluginOptions' => [
-		        'allowClear' => true
-		    ],
-])
+	
+	
 					
 		?>
     

@@ -14,19 +14,57 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $gridColumns = [
 
-            'registration',
+            [
+    		'attribute' => 'registration',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return html::a($data->registration, "/trucks/update?id=".$data->id);
+				},
+			'width' => '100px',
+    		],
             'description',
             'mobile',
             [
-            'attribute' => 'defaultTrailersList',
-            'label' => 'Default Trailers'
-          	],
-          
-         
-            // 'Status',
-            // 'Auger',
-            // 'Blower',
-            // 'Tipper',
+    		'attribute' => 'Auger',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return $data->Auger ? "Yes": "";
+				},
+			'width' => '100px',
+			'filterType'=>GridView::FILTER_SELECT2,
+			'filter' => array(0 => "No", 1 => "Yes"),
+			'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
+			'filterInputOptions'=>['placeholder'=>'All'],
+    		],
+            [
+    		'attribute' => 'Blower',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return $data->Blower ? "Yes": "";
+				},
+			'width' => '100px',
+			'filterType'=>GridView::FILTER_SELECT2,
+			'filter' => array(0 => "No", 1 => "Yes"),
+			'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
+			'filterInputOptions'=>['placeholder'=>'All'],
+    		],
+ 			[
+    		'attribute' => 'Tipper',
+    		'format' => 'raw',
+    		'value' => function ($data)
+    			{
+				return $data->Tipper ? "Yes": "";
+				},
+			'width' => '100px',
+			'filterType'=>GridView::FILTER_SELECT2,
+			'filter' => array(0 => "No", 1 => "Yes"),
+			'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
+			'filterInputOptions'=>['placeholder'=>'All'],
+    		],
+
 
             [
 				'class' => 'kartik\grid\ActionColumn',

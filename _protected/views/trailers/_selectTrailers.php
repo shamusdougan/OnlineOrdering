@@ -4,7 +4,7 @@ use kartik\grid\GridView;
 /**
 * 
 * 
-* var $trailerList -> list of al the active trailers
+* var $data -> list of al the active trailers
 * var $deliveryCount -> delivery Load the trailer is to be put into
 * var $trailerSlot -> the delivery Slot the trailer is for
 * var $selectiondate -> date the trailers are being selected for
@@ -84,7 +84,9 @@ To create an additional delivery Run on the same day, select a trailer and click
 						deliveryCount='".$deliveryCount."' 
 						trailerSlot='".$trailerSlot."'
 						otherTrailerSlot='".$dataRow['other_trailer_slot']."'
+						otherTrailerRunNum='".$dataRow['other_trailer_run_num']."'
 						truck_id= '".$dataRow['truck_id']."'
+						truck_run_num = '".$dataRow['truck_run_num']."'
 						 ></td>";
 				}
 			else{

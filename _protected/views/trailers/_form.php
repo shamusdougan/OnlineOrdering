@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use app\models\Lookup;
+use app\models\Trucks;
+use app\models\Trailers;
 use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
@@ -70,6 +72,33 @@ use yii\bootstrap\Modal;
 		    			],
 		      		]
 		    ]); ?>
+		    
+		    <?= Form::widget([
+		    	'model' => $model,
+		    	'form' => $form,
+		    	'columns' => 2,
+		    	'attributes'=>
+		    		[
+		    		'default_trailer_pair_id' => 
+		    			[
+		    			'type' => Form::INPUT_DROPDOWN_LIST,
+		    			'items' => Trailers::getActiveTrailersList(),
+		    			
+		    			],
+		    		'default_truck_id' => 
+		    			[
+		    			'type' => Form::INPUT_DROPDOWN_LIST,
+		    			'items' => Trucks::getActiveList(),
+		    			],
+		    		
+		    		
+		    		]
+		    
+		    
+		    
+		    ]); ?>
+		    
+		    
 
     <?=  $this->render("_binGrid", ['model' => $model, 'form' => $form]) ?>
 

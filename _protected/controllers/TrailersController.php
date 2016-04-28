@@ -80,13 +80,24 @@ class TrailersController extends Controller
     {
         $model = new trailers();
 
+
 		$actionItems[] = ['label'=>'Cancel', 'button' => 'back', 'url'=>'/trailers/index', 'confirm' => 'Cancel Changes?'];
-		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'trailer-form', 'confirm' => 'Save Trailers?'];
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/trailers/update?id='.$model->id.'&exit=false', 'submit' => 'trailer-form', 'confirm' => 'Save Trailer?']; 
+		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'trailer-form', 'confirm' => 'Save and Exit Trailers?'];
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-            return $this->redirect(['update', 'id' => $model->id]);
+          
+            $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
+
         	}
         else {
             return $this->render('create', [
@@ -106,14 +117,24 @@ class TrailersController extends Controller
     {
         $model = $this->findModel($id);
 		
-		$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/trailers/index', 'confirm' => 'Cancel Changes?'];
-		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=>null, 'submit'=> 'trailer-form', 'confirm' => 'Save Trailers?'];
-				
+		$actionItems[] = ['label'=>'Cancel', 'button' => 'back', 'url'=>'/trailers/index', 'confirm' => 'Cancel Changes?'];
+		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/trailers/update?id='.$model->id.'&exit=false', 'submit' => 'trailer-form', 'confirm' => 'Save Trailer?']; 
+		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'submit'=> 'trailer-form', 'confirm' => 'Save and Exit Trailers?'];
+		
 		
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-            return $this->redirect(['index']);
+           
+            $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
         	} 
+
         else {
         
         

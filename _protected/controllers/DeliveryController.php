@@ -234,27 +234,33 @@ class DeliveryController extends Controller
 	
 			$deliveryLoads = Yii::$app->request->post("deliveryLoad");
 			$deliveryLoadBins = Yii::$app->request->post("deliveryLoadBins");
-			foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
+			if(is_array($deliveryLoads))
 				{
-				$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
-				$deliveryLoadObject = new DeliveryLoad();
-				$deliveryLoadObject->load($deliveryLoadArray);
-				$deliveryLoadObject->delivery_id = $model->id;
-				$deliveryLoadObject->save();
-				//first check that bins have been selected for that load - can have a case where there are none selected
-				if(array_key_exists($deliveryCount, $deliveryLoadBins))
+					
+				foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
 					{
-					foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
+					$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
+					$deliveryLoadObject = new DeliveryLoad();
+					$deliveryLoadObject->load($deliveryLoadArray);
+					$deliveryLoadObject->delivery_id = $model->id;
+					$deliveryLoadObject->save();
+					//first check that bins have been selected for that load - can have a case where there are none selected
+					if(array_key_exists($deliveryCount, $deliveryLoadBins))
 						{
-						$loadBin = new DeliveryLoadBin();
-						$loadBin->bin_load = $loadValue;
-						$loadBin->trailer_bin_id = $bin_id;
-						$loadBin->delivery_load_id = $deliveryLoadObject->id;
-						$loadBin->save();
-						}			
-					}		
+						foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
+							{
+							$loadBin = new DeliveryLoadBin();
+							$loadBin->bin_load = $loadValue;
+							$loadBin->trailer_bin_id = $bin_id;
+							$loadBin->delivery_load_id = $deliveryLoadObject->id;
+							$loadBin->save();
+							}			
+						}		
+					}
 				}
-
+				
+				
+				
         	//update the Customer Order as well
         	$model->customerOrder->setStatusDelivery($model->id);
 		
@@ -563,8 +569,39 @@ class DeliveryController extends Controller
 	}
     
     
+    public function actionAjaxDeleteTruck($requested_date, $truck_id, $truck_run_num)
+    {
+		
+		$deliveryLoads = DeliveryLoad::find()
+							->where(['delivery_on' => $requested_date, 'truck_id' => $truck_id, 'truck_run_num' => $truck_run_num])
+							->all();
+							
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			$deliveryLoad->truck_id = null;
+			$deliveryLoad->truck_run_num = null;
+			$deliveryLoad->save();
+			}
+	}
     
-    
+
+	public function actionAjaxAddTruck($requested_date, $truck_id, $truck_run_num, $trailer1_id, $trailer1_run_num)
+	{
+		
+		$deliveryLoads = DeliveryLoad::find()
+						->where(['delivery_on' => $requested_date, 'trailer1_id' => $trailer1_id, 'trailer1_run_num' => $trailer1_run_num])
+						->all();
+						
+		foreach($deliveryLoads as $deliveryLoad)
+			{
+			$deliveryLoad->truck_id = $truck_id;
+			$deliveryLoad->truck_run_num = $truck_run_num;
+			$deliveryLoad->save();
+			}
+		
+	}
+
+
     
     public function actionAjaxSelectTruck($requested_date, $deliveryCount, $selectedTrucks)
     {
@@ -596,7 +633,6 @@ class DeliveryController extends Controller
 				$selectedTrucksArray[$details[1]][$details[0]] = $details[0];
 				}	
 			}
-		
 		
 		//Create the initial data array of all active trucks, if the truck has been used already on form or the truck has been used in another delivery then mark it as used.
 		//The $data array needs to $data[run_num][truck_id], 
@@ -688,83 +724,7 @@ class DeliveryController extends Controller
     
     
     
-    
-    /**
-	* 
-	*   Function: This should return the truck information
-	* 
-	* @param undefined $truck_id
-	* @param undefined $deliveryrun_id
-	* 
-	* @return
-	*/
-    public function actionAjaxAddTruck($target_delivery_load, $truck_id, $delivery_run_num, $requestedDate, $usedTrailers)
-    {
-    	
-    	$requestedDate = strtotime($requestedDate);
-    	$truck = Trucks::findOne($truck_id);
-    	
-    	
-    	//check to see if the truck is already in a load -> if so return the trailers for that load
-    	$trailer1_id = null;
-    	$trailer2_id = null;
-    	
-    	
-    	if(($deliveryLoad_id = $truck->isUsedAlready($requestedDate, $delivery_run_num)) !== false)
-    		{
-    			
-    	
-			$assignedDeliveryLoad = DeliveryLoad::findOne($deliveryLoad_id);
-			
-			$i = 1;
-			foreach($assignedDeliveryLoad->deliveryLoadTrailer as $deliveryLoadTrailer)
-				{
-				if($i == 1){$trailer1_id = $deliveryLoadTrailer->trailer_id;}
-				if($i == 2){$trailer2_id = $deliveryLoadTrailer->trailer_id;}
-				$i++;
-				}
-			}
-			
-		
-			
-		// if its not in a load already check to see if the default trailers are available if so loadthem into trailer1_id and trailer2_id
-    	else{
-    		
-			//This will generate an array that looks like
-			//$used_trailer_array = array($trailer_id . "_" . $delivery_run_num;
-    		$used_trailer_array = explode(",", $usedTrailers);
-    		
-				
-    		$i = 1;    		
-			foreach($truck->defaultTrailers as $defaultTrailer)
-				{
-					
-				//Check to see if the default trailer has already been assigned to another delivery_load
-				if(!$defaultTrailer->trailer->isAlreadyAssigned($requestedDate, $delivery_run_num))
-					{
-					//also check to see that that trailer has already been put into the page	
-					$searchString = $defaultTrailer->trailer_id."_".$delivery_run_num;
-					if(array_search($searchString, $used_trailer_array) === false)
-						{
-						if($i == 1){$trailer1_id = $defaultTrailer->trailer_id;}
-						if($i == 2){$trailer2_id = $defaultTrailer->trailer_id;}
-						}
-					}
-				$i++;
-				}
-			}
-    	
-    	
-  	
-		return 	$this->renderPartial('/Trucks/_truck', [
-			'truck' => $truck,
-			'deliveryCount' => $target_delivery_load,
-			'trailer1_id' => $trailer1_id,
-			'trailer2_id' => $trailer2_id,
-			'delivery_run_num' => $delivery_run_num,
-	    	]);	
-	}
-    
+
     
     
     
@@ -842,7 +802,8 @@ class DeliveryController extends Controller
     	//A list of all the currently active trailers
 		$trailerList = Trailers::getAllActiveTrailers();
 		
-		//this wil return an array // output array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'other_trailer_slot' => YY]
+		//this wil return an array 
+		// output array [Delivery_run_num][trailer_id] => ['binsUsed' => X, 'tonsUsed' => Y, 'truck_id' => XX, 'truck_run_num' => 1, 'other_trailer_slot' => YY, 'other_trailer_run_num' => Y]
 		$trailersUsed = Trailers::getTrailersUsed($requested_date, $delivery_load_id);
 
 		//a list of the trailers already on the page, a trailer cannot be selected twice
@@ -874,19 +835,23 @@ class DeliveryController extends Controller
 				'used' => false,
 				'allowSelect' => true,
 				'truck_id' => $trailerObject->getDefaultTruckId($requested_date, $trailer_run_num),
-				'other_trailer_slot' => $trailerObject->default_trailer_pair_id,
+				'truck_run_num' => 1,
+				'other_trailer_slot' => $trailerObject->getDefaultTrailerPairID($requested_date, $trailer_run_num),
+				'other_trailer_run_num' => 1,
 				'maxBins' => $trailerObject->NumBins,
 				'maxTons' => $trailerObject->Max_Capacity,
 				];
 			
-			//if the trailer is in the list of trailers used by another order
+			//if the trailer is in the list of trailers used by another order then we need to put that information in here
 			if(array_key_exists($trailer_run_num, $trailersUsed) && array_key_exists($trailerObject->id, $trailersUsed[$trailer_run_num]))
 				{
 				$binsLeft = $trailerObject->NumBins - $trailersUsed[$trailer_run_num][$trailerObject->id]['binsUsed'];
 				$data[$trailer_run_num][$trailerObject->id]['bins'] = $binsLeft." (of ".$trailerObject->NumBins.")";
 				$data[$trailer_run_num][$trailerObject->id]['tons'] = ($trailerObject->Max_Capacity - $trailersUsed[$trailer_run_num][$trailerObject->id]['tonsUsed'])." (of ".$trailerObject->Max_Capacity.")";
 				$data[$trailer_run_num][$trailerObject->id]['truck_id'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['truck_id'];
+				$data[$trailer_run_num][$trailerObject->id]['truck_run_num'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['truck_run_num'];
 				$data[$trailer_run_num][$trailerObject->id]['other_trailer_slot'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['other_trailer_slot'];
+				$data[$trailer_run_num][$trailerObject->id]['other_trailer_run_num'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['other_trailer_run_num'];
 				$data[$trailer_run_num][$trailerObject->id]['used'] = true;
 				if($binsLeft == 0)
 					{
@@ -900,17 +865,6 @@ class DeliveryController extends Controller
 				}
 
 			}	
-
-		
-		
-		/*$dataProvider = new ArrayDataProvider([
-   			'allModels' => $data,
-		    'sort' => [
-		        'attributes' => ['id', 'username', 'email'],
-		    	],
-		    'pagination' => false
-		]);
-		*/
 		
 		return $this->renderPartial("/trailers/_selectTrailers", [
 			'data' => $data,

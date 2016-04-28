@@ -22,7 +22,17 @@ use app\models\Trailers;
 
 <div class="delivery-load-form" id='delivery_count_<?= $deliveryCount ?>' delivery_count='<?= $deliveryCount ?>'>
 
-	<div style='width: 100%; padding-left: 10px'><?= "(".$deliveryCount.")" ?> Delivery Date: <?= date("d M Y" ,strtotime($deliveryLoad->delivery_on)) ?></div>
+	<div style='width: 100%; padding-left: 10px'>
+		<div style='width: calc(100% - 30px); float: left; '>
+			<b>Delivery Date: <?= date("d M Y" ,strtotime($deliveryLoad->delivery_on)) ?></b>	
+		</div>
+		<div style='width: 26px;  float: left; '>
+		<a title='Remove Load'>
+			<div class='sap_icon_small sap_cross_small remove_delivery_load' delivery_count='<?= $deliveryCount ?>'></div>
+		</a>
+		</div>
+	
+	</div>
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][id]' value='<?= $deliveryLoad->id ?>'>
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][delivery_on]' value='<?= $deliveryLoad->delivery_on ?>'>
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][delivery_id]' value='<?= $deliveryLoad->delivery_id ?>'>
@@ -85,10 +95,6 @@ use app\models\Trailers;
 		
 	</div>
 
-	<div class='delivery-load-action'>
-		<a title='Remove Load'>
-			<div class='sap_icon_small sap_cross_small remove_delivery_load' delivery_count='<?= $deliveryCount ?>'></div>
-		</a>
-	</div>
+	
 
 </div>
