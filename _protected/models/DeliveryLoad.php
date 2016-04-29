@@ -231,7 +231,7 @@ class DeliveryLoad extends \yii\db\ActiveRecord
     	{
     		
     		$returnString = "";
-			foreach($this->deliveryLoadBin as $deliveryLoadBinObject)
+			foreach($this->bins as $deliveryLoadBinObject)
 				{
 				$returnString .= $deliveryLoadBinObject->trailerBin->BinNo." ";
 				}

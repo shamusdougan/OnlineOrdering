@@ -100,7 +100,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 						}	
 					echo "<div class='".$class."' style='width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";					
-					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id."' 
+					echo "<input class='trailer_bin_checkbox trailer_cb_id_".$trailer->id." trailer_bin_".$deliveryCount."' 
 								trailer_id='".$trailer->id."' 
 								trailerbin_id='".$trailerBin->id."' 
 								capacity='".$trailerBin->MaxCapacity."' 
@@ -114,7 +114,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 				elseif(array_key_exists($trailerBin->id, $usedBins))
 					{
 					echo "<div class='sap_trailer_used' style='background-color: grey; width: ".$binDivWidth."%; border: 1px solid; height: 100%; float: left;  text-align:center;'>";
-					echo "<input type='hidden' class='bin_used_".$deliveryCount."' value='1'>";
+					echo "<input type='hidden' class='bin_used_".$deliveryCount." trailer_bin_".$deliveryCount."' value='".$usedBins[$trailerBin->id]."'>";
 					echo "Bin: ".$trailerBin->BinNo."<br>(".$trailerBin->MaxCapacity." T)<br>";
 					
 					echo "</div>";	

@@ -241,9 +241,132 @@ class Trucks extends \yii\db\ActiveRecord
 			
 		
 		return $trucksUsedArray;
+	}
+
+
+
+	/**
+	* 
+	* @param undefined $truck_id
+	* @param undefined $trailer1_id
+	* @param undefined $trailer2_id
+	* 
+	* This function returns a list of errors if there are any problems with the combination of the load out
+	*/
+	public function checkTruckLoad($truck_id, $trailer1_id, $trailer2_id=null, $load_total)
+	{
+	$errors = array();
+	
+	$truck = Trucks::findOne($truck_id);
+	$trailer1 = Trailers::findOne($trailer1_id);
+	$trailer2 = Trailers::findOne($trailer2_id);
+	
+	//First check to see of the Truck has more trailers than it can handle
+	if(isset($trailer2) && $truck->max_trailers == 1)
+		{
+		$errors[] = "Truck: ".$truck->registration." can only move a maximum of ".$truck->max_trailers." trailer.";
+		}
+	
+	
+	
+	//Check to see the types are compatable
+	if($trailer1->Auger && $trailer1->Blower)
+		{
+		if(!($truck->Auger || $truck->Blower))
+			{
+			$errors[] = "Trailer ".$trailer1->Registration." requires a truck with Auger or Blower.";
+			}
+		}
+	else{
+		if($trailer1->Auger)
+			{
+			if(!($truck->Auger))
+				{
+				$errors[] = "Trailer ".$trailer1->Registration." requires a truck with Auger.";
+				}
+			}
+		if($trailer1->Blower)
+			{
+			if(!$truck->Blower)
+				{
+				$errors[] = "Trailer ".$trailer1->Registration." requires a truck with a Blower.";
+				}
+			}
+		}
+	
+	if($trailer1->Tipper)
+		{
+		if(!$truck->Tipper)
+			{
+			$errors[] = "Trailer ".$trailer1->Registration." requires a truck with a Tipper.";
+			}
+		}	
 		
 		
+		
+		
+		
+			
+	if(isset($trailer2))
+		{
+		if($trailer2->Auger && $trailer2->Blower)
+			{
+			if(!($truck->Auger || $truck->Blower))
+				{
+				$errors[] = "Trailer ".$trailer2->Registration." requires a truck with Auger or Blower.";
+				}
+			}
+		else{
+			if($trailer2->Auger)
+				{
+				if(!($truck->Auger))
+					{
+					$errors[] = "Trailer ".$trailer2->Registration." requires a truck with Auger.";
+					}
+				}
+			if($trailer2->Blower)
+				{
+				if(!$truck->Blower)
+					{
+					$errors[] = "Trailer ".$trailer2->Registration." requires a truck with a Blower.";
+					}
+				}
+			}
+		
+		if($trailer2->Tipper)
+			{
+			if(!$truck->Tipper)
+				{
+				$errors[] = "Trailer ".$trailer2->Registration." requires a truck with a Tipper.";
+				}
+			}	
+		}
+	
+	return $errors;
+	}
+
+
+
+	public function getTruckTypeString()
+	{
+		$returnString = '';
+		if($this->Auger)
+			{
+			$returnString .= "Aug ";
+			}
+		if($this->Tipper)
+			{
+			$returnString .= "Tip ";
+			}
+		if($this->Blower)
+			{
+			$returnString .= "blo ";
+			}
+					
+		return $returnString;
 		
 	}
+
+
 	
 }

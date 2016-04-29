@@ -965,6 +965,23 @@ class DeliveryController extends Controller
     
     
     
+    public function actionAjaxCheckLoads($truck_id, $trailer1_id, $trailer2_id, $load_total)
+    {
+		
+		$errors = array();
+		$errors = Trucks::checkTruckLoad($truck_id,$trailer1_id, $trailer2_id, $load_total );
+		
+		$returnString = "<ul>";
+		foreach($errors as $error)
+			{
+			$returnString .= "<li><b>Warning: </b>".$error."</li>";
+			}
+		$returnString .= "</ul>";
+		
+		return $returnString;
+	}
+    
+    
 }
 
     

@@ -422,12 +422,15 @@ hr.article-devider {
 .delivery-load-form
 {
 	width:1000px;
-	height:220px;
+	
 	background: #F0F0F0  ;
 	margin:auto;
 	border-radius: 10px;
 	box-shadow: 0 10px 6px -6px #777;
 	margin-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .delivery-load-info
@@ -439,7 +442,7 @@ hr.article-devider {
 .delivery-load-truck
 {
 	
-	margin-left: 10px;
+	
 	margin-top: 10px;
 	width: 180px;
 	height: 180px;
@@ -453,7 +456,7 @@ hr.article-devider {
 {
 	margin-left: 10px;
 	margin-top: 10px;
-	width: 380px;
+	width: 393px;
 	height: 180px;
 	background: #E0E0E0;
 	float: left;
@@ -465,7 +468,7 @@ hr.article-devider {
 {
 	margin-left: 10px;
 	margin-top: 10px;
-	width: 380px;
+	width: 393px;
 	height: 180px;
 	background: #E0E0E0;
 	box-shadow: 0 10px 6px -6px #777;

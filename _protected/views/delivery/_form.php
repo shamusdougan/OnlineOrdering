@@ -231,6 +231,7 @@ $this->registerJs("
 	$( document ).ready(function() {
     	updateOrderRemaining();	
  		checkDateInput();
+ 		checkDeliveryLoads();
 		});
 	");
  
@@ -1064,5 +1065,88 @@ $this->registerJs("$('#".Html::getInputId($model, 'num_batches')."').on('change'
 		});
 
 ");
+
+
+
+
+/***************************************************************************
+* 
+*  Load Checking Functions
+* 
+*****************************************************************************/
+
+$this->registerJs("
+
+
+function checkDeliveryLoads()
+{
+	
+	
+	//go through each of the delivery loads and check the total load
+	$('.delivery-load-form').each(function()
+		{
+		var deliveryCount = $(this).attr('delivery_count');
+		var loadTotal = 0;
+		$('.trailer_bin_' + deliveryCount).each(function()
+			{
+			loadTotal = loadTotal + parseFloat($(this).attr('value'));	
+			}
+			);
+			
+		//grab the particulars for the delivery load and then check them
+		var trailer1_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][trailer1_id]\"]').attr('value');				
+		var trailer2_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][trailer2_id]\"]').attr('value');				
+		var truck_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][truck_id]\"]').attr('value');				
+		
+		//if trailer2 has been added to the order still check everything
+		if(trailer2_id == null)
+			{
+			trailer2_id = null;
+			}
+		
+		
+		if(trailer1_id != null && truck_id != null)
+			{
+			$.ajax
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-check-loads")."',
+				data: {truck_id: truck_id, trailer1_id: trailer1_id, trailer2_id: trailer2_id, load_total: loadTotal},
+				success: function (data, textStatus, jqXHR) 
+					{
+					$('.delivery_load_alert_' + deliveryCount).html(data);
+				
+					},
+				error: function (jqXHR, textStatus, errorThrown) 
+					{
+					console.log('An error occured!');
+					alert('Error in ajax request' );
+					}
+				});	
+			}
+		
+		
+		
+		}
+		
+		
+	
+	
+	)
+}
+
+
+
+
+
+")
+
+
+
+
+
+
+
+
+
 ?>
 
