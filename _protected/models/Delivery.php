@@ -62,6 +62,34 @@ class Delivery extends \yii\db\ActiveRecord
         ];
     }
     
+    
+    public function getCustomerOrder()
+    	{
+			return $this->hasOne(CustomerOrders::className(), ['id' => 'order_id'] );
+		}
+		
+	
+	public function getDeliveryLoad()	
+		{
+			return $this->hasMany(DeliveryLoad::className(), ['delivery_id' => 'id'] );
+		}
+	
+	public function getTruck()
+		{
+			return $this->hasOne(Trucks::className(), ['id' => 'truck_id']);
+		}
+
+	public function getWeighbridgeTicket()
+		{
+			return $this->hasOne(WeighbridgeTicket::className(), ['delivery_id' => 'id']);
+		}
+		
+	public function getReturn()
+		{
+			return $this->hasOne(Returns::className(), ['delivery_id' => 'id']);
+		}
+    
+    
   	public function batchCheck($attribute, $params)
   		{
   			
@@ -96,26 +124,7 @@ class Delivery extends \yii\db\ActiveRecord
 		}
     
     
-    public function getCustomerOrder()
-    	{
-			return $this->hasOne(CustomerOrders::className(), ['id' => 'order_id'] );
-		}
-		
-	
-	public function getDeliveryLoad()	
-		{
-			return $this->hasMany(DeliveryLoad::className(), ['delivery_id' => 'id'] );
-		}
-	
-	public function getTruck()
-		{
-			return $this->hasOne(Trucks::className(), ['id' => 'truck_id']);
-		}
 
-	public function getWeighbridgeTicket()
-		{
-			return $this->hasOne(WeighbridgeTicket::className(), ['delivery_id' => 'id']);
-		}
 
 	public function calculateBatchSize($order_qty)
 		{
@@ -247,8 +256,6 @@ class Delivery extends \yii\db\ActiveRecord
 	}
 	
 	
-	
-	
 	public function setStatusInprogress()
 	{
 		$this->status = Delivery::STATUS_INPROGRESS;
@@ -264,7 +271,7 @@ class Delivery extends \yii\db\ActiveRecord
 	
 	public  function setStatusCompleted()
 	{
-		$this->status = Delivey::STATUS_COMPLETED;
+		$this->status = Delivery::STATUS_COMPLETED;
 		$this->save();
 	}
 	
@@ -277,5 +284,25 @@ class Delivery extends \yii\db\ActiveRecord
 			}
 		return true;
 		}
+
+
+	public function isStatusLoaded()
+		{
+		if($this->status == Delivery::STATUS_LOADED)
+			{
+			return true;
+			}
+		return false;
+		}
+
+	public function isStatusCompleted()
+		{
+		if($this->status == Delivery::STATUS_COMPLETED)
+			{
+			return true;
+			}
+		return false;
+		}
+	
 	
 }

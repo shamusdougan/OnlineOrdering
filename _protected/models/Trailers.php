@@ -378,6 +378,21 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 	}
 	
 	
-	
+	public function getTrailerBinDisplayString()
+	{
+		
+		
+		$binArray = array();
+		foreach($this->trailerBins as $trailerBin)
+			{
+			$binArray[] = $trailerBin->MaxCapacity."T";
+			}
+		$returnString = implode(", ", $binArray);
+				
+		return $returnString;
+		
+		
+		
+	}
 		
 }

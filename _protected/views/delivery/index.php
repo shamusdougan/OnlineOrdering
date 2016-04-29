@@ -104,19 +104,55 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter' => Lookup::items("DELIVERY_STATUS"),
     		
     		],
-            
+            [
+            'attribute' => 'Weighbridge Ticket',
+            'format' =>'raw',
+            'value' => function ($data)
+            	{
+				if($data->hasWeighBridgeTicket())
+					{
+					return html::a($data->weighbridgeTicket->ticket_number,  Url::toRoute(['/weighbridge-ticket/update', 'id' => $data->weighbridgeTicket->id]));
+					}
+				else{
+					return "";
+					}
+				},
+            'width' => '10%',
+            ],
             [
 				'class' => 'kartik\grid\ActionColumn',
-				'template' => '{update} {delete} {weighbridge}',
+				'template' => '{update} {delete} {weighbridge} {complete} {complete-return}',
 				'width' => '5%',
 				'buttons' =>
 					[
 					'weighbridge' => function ($url, $model)
 						{
+						if(!$model->hasWeighBridgeTicket())
+							{
 							return html::a('<span class="glyphicon glyphicon-tags"></span>', Url::toRoute(['/weighbridge-ticket/create', 'delivery_id' => $model->id]), [
-                                        'title' => 'Create Weighbridge Ticket',
-                                        ]);
-
+                                    'title' => 'Create Weighbridge Ticket',
+                                    ]);		
+							}
+						},
+					'complete' => function ($url, $model)
+						{
+						if($model->isStatusLoaded())
+							{
+							return html::a('<span class="glyphicon glyphicon-ok"></span>', Url::toRoute(['/delivery/complete', 'id' => $model->id]), [
+                                    'title' => 'Complete Delivery (No Returns)',
+                                    ]);	
+								
+							}
+						},
+					'complete-return' => function($url, $model)
+						{
+						if($model->isStatusLoaded())
+							{
+							return html::a('<span class="glyphicon glyphicon-download-alt"></span>', Url::toRoute(['/returns/create', 'delivery_id' => $model->id]), [
+                                    'title' => 'Complete with a Return',
+                                    ]);	
+								
+							}	
 						}
 					]
 			],

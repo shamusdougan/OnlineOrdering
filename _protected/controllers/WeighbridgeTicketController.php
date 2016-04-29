@@ -132,7 +132,7 @@ class WeighbridgeTicketController extends Controller
 				$delivery = Delivery::findOne($delivery_id);
 				if($delivery->hasWeighBridgeTicket())
 					{
-					$model = $delivery->weighbrdigeTicket;
+					$model = $delivery->weighbridgeTicket;
 					}
 				else
 					{

@@ -127,6 +127,18 @@
 	background-image:url('../icons/icon-32-tags.png');
 }
 
+.sap_reverse{
+	background-image:url('../icons/icon-32-reverse.png');
+}
+	
+.sap_tick{
+	background-image:url('../icons/icon-32-tick.png');
+}
+	
+.sap_return{
+	background-image:url('../icons/icon-32-return.png');
+}
+
 	
 .sap_reversetruck{
 	background-image:url('../icons/icon-32-reversetruck.png');

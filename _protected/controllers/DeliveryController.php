@@ -20,6 +20,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use kartik\mpdf\Pdf;
 use yii\data\ArrayDataProvider;
+use yii\helpers\Url;
 
 /**
  * DeliveryController implements the CRUD actions for Delivery model.
@@ -264,20 +265,7 @@ class DeliveryController extends Controller
         	//update the Customer Order as well
         	$model->customerOrder->setStatusDelivery($model->id);
 		
-            //Once save, either stay on the page or exit. Controlled via the actiob buttons
-            $get = Yii::$app->request->get();
-            if(isset($get['exit']) && $get['exit'] == 'false' )
-    			{
-				return $this->redirect(['update', 'id' => $model->id]);
-				}
-			else{
-				return $this->redirect(['index']);
-				}
-        	
-       
-       
-    	
-        	//Once save, either stay on the page or exit. Controlled via the actiob buttons
+           	//Once save, either stay on the page or exit. Controlled via the actiob buttons
         	$get = Yii::$app->request->get();
             if(isset($get['exit']) && $get['exit'] == 'false' )
     			{
@@ -309,9 +297,9 @@ class DeliveryController extends Controller
     else{
     	
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-    	$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id."&autoPrint=1"]; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+		$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id."&autoPrint=1"]; 
 		if($model->hasWeighbridgeTicket())
 			{
 			$actionItems[] = ['label'=>'Weigh Ticket', 'button' => 'tags', 'url'=> '/weighbridge-ticket/update?id='.$model->weighbridgeTicket->id]; 		
@@ -319,8 +307,15 @@ class DeliveryController extends Controller
 		else{
 			$actionItems[] = ['label'=>'Save & Load', 'button' => 'truck_load', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&load=true', 'submit' => 'delivery-form', 'confirm' => 'Save and Load Truck?']; 	
 			}
-		
-		
+		if($model->isStatusCompleted())
+			{
+			$actionItems[] = ['label'=>'Undo Complete', 'button' => 'reverse', 'url'=>  Url::toRoute(['/delivery/uncomplete', 'id' => $model->id]), 'confirm' => 'Change Status to Loaded?']; 					
+			}
+		if($model->isStatusLoaded())
+			{
+			$actionItems[] = ['label'=>'Complete Delivery', 'button' => 'tick', 'url'=>  Url::toRoute(['/delivery/complete', 'id' => $model->id, 'exit' => false]), 'confirm' => 'Change Status to Completed?']; 					
+			$actionItems[] = ['label'=>'Add Return', 'button' => 'return', 'url'=>  Url::toRoute(['/returns/create', 'delivery_id' => $model->id]), 'confirm' => 'Create a Return and change status to Completed?']; 					
+			}
 	
 		
 		
@@ -981,7 +976,26 @@ class DeliveryController extends Controller
 		return $returnString;
 	}
     
-    
+    public function actionComplete($id, $exit = true)
+    {
+		$model = $this->findModel($id);
+		$model->setStatusCompleted();
+		
+		if($exit)
+			{
+			return $this->redirect('index');	
+			}
+		return $this->redirect(Url::to(['update', 'id' => $id]));
+        
+	}
+	
+	
+	  public function actionUncomplete($id)
+    {
+		$model = $this->findModel($id);
+		$model->setStatusLoaded();
+        return $this->redirect(Url::to(['update', 'id' => $id]));
+	}
 }
 
     

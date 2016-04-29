@@ -24,7 +24,16 @@ $gridColumns = [
 			'width' => '100px',
     		],
             'Description',
+           
             'Max_Capacity',
+            [
+            'attribute' => 'bin_Capacity',
+            'value' => function ($data)
+            	{
+				return $data->getTrailerBinDisplayString();
+				}
+            
+            ],
             'NumBins',
             [
             'attribute' => 'Auger',

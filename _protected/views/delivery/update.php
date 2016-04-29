@@ -7,7 +7,12 @@ use vendor\actionButtons\actionButtonsWidget;
 /* @var $this yii\web\View */
 /* @var $model app\models\Delivery */
 
-$this->title = 'Update Delivery : '.$order->Name;;
+$this->title = 'Update Delivery : '.$order->Name;
+
+if($model->isStatusCompleted())
+	{
+	$this->title .= " (Completed)";
+	}
 
 
 

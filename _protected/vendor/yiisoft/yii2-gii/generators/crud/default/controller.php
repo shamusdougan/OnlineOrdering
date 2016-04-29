@@ -69,10 +69,12 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
 <?php if (!empty($generator->searchModelClass)): ?>
         $searchModel = new <?= isset($searchModelAlias) ? $searchModelAlias : $searchModelClass ?>();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+  		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> 'create'];
+  		
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'actionItems' => $actionItems,
         ]);
 <?php else: ?>
         $dataProvider = new ActiveDataProvider([
@@ -106,11 +108,32 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
-        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+            
+            
+
+
+
+            $get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
+        	} 
+        else {
+        	
+       		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/create?exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+	
+        	
             return $this->render('create', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }
@@ -125,11 +148,29 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = $this->findModel(<?= $actionParams ?>);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
-        } else {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        	{
+        		
+        		
+        	$get = Yii::$app->request->get();
+            if(isset($get['exit']) && $get['exit'] == 'false' )
+    			{
+				return $this->redirect(['update', 'id' => $model->id]);
+				}
+			else{
+				return $this->redirect(['index']);
+				}
+        	}
+        else {
+        	
+        	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/create?exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+	
+        	
             return $this->render('update', [
                 'model' => $model,
+                'actionItems' => $actionItems,
             ]);
         }
     }
