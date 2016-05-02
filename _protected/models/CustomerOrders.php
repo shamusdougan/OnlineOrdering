@@ -181,10 +181,10 @@ class CustomerOrders extends \yii\db\ActiveRecord
             'Discount_notation' => 'Discount Notation',
             'Discount_type' => 'Discount Type',
             'Feed_Days_Remaining' => 'Feed  Days  Remaining',
-            'Feed_QOH_Tonnes' => 'Feed  Qoh  Tonnes',
-            'Feed_Rate_Kg_Day' => 'Feed  Rate  Kg  Day',
+            'Feed_QOH_Tonnes' => 'Feed QOH (Tonnes)',
+            'Feed_Rate_Kg_Day' => 'Feed  Rate (Kg/Day)',
             'Feed_Type' => 'Feed  Type',
-            'Herd_Size' => 'Herd  Size',
+            'Herd_Size' => 'Herd Size',
             'Load_Due' => 'Load  Due',
             'Modified_By' => 'Modified  By',
             'Modified_On' => 'Modified  On',
@@ -487,6 +487,27 @@ class CustomerOrders extends \yii\db\ActiveRecord
 			}
 		return $ingredientSum;
 	}
+	
+	
+	public function getAnticipatedSales($user_id = null)
+	{
+
+
+	$deliverys = Delivery::find()
+					->joinWith(['customerOrder'])
+					->where
+
+	$ordersList = CustomerOrders::find()
+						->joinWith(['delivery'])
+						->where(['Owner' => $user_id, 'delivery_on' => ])
+						->all();
+
+		
+		
+		
+		
+	}
+	
 	
 	  
 }

@@ -9,6 +9,7 @@ use kartik\widgets\select2;
 use kartik\widgets\DepDrop;
 use app\models\Trucks;
 use app\models\DeliveryLoad;
+use app\models\ProductsBins;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use vendor\actionButtons\actionButtonsWidget;
@@ -92,7 +93,14 @@ if(!isset($truckList)){ $truckList = array();}
 	    						],
 	    					'load_from_bin_id' =>
 	    						[
-	    						'type' => FORM::INPUT_TEXT,
+	    						'type' => Form::INPUT_WIDGET,
+			    				'widgetClass' => '\kartik\widgets\Select2',
+			    				'options'=>
+			    					[
+			    					'data'=>ProductsBins::getProductsBinsList(),
+			    					'options' => ['placeholder' => 'Select Bin', 'selected' => null,],
+
+			    					],
 	    						]
 	    						
 	    					],

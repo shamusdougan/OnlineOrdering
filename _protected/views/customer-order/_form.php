@@ -225,6 +225,8 @@ function updateOrderDetails()
            	$('#customerdetails-nearestTown').val(data.nearestTown);
            	$('#customerdetails-viewmore').show();
            	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/update?id=")."' + data.id);
+          	$('#".Html::getInputId($model, 'Feed_Rate_Kg_Day')."').val(data.Feed_Rate_Kg_Day);
+          	$('#".Html::getInputId($model, 'Herd_Size')."').val(data.Herd_Size);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
@@ -234,7 +236,66 @@ function updateOrderDetails()
 	
 	
 }
+
+function updateFeedDetails()
+{
+
+	var Herd_Size = $('#".Html::getInputId($model, 'Herd_Size')."').val();	
+	var Feed_Rate =	$('#".Html::getInputId($model, 'Feed_Rate_Kg_Day')."').val();
+	var Feed_QOH = $('#".Html::getInputId($model, 'Feed_QOH_Tonnes')."').val();
+	var Feed_Days_Remaining = $('#".Html::getInputId($model, 'Feed_Days_Remaining')."');
+	var OrderQty =  $(\"#".Html::getInputId($model, 'Qty_Tonnes')."\").val();
+   
+   	if(!isNaN(Herd_Size) && Herd_Size.length!=0) 
+		{
+		Herd_Size = parseFloat(Herd_Size);
+		}
+	else{
+		Herd_Size = 0;
+		}
+   
+    if(!isNaN(Feed_Rate) && Feed_Rate.length!=0) 
+		{
+		Feed_Rate = parseFloat(Feed_Rate);
+		}
+	else{
+		Feed_Rate = 0;
+		}
+   
+   	if(!isNaN(Feed_QOH) && Feed_QOH.length!=0) 
+		{
+		Feed_QOH = parseFloat(Feed_QOH);
+		}
+	else{
+		Feed_QOH = 0;
+		}
+     
+     if(!isNaN(OrderQty) && OrderQty.length!=0) 
+		{
+		OrderQty = parseFloat(OrderQty);
+		}
+	else{
+		OrderQty = 0;
+		}
+		
+	if(Herd_Size == 0 || Feed_Rate == 0)	
+		{
+		Feed_Days_Remaining.val(0);	
+		}
+	else{
+		Feed_Days_Remaining.val((Feed_QOH + OrderQty) / (Herd_Size * Feed_Rate /1000) );	
+		}
+     
+          	
+}
+
+
+
+
 ");
+
+
+
 
 /**********************************************************
 * 
@@ -438,8 +499,27 @@ $this->registerJs("
 		
 	$('#".Html::getInputId($model, 'Qty_Tonnes')."').on('change', function()
 		{
-			updateOrderCosts();
+		updateOrderCosts();
+		updateFeedDetails();
 		});	
+		
+	$('#".Html::getInputId($model, 'Herd_Size')."').on('change', function()
+		{
+		updateFeedDetails();
+		});		
+	
+	$('#".Html::getInputId($model, 'Feed_Rate_Kg_Day')."').on('change', function()
+		{
+		updateFeedDetails();
+		});		
+		
+	$('#".Html::getInputId($model, 'Feed_QOH_Tonnes')."').on('change', function()
+		{
+		updateFeedDetails();
+		});	
+	
+			
+	
 ");
 
 //Load the initial order data to the right hand Side
@@ -640,9 +720,39 @@ $this->registerJs("$('.sap_print').on('click',function(){
 				
 				?><br>
 				
-				
+		<div class='customer_order_subheading'>Herd Details</div>	
+			<?= Form::widget(
+				[
+				'model'=>$model,
+				'form'=>$form,
 			
-		
+				'columns'=>4,
+				'attributes' => 
+					[
+					'Feed_QOH_Tonnes' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						],
+					'Herd_Size' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						],
+					'Feed_Rate_Kg_Day' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						],
+					'Feed_Days_Remaining' =>
+						[
+						'type' => FORM::INPUT_TEXT,
+						'options' => 
+							[
+							'readOnly' => true,
+							]
+						],
+					]
+				]);
+				?>
+		</div>
 		<div class='customer_order_subheading'>Order Details</div>
 		
 		

@@ -101,6 +101,9 @@ class SiteController extends Controller
     	$recentOrdersDataProvider->setSort(['defaultOrder' => ['Created_On'=>SORT_DESC]]);
     	$recentOrdersDataProvider->setTotalCount(20);
     	
+    	$anticipatedSales = CustomerOrders::getAnticipatedSales($user->id);
+    	
+    	
         return $this->render('index', 
         	[
         	'orderSearchModel' => $orderSearchModel,

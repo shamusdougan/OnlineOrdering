@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Returns;
-use app\models\ReturnsSearch;
+use app\models\ProductsBins;
+use app\models\ProductsBinsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Delivery;
 
 /**
- * ReturnsController implements the CRUD actions for Returns model.
+ * ProductsBinsController implements the CRUD actions for ProductsBins model.
  */
-class ReturnsController extends Controller
+class ProductsBinsController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,16 +30,20 @@ class ReturnsController extends Controller
     }
 
     /**
-     * Lists all Returns models.
+     * Lists all ProductsBins models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ReturnsSearch();
+        $searchModel = new ProductsBinsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-  		$actionItems = array(); //[] = ['label'=>'New', 'button' => 'new', 'url'=> 'create'];
-  		
-        return $this->render('index', [
+        $dataProvider->setSort(['defaultOrder' => ['location_id' => SORT_ASC, 'order'=>SORT_ASC]]);
+  		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/products-bins/create'];
+  		  		
+		
+  		  		
+  		  		
+  		return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
@@ -48,7 +51,7 @@ class ReturnsController extends Controller
     }
 
     /**
-     * Displays a single Returns model.
+     * Displays a single ProductsBins model.
      * @param integer $id
      * @return mixed
      */
@@ -60,30 +63,18 @@ class ReturnsController extends Controller
     }
 
     /**
-     * Creates a new Returns model.
+     * Creates a new ProductsBins model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($delivery_id)
+    public function actionCreate()
     {
-        
-        $delivery = Delivery::findOne($delivery_id);
-        $model = new Returns();
-        $model->delivery_id = $delivery_id;
-        
-        //If there is no valid adelivery for this return go back to the delivery index page
-        if(!$delivery)
-        	{
-        	Yii::$app->session->setFlash('error', "Invalid Delivery ID");
-			return $this->redirect('/delivery');
-			}
+        $model = new ProductsBins();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
-            $delivery->setStatusCompleted();
             
-            //To set the correct ID;
-            $model->save();
+            
 
 
 
@@ -98,22 +89,20 @@ class ReturnsController extends Controller
         	} 
         else {
         	
-        	
        		$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/returns/create?delivery_id='.$delivery_id.'&exit=false', 'submit' => 'return-form', 'confirm' => 'Save Delivery?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'return-form', 'confirm' => 'Save and Exit Delivery?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/products-bins/create?exit=false', 'submit' => 'products-bin-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'products-bin-form', 'confirm' => 'Save and Exit Delivery?']; 
 	
         	
             return $this->render('create', [
                 'model' => $model,
-                'delivery' => $delivery,
                 'actionItems' => $actionItems,
             ]);
         }
     }
 
     /**
-     * Updates an existing Returns model.
+     * Updates an existing ProductsBins model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -138,20 +127,19 @@ class ReturnsController extends Controller
         else {
         	
         	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
-			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/returns/update?id='.$id.'&exit=false', 'submit' => 'return-form', 'confirm' => 'Save Delivery?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'return-form', 'confirm' => 'Save and Exit Delivery?']; 
+			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/products-bins/update?id='.$id.'&exit=false', 'submit' => 'products-bin-form', 'confirm' => 'Save Delivery?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'products-bin-form', 'confirm' => 'Save and Exit Delivery?']; 
 	
         	
             return $this->render('update', [
                 'model' => $model,
                 'actionItems' => $actionItems,
-                'delivery' => $model->delivery,
             ]);
         }
     }
 
     /**
-     * Deletes an existing Returns model.
+     * Deletes an existing ProductsBins model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -164,15 +152,15 @@ class ReturnsController extends Controller
     }
 
     /**
-     * Finds the Returns model based on its primary key value.
+     * Finds the ProductsBins model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Returns the loaded model
+     * @return ProductsBins the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Returns::findOne($id)) !== null) {
+        if (($model = ProductsBins::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

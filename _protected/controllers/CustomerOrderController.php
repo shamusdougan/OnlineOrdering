@@ -145,6 +145,10 @@ class CustomerOrderController extends Controller
 					$model->Status = CustomerOrders::STATUS_SUBMITTED;
 					$model->save();
 					}
+        		  
+        		  
+        
+        		  
         		   		
 	    		if(isset($get['exit']) && $get['exit'] == 'false' )
 	    			{
@@ -513,7 +517,9 @@ class CustomerOrderController extends Controller
 		        'Sales_Status'=>Lookup::item($model->Sales_Status, 'CLIENT_STATUS'),
 		        'nearestTown'=>$model->Nearest_Town,
 		        'id'=>$model->id,
-		        'storage' => $storageList
+		        'storage' => $storageList,
+		        'Herd_Size' => $model->Herd_Size,
+		        'Feed_Rate_Kg_Day' => $model->Feed_Rate_Kg_Day,
 		    ]);
 		    }
 		else{

@@ -13,6 +13,7 @@ use app\models\Trucks;
 use app\models\Trailers;
 use app\models\TrailerBins;
 use app\models\WeighbridgeTicket;
+use app\models\returns;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -132,6 +133,8 @@ class DeliveryController extends Controller
 				$deliveryLoadObject->load($deliveryLoadArray);
 				$deliveryLoadObject->delivery_id = $model->id;
 				$deliveryLoadObject->save();
+				$model->delivery_on = $deliveryLoadObject->delivery_on;
+				$model->save();
 				//first check that bins have been selected for that load - can have a case where there are none selected
 				if(is_array($deliveryLoadBins) && array_key_exists($deliveryCount, $deliveryLoadBins))
 					{
@@ -313,8 +316,8 @@ class DeliveryController extends Controller
 			}
 		if($model->isStatusLoaded())
 			{
-			$actionItems[] = ['label'=>'Complete Delivery', 'button' => 'tick', 'url'=>  Url::toRoute(['/delivery/complete', 'id' => $model->id, 'exit' => false]), 'confirm' => 'Change Status to Completed?']; 					
 			$actionItems[] = ['label'=>'Add Return', 'button' => 'return', 'url'=>  Url::toRoute(['/returns/create', 'delivery_id' => $model->id]), 'confirm' => 'Create a Return and change status to Completed?']; 					
+			$actionItems[] = ['label'=>'Complete Delivery', 'button' => 'tick', 'url'=>  Url::toRoute(['/delivery/complete', 'id' => $model->id, 'exit' => false]), 'confirm' => 'Change Status to Completed?']; 					
 			}
 	
 		
@@ -362,6 +365,10 @@ class DeliveryController extends Controller
 			}
   		$model->delete();
   		
+		if($model->returns)
+			{
+			$model->returns->delete();
+			}
 
         return $this->redirect(['index']);
     }
@@ -994,6 +1001,13 @@ class DeliveryController extends Controller
     {
 		$model = $this->findModel($id);
 		$model->setStatusLoaded();
+		
+		if($model->return)
+			{
+			$model->return->delete();
+			}
+		
+		
         return $this->redirect(Url::to(['update', 'id' => $id]));
 	}
 }

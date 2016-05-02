@@ -267,7 +267,8 @@ $companyHerd = Form::widget(
 					],
 				'label' => 'Herd Type'
 			],	
-		'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],	
+		'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],
+		'Feed_Rate_Kg_Day' => ['type' => Form::INPUT_TEXT],	
 		'Herd_Notes' => ['type' => Form::INPUT_TEXTAREA, 'columnOptions'=>['colspan'=>3 ]],
 		'Supplies_to' => ['type' => Form::INPUT_TEXT,	'label' => 'Supplies to'],
 		'Dairy_No' => ['type' => Form::INPUT_TEXT,	'label' => 'Dairy Number'],
@@ -276,21 +277,7 @@ $companyHerd = Form::widget(
     ]);
 
 	
-$companyHerd .= Form::widget(
-	[
-	'model' => $model,
-	'form' => $form,
-	'columns' => 3,
-	'attributes' => 
-		[
-		'Feed_Days_Remaining' => ['type' => Form::INPUT_TEXT],	
-		'Feed_empty' => ['type' => Form::INPUT_TEXT],	
-		'Feed_QOH_Tonnes' => ['type' => Form::INPUT_TEXT],	
-		'Feed_QOH_Update' => ['type' => Form::INPUT_TEXT],	
-		'Feed_Rate_Kg_Day' => ['type' => Form::INPUT_TEXT],	
-		
-		]
-	]);
+
 
 $items[] = [			
 			'label'=>'<i class="glyphicon glyphicon-home"></i> Company',

@@ -37,9 +37,10 @@ if(User::hasRole('production'))
 			['label' => 'Active Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-active-list'), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['production-active-list', 'update-production-active']])],
 			['label' => 'Submitted Orders', 'icon' => 'file', 'url' => Url::toRoute('/customer-order/production-submitted-list'), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['production-submitted-list']])],
 			['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>sideNavActive::widget(['controller' => "delivery", ])],
+			['label' => 'Returns', 'icon' => 'road', 'url' => Url::toRoute(['/returns']), 'active'=>sideNavActive::widget(['controller' => "returns"])],
 			['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>sideNavActive::widget(['controller' => "weighbridge-ticket", ])],
 			['label' => 'Products', 'icon' => 'tags', 'url' => Url::toRoute(['/product', "ProductSearch[Status]"=>1]), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['index', 'create', 'update'] ])],
-			['label' => 'Returns', 'icon' => 'road', 'url' => Url::toRoute(['/returns']), 'active'=>sideNavActive::widget(['controller' => "returns"])],
+			
 		
 		
 		]];
@@ -60,6 +61,7 @@ if(User::hasRole('Admin'))
 		[
 		['label' => 'Trucks', 'icon' => 'th-list', 'url' => Url::toRoute('/trucks'), 'active'=>sideNavActive::widget(['controller' => "trucks", ])],
 		['label' => 'Trailers', 'icon' => 'inbox', 'url' => Url::toRoute('/trailers'), 'active'=>sideNavActive::widget(['controller' => "trailers", ])],
+		['label' => 'Product Bins', 'icon' => 'inbox', 'url' => Url::toRoute('/products-bins'), 'active'=>sideNavActive::widget(['controller' => "products-bins", ])],
 		['label' => 'Customer Storage',  'url' => Url::toRoute('/storage'), 'active'=>sideNavActive::widget(['controller' => "storage", ])],
 		['label' => 'Customer Contacts', 'url' => Url::toRoute('/contacts'), 'active'=>sideNavActive::widget(['controller' => "contacts", ])],
 		['label' => 'User Accounts', 'url' => Url::toRoute('/user-management/user'), 'active'=> sideNavActive::widget(['controller' => ["user", "user-permission"]])], 

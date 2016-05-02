@@ -46,8 +46,38 @@ class Returns extends \yii\db\ActiveRecord
     }
     
     
+    public function beforeSave($insert)
+	{
+    if (parent::beforeSave($insert)) 
+    	{
+		$this->name = $this->generateReturnName();
+		return true;
+    	} 
+    else 
+    	{
+        return false;
+    	}
+	}
+    
+    
+    public function delete()
+    {
+    	$this->delivery->setStatusLoaded();
+		parent::delete();
+		
+	}
+    
+    
    public function getDelivery()
 		{
 			return $this->hasOne(Delivery::className(), ['id' => 'delivery_id']);
 		}
+		
+		
+	public function generateReturnName()
+	{
+		return "RET".str_pad($this->id, 5, "0", STR_PAD_LEFT);
+	}
+		
+		
 }

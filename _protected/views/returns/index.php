@@ -23,8 +23,24 @@ $this->params['breadcrumbs'][] = $this->title;
         'export' => false,
         'filterModel' => $searchModel,
         'columns' => [
-
-            'delivery.Name',
+			[
+			'attribute' => 'name',
+			'format' => 'raw',
+			'value' => function($data)
+				{
+						return html::a($data->name, "/returns/update?id=".$data->id);
+				},
+			
+			],
+			[
+			'attribute' => 'delivery.Name',
+			'label' => 'Returned From Delivery',
+			'format' => 'raw',
+			'value' => function($data)
+				{
+					return html::a($data->delivery->Name, "/delivery/update?id=".$data->delivery->id);
+				}
+			],
             'amount',
 
             [
