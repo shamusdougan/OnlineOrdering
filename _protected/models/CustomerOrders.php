@@ -493,14 +493,14 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	{
 
 
-	$deliverys = Delivery::find()
-					->joinWith(['customerOrder'])
-					->where
+	//$deliverys = Delivery::find()
+	//				->joinWith(['customerOrder'])
+	//				->where
 
-	$ordersList = CustomerOrders::find()
-						->joinWith(['delivery'])
-						->where(['Owner' => $user_id, 'delivery_on' => ])
-						->all();
+	//$ordersList = CustomerOrders::find()
+	//					->joinWith(['delivery'])
+	//					->where(['Owner' => $user_id, 'delivery_on' => ])
+	//					->all();
 
 		
 		
