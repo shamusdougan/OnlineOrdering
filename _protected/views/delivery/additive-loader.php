@@ -46,7 +46,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 
 	 	<table style='width: 100%'>
 	 		<tr>
-	 			<td width='25%'>Mixed to Bin: Bin 1</td>
+	 			<td width='25%'>Mixed to Bin: <?= Bin 1</td>
 	 			<td width='25%'>
 	 				<table width='100%'>
 	 					<tr>

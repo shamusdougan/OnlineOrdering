@@ -126,28 +126,32 @@ class DeliveryController extends Controller
 	
 			$deliveryLoads = Yii::$app->request->post("deliveryLoad");
 			$deliveryLoadBins = Yii::$app->request->post("deliveryLoadBins");
-			foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
+			if(isset($deliveryLoads))
 				{
-				$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
-				$deliveryLoadObject = new DeliveryLoad();
-				$deliveryLoadObject->load($deliveryLoadArray);
-				$deliveryLoadObject->delivery_id = $model->id;
-				$deliveryLoadObject->save();
-				$model->delivery_on = $deliveryLoadObject->delivery_on;
-				$model->save();
-				//first check that bins have been selected for that load - can have a case where there are none selected
-				if(is_array($deliveryLoadBins) && array_key_exists($deliveryCount, $deliveryLoadBins))
+				foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
 					{
-					foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
+					$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
+					$deliveryLoadObject = new DeliveryLoad();
+					$deliveryLoadObject->load($deliveryLoadArray);
+					$deliveryLoadObject->delivery_id = $model->id;
+					$deliveryLoadObject->save();
+					$model->delivery_on = $deliveryLoadObject->delivery_on;
+					$model->save();
+					//first check that bins have been selected for that load - can have a case where there are none selected
+					if(is_array($deliveryLoadBins) && array_key_exists($deliveryCount, $deliveryLoadBins))
 						{
-						$loadBin = new DeliveryLoadBin();
-						$loadBin->bin_load = $loadValue;
-						$loadBin->trailer_bin_id = $bin_id;
-						$loadBin->delivery_load_id = $deliveryLoadObject->id;
-						$loadBin->save();
-						}			
-					}		
+						foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
+							{
+							$loadBin = new DeliveryLoadBin();
+							$loadBin->bin_load = $loadValue;
+							$loadBin->trailer_bin_id = $bin_id;
+							$loadBin->delivery_load_id = $deliveryLoadObject->id;
+							$loadBin->save();
+							}			
+						}		
+					}
 				}
+			
 
         	//update the Customer Order as well
         	$model->customerOrder->setStatusDelivery($model->id);

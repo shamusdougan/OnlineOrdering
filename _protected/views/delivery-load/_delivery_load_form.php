@@ -40,7 +40,7 @@ use app\models\Trailers;
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][delivery_on]' value='<?= $deliveryLoad->delivery_on ?>'>
 	<input type='hidden' name='deliveryLoad[<?= $deliveryCount ?>][delivery_id]' value='<?= $deliveryLoad->delivery_id ?>'>
 	<div style='height: 200px;'>
-		<div class='delivery-load-truck' delivery_load_truck_id=''>
+		<div class='delivery-load-truck delivery-load-truck<?= $deliveryCount ?>' delivery_load_truck_id=''>
 			<?
 			
 			echo $this->render('/Trucks/_truck', [
@@ -52,7 +52,7 @@ use app\models\Trailers;
 			
 		</div>
 
-		<div class='delivery-load-trailer1'>
+		<div class='delivery-load-trailer<?= $deliveryCount ?>_1 delivery-load-trailer1'>
 			
 			<?
 			
@@ -80,7 +80,7 @@ use app\models\Trailers;
 			
 			
 		</div>
-		<div class='delivery-load-trailer2'>
+		<div class='delivery-load-trailer<?= $deliveryCount ?>_2 delivery-load-trailer2'>
 			
 			<?
 			echo $this->render('/Trailers/_trailer',

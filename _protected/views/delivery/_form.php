@@ -661,7 +661,10 @@ function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 {
 
 	//get the place the trailer is to be rendered too	
-	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer' + trailerSlot);
+	//var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer' + trailerSlot);
+	
+	var target = $('.delivery-load-trailer' + deliveryCount +'_' + trailerSlot);
+	//target.html('hello world');
 	
 	var requested_date = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
 	var delivery_load_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][id]\"]').attr('value');
@@ -672,7 +675,7 @@ function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 		data: {trailerSlot: trailerSlot, deliveryCount: deliveryCount, trailer_id: trailer_id, trailer_run_num: trailer_run_num, requested_date: requested_date, delivery_load_id: delivery_load_id},
 		success: function (data, textStatus, jqXHR) 
 			{
-			target.html(data);;
+			target.html(data);
 			},
 		error: function (jqXHR, textStatus, errorThrown) 
 			{
@@ -1033,7 +1036,7 @@ function renderTruck(deliveryCount, truck_id, truck_run_num)
 {
 
 	//get the place the trailer is to be rendered too	
-	var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-truck');
+	var target = $('.delivery-load-truck'+deliveryCount);
 
 	$.ajax
   		({

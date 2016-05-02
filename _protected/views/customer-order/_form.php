@@ -283,7 +283,7 @@ function updateFeedDetails()
 		Feed_Days_Remaining.val(0);	
 		}
 	else{
-		Feed_Days_Remaining.val((Feed_QOH + OrderQty) / (Herd_Size * Feed_Rate /1000) );	
+		Feed_Days_Remaining.val(Math.floor((Feed_QOH + OrderQty) / (Herd_Size * Feed_Rate /1000)) );	
 		}
      
           	
@@ -432,7 +432,7 @@ $this->registerJs(
 		success: function (data, textStatus, jqXHR) 
 			{
 			var url = '".yii\helpers\Url::toRoute("customer-order/update")."&id=".$model->id."';
-          	$.pjax.reload({url: url, container:'#order_ingredient_grid'});
+          	$.pjax.reload({container:'#order_ingredient_grid'});
 			},
         error: function (jqXHR, textStatus, errorThrown) 
         	{
