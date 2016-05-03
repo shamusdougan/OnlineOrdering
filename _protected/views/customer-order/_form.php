@@ -732,14 +732,26 @@ $this->registerJs("$('.sap_print').on('click',function(){
 					'Feed_QOH_Tonnes' =>
 						[
 						'type' => FORM::INPUT_TEXT,
+						'options' =>
+							[
+							'disabled' => $readOnly,
+							],
 						],
 					'Herd_Size' =>
 						[
 						'type' => FORM::INPUT_TEXT,
+						'options' =>
+							[
+							'disabled' => $readOnly,
+							],
 						],
 					'Feed_Rate_Kg_Day' =>
 						[
 						'type' => FORM::INPUT_TEXT,
+						'options' =>
+							[
+							'disabled' => $readOnly,
+							],
 						],
 					'Feed_Days_Remaining' =>
 						[
@@ -752,7 +764,7 @@ $this->registerJs("$('.sap_print').on('click',function(){
 					]
 				]);
 				?>
-		</div>
+	
 		<div class='customer_order_subheading'>Order Details</div>
 		
 		

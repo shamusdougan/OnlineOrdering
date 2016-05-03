@@ -280,8 +280,10 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		
 		
 		//calculate the overall price per tone, added prodcution cost + transport cost
-		if(isset($this->Price_pT_Base_override))
+//		var_dump($this->Price_pT_Base_override)."<br>";
+		if(isset($this->Price_pT_Base_override) && $this->Price_pT_Base_override != "")
 			{
+//			echo "Price over ride<br>";
 			$this->Price_Sub_Total = $this->Price_pT_Base_override + $this->Price_production_pT + $this->Price_transport_pT;	
 			}
 		else{
@@ -496,12 +498,20 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	//$deliverys = Delivery::find()
 	//				->joinWith(['customerOrder'])
 	//				->where
+	
+	$ordersList = CustomerOrders::find()
+						->joinWith(['delivery'], true, "RIGHT JOIN")
+						->where(['Created_By' => $user_id, Delivery::tableName().'.status' => Delivery::STATUS_COMPLETED])
+						//->select([CustomerOrders::tableName().'.Name', 'Qty_Tonnes', 'Feed_Days_Remaining', 'delivery.delivery_on'])
+						->all();
 
-	//$ordersList = CustomerOrders::find()
-	//					->joinWith(['delivery'])
-	//					->where(['Owner' => $user_id, 'delivery_on' => ])
-	//					->all();
+	//print_r($ordersList);
+	foreach($ordersList as $dataRow)
+		{
+		echo $dataRow->Name . " ". $dataRow->Qty_Tonnes. " ". $dataRow->Feed_Days_Remaining. "  " . $dataRow->delivery->delivery_on."<br>";
+		}
 
+	
 		
 		
 		

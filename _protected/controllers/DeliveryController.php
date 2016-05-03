@@ -121,7 +121,6 @@ class DeliveryController extends Controller
         	//create the Delivery Name other attributes already loaded such as the delivery date
         	$model->Name = Delivery::generateName($model->id); 
         	$model->status = Delivery::STATUS_INPROGRESS;
-        	$model->delivery_qty = 0;
         	$model->save();			//save so we cna access the object id
 	
 			$deliveryLoads = Yii::$app->request->post("deliveryLoad");
