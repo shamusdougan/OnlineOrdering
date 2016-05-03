@@ -233,7 +233,6 @@ class DeliveryController extends Controller
         	//create the Delivery Name other attributes already loaded such as the delivery date
         	$model->Name = Delivery::generateName($model->id); 
         	$model->status = Delivery::STATUS_INPROGRESS;
-        	$model->delivery_qty = 0;
         	$model->save();			//save so we cna access the object id
 	
 			//Clear all the existing child objects from the database and recreate based on form Data
@@ -244,7 +243,8 @@ class DeliveryController extends Controller
 			$deliveryLoadBins = Yii::$app->request->post("deliveryLoadBins");
 			if(is_array($deliveryLoads))
 				{
-					
+				
+				$load_total = 0;	
 				foreach($deliveryLoads as $deliveryCount => $deliveryLoad)
 					{
 					$deliveryLoadArray["DeliveryLoad"] = $deliveryLoad;
@@ -257,6 +257,7 @@ class DeliveryController extends Controller
 						{
 						foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
 							{
+							$load_total += $loadValue;
 							$loadBin = new DeliveryLoadBin();
 							$loadBin->bin_load = $loadValue;
 							$loadBin->trailer_bin_id = $bin_id;
@@ -266,8 +267,12 @@ class DeliveryController extends Controller
 						}		
 					}
 				}
+			
+			
+			
 				
-				
+
+			
 				
         	//update the Customer Order as well
         	$model->customerOrder->setStatusDelivery($model->id);
@@ -311,7 +316,8 @@ class DeliveryController extends Controller
 			{
 			$actionItems[] = ['label'=>'Weigh Ticket', 'button' => 'tags', 'url'=> '/weighbridge-ticket/update?id='.$model->weighbridgeTicket->id]; 		
 			}
-		else{
+		elseif($model->isFullyAllocated())
+			{
 			$actionItems[] = ['label'=>'Save & Load', 'button' => 'truck_load', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&load=true', 'submit' => 'delivery-form', 'confirm' => 'Save and Load Truck?']; 	
 			}
 		if($model->isStatusCompleted())

@@ -89,6 +89,11 @@ class Delivery extends \yii\db\ActiveRecord
 			return $this->hasOne(Returns::className(), ['delivery_id' => 'id']);
 		}
     
+    public function getProductBin()
+		{
+			return $this->hasOne(ProductsBins::className(), ['id' => 'load_from_bin_id']);
+		}
+    
     
   	public function batchCheck($attribute, $params)
   		{
@@ -218,9 +223,18 @@ class Delivery extends \yii\db\ActiveRecord
 		}
 	
 	$this->save();
-	
 	}
 	
+	
+	public function isFullyAllocated()
+	{
+		
+		
+		
+		return ($this->delivery_qty == $this->customerOrder->Qty_Tonnes);
+		
+		
+	}
 	/**
 	* 
 	* 

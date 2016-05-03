@@ -155,6 +155,8 @@ if(!isset($truckList)){ $truckList = array();}
 				</div>
 				<div class='col-sm-4'>
 					<font size='+3'>Remaining Tons: <span id='remaining_tonnes'></span></font>
+					<?= $form->field($model, 'delivery_qty', ['template' => '{input}'])->hiddenInput()->label(false); ?>
+
 				</div>
 			</div>
 		</div>
@@ -263,6 +265,7 @@ $this->registerJs("function updateOrderRemaining()
 				});
 				
 	remainingQty = 	Math.round(orderQty - allocatedQty);
+	$('#".Html::getInputId($model, 'delivery_qty')."').val(allocatedQty);
 	$('#remaining_tonnes').html(remainingQty);
 	
 	

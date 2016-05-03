@@ -1,4 +1,56 @@
+
+
+
 <?php
+
+if(!$delivery->deliveryLoad)
+	{
+	?>
+	<div style='width: 100%; height: 150px;'>
+		<table width='100%' >
+			<tr>
+				<td width='100px' rowspan='2'><img src="images/irwin-logo.gif" width='100px' alt="Irwin Logo"> </td>
+				<td width='400px' height='10px' ><span style='font-size: 22'>IRWIN STOCKFEEDS LOADER SHEET</span></td>
+				<td valign="bottom"> Order: <?= $delivery->customerOrder->Order_ID?></td>
+			</tr>
+			<tr>
+				<td> 
+				<table>
+					<tr>
+						<td width='100px'>Date:</td>
+						<td><?= date("d M Y", strtotime($delivery->delivery_on))?></td>
+					</tr>
+					<tr>
+						<td width='100px'>Customer:</td>
+						<td><?= $delivery->customerOrder->client->Company_Name ?></td>
+					</tr>
+					<tr>
+						<td width='100px' valign='top'>Location:</td>
+						<td><?= $delivery->customerOrder->client->Address_1 ?></td>
+					</tr>
+				</table>
+				
+				
+				
+				
+				
+				
+				</td>
+				
+				<td> </td>
+			</tr>
+			
+			
+		</table>	
+	</div>
+	<div style='width: 100%; height: 150px;'>
+	
+	<div style='font-size: 40px; width: 100%; text-align: center'>No Loads Allocated</div>
+
+	
+	<?
+	}
+
 
 
 foreach($delivery->deliveryLoad as $deliveryLoadObject){
@@ -46,7 +98,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 
 	 	<table style='width: 100%'>
 	 		<tr>
-	 			<td width='25%'>Mixed to Bin: <?= Bin 1</td>
+	 			<td width='25%'>Mixed to Bin: <?= $delivery->productBin->name ?></td>
 	 			<td width='25%'>
 	 				<table width='100%'>
 	 					<tr>
