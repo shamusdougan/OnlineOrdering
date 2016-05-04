@@ -140,6 +140,9 @@ class CustomerOrderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         		{
         		
+        		print_r($_POST);
+        		die();
+        		
         		$get = Yii::$app->request->get();
         		if(isset($get['submitOrder']) && $get['submitOrder'] == true)
         			{
@@ -147,7 +150,7 @@ class CustomerOrderController extends Controller
 					$model->save();
 					}
         		  
-        		  
+        		
         
         		  
         		   		

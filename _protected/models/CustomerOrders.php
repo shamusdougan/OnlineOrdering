@@ -502,7 +502,9 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	$ordersList = CustomerOrders::find()
 						->joinWith(['delivery'], true, "RIGHT JOIN")
 						->where(['Created_By' => $user_id, Delivery::tableName().'.status' => Delivery::STATUS_COMPLETED])
+						->orderBy('delivery_on ASC')
 						//->select([CustomerOrders::tableName().'.Name', 'Qty_Tonnes', 'Feed_Days_Remaining', 'delivery.delivery_on'])
+						->groupBy(['Customer_id'])
 						->all();
 
 	//print_r($ordersList);

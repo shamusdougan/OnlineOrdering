@@ -241,7 +241,7 @@ class Clients extends \yii\db\ActiveRecord
             'Feed_empty' => 'Feed Empty',
             'Feed_QOH_Tonnes' => 'Feed  Qoh  Tonnes',
             'Feed_QOH_Update' => 'Feed  Qoh  Update',
-            'Feed_Rate_Kg_Day' => 'Deafault Feed Rate Kg/Day',
+            'Feed_Rate_Kg_Day' => 'Feed Rate Kg/Day',
             'Herd_Notes' => 'Herd  Notes',
             'Herd_Size' => 'Default Herd Size',
             'Herd_Type' => 'Herd  Type',

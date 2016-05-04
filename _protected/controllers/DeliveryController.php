@@ -997,6 +997,20 @@ class DeliveryController extends Controller
 		$model = $this->findModel($id);
 		$model->setStatusCompleted();
 		
+		//When the delivery is set to complete also set the herd information details in the customer information
+		$model->customerOrder->client->Feed_QOH_Tonnes = $model->delivery_qty + $model->customerOrder->Feed_QOH_Tonnes - ($model->return ? $model->return->amount : 0);
+		$model->customerOrder->client->Feed_Rate_Kg_Day = $model->customerOrder->Feed_Rate_Kg_Day;
+		if(!$model->customerOrder->client->save())
+			{
+			die("blah");
+			}
+		
+		
+		//also set the status of the order to completed
+		$model->customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
+		$model->customerOrder->save();
+		
+		
 		if($exit)
 			{
 			return $this->redirect('index');	
