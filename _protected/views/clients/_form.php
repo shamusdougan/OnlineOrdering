@@ -8,6 +8,8 @@ use kartik\tabs\TabsX;
 use kartik\grid\GridView;
 use app\models\Lookup;
 use yii\widgets\Pjax;
+use kartik\datecontrol\DateControl;
+use kartik\widgets\datePicker;
 
 
 /* @var $this yii\web\View */
@@ -248,7 +250,7 @@ $companyHerd = Form::widget(
     	'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],	
 		]
 	]);
-	
+var_dump($model->Feed_QOH_Update);	
 $companyHerd = Form::widget(
 	[
 	'model' => $model,
@@ -268,6 +270,27 @@ $companyHerd = Form::widget(
 				'label' => 'Herd Type'
 			],	
 		'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],
+		'Feed_QOH_Tonnes' => ['type' => Form::INPUT_TEXT,],
+		'Feed_QOH_Update' => 
+			[
+			'type'=>Form::INPUT_WIDGET, 
+			'widgetClass' => DateControl::classname(),
+			'options' => 
+				[
+				'type'=>DateControl::FORMAT_DATE,
+				'options' =>
+					[
+					'type' => DatePicker::TYPE_COMPONENT_APPEND,
+					'pluginOptions' =>
+						[
+						'autoclose' => true,
+						'todayHighlight' => true,
+						'startDate' => date("d M Y"),
+						]
+					]
+				],
+			
+			],
 		'Feed_Rate_Kg_Day' => ['type' => Form::INPUT_TEXT],	
 		'Herd_Notes' => ['type' => Form::INPUT_TEXTAREA, 'columnOptions'=>['colspan'=>3 ]],
 		'Supplies_to' => ['type' => Form::INPUT_TEXT,	'label' => 'Supplies to'],

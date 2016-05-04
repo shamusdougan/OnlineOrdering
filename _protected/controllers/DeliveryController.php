@@ -1000,10 +1000,8 @@ class DeliveryController extends Controller
 		//When the delivery is set to complete also set the herd information details in the customer information
 		$model->customerOrder->client->Feed_QOH_Tonnes = $model->delivery_qty + $model->customerOrder->Feed_QOH_Tonnes - ($model->return ? $model->return->amount : 0);
 		$model->customerOrder->client->Feed_Rate_Kg_Day = $model->customerOrder->Feed_Rate_Kg_Day;
-		if(!$model->customerOrder->client->save())
-			{
-			die("blah");
-			}
+		$model->customerOrder->client->Feed_QOH_Update = $model->delivery_on;
+		}
 		
 		
 		//also set the status of the order to completed

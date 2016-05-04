@@ -225,8 +225,19 @@ function updateOrderDetails()
            	$('#customerdetails-nearestTown').val(data.nearestTown);
            	$('#customerdetails-viewmore').show();
            	$('#customerdetails-readmorelink').attr('href', '".yii\helpers\Url::toRoute("clients/update?id=")."' + data.id);
-          	$('#".Html::getInputId($model, 'Feed_Rate_Kg_Day')."').val(data.Feed_Rate_Kg_Day);
-          	$('#".Html::getInputId($model, 'Herd_Size')."').val(data.Herd_Size);
+           	
+           	Feed_Rate_Input = $('#".Html::getInputId($model, 'Feed_Rate_Kg_Day')."');
+           	Herd_Size_Input = $('#".Html::getInputId($model, 'Herd_Size')."');
+           	if(Feed_Rate_Input.val() == '' || Feed_Rate_Input.val() == null)
+           		{
+				Herd_Size_Input.val(data.Feed_Rate_Kg_Day);
+				}
+				
+			if(Feed_Rate_Input.val() == '' || Feed_Rate_Input.val() == null)
+				{
+				Feed_Rate_Input.val(data.Feed_Rate_Kg_Day);
+				}
+          	
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
