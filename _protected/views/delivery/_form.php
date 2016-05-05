@@ -767,6 +767,7 @@ $this->registerJs("$(document).on('click', '.add_trailer_link', function()
 	var usedTrailers = getSelectedTrailers();
 	var delivery_load_id = $('input[name=\"deliveryLoad['+ deliveryCount + '][id]\"]').attr('value');
 	
+
 	$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
@@ -838,7 +839,7 @@ $this->registerJs("$(document).on('click', '.add_truck_link', function()
 	var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
 	var selectedTrucks = getSelectedTrucks();
 
-	alert(selectedTrucks);
+
 	$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
@@ -1049,7 +1050,8 @@ function renderTruck(deliveryCount, truck_id, truck_run_num)
 		data: {deliveryCount: deliveryCount, truck_id: truck_id, truck_run_num: truck_run_num, delivery_load_id: ".(isset($model->id) ? $model->id : 0 )."},
 		success: function (data, textStatus, jqXHR) 
 			{
-			target.html(data);;
+			target.html(data);
+			checkDeliveryLoads();
 			},
 		error: function (jqXHR, textStatus, errorThrown) 
 			{
@@ -1057,7 +1059,7 @@ function renderTruck(deliveryCount, truck_id, truck_run_num)
 			alert('Error in ajax request' );
 			}
 		});
-	checkDeliveryLoads();
+	
 }
 ");
 
@@ -1120,12 +1122,12 @@ function checkDeliveryLoads()
 			trailer2_id = null;
 			}
 		
-		alert(truck_id + ' -> ' + trailer1_id + ' -> ' + trailer2_id);
+		//alert(truck_id + ' -> ' + trailer1_id + ' -> ' + trailer2_id);
 		if(trailer1_id == null)
 			{
 			$('.delivery_load_alert_' + deliveryCount).hide();	
 			}
-		elseif(truck_id == null)
+		else if(truck_id == null)
 			{
 			$('.delivery_load_alert_' + deliveryCount).hide();		
 			}

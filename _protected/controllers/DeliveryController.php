@@ -372,13 +372,15 @@ class DeliveryController extends Controller
         	{
 			$model->weighbridgeTicket->delete();
 			}
-  		$model->delete();
   		
-		if($model->returns)
+  		
+		if($model->return)
 			{
-			$model->returns->delete();
+			$model->return->delete();
 			}
-
+		$model->delete();
+		
+		
         return $this->redirect(['index']);
     }
 
@@ -870,9 +872,11 @@ class DeliveryController extends Controller
 					}
 				}
 				
+			//If the trailer has already been selected in this delivery 
 			if(array_key_exists($trailer_run_num, $selectedTrailerArray) && array_key_exists($trailerObject->id, $selectedTrailerArray[$trailer_run_num]))
 				{
 				$data[$trailer_run_num][$trailerObject->id]['allowSelect'] = false;	
+				$data[$trailer_run_num][$trailerObject->id]['used'] = true;	
 				}
 
 			}	
@@ -1001,6 +1005,8 @@ class DeliveryController extends Controller
 		$model->customerOrder->client->Feed_QOH_Tonnes = $model->delivery_qty + $model->customerOrder->Feed_QOH_Tonnes - ($model->return ? $model->return->amount : 0);
 		$model->customerOrder->client->Feed_Rate_Kg_Day = $model->customerOrder->Feed_Rate_Kg_Day;
 		$model->customerOrder->client->Feed_QOH_Update = $model->delivery_on;
+		$model->customerOrder->client->Herd_Size = $model->customerOrder->Herd_Size;
+		$model->customerOrder->client->save();
 		
 		
 		//also set the status of the order to completed
@@ -1021,6 +1027,11 @@ class DeliveryController extends Controller
     {
 		$model = $this->findModel($id);
 		$model->setStatusLoaded();
+		
+		$model->customerOrder->Status = CustomerOrders::STATUS_DISPATCHED;
+		$model->customerOrder->save();
+		
+		
 		
 		if($model->return)
 			{

@@ -11,6 +11,7 @@ use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
+use app\models\Clients;
 use yii\helpers\Html;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -101,7 +102,9 @@ class SiteController extends Controller
     	$recentOrdersDataProvider->setSort(['defaultOrder' => ['Created_On'=>SORT_DESC]]);
     	$recentOrdersDataProvider->setTotalCount(20);
     	
-    	$anticipatedSales = CustomerOrders::getAnticipatedSales($user->id);
+    	//$client = Clients::findOne(3);
+    	//echo $client->getFeedDaysRemaining()."<br>";
+    	
     	
     	
         return $this->render('index', 

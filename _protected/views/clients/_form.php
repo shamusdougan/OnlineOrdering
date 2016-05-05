@@ -250,7 +250,7 @@ $companyHerd = Form::widget(
     	'Herd_Size' => ['type' => Form::INPUT_TEXT,	'label' => 'Herd Size'],	
 		]
 	]);
-var_dump($model->Feed_QOH_Update);	
+
 $companyHerd = Form::widget(
 	[
 	'model' => $model,
@@ -285,7 +285,7 @@ $companyHerd = Form::widget(
 						[
 						'autoclose' => true,
 						'todayHighlight' => true,
-						'startDate' => date("d M Y"),
+						'endDate' => date("d M Y"),
 						]
 					]
 				],

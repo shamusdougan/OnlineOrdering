@@ -335,5 +335,30 @@ class Clients extends \yii\db\ActiveRecord
 		
 	}
 	
+	/**
+	* get Feed Days remaining - Returns the number of days of feed remaining for the client
+	* Based upon the current system date and calculated from the Feed_QOH_update, Feed_QOH_Tonnes and the client given Feed Rate.
+	* Each one of these parameters is updated everytime an order is delivered and marked as completed.
+	* 
+	* @return
+	*/
+	public function getFeedDaysRemaining()
+	{
+		$feedDaysRemaining = 0;
+		$QOH_Update = new \DateTime($this->Feed_QOH_Update);
+		$currentDate = new \DateTime();
+		$daysDifference = (int)$currentDate->diff($QOH_Update)->format('%R%a');
+		
+		//If the last
+		if($daysDifference > 0)
+			{
+			return "Unknown";
+			}
+		else{
+			//echo $this->Feed_QOH_Tonnes. " / -(".$daysDifference." * ".$this->Herd_Size." * ".$this->Feed_Rate_Kg_Day." /1000) <br>";
+			return floor($this->Feed_QOH_Tonnes / -($daysDifference * $this->Herd_Size * $this->Feed_Rate_Kg_Day / 1000));
+		}
+		
+	}
 	
 }
