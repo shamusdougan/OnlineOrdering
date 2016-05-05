@@ -679,6 +679,7 @@ function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 		success: function (data, textStatus, jqXHR) 
 			{
 			target.html(data);
+			checkDeliveryLoads();
 			},
 		error: function (jqXHR, textStatus, errorThrown) 
 			{
@@ -686,7 +687,7 @@ function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 			alert('Error in ajax request' );
 			}
 		});
-
+	
 }
 
 
@@ -720,12 +721,13 @@ $this->registerJs("$(document).on('click', '#select_trailer_button', function(ev
 		
 	$('#select-modal').modal('hide');
 	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num);
-	if(truck_id != '' && truck_id != null)
+	
+	
+	if(truck_id != '' && truck_id != null && truck_id != 0)
 		{
-		
 		renderTruck(deliveryCount, truck_id, truck_run_num);
 		}
-	if(otherTrailerSlot != '' && otherTrailerSlot != null)
+	if(otherTrailerSlot != '' && otherTrailerSlot != null && otherTrailerSlot != 0)
 		{
 		otherSlot = 1;
 		if(trailerSlot == 1)
@@ -836,7 +838,7 @@ $this->registerJs("$(document).on('click', '.add_truck_link', function()
 	var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');
 	var selectedTrucks = getSelectedTrucks();
 
-	
+	alert(selectedTrucks);
 	$.ajax
 	  		({
 	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
@@ -1055,7 +1057,7 @@ function renderTruck(deliveryCount, truck_id, truck_run_num)
 			alert('Error in ajax request' );
 			}
 		});
-
+	checkDeliveryLoads();
 }
 ");
 
@@ -1095,7 +1097,7 @@ $this->registerJs("
 function checkDeliveryLoads()
 {
 	
-	
+
 	//go through each of the delivery loads and check the total load
 	$('.delivery-load-form').each(function()
 		{
@@ -1118,8 +1120,17 @@ function checkDeliveryLoads()
 			trailer2_id = null;
 			}
 		
+		alert(truck_id + ' -> ' + trailer1_id + ' -> ' + trailer2_id);
+		if(trailer1_id == null)
+			{
+			$('.delivery_load_alert_' + deliveryCount).hide();	
+			}
+		elseif(truck_id == null)
+			{
+			$('.delivery_load_alert_' + deliveryCount).hide();		
+			}
 		
-		if(trailer1_id != null && truck_id != null)
+		else if(trailer1_id != null && truck_id != null)
 			{
 			$.ajax
 		  		({
@@ -1127,6 +1138,7 @@ function checkDeliveryLoads()
 				data: {truck_id: truck_id, trailer1_id: trailer1_id, trailer2_id: trailer2_id, load_total: loadTotal},
 				success: function (data, textStatus, jqXHR) 
 					{
+					$('.delivery_load_alert_' + deliveryCount).show()
 					$('.delivery_load_alert_' + deliveryCount).html(data);
 				
 					},
