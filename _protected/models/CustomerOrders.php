@@ -418,6 +418,11 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		$newOrder->Storage_Unit = $this->Storage_Unit;
 		$newOrder->Order_instructions = $this->Order_instructions;
 		
+		//force update from the latest information in the clients models
+		$newOrder->Feed_QOH_Tonnes = "";
+		$newOrder->Feed_Rate_Kg_Day = "";
+		$newOrder->Herd_Size = "";
+		
 		
 		if(!$newOrder->save())
 			{

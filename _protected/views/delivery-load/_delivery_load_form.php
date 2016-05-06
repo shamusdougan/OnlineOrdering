@@ -9,6 +9,7 @@ use app\models\Trailers;
 *	@var deliveryCount - the unique reference to this delivery load form on the page, usual numbers 1 -> x for each delivery load down the page.
 *   @var deliveryLoad - DeliveryLoad object being rendered in this page
 *	@var delivery_id - The Id of the parent delivery object
+*	@var readonly
 
 */
 
@@ -16,7 +17,7 @@ use app\models\Trailers;
 //This used bins array also need to exclude any bins that have been used by this deliveryLoad, this allows removing the trailer and readding in the same page
 //$usedBins = TrailerBins::getUsedBins($deliveryLoad->delivery_on, $delivery_id);
 
-	
+if(!isset($readonly)){ $readonly = false;}	
 
 ?>
 
@@ -27,9 +28,13 @@ use app\models\Trailers;
 			<b>Delivery Date: <?= date("d M Y" ,strtotime($deliveryLoad->delivery_on)) ?></b>	
 		</div>
 		<div style='width: 26px;  float: left; '>
+		<? if (!$readonly) { ?>
+			
+		
 		<a title='Remove Load'>
 			<div class='sap_icon_small sap_cross_small remove_delivery_load' delivery_count='<?= $deliveryCount ?>'></div>
 		</a>
+		<? } ?>
 		</div>
 	</div>
 	<div class='delivery_load_alert_<?= $deliveryCount ?>' style='padding-left: 5px;border-radius: 10px; box-shadow: 0 10px 6px -6px #777; width: 100%; background-color: #f96464; padding-left: 5px'>
@@ -47,6 +52,7 @@ use app\models\Trailers;
 				'deliveryCount' => $deliveryCount,
 				'truck' => $deliveryLoad->truck,
 				'truck_run_num' => $deliveryLoad->truck_run_num,
+				'readonly' => $readonly,
 		    	]);	
 			?>
 			
@@ -72,6 +78,7 @@ use app\models\Trailers;
 					'trailer_run_num' => $deliveryLoad->trailer1_run_num,
 					'usedBins' => $usedBins,
 					'selectedBins' => $deliveryLoad->getSelectedBins(),
+					'readonly' => $readonly,
 					]
 				
 			)
@@ -91,6 +98,7 @@ use app\models\Trailers;
 					'trailer_run_num' => $deliveryLoad->trailer2_run_num,
 					'usedBins' => $usedBins,
 					'selectedBins' => $deliveryLoad->getSelectedBins(),
+					'readonly' => $readonly,
 					]
 				
 			)

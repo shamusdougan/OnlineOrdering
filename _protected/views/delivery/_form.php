@@ -82,6 +82,10 @@ if(!isset($truckList)){ $truckList = array();}
 							'num_batches' =>
 	    						[
 	    						'type' => Form::INPUT_TEXT,
+	    						'options' =>
+	    							[
+	    							'readonly' => $model->isStatusCompleted(),
+	    							]
 	    						],
 	    					'batchSize' =>
 	    						[
@@ -97,9 +101,15 @@ if(!isset($truckList)){ $truckList = array();}
 			    				'widgetClass' => '\kartik\widgets\Select2',
 			    				'options'=>
 			    					[
+			    					'disabled' => $model->isStatusCompleted(),
 			    					'data'=>ProductsBins::getProductsBinsList(),
-			    					'options' => ['placeholder' => 'Select Bin', 'selected' => null,],
-
+			    					'options' => 
+			    						[
+			    						'placeholder' => 'Select Bin', 
+			    						'selected' => null,
+			    						
+			    						],
+									
 			    					],
 	    						]
 	    						
@@ -131,18 +141,12 @@ if(!isset($truckList)){ $truckList = array();}
 		    					
 									'type' => Form::INPUT_WIDGET,
 									'widgetClass' => DateControl::classname(),
-									//'placeholder' => "Requested Delivery Date...",
 									'options' =>
 										[
-										//'disabled' => true,
-										//'pluginEvents' =>
-										//	[
-										//	'changeDate' => "function(e) { clearAllLoads(); }",
-										//	]
+										'disabled' => $model->isStatusCompleted(),
 										],
 									'pluginOptions' =>
 											[
-											
 											'todayHighlight' => true,
 											],
 									],
@@ -186,6 +190,7 @@ if(!isset($truckList)){ $truckList = array();}
 						'deliveryCount' => $deliveryCount,
 						'deliveryLoad' => $deliveryLoad,
 						'delivery_id' => $model->id,
+						'readonly' => $model->isStatusCompleted(),
 						]);
 					$deliveryCount++;
 					}

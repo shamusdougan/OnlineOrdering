@@ -140,8 +140,7 @@ class CustomerOrderController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         		{
         		
-        		print_r($_POST);
-        		die();
+        	
         		
         		$get = Yii::$app->request->get();
         		if(isset($get['submitOrder']) && $get['submitOrder'] == true)
@@ -524,6 +523,7 @@ class CustomerOrderController extends Controller
 		        'storage' => $storageList,
 		        'Herd_Size' => $model->Herd_Size,
 		        'Feed_Rate_Kg_Day' => $model->Feed_Rate_Kg_Day,
+		        'Feed_QOH_Tonnes' => $model->getFeedQOH(),
 		    ]);
 		    }
 		else{
@@ -736,7 +736,7 @@ class CustomerOrderController extends Controller
 		else{
 			$newOrder = $order->copy();
 			
-			//print_r($newOrder);
+			//print_r($newOrder->attributes);
 			
 			return $this->redirect(['update', 'id' => $newOrder->id]);
 			//return $this->render('copy');

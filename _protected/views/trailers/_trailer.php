@@ -11,6 +11,7 @@ use yii\helpers\Html;
 	@var - deliveryCount			//The unique id of the deliveryLoad on the page
 	@var - usedBins					//a list of bins that have already been used not included the selected bins  array(trailerbin_id => bin_load)
 	@var - selectedBins				//a list of bins that has already selected for this array(trailerbin_id => bin_load)
+	@var - readonly
 */
 
 
@@ -19,7 +20,7 @@ use yii\helpers\Html;
 * 		Trailer Render for a given Trailer details
 * 
 */
-
+if(!isset($readonly)){ $readonly = false;}	
 if(isset($trailer) && !is_int($trailer)) { ?>
 
 
@@ -37,7 +38,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 		<b><?= $trailer->Registration ?> </b>
 		
 		<?
-		if(!count($usedBins))
+		if(!count($usedBins) && !$readonly)
 			{ ?>
 				
 			
@@ -69,7 +70,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 			<?= $trailer->Auger ? "Auger<br>" : "" ?>
 			<?= $trailer->Blower ? "Blower<br>" : "" ?>
 			<?= $trailer->Tipper ? "Tipper<br>" : "" ?>
-			Select All <input id='trailer_bin_select_all_<?= $trailer->id ?>' class='trailer_bin_select_all' trailer_id='<?= $trailer->id ?>' type='checkbox'>
+			Select All <input id='trailer_bin_select_all_<?= $trailer->id ?>' class='trailer_bin_select_all' trailer_id='<?= $trailer->id ?>' type='checkbox' <?= $readonly ? "disabled" : "" ?> >
 		
 		</div>
 		<div style='width: 75%; height: 100%; float: left'>
@@ -106,6 +107,7 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 								capacity='".$trailerBin->MaxCapacity."' 
 								name='deliveryLoadBins[".$deliveryCount."][bins][".$trailerBin->id."]' 
 								value='".$selectedBins[$trailerBin->id]."' 
+								".($readonly ? " disabled " : "")."
 								checked type='checkbox' />";		
 					echo "</div>";	
 					}
@@ -162,16 +164,21 @@ if(isset($trailer) && !is_int($trailer)) { ?>
 
 
 	<div class='trailer_empty_select'>
-		<div class='select_trailer_button' >
+		<? if(!$readonly) { ?>
+			<div class='select_trailer_button' >
+					
 				
+					 
 				
-			<a class='add_trailer_link' 
-				title='Add Trailer'
-				deliveryCount='<?= $deliveryCount ?>'
-				trailer_slot_num='<?= $trailer_slot_num ?>'
-				
-				><div class='sap_icon_large sap_new_truck'></div></a>
-		</div>
+				<a class='add_trailer_link' 
+					title='Add Trailer'
+					deliveryCount='<?= $deliveryCount ?>'
+					trailer_slot_num='<?= $trailer_slot_num ?>'
+					
+					><div class='sap_icon_large sap_new_truck'></div></a>
+			
+			</div>
+		<? } ?>
 	</div>
 
 

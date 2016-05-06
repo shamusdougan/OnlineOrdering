@@ -14,6 +14,7 @@ use app\models\Trailers;
 use app\models\TrailerBins;
 use app\models\WeighbridgeTicket;
 use app\models\returns;
+use app\models\Clients;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -1002,11 +1003,7 @@ class DeliveryController extends Controller
 		$model->setStatusCompleted();
 		
 		//When the delivery is set to complete also set the herd information details in the customer information
-		$model->customerOrder->client->Feed_QOH_Tonnes = $model->delivery_qty + $model->customerOrder->Feed_QOH_Tonnes - ($model->return ? $model->return->amount : 0);
-		$model->customerOrder->client->Feed_Rate_Kg_Day = $model->customerOrder->Feed_Rate_Kg_Day;
-		$model->customerOrder->client->Feed_QOH_Update = $model->delivery_on;
-		$model->customerOrder->client->Herd_Size = $model->customerOrder->Herd_Size;
-		$model->customerOrder->client->save();
+		Clients::updateFeedRates($model);
 		
 		
 		//also set the status of the order to completed
@@ -1028,16 +1025,16 @@ class DeliveryController extends Controller
 		$model = $this->findModel($id);
 		$model->setStatusLoaded();
 		
+		$lastDelivery = $model->customerOrder->client->getLastDelivery();
+		$model->customerOrder->client->updateFeedRates($lastDelivery);
+		
 		$model->customerOrder->Status = CustomerOrders::STATUS_DISPATCHED;
 		$model->customerOrder->save();
-		
-		
 		
 		if($model->return)
 			{
 			$model->return->delete();
 			}
-		
 		
         return $this->redirect(Url::to(['update', 'id' => $id]));
 	}

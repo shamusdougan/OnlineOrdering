@@ -8,6 +8,9 @@ use kartik\builder\Form;
 /* @var $this yii\web\View */
 /* @var $model app\models\trucks */
 /* @var $form yii\widgets\ActiveForm */
+
+
+
 ?>
 
 	<?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'truck-form']);

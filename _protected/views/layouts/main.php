@@ -19,7 +19,7 @@ $user = User::getCurrentUser();
 
 $items = [
 			['label' => 'Dashboard', 'icon' => 'home', 'url' => Url::toRoute('/'), 'active' => sideNavActive::widget(['controller' => "site"])],					
-			['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>sideNavActive::widget(['controller' => "clients"])],
+			['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>sideNavActive::widget(['controller' => "clients", "actions" => ["create", "update", "index"]])],
 		];
 		
 if(User::hasRole('sales'))
@@ -27,6 +27,7 @@ if(User::hasRole('sales'))
 	$items[] = ['label' => 'Sales', 'icon' => 'shopping-cart', 'items' => 
 					[
 					['label' => 'Customer Orders', 'icon' => 'file', 'url' => Url::toRoute(['/customer-order/index', 'CustomerOrdersSearch[Created_By]' => $user->id]), 'active'=>sideNavActive::widget(['controller' => "customer-order", 'actions' => ['index', 'create', 'update']])],
+					['label' => 'Anticipated Sales', 'icon' => 'usd', 'url' => Url::toRoute(['clients/anticipated-sales',]), 'active'=>sideNavActive::widget(['controller' => "clients", 'actions' => ['anticipated-sales']])],
 					]
 				];
 	}

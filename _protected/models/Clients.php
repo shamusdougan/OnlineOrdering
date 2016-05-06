@@ -115,6 +115,7 @@ class Clients extends \yii\db\ActiveRecord
     const SALES_STATUS_CURRENT = 1;
 	const SALES_STATUS_INTER = 2;
 	const SALES_STATUS_LOST = 3;
+	const SALES_STATUS_INACTIVE = 4;
 	
 	const STATUS_ACTIVE = 1;
 	const STATUS_INACTIVE = 0;
@@ -344,21 +345,156 @@ class Clients extends \yii\db\ActiveRecord
 	*/
 	public function getFeedDaysRemaining()
 	{
-		$feedDaysRemaining = 0;
+		$feed_QOH = $this->getFeedQOH(); // the current amount of feed right now base on system date
+		
+		
+		if($this->Herd_Size == 0)
+			{
+			return "Herd Size Not Set";
+			}
+		if($this->Feed_Rate_Kg_Day == 0)
+			{
+			return "Feed Rate Not Set";
+			}
+
+		//echo $feed_QOH." / ".$this->Herd_Size." * ".$this->Feed_Rate_Kg_Day." / 1000 <br>";
+		return floor($feed_QOH / ($this->Herd_Size * $this->Feed_Rate_Kg_Day / 1000));
+
+		
+	
+	}
+	
+	
+	
+	/**
+	* getFeedQOH
+	* 
+	* Description: this function calculates the Feed currently on hand based upon the Herd Size, Feed Rate per Day, and the updated time from the QOH
+	* If the Herd Size or the Feed Rate per day is 0 then simply return the QOH if the Late update of the QOH is in the future then grab the feed rate, qoh and herd numbers from the last
+	* order placed that was delivered
+	* 
+	* @return
+	*/
+	public function getFeedQOH()
+	{
 		$QOH_Update = new \DateTime($this->Feed_QOH_Update);
 		$currentDate = new \DateTime();
 		$daysDifference = (int)$currentDate->diff($QOH_Update)->format('%R%a');
 		
-		//If the last
-		if($daysDifference > 0)
+		//If the last known delivery date is in the future use the details from the last delivery before today
+		if($daysDifference > 0) // in the future
 			{
-			return "Unknown";
+			$lastDelivery = $this->getLastDeliveryBefore(time());
+			
+			//If there hasn't been a delivery before then return 0 Feed on hand
+			if(!$lastDelivery)
+				{
+				//echo $this->Feed_QOH_Tonnes."<br>";
+				return $this->Feed_QOH_Tonnes;
+				}
+			else{
+				$Feed_QOH_Tonnes = $lastDelivery->delivery_qty + $lastDelivery->customerOrder->Feed_QOH_Tonnes - ($lastDelivery->return ? $lastDelivery->return->amount : 0);
+				$Feed_Rate_Kg_Day = $lastDelivery->customerOrder->Feed_Rate_Kg_Day;
+				$Feed_QOH_Update = $lastDelivery->delivery_on;
+				$Herd_Size = $lastDelivery->customerOrder->Herd_Size;
+				$daysDifference = (int)$currentDate->diff($Feed_QOH_Update)->format('%R%a');
+				
+				//echo $Feed_QOH_Tonnes. " -(".$daysDifference." * ".$Herd_Size." * ".$Feed_Rate_Kg_Day." /1000) <br>";
+				return floor($Feed_QOH_Tonnes + ($daysDifference * $Herd_Size * $Feed_Rate_Kg_Day / 1000));
+				}
 			}
 		else{
-			//echo $this->Feed_QOH_Tonnes. " / -(".$daysDifference." * ".$this->Herd_Size." * ".$this->Feed_Rate_Kg_Day." /1000) <br>";
-			return floor($this->Feed_QOH_Tonnes / -($daysDifference * $this->Herd_Size * $this->Feed_Rate_Kg_Day / 1000));
+			//echo $this->Feed_QOH_Tonnes. " -(".$daysDifference." * ".$this->Herd_Size." * ".$this->Feed_Rate_Kg_Day." /1000) <br>";
+			return floor($this->Feed_QOH_Tonnes + ($daysDifference * $this->Herd_Size * $this->Feed_Rate_Kg_Day / 1000));
 		}
-		
 	}
 	
+	public function getLastDelivery()
+	{
+		
+		return Delivery::find()
+					->joinWith('customerOrder')
+					->where(['Customer_id' => $this->id, Delivery::tablename().'.status' => Delivery::STATUS_COMPLETED])
+					->orderBy(Delivery::tablename().'.delivery_on DESC')
+					->one();
+					
+					
+	}
+
+
+	public function getLastDeliveryBefore($date)
+	{
+		
+		$lastDelivery = Delivery::find()
+					->joinWith('customerOrder')
+					->where(['Customer_id' => $this->id, Delivery::tablename().'.status' => Delivery::STATUS_COMPLETED])
+					->andWhere(Delivery::tablename().'.delivery_on < '.date("Y-m-d", $date))
+					->orderBy(Delivery::tablename().'.delivery_on DESC')
+					->one();
+	}
+
+
+	public function updateFeedRates($delivery)
+	{
+		//If there is no delivery then dont do anything
+		if($delivery)
+			{
+			$delivery->customerOrder->client->Feed_QOH_Tonnes = $delivery->delivery_qty + $delivery->customerOrder->Feed_QOH_Tonnes - ($delivery->return ? $delivery->return->amount : 0);
+			$delivery->customerOrder->client->Feed_Rate_Kg_Day = $delivery->customerOrder->Feed_Rate_Kg_Day;
+			$delivery->customerOrder->client->Feed_QOH_Update = $delivery->delivery_on;
+			$delivery->customerOrder->client->Herd_Size = $delivery->customerOrder->Herd_Size;
+			$delivery->customerOrder->client->save();	
+			}
+	}
+
+	public function getAnticipatedSales($user_id = null)
+	{
+		
+		//Get the list of clients
+		if($user_id != null)
+			{
+			$clientsList = Clients::find()
+						->where(['Owner_id' => $user_id, 'Is_Customer' => true])
+						->andWhere(['in', 'Sales_Status', [Clients::SALES_STATUS_CURRENT, Clients::SALES_STATUS_INTER]])
+						->select(['id', 'Company_Name', 'Account_Number', 'Feed_QOH_Tonnes', 'Feed_QOH_Update', 'Feed_Rate_Kg_Day', 'Herd_Size'])
+
+						->all();
+			}
+		else{
+			$clientsList = Clients::find()
+						->where(['Is_Customer' => 1, 'Credit_Hold' => false])
+						->andWhere(['in', 'Sales_Status', [Clients::SALES_STATUS_CURRENT, Clients::SALES_STATUS_INTER]])
+						->select(['Feed_QOH_Tonnes', 'Feed_QOH_Update', 'Feed_Rate_Kg_Day', 'Herd_Size'])
+
+						->all();
+			}		
+		
+		$salesArray = array();
+		foreach($clientsList as $client)
+			{
+			$salesArray[$client->id] = [
+					'id' => $client->id,
+					'Company_Name' => $client->Company_Name, 
+					'Account_Number' => $client->Account_Number, 
+					'Feed_QOH_Tonnes' => $client->getFeedQOH(),
+					'Herd_Size' => $client->Herd_Size,
+					'Feed_Rate_Kg_Day' => $client->Feed_Rate_Kg_Day,
+					'Feed_Days_Remaining' => $client->getFeedDaysRemaining()
+					];
+			}
+		
+		foreach ($salesArray as $key => $row) 
+			{
+		    $Feed_Days_Remaining[$key]  = $row['Feed_Days_Remaining'];
+			}
+			
+		asort($Feed_Days_Remaining, SORT_NUMERIC );
+			
+		array_multisort($Feed_Days_Remaining, SORT_ASC, $salesArray);
+		
+		return $salesArray;
+	}
+
+	
 }
+

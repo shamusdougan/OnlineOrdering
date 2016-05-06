@@ -25,7 +25,7 @@ use kartik\widgets\datePicker;
 
 <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id'=>'client_edit_form'] ); 
 
-
+ //echo $model->getFeedQOH();
  $companyInfo = Form::widget([
     	'model'=>$model,
     	'form'=>$form,

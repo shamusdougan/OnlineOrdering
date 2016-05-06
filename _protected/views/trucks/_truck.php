@@ -8,7 +8,7 @@
 */
 
 
-
+if(!isset($readonly)){ $readonly = false;}	
 
 
 if($truck == null || is_int($truck)) { ?>
@@ -36,7 +36,9 @@ if($truck == null || is_int($truck)) { ?>
 				<?= $truck->getTruckTypeString()?>
 			</div>
 			<div style='width: 30px; height:100%; float: left'>
-				<div class='sap_icon_small sap_cross_small remove_delivery_load_truck' deliveryCount='<?= $deliveryCount ?>'></div>
+				<? if (!$readonly) { ?>
+					<div class='sap_icon_small sap_cross_small remove_delivery_load_truck' deliveryCount='<?= $deliveryCount ?>'></div>
+				<? } ?>
 			</div>
 			<div style='width: 100%; height: 20px; float: left;'><b>
 			<? if($truck_run_num == 2 ) 

@@ -23,7 +23,7 @@ $this->registerJs(
     "$(document).on('click', '.order-view-link', function() 
     	{
     	order_id = $(this).closest('tr').data('key')	
-    	window.open('".yii\helpers\Url::toRoute("customer-order/update")."?id=' + order_id);
+    	window.open('".yii\helpers\Url::toRoute("/customer-order/update")."?id=' + order_id);
 		
 		});
 	"

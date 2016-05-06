@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use webvimark\modules\UserManagement\models\User;
 use app\models\ImportFunctions;
+use yii\data\ArrayDataProvider;
 
 
 /**
@@ -218,10 +219,51 @@ class ClientsController extends Controller
 						'importModel' => $importModel,
 						'actionItems' => $actionItems,
 						]);
-						
-		
-		
+
 	}
+	
+	
+	
+	public function actionAnticipatedSales()
+	{
+		$user = User::getCurrentUser();
+		
+		$salesArray = clients::getAnticipatedSales($user->id);
+		$dataProvider = new ArrayDataProvider([
+			'allModels' => $salesArray,
+			'sort' => [
+				'attributes' => 
+					[
+					'Company_Name', 
+					'Account_Number', 
+					'Feed_QOH_Tonnes',
+					'Herd_Size',
+					'Feed_Rate_Kg_Day',
+					'Feed_Days_Remaining',
+					],
+				],
+			'pagination' => 
+			 	[
+		        'pageSize' => 20,
+		    	],
+			]);
+			
+			
+		//print_r($dataProvider);
+		//$dataProvider->setSort(['defaultOrder' => ['Feed_Days_Remaining' => SORT_DESC]]);
+		
+		return $this->render('anticipatedSales',
+			[
+			'user' => $user,
+			'dataProvider' => $dataProvider,
+			]
+			
+			
+		);
+	}
+	
+	
+	
 
     /**
      * Finds the clients model based on its primary key value.

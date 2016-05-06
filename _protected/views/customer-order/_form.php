@@ -228,16 +228,21 @@ function updateOrderDetails()
            	
            	Feed_Rate_Input = $('#".Html::getInputId($model, 'Feed_Rate_Kg_Day')."');
            	Herd_Size_Input = $('#".Html::getInputId($model, 'Herd_Size')."');
+           	QOH_input = $('#".Html::getInputId($model, 'Feed_QOH_Tonnes')."');
            	if(Feed_Rate_Input.val() == '' || Feed_Rate_Input.val() == null)
            		{
-				Herd_Size_Input.val(data.Feed_Rate_Kg_Day);
+				Herd_Size_Input.val(data.Herd_Size);
 				}
 				
 			if(Feed_Rate_Input.val() == '' || Feed_Rate_Input.val() == null)
 				{
 				Feed_Rate_Input.val(data.Feed_Rate_Kg_Day);
 				}
-          	
+			if(QOH_input.val() == '' || QOH_input.val() == null)
+				{
+				QOH_input.val(data.Feed_QOH_Tonnes);
+				}	
+          	updateFeedDetails();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('An error occured!');
@@ -288,7 +293,7 @@ function updateFeedDetails()
 	else{
 		OrderQty = 0;
 		}
-		
+	
 	if(Herd_Size == 0 || Feed_Rate == 0)	
 		{
 		Feed_Days_Remaining.val(0);	
@@ -540,6 +545,7 @@ $( document ).ready(function() {
     updateOrderDetails();
     updateOrderCosts();
 	getIngredientSum();
+	
 });
 
 ");
