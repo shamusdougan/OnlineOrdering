@@ -262,6 +262,37 @@ class ClientsController extends Controller
 		);
 	}
 	
+	public function actionDailySalesFigures()
+		{
+			
+			$salesFigures = Clients::getDailySalesFigures();
+			
+			$dataProvider = new ArrayDataProvider([
+						    'allModels' => $salesFigures,
+						    'sort' => 
+						    	[
+						        'attributes' => 
+						        	[
+						        	'client_name', 'ordered', 'dispatched', 'returned', 'difference',
+						   			],
+						   		],
+						    'pagination' => 
+						    	[
+						        'pageSize' => 20,
+						    	],
+							]);
+
+			
+			
+			return $this->render('daily-sales-figures',
+				[
+				'dataProvider' => $dataProvider,
+				
+				]
+			
+			);
+		}
+		
 	
 	
 

@@ -51,7 +51,7 @@ if(User::hasRole('accounts'))
 	$items[] = ['label' => 'Accounts', 'icon' => 'usd', 'items' => 
 		[
 			['label' => 'Price Lists', 'icon' => 'file', 'url' => Url::toRoute('/product/update-pricing'), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['update-pricing'] ])],
-		
+			['label' => 'Daily Sales Figures', 'icon' => 'usd', 'url' => Url::toRoute('/clients/daily-sales-figures'), 'active'=>sideNavActive::widget(['controller' => "clients", 'actions' => ['daily-sales-figures'] ])],
 		
 		
 		]];

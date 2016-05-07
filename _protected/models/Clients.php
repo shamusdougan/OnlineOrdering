@@ -495,6 +495,54 @@ class Clients extends \yii\db\ActiveRecord
 		return $salesArray;
 	}
 
+
+
+	public function getDailySalesFigures()
+	{
+		$testDate = mktime(0,0,0,5,26,2016);
+		$orderList = CustomerOrders::find()
+						->joinWith('delivery')
+						->where(['delivery_on' => date('Y-m-d', $testDate)])
+						->all();
+			
+		$salesArray = array();			
+		foreach($orderList as $order)
+			{
+				
+			$ordered = $order->Qty_Tonnes;
+			$dispatched =  $order->delivery->weighbridgeTicket->net;
+			if($order->delivery->return)
+				{
+				$returned = $order->delivery->return->amount;
+				}
+			else{
+				$returned = 0;	
+				}
+			
+				
+			if(array_key_exists($order->Customer_id, $salesArray))
+				{
+				$salesArray[$order->Customer_id]['ordered'] += $ordered;
+				$salesArray[$order->Customer_id]['dispatched'] += $dispatched;
+				$salesArray[$order->Customer_id]['returned'] += $returned;
+				$salesArray[$order->Customer_id]['difference'] = $salesArray[$order->Customer_id]['ordered'] - ($salesArray[$order->Customer_id]['dispatched'] + $salesArray[$order->Customer_id]['returned']);
+				}
+			else{
+				$salesArray[$order->Customer_id] = array(
+						'id' => $order->Customer_id,
+						'client_name' => $order->client->Company_Name,
+						'ordered' => $ordered,
+						'dispatched' => $dispatched,
+						'returned' => $returned,
+						'difference' => $ordered - ($dispatched + $returned),
+						);
+				}
+			
+			}
+			
+		return $salesArray;
+						
+	}
 	
 }
 

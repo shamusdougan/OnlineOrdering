@@ -1,2 +1,0 @@
-CLIENT_STATUS => Inactive code = 4 
-UPDATE `irwinstockfeeds`.`clients` SET `Feed_QOH_Update` = NULL WHERE `Feed_QOH_Update` = '0000-00-00';
