@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use app\models\CustomerOrders;
 use vendor\actionButtons\actionButtonsWidget;
+use vendor\orderState\orderStateWidget;
 use app\models\Lookup;
 
 
@@ -19,13 +20,14 @@ else{
 
 
 $this->title = 'Customer Order: ' . ' ' . $title . ($model->isActive() ? "" : "(". Lookup::item($model->Status, "ORDER_STATUS").") ");
-$this->params['breadcrumbs'][] = ['label' => 'Customer Orders', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update', 'id' => $model->id]];
+//$this->params['breadcrumbs'][] = ['label' => 'Customer Orders', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->Order_ID, 'url' => ['update', 'id' => $model->id]];
 
 ?>
 <div class="customer-orders-update">
 
-	 <?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
+	<?= orderStateWidget::widget(['object' => $model]) ?>
+	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
 

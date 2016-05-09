@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use vendor\orderState\orderStateWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\WeighbridgeTicket */

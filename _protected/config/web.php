@@ -4,7 +4,8 @@ $params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'basic',
-    'name' => 'My Company',
+    'name' => 'Irwin Stockfeeds',
+    //'ver' => '1.0.3',
     //'language' => 'sr',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],

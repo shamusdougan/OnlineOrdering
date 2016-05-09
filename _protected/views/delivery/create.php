@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use vendor\actionButtons\actionButtonsWidget;
+use vendor\orderState\orderStateWidget;
 
 
 /* @var $this yii\web\View */
@@ -15,11 +16,12 @@ if(isset($model->order_id))
 
 
 
-$this->params['breadcrumbs'][] = ['label' => 'Deliveries', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = ['label' => 'Deliveries', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="delivery-create">
 
+	<?= orderStateWidget::widget(['object' => $model]) ?>
 	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?>
     <h1><?= Html::encode($this->title) ?></h1>
 

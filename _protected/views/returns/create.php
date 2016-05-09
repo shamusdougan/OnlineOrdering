@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use vendor\actionButtons\actionButtonsWidget;
+use vendor\orderState\orderStateWidget;
 
 
 /* @var $this yii\web\View */
@@ -9,11 +10,12 @@ use vendor\actionButtons\actionButtonsWidget;
 /* @var $actionItems  */
 
 $this->title = 'Create Return';
-$this->params['breadcrumbs'][] = ['label' => 'Returns', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = ['label' => 'Returns', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="returns-create">
 
+	<?= orderStateWidget::widget(['object' => $model]) ?>
 	<?= actionButtonsWidget::widget(['items' => $actionItems]) ?> 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Delivery;
+use app\models\Clients;
+use app\models\CustomerOrders;
 
 /**
  * ReturnsController implements the CRUD actions for Returns model.
@@ -81,6 +83,14 @@ class ReturnsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
             $delivery->setStatusCompleted();
+            
+            Clients::updateFeedRates($delivery);
+		
+		
+			//also set the status of the order to completed
+			$delivery->customerOrder->Status = CustomerOrders::STATUS_COMPLETED;
+			$delivery->customerOrder->save();
+            
             
             //To set the correct ID;
             $model->save();
