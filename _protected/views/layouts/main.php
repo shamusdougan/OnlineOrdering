@@ -155,7 +155,7 @@ $items[] = ['label' => 'Logout', 'icon' => 'off', 'url' => Url::toRoute('site/lo
     <footer class="footer">
         <div class="container">
         <p class="pull-left">&copy; <?= Yii::t('app', Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="pull-right">Powered By: Sapient Technology Solutions, Ver 1.0.4</p>
+        <p class="pull-right">Powered By: Sapient Technology Solutions, Ver 1.0.5</p>
         </div>
     </footer>
 
