@@ -105,13 +105,18 @@ class Delivery extends \yii\db\ActiveRecord
 				return;
 				}
 			
-  			$order_size = $this->customerOrder->Qty_Tonnes;
+  			$order_size = $this->delivery_qty;
   			$batch_size = $order_size / $this->num_batches;
   			if($batch_size > Delivery::MAX_BATCH_SIZE)
   				{
 				$this->addError($attribute,'The Batch Size must be less than '.Delivery::MAX_BATCH_SIZE.'T');
 				}
-  			//$number_of_batches = ceil($order_size / $maximum_batch_size);
+  			
+  			
+  			
+  			
+  			
+  			
 
 		}
     
@@ -208,32 +213,27 @@ class Delivery extends \yii\db\ActiveRecord
 	* 
 	* @return
 	*/
-	public function updateDeliveryQty()
+	public function getAllocatedQty()
 	{
-	$this->delivery_qty = 0;
+	$allocated = 0;
 	
-	echo "updating delivery Load <br>";
+	//echo "Calculating Allocated Load<br>";
 		
 	foreach($this->deliveryLoad as $deliveryLoad)
 		{
 		$deliveryLoad->updateLoadQty();
-		echo "Delivery Load: ".$deliveryLoad->id." = ".$deliveryLoad->load_qty."<br>";
+		//echo "Delivery Load: ".$deliveryLoad->id." = ".$deliveryLoad->load_qty."<br>";
 		
-		$this->delivery_qty += $deliveryLoad->load_qty;
+		$allocated += $deliveryLoad->load_qty;
 		}
 	
-	$this->save();
+	return $allocated;
 	}
 	
 	
 	public function isFullyAllocated()
 	{
-		
-		
-		
-		return ($this->delivery_qty == $this->customerOrder->Qty_Tonnes);
-		
-		
+		return ($this->delivery_qty == $this->getAllocatedQty());
 	}
 	/**
 	* 

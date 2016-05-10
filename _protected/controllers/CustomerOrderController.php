@@ -173,7 +173,8 @@ class CustomerOrderController extends Controller
 					{
 					$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
 					$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
-					$actionItems[] = ['label'=>'Print', 'button' => 'print', 'url'=>null];	
+					$actionItems[] = ['label'=>'Print', 'button' => 'print', 'print_url'=>'customer-order/print?id='.$model->id.'&autoPrint=1'];	
+						
 					}
 				$model->clearErrors();
 				$readOnly = false;
@@ -181,7 +182,8 @@ class CustomerOrderController extends Controller
 			else{
 				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index'];
 				$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
-				$actionItems[] = ['label'=>'Print', 'button' => 'print', 'url'=>null];
+				$actionItems[] = ['label'=>'Print', 'button' => 'print', 'print_url'=>'/customer-order/print?id='.$model->id.'&autoPrint=1'];
+				
 			}
 			
         	
@@ -781,6 +783,7 @@ class CustomerOrderController extends Controller
  	return $pdf->render(); 
 
 	}
+
 
 	
 }

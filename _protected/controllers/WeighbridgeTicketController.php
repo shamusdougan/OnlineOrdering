@@ -197,7 +197,7 @@ class WeighbridgeTicketController extends Controller
             
         	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 			$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/weighbridge-ticket/update?id='.$model->id.'&exit=false', 'submit' => 'weighbridge-form', 'confirm' => 'Save Delivery?']; 
-			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'weighbridge-form', 'confirm' => 'Save and Exit Delivery?']; 
+			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'weighbridge-form', 'confirm' => 'Save and Exit Ticket?']; 
 			$actionItems[] = ['label'=>'Print Ticket', 'button' => 'print', 'url'=> null,]; 
             
             
@@ -293,12 +293,20 @@ class WeighbridgeTicketController extends Controller
 		if($delivery_id != null){
 			$delivery =  Delivery::findOne($delivery_id);
 			
-			
+			if(!$delivery->deliveryLoad[0]->truck)
+				{
+				$truck = "NONE";
+				$truck_id = null;
+				}
+			else{
+				$truck = $delivery->deliveryLoad[0]->truck->registration;
+				$truck_id = $delivery->deliveryLoad[0]->truck->id;
+			}
 			
 	    	return \yii\helpers\Json::encode([
 	    		'date' => $delivery->delivery_on,
-		        'truck'=> $delivery->deliveryLoad[0]->truck->registration,
-		        'truck_id'=> $delivery->deliveryLoad[0]->truck->id,
+		        'truck'=> $truck,
+		        'truck_id'=> $truck_id,
 		       	'address' => $delivery->customerOrder->client->Address_1,
 		       	'orderinfo' => $delivery->customerOrder->Order_instructions,
 		       	'nearest_town' => $delivery->customerOrder->client->Nearest_Town,

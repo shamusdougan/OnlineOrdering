@@ -94,6 +94,7 @@ $this->registerJs("$('.sap_print').on('click',function(){
        <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'weighbridge-form']); 
        
        
+	    echo $form->errorSummary($model); 
 		echo $form->field($model, 'ticket_number',  ['template' => '{input}'])->hiddenInput()->label(false);
 		//echo $form->field($model, 'date',  ['template' => '{input}'])->hiddenInput()->label(false);
        echo $form->field($model, 'date', ['template' => '{input}'])->hiddenInput()->label(false);

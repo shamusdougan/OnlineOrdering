@@ -113,7 +113,7 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 	public function updateLoadQty()
 	{
 		$this->load_qty = 0;
-		foreach($this->deliveryLoadBin as $bin)
+		foreach($this->bins as $bin)
 			{
 			$this->load_qty += $bin->bin_load;
 			}

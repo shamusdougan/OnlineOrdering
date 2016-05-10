@@ -76,9 +76,17 @@ if(!isset($truckList)){ $truckList = array();}
 						'model'=>$model,
 						'form'=>$form,
 					
-						'columns'=>3,
+						'columns'=>4,
 						'attributes' =>
-							[    
+							[  
+							'delivery_qty' =>
+								[
+								'type' => Form::INPUT_TEXT,
+								'options' =>
+	    							[
+	    							'readonly' => $model->isStatusCompleted(),
+	    							]
+								],
 							'num_batches' =>
 	    						[
 	    						'type' => Form::INPUT_TEXT,
@@ -159,7 +167,7 @@ if(!isset($truckList)){ $truckList = array();}
 				</div>
 				<div class='col-sm-4'>
 					<font size='+3'>Remaining Tons: <span id='remaining_tonnes'></span></font>
-					<?= $form->field($model, 'delivery_qty', ['template' => '{input}'])->hiddenInput()->label(false); ?>
+					
 
 				</div>
 			</div>
@@ -167,14 +175,18 @@ if(!isset($truckList)){ $truckList = array();}
 		
 		
 		<div style='width: 100%; border: 1px solid'>
-			<div style='width:500px; margin: auto; height: 30px; padding-left: 10px; padding-top: 2px;'>
-				Select Fill Method 
-				<select id='fill_method'>
-					<option value='fill_on_selection'>Fill Bin On Selection</option>
-					<option value='select_first'>Select Bins First then Allocate</option>
-				</select>
-				<button id='fill_selected_bins' hidden>Fill Selected Bins</button>
-			</div>
+			<?
+			if(!$model->isStatusCompleted()) { ?>
+				
+				<div style='width:500px; margin: auto; height: 30px; padding-left: 10px; padding-top: 2px;'>
+					Select Fill Method 
+					<select id='fill_method'>
+						<option value='fill_on_selection'>Fill Bin On Selection</option>
+						<option value='select_first' SELECTED>Select Bins First then Allocate</option>
+					</select>
+					<button id='fill_selected_bins' >Fill Selected Bins</button>
+				</div>
+			<? } ?>
 			
 			
 			
@@ -260,7 +272,7 @@ $this->registerJs("
 $this->registerJs("function updateOrderRemaining()
 {
 	allocatedQty = 0
-	orderQty = parseFloat($('#orderdetails-orderQTY').val());
+	orderQty =$('#".Html::getInputId($model, 'delivery_qty')."').val();
 	
 	$('.trailer_bin_checkbox').each(function() {
     			if(this.checked)
@@ -270,7 +282,6 @@ $this->registerJs("function updateOrderRemaining()
 				});
 				
 	remainingQty = 	Math.round(orderQty - allocatedQty);
-	$('#".Html::getInputId($model, 'delivery_qty')."').val(allocatedQty);
 	$('#remaining_tonnes').html(remainingQty);
 	
 	
@@ -301,7 +312,24 @@ $this->registerJs("function updateOrderRemaining()
 	
 }
 ");
+/***********************************************************************
+* 
+* Delivery Quantity changes to the form
+* 
+***********************************************************************/
 
+
+//if the ammount of the delivery is changed then reset the form to empty everything
+$this->registerJs("$('#".Html::getInputId($model, 'delivery_qty')."').on('change', function()
+		{
+		delivery_qty = $('#".Html::getInputId($model, 'delivery_qty')."').val();
+		
+		updateBatchSize();
+		clearBinSelection();
+		$('#remaining_tonnes').html(delivery_qty);
+		});
+
+");
 
 $this->registerJs("$(document).on('click', '.trailer_bin_checkbox', function()  
  		{
@@ -475,7 +503,7 @@ $this->registerJs("$(document).on('click', '#fill_selected_bins', function(event
 			event.preventDefault(); 
 			
 			//Get the order amount in the order
-			orderQty = parseFloat($('#orderdetails-orderQTY').val());
+			orderQty = $('#".Html::getInputId($model, 'delivery_qty')."').val();
 			
 			//go through each of the checkboxes and check how much has been allocated, need to make sure that
 			// there is enough room for the order. If there is more room then needed then it will spread the order out across
@@ -1077,17 +1105,20 @@ function renderTruck(deliveryCount, truck_id, truck_run_num)
 
 $this->registerJs("$('#".Html::getInputId($model, 'num_batches')."').on('change', function()
 		{
-		var num_batches = parseFloat($(this).val());
-		var	orderQty = parseFloat($('#orderdetails-orderQTY').val());
-
-
-		var batchSize = (orderQty / num_batches).toFixed(3);;
-		$('#".Html::getInputId($model, 'batchSize')."').val(batchSize)
-	
-		
+		updateBatchSize();
 		});
 
+	function updateBatchSize()
+		{
+		var num_batches = parseFloat($('#".Html::getInputId($model, 'num_batches')."').val());
+		var	orderQty = $('#".Html::getInputId($model, 'delivery_qty')."').val();
+		var batchSize = (orderQty / num_batches).toFixed(3);;
+		$('#".Html::getInputId($model, 'batchSize')."').val(batchSize)
+		};
+
 ");
+
+
 
 
 

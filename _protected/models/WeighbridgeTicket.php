@@ -37,7 +37,8 @@ class WeighbridgeTicket extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['delivery_id', 'gross', 'tare', 'net', 'ticket_number', 'driver'], 'required'],
+            [['delivery_id', 'gross', 'tare', 'net', 'ticket_number', 'driver', ], 'required'],
+            [['truck_id'], 'required', 'message' => "No Truck Allocated for Weighbridge Ticket"],
             [['delivery_id', 'truck_id', 'smo_number'], 'integer'],
             [['date', 'ticket_number'], 'safe'],
             [['gross', 'tare', 'net', 'Moisture', 'Protein', 'testWeight', 'screenings'], 'number'],

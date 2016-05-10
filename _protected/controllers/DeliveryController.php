@@ -187,7 +187,8 @@ class DeliveryController extends Controller
 			//prepopulate the field in the model
 			else{
 				$model->order_id = $order_id;
-				$model->num_batches = $model->calculateBatchSize($order->Qty_Tonnes);
+				$model->delivery_qty = $order->Qty_Tonnes;
+				$model->num_batches = $model->calculateBatchSize($model->delivery_qty);
 				}
    			} 
    		else{
@@ -223,13 +224,14 @@ class DeliveryController extends Controller
     {
     $model = $this->findModel($id);
     
-    
-    
-    
+   
 	//form has been submitted save the form accordingly
      if ($model->load(Yii::$app->request->post()) && $model->save()) 
         	{
         		
+        		
+        
+        	
         	//create the Delivery Name other attributes already loaded such as the delivery date
         	$model->Name = Delivery::generateName($model->id); 
         	$model->status = Delivery::STATUS_INPROGRESS;
@@ -253,7 +255,7 @@ class DeliveryController extends Controller
 					$deliveryLoadObject->delivery_id = $model->id;
 					$deliveryLoadObject->save();
 					//first check that bins have been selected for that load - can have a case where there are none selected
-					if(array_key_exists($deliveryCount, $deliveryLoadBins))
+					if(is_array($deliveryLoadBins) && array_key_exists($deliveryCount, $deliveryLoadBins))
 						{
 						foreach($deliveryLoadBins[$deliveryCount]['bins'] as $bin_id => $loadValue)
 							{
@@ -312,6 +314,7 @@ class DeliveryController extends Controller
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
 		$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id."&autoPrint=1"]; 
+		$actionItems[] = ['label'=>'Labels', 'button' => 'print', 'print_url'=>'/delivery/print-label?id='.$model->id.'&autoPrint=1' ];
 		if($model->hasWeighbridgeTicket())
 			{
 			$actionItems[] = ['label'=>'Weigh Ticket', 'button' => 'tags', 'url'=> '/weighbridge-ticket/update?id='.$model->weighbridgeTicket->id]; 		
@@ -1038,6 +1041,41 @@ class DeliveryController extends Controller
 		
         return $this->redirect(Url::to(['update', 'id' => $id]));
 	}
+	
+	
+	
+public function actionPrintLabel($id)
+	{
+		
+	$delivery = Delivery::findOne($id);
+	
+	$content = $this->renderPartial("_label", [
+			'delivery' => $delivery,
+
+			
+			]);
+		
+		
+	$pdf = new Pdf([
+		'content' => $content,  
+		//'destination' => Pdf::DEST_FILE, 
+		//'filename' => 'c:\temp\test.pdf',
+		'format' => [50, 100], 
+ 		'destination' => Pdf::DEST_BROWSER, 
+		'options' => ['title' => 'Customer Order'],
+		'marginLeft' => '3',
+		'marginRight' => '3',
+		'marginTop' => '3',
+		'marginBottom' => '3',
+		
+	
+    	]);
+
+	
+ 	return $pdf->render(); 
+
+	}
+
 }
 
     
