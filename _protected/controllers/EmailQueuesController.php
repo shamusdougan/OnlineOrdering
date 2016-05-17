@@ -37,7 +37,7 @@ class EmailQueuesController extends Controller
     {
         $searchModel = new emailQueueSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-  		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> 'create'];
+  		$actionItems[] = ['label'=>'Send All', 'button' => 'export', 'url'=> 'flush-queue'];
   		
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -158,7 +158,7 @@ class EmailQueuesController extends Controller
 		{
 			Yii::$app->session->setFlash('error', $result);		
 		}
-			
+		
 		
 		return $this->redirect(['index']);
 	}
@@ -179,4 +179,20 @@ class EmailQueuesController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    
+    public function actionFlushQueue()
+    {
+		$emails = EmailQueue::find()->All();
+		foreach($emails as $emailMessage)
+			{
+			$emailMessage->send();
+			}
+		
+		
+		
+		
+		return $this->redirect(['index']);
+	}
 }

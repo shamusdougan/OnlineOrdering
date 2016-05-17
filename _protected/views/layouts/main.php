@@ -77,7 +77,7 @@ if(User::hasRole('Admin'))
 		['label' => 'User Permissions', 'url' => Url::toRoute('/user-management/permission'), 'active'=> sideNavActive::widget(['controller' => "permission"])], 
 		['label' => 'User Roles', 'url' => Url::toRoute('/user-management/role'), 'active'=> sideNavActive::widget(['controller' => "role"])], 
 		['label' => 'User Groups', 'url' => Url::toRoute('/user-management/auth-item-group'), 'active'=> sideNavActive::widget(['controller' => "auth-item-group"])], 
-		['label' => 'Email Queue', 'url' => Url::toRoute('/email-queue/index'), 'active'=> sideNavActive::widget(['controller' => "email-queues"])], 
+		['label' => 'Email Queue', 'url' => Url::toRoute('/email-queues/index'), 'active'=> sideNavActive::widget(['controller' => "email-queues"])], 
 		
 
 		]];
@@ -156,7 +156,7 @@ $items[] = ['label' => 'Logout', 'icon' => 'off', 'url' => Url::toRoute('site/lo
     <footer class="footer">
         <div class="container">
         <p class="pull-left">&copy; <?= Yii::t('app', Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="pull-right">Powered By: Sapient Technology Solutions, Ver 1.0.5</p>
+        <p class="pull-right">Powered By: Sapient Technology Solutions, Ver 1.0.6</p>
         </div>
     </footer>
 

@@ -331,8 +331,8 @@ class CustomerOrders extends \yii\db\ActiveRecord
    {
    	$this->Status = CustomerOrders::STATUS_SUBMITTED;
    	
+   	$this->emailOrder();
    	
-   	echo "hello world";
    	
    	
    	$this->save();
@@ -507,7 +507,7 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	
 	$email = new EmailQueue();
 	$email->from = 'crmadmin@irwinstockfeeds.com.au';
-	$email->to = 'shamus.dougan@sapient-tech.com.au';
+	$email->to = 'crmadmin@irwinstockfeeds.com.au';
 	$email->subject = "New Order ".$this->Order_ID;
 	$email->htmlBody = 'New Order Created';
 	$email->attachment1 = $this->pdfString();

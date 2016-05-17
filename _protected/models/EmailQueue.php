@@ -66,7 +66,6 @@ class EmailQueue extends \yii\db\ActiveRecord
     {
 		$message = Yii::$app->mailer->compose()
 		    ->setFrom($this->from)
-		    //->setTo('crmadmin@irwinstockfeeds.com.au')
 		    ->setTo($this->to)
 		    ->setSubject($this->subject)
 		    ->sethtmlBody($this->htmlBody);
@@ -75,9 +74,13 @@ class EmailQueue extends \yii\db\ActiveRecord
 			$message->attachContent($this->attachment1, ['fileName' => $this->attachment1_filename, 'contentType' => $this->attachment1_type]);
 			}
 		    
-		$message->send();
+		if(!$message->send())
+			{
+			return "Error Sending Email , Subject: "	.$this->subject;
+			}
 		
-		
+		$this->delete();
+		return;
 		
 		
 	}

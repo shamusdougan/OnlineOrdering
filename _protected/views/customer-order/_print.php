@@ -16,13 +16,13 @@
 			<td width='25%'><b>Customer:</b></td>
 			<td width='25%'><?= $order->client->Company_Name ?></td>
 			<td width='25%'><b>Currently Milking:</b></td>
-			<td width='25%'><? echo " XX " ?></td>
+			<td width='25%'><?= $order->Herd_Size ?></td>
 		</tr>
 		<tr>
 			<td width='25%' valign='top' rowspan='3'><b>Location:</b></td>
 			<td width='25%' valign='top' rowspan='3'><?= $order->client->Address_1 ?></td>
-			<td width='25%' valign='top'><b>CurrentlyFeed Rate:</b></td>
-			<td width='25%' valign='top'><? echo " XX " ?></td>
+			<td width='25%' valign='top'><b>Current Feed Rate:</b></td>
+			<td width='25%' valign='top'><?= $order->Feed_Rate_Kg_Day ?></td>
 		</tr>
 		<tr>
 
