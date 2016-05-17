@@ -24,6 +24,32 @@ $gridColumns = [
 			'width' => '100px',
     		],
             'Description',
+            [
+            'attribute' => 'default_truck_id',
+            'value' => function ($data)
+            	{
+					if($data->defaultTruck)
+						{
+						return $data->defaultTruck->registration;
+						}
+				},
+			'label' => 'Truck',
+			
+            
+            ],
+            
+            [
+            'attribute' => 'default_trailer_pair_id',
+            'value' => function ($data)
+            	{
+					if($data->defaultTrailerPair)
+						{
+						return $data->defaultTrailerPair->Registration." (".substr($data->defaultTrailerPair->Description, 0, 15).")";
+						}
+				},
+			'label' => 'Trailer',
+            ],
+            
            
             'Max_Capacity',
             [

@@ -145,8 +145,7 @@ class CustomerOrderController extends Controller
         		$get = Yii::$app->request->get();
         		if(isset($get['submitOrder']) && $get['submitOrder'] == true)
         			{
-					$model->Status = CustomerOrders::STATUS_SUBMITTED;
-					$model->save();
+					$model->submitOrder();
 					}
         		  
         		
@@ -302,8 +301,8 @@ class CustomerOrderController extends Controller
         		$get = Yii::$app->request->get();
         		if(isset($get['submitOrder']) && $get['submitOrder'] == true)
         			{
-					$model->Status = CustomerOrders::STATUS_SUBMITTED;
-					$model->save();
+					$model->submitOrder();
+					
 					}
         		   		
 	    		if(isset($get['exit']) && $get['exit'] == 'false' )
@@ -786,6 +785,14 @@ class CustomerOrderController extends Controller
 
 	}
 
+
+	public function actionTest()
+	{
+		
+		$order = CustomerOrders::findOne('78697');
+		$order->emailOrder();
+		
+	}
 
 	
 }

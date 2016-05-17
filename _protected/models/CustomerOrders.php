@@ -2,7 +2,7 @@
 
 namespace app\models;
 use webvimark\modules\UserManagement\models\User;
-
+use kartik\mpdf\Pdf;
 use Yii;
 
 /**
@@ -330,6 +330,11 @@ class CustomerOrders extends \yii\db\ActiveRecord
    public function submitOrder()
    {
    	$this->Status = CustomerOrders::STATUS_SUBMITTED;
+   	
+   	
+   	echo "hello world";
+   	
+   	
    	$this->save();
 
    }
@@ -496,8 +501,48 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	}
 	
 	
+	public function emailOrder()
+	{
+		
 	
 	
+	
+		
+	Yii::$app->mailer->compose()
+	    ->setFrom('crmadmin@irwinstockfeeds.com.au')
+	    //->setTo('crmadmin@irwinstockfeeds.com.au')
+	    ->setTo('shamus.dougan@sapient-tech.com.au')
+	    ->setSubject('New Order')
+	    ->setTextBody('New Order')
+	    ->attachContent($this->pdfString(), ['fileName' => 'order.pdf', 'contentType' => 'text/plain'])
+	    ->send();
+	}
+	
+	
+	
+	
+	public function pdfString()
+	{
+		$content = Yii::$app->controller->renderPartial("_print", [
+			'order' => $this,
+			]);
+		
+		$pdf = new Pdf([
+		'content' => $content,  
+		//'destination' => Pdf::DEST_FILE, 
+		//'filename' => 'c:\temp\test.pdf',
+		'format' => Pdf::FORMAT_A4, 
+ 		'destination' => Pdf::DEST_STRING, 
+		'options' => ['title' => 'Customer Order'],
+
+		'methods' => 
+			[
+            'SetFooter'=>['{PAGENO}'],
+			]
+    	]);
+
+		return $pdf->render();
+	}
 	
 	  
 }

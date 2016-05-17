@@ -81,5 +81,34 @@ class Storage extends \yii\db\ActiveRecord
 	{
 		return $this->hasOne(clients::className(), ['id' => 'company_id']);
 	}
+	
+	public function getTruckTypesString()
+	{
+		$typeCount = 0;
+		$truckTypeArray = array();
+		if($this->Auger)
+			{
+			$truckTypeArray[] = "Auger";
+			$typeCount++;
+			}
+		if($this->Blower)
+			{
+			$truckTypeArray[] = "Blower";
+			$typeCount++;
+			}
+		if($this->Tipper)
+			{
+			$truckTypeArray[] = "Tipper";
+			$typeCount++;
+			}
+		
+		if($typeCount == 0)
+			{
+			return "Not Set";
+			}
+		
+	return implode($truckTypeArray, "/");		
+		
+	}
     
 }

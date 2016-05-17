@@ -54,7 +54,7 @@
 		</tr>
 		<tr>
 			<td width='25%' valign='top'><b>Truck Type:</b></td>
-			<td width='25%' valign='top'> XX </td>
+			<td width='25%' valign='top'><? if($order->Storage_Unit != 0 && isset($order->Storage_Unit)) { echo $order->storage->getTruckTypesString(); } else { echo "Not Set"; } ?></td>
 			<td width='25%' valign='top'><b>3rd Party Billing</b></td>
 			<td width='25%' valign='top'></td>
 		</tr>

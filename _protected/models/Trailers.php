@@ -75,6 +75,17 @@ class Trailers extends \yii\db\ActiveRecord
 		return $this->hasMany(TrailerBins::className(), ['trailer_id' => 'id'] );
 	}
     
+    
+     public function getDefaultTruck()
+    {
+		return $this->hasOne(Trucks::className(), ['id' => 'default_truck_id'] );
+	}
+    
+       public function getDefaultTrailerPair()
+    {
+		return $this->hasOne(Trailers::className(), ['id' => 'default_trailer_pair_id'] );
+	}
+    
    	/**
 	   * Function: hasAllocatedBins
 	   * Description: returns trye/false depnding if any of the bins on this trailer have been used for anything.
@@ -110,10 +121,15 @@ class Trailers extends \yii\db\ActiveRecord
     	{
 		$trailerList = Trailers::find()
 						->where(['Status' => Trailers::STATUS_ACTIVE])
+						->orderBy('Registration')
 						->all();
-						
-		
-		$trailerListArray = ArrayHelper::map($trailerList, 'id', 'Registration');	
+			
+		$trailerListArray = array();			
+		foreach($trailerList as $trailerObject)
+			{
+			$trailerListArray[$trailerObject->id] = $trailerObject->Registration." (".$trailerObject->Description.")";
+			}
+		//$trailerListArray = ArrayHelper::map($trailerList, 'id', 'Registration');	
 		array_unshift($trailerListArray, 'None');
 		return $trailerListArray;
 		}

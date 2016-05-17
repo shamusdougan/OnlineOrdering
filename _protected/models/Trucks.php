@@ -127,7 +127,7 @@ class Trucks extends \yii\db\ActiveRecord
     
     public function getActiveList()
     {
-		$truckList = ArrayHelper::map(Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->all(), 'id', 'registration');
+		$truckList = ArrayHelper::map(Trucks::find()->where(['Status' => Trucks::STATUS_ACTIVE])->orderBy('registration')->all(), 'id', 'registration');
 		
 		return array(0 => 'None') + $truckList;
 		

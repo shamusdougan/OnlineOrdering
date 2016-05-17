@@ -79,18 +79,18 @@ use yii\bootstrap\Modal;
 		    	'columns' => 2,
 		    	'attributes'=>
 		    		[
+		    		
+		    		'default_truck_id' => 
+		    			[
+		    			'type' => Form::INPUT_DROPDOWN_LIST,
+		    			'items' => Trucks::getActiveList(),
+		    			],
 		    		'default_trailer_pair_id' => 
 		    			[
 		    			'type' => Form::INPUT_DROPDOWN_LIST,
 		    			'items' => Trailers::getActiveTrailersList(),
 		    			
 		    			],
-		    		'default_truck_id' => 
-		    			[
-		    			'type' => Form::INPUT_DROPDOWN_LIST,
-		    			'items' => Trucks::getActiveList(),
-		    			],
-		    		
 		    		
 		    		]
 		    
