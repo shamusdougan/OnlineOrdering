@@ -77,6 +77,7 @@ if(User::hasRole('Admin'))
 		['label' => 'User Permissions', 'url' => Url::toRoute('/user-management/permission'), 'active'=> sideNavActive::widget(['controller' => "permission"])], 
 		['label' => 'User Roles', 'url' => Url::toRoute('/user-management/role'), 'active'=> sideNavActive::widget(['controller' => "role"])], 
 		['label' => 'User Groups', 'url' => Url::toRoute('/user-management/auth-item-group'), 'active'=> sideNavActive::widget(['controller' => "auth-item-group"])], 
+		['label' => 'Email Queue', 'url' => Url::toRoute('/email-queue/index'), 'active'=> sideNavActive::widget(['controller' => "email-queues"])], 
 		
 
 		]];

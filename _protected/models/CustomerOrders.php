@@ -505,17 +505,15 @@ class CustomerOrders extends \yii\db\ActiveRecord
 	{
 		
 	
-	
-	
-		
-	Yii::$app->mailer->compose()
-	    ->setFrom('crmadmin@irwinstockfeeds.com.au')
-	    //->setTo('crmadmin@irwinstockfeeds.com.au')
-	    ->setTo('shamus.dougan@sapient-tech.com.au')
-	    ->setSubject('New Order')
-	    ->setTextBody('New Order')
-	    ->attachContent($this->pdfString(), ['fileName' => 'order.pdf', 'contentType' => 'text/plain'])
-	    ->send();
+	$email = new EmailQueue();
+	$email->from = 'crmadmin@irwinstockfeeds.com.au';
+	$email->to = 'shamus.dougan@sapient-tech.com.au';
+	$email->subject = "New Order ".$this->Order_ID;
+	$email->htmlBody = 'New Order Created';
+	$email->attachment1 = $this->pdfString();
+	$email->attachment1_filename = 'order.pdf';
+	$email->attachment1_type = 'type/pdf';
+	$email->save();
 	}
 	
 	
