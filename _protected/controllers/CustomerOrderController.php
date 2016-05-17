@@ -442,6 +442,8 @@ class CustomerOrderController extends Controller
         	$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/production-submitted-list', 'confirm' => 'Exit with out Saving?'];
         	$actionItems[] = ['label'=>'Save', 'button' => 'save', 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id.'&exit=false', 'url'=>null, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order?'];
 			$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id, 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Exit?'];
+			$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
+			$actionItems[] = ['label'=>'Print', 'button' => 'print', 'print_url'=>'/customer-order/print?id='.$model->id.'&autoPrint=1'];
 			$actionItems[] = ['label'=>'Save & Process', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update-production-submitted?id='.$model->id.'&processOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Produce?'];
 				
         	
