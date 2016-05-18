@@ -66,6 +66,8 @@ To create an additional delivery Run on the same day, select a Truck and click "
 						value='".$dataRow['id']."' 
 						delivery_run_num='".$dataRow['delivery_run_num']."' 
 						deliveryCount='".$deliveryCount."'
+						trailer1_id='".$dataRow['trailer1_id']."'
+						trailer2_id='".$dataRow['trailer2_id']."'
 						
 						>";
 					}

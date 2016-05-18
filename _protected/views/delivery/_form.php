@@ -152,6 +152,7 @@ if(!isset($truckList)){ $truckList = array();}
 									'options' =>
 										[
 										'disabled' => $model->isStatusCompleted(),
+										'readonly' => $model->isStatusCompleted(),
 										],
 									'pluginOptions' =>
 											[
@@ -553,6 +554,8 @@ function checkDateInput()
 {
 	var dateSelect = $(\"#delivery-delivery_on-disp\");
 	
+	
+
 	//if there are any delivery Loads on the page then disable the date select
 	var deliveryLoadPresent = false;
 	$('.delivery-load-form').each(function() 
@@ -562,10 +565,18 @@ function checkDateInput()
 	
 	if(deliveryLoadPresent)
 		{
-		dateSelect.attr('disabled', true);		
+		dateSelect.attr('disabled', true);	
+		var calendar = $(\".input-group-addon\").each(function()
+			{
+			$(this).hide();	
+			})	
 		}
 	else{
-		dateSelect.removeAttr('disabled');		
+		dateSelect.removeAttr('disabled');
+		var calendar = $(\".input-group-addon\").each(function()
+			{
+			$(this).show();	
+			})			
 	}
 }
 ");
@@ -616,6 +627,7 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 				success: function (data, textStatus, jqXHR) 
 					{
 					$('#delivery_load_section').append(data);
+					checkDateInput();
 					},
 		        error: function (jqXHR, textStatus, errorThrown) 
 		        	{
@@ -624,28 +636,29 @@ $this->registerJs("$('.add_delivery_load').click(function(event)
 		        	}
 				});
 		
-			
-		usedTrailers = getSelectedTrailers();
-		
-				
+	
+		var selectedTrucks = getSelectedTrucks();
+
+
 		$.ajax
-	  		({
-	  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-trailers")."',
-			data: {requested_date: requestedDate, deliveryCount: next_delivery_count, trailerSlot: 1, selectedTrailers: usedTrailers, delivery_load_id: 0},
-			success: function (data, textStatus, jqXHR) 
-				{
-				$('#select-modal').modal();
-				$('.modal-body').html(data);
-				},
-	        error: function (jqXHR, textStatus, errorThrown) 
-	        	{
-	            console.log('An error occured!');
-	            alert('Error in ajax request' );
-	        	}
-			});
+		  		({
+		  		url: '".yii\helpers\Url::toRoute("delivery/ajax-select-truck")."',
+				data: {requested_date: requestedDate, deliveryCount: next_delivery_count, selectedTrucks: selectedTrucks},
+				success: function (data, textStatus, jqXHR) 
+					{
+					$('#select-modal').modal();
+					$('.modal-body').html(data);
+					},
+		        error: function (jqXHR, textStatus, errorThrown) 
+		        	{
+		            console.log('An error occured!');
+		            alert('Error in ajax request' );
+		        	}
+				});
+	
 		
 		
-		checkDateInput();
+		
 		
 		
 	});
@@ -754,24 +767,6 @@ $this->registerJs("$(document).on('click', '#select_trailer_button', function(ev
 		
 	$('#select-modal').modal('hide');
 	renderTrailer(deliveryCount, trailerSlot, trailer_id, delivery_run_num);
-	
-	
-	if(truck_id != '' && truck_id != null && truck_id != 0)
-		{
-		renderTruck(deliveryCount, truck_id, truck_run_num);
-		}
-	if(otherTrailerSlot != '' && otherTrailerSlot != null && otherTrailerSlot != 0)
-		{
-		otherSlot = 1;
-		if(trailerSlot == 1)
-			{
-			otherSlot = 2;
-			}
-		renderTrailer(deliveryCount, otherSlot, otherTrailerSlot, otherTrailerRunNum);
-		}
-	
-	
-
 	});
 ");	
 
@@ -958,6 +953,8 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 		}
 	var deliveryCount = $('input[name=truck_row_select]:checked').attr('deliveryCount');
 	var truck_run_num = $('input[name=truck_row_select]:checked').attr('delivery_run_num');
+	var trailer1_id = $('input[name=truck_row_select]:checked').attr('trailer1_id');
+	var trailer2_id = $('input[name=truck_row_select]:checked').attr('trailer2_id');
 
 	//check to see if this truck needs to added to other existing orders as well
 	count = 0;
@@ -970,7 +967,7 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 		
 	if(count > 0)
 		{
-		if(confirm('This will add the Truck from all delivey loads with these trailers currently allocated orders'))
+		if(confirm('This will remove the Truck from all delivey loads with these trailers currently allocated orders'))
 			{
 				
 			var requestedDate = $('input[name=\"deliveryLoad['+ deliveryCount + '][delivery_on]\"]').attr('value');	
@@ -1003,7 +1000,7 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 	//var blower=$('input[name=truck_row_select]:checked').attr('blower');
 	//var tipper=$('input[name=truck_row_select]:checked').attr('tipper');
 
-
+	alert('1: ' + trailer1_id + ' 2:' + trailer2_id);
 		
 	$('#select-modal').modal('hide');
 	renderTruck(deliveryCount, truck_id, truck_run_num)

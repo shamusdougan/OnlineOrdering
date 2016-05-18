@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\Select2;
 use kartik\builder\Form;
+use app\models\Trailers;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\trucks */
@@ -30,6 +31,18 @@ use kartik\builder\Form;
 					'registration' => ['type' => FORM::INPUT_TEXT, ],
 					'description' => ['type' => FORM::INPUT_TEXT],
 					'mobile' => ['type' => FORM::INPUT_TEXT, ],
+					'defaultTrailer1_id' => 
+						[
+						'type' => FORM::INPUT_DROPDOWN_LIST, 
+						'label' => "Default 1st Trailer",
+						'items' => Trailers::getActiveTrailersList(),
+						],
+					'defaultTrailer2_id' => 
+						[
+						'type' => FORM::INPUT_DROPDOWN_LIST, 
+						'label' => "Default 2nd Trailer",
+						'items' => Trailers::getActiveTrailersList(),
+						],
 					
 					
 					],

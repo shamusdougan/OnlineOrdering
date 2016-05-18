@@ -42,7 +42,7 @@ class Trucks extends \yii\db\ActiveRecord
     {
         return [
             [['registration', 'Status'], 'required'],
-            [['CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper', 'max_trailers'], 'integer'],
+            [['CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper', 'max_trailers', 'defaultTrailer1_id', 'defaultTrailer2_id'], 'integer'],
             [['registration', 'mobile'], 'string', 'max' => 200],
             [['description', 'Special_Instruction'], 'string', 'max' => 500]
         ];
@@ -63,6 +63,8 @@ class Trucks extends \yii\db\ActiveRecord
             'Auger' => 'Auger',
             'Blower' => 'Blower',
             'Tipper' => 'Tipper',
+            'defaultTrailer1_id' => "Default 1st Trailer",
+            'defaultTrailer2_id' => "Default 2nd Trailer",
         ];
     }
     
@@ -367,6 +369,45 @@ class Trucks extends \yii\db\ActiveRecord
 		
 	}
 
+	
+	public function getDefault1stTrailer($requestedDate, $delivery_run_num)
+	{
+		
+		$trailers = DeliveryLoad::find()->where(['trailer1_id' => $this->defaultTrailer1_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		if(count($trailers))
+			{
+			return null;
+			}
+			
+		$trailers = DeliveryLoad::find()->where(['trailer2_id' => $this->defaultTrailer1_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		if(count($trailers))
+			{
+			return null;
+			}
+		return $this->defaultTrailer1_id;
+	}
+	
+	
+	
+	
+	
+	
+	public function getDefault2ndTrailer($requestedDate, $delivery_run_num)
+	{
+		
+		$trailers = DeliveryLoad::find()->where(['trailer1_id' => $this->defaultTrailer2_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		if(count($trailers))
+			{
+			return null;
+			}
+			
+		$trailers = DeliveryLoad::find()->where(['trailer2_id' => $this->defaultTrailer2_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		if(count($trailers))
+			{
+			return null;
+			}
+		return $this->defaultTrailer2_id;
+	}
 
 	
 }

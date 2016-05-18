@@ -3,6 +3,7 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 use webvimark\modules\UserManagement\models\User;
 use app\Model\Product;
+use kartik\export\ExportMenu;
 
 
 //This handles the clicking of the refresh button on the grid
@@ -193,6 +194,7 @@ $this->registerJs(
 
 
 $gridColumns = 	[
+					'ingredient.Product_ID',
 			    	[
 			    	'attribute' => 'ingredient.Name',
 			    	'value' => function ($data)
@@ -288,6 +290,23 @@ $dataProvider->setSort(['defaultOrder' => ['ingredient_percent'=>SORT_DESC]]);
 
 
 
+$exportButton = ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns,
+    'fontAwesome' => true,
+    'dropdownOptions' => [
+        'label' => 'Export All',
+        'class' => 'btn btn-default'
+    	],
+    'exportConfig' =>
+    	[
+    	ExportMenu::FORMAT_HTML => false,
+    	ExportMenu::FORMAT_TEXT => false,
+    	ExportMenu::FORMAT_PDF => false,
+    	ExportMenu::FORMAT_EXCEL => false,
+    	
+    	]
+]) ;
 
 
 
@@ -302,7 +321,8 @@ echo GridView::widget(
 				'toolbar'=> 
 					[
 						['content'=>
-							(User::hasRole('Admin') ? Html::a('<i class="glyphicon glyphicon-download-alt"></i>', '/import-functions/import-ingredient?product_id='.$product->id, ['type'=>'button', 'title'=>'Import Ingredients', 'class'=>'btn btn-success', 'data-pjax' => 0, 'product_id' => $product->id]) : ' '). ' '.
+						
+							(User::hasRole('Admin') ? $exportButton." ".Html::a('<i class="glyphicon glyphicon-download-alt"></i>', '/import-functions/import-ingredient?product_id='.$product->id, ['type'=>'button', 'title'=>'Import Ingredients', 'class'=>'btn btn-success', 'data-pjax' => 0, 'product_id' => $product->id]) : ' '). ' '.
 							($readOnly ? ' ' : Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Product', 'id' => 'add_ingredient_button', 'class'=>'btn btn-success', 'product_id' => $product->id])). ' '.
 							Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh', 'id' => 'refresh_ingredient_grid', 'class'=>'btn btn-success', ])
 						],

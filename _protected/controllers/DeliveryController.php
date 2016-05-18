@@ -675,6 +675,8 @@ class DeliveryController extends Controller
 				'id' => $truckObject->id, 
 				'delivery_run_num' => $delivery_run_num,
 				'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
+				'trailer1_id' => $truckObject->getDefault1stTrailer($requested_date, $delivery_run_num),
+				'trailer2_id' => $truckObject->getDefault2ndTrailer($requested_date, $delivery_run_num),
 				'used' => $used,
 				];
 			}
@@ -691,6 +693,8 @@ class DeliveryController extends Controller
 						'id' => $indexedTruckList[$truck_id]->id, 
 						'delivery_run_num' => $truck_run_num,
 						'truck' => substr($indexedTruckList[$truck_id]->registration." (".$indexedTruckList[$truck_id]->description.")", 0, 40),
+						'trailer1_id' => $truckObject->getDefault1stTrailer($requested_date, $truck_run_num),
+						'trailer2_id' => $truckObject->getDefault2ndTrailer($requested_date, $truck_run_num),
 						'used' => true,
 						];
 					}	
@@ -709,6 +713,8 @@ class DeliveryController extends Controller
 							'id' => $indexedTruckList[$truck_id]->id, 
 							'delivery_run_num' => $truck_run_num,
 							'truck' => substr($indexedTruckList[$truck_id]->registration." (".$indexedTruckList[$truck_id]->description.")", 0, 40),
+							'trailer1_id' => $truckObject->getDefault1stTrailer($requested_date, $truck_run_num),
+							'trailer2_id' => $truckObject->getDefault2ndTrailer($requested_date, $truck_run_num),
 							'used' => true,
 							];
 						}	
@@ -851,10 +857,6 @@ class DeliveryController extends Controller
 				'tons' => $trailerObject->Max_Capacity,
 				'used' => false,
 				'allowSelect' => true,
-				'truck_id' => $trailerObject->getDefaultTruckId($requested_date, $trailer_run_num),
-				'truck_run_num' => 1,
-				'other_trailer_slot' => $trailerObject->getDefaultTrailerPairID($requested_date, $trailer_run_num),
-				'other_trailer_run_num' => 1,
 				'maxBins' => $trailerObject->NumBins,
 				'maxTons' => $trailerObject->Max_Capacity,
 				];
@@ -865,10 +867,6 @@ class DeliveryController extends Controller
 				$binsLeft = $trailerObject->NumBins - $trailersUsed[$trailer_run_num][$trailerObject->id]['binsUsed'];
 				$data[$trailer_run_num][$trailerObject->id]['bins'] = $binsLeft." (of ".$trailerObject->NumBins.")";
 				$data[$trailer_run_num][$trailerObject->id]['tons'] = ($trailerObject->Max_Capacity - $trailersUsed[$trailer_run_num][$trailerObject->id]['tonsUsed'])." (of ".$trailerObject->Max_Capacity.")";
-				$data[$trailer_run_num][$trailerObject->id]['truck_id'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['truck_id'];
-				$data[$trailer_run_num][$trailerObject->id]['truck_run_num'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['truck_run_num'];
-				$data[$trailer_run_num][$trailerObject->id]['other_trailer_slot'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['other_trailer_slot'];
-				$data[$trailer_run_num][$trailerObject->id]['other_trailer_run_num'] = $trailersUsed[$trailer_run_num][$trailerObject->id]['other_trailer_run_num'];
 				$data[$trailer_run_num][$trailerObject->id]['used'] = true;
 				if($binsLeft == 0)
 					{
