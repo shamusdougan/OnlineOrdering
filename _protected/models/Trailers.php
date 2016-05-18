@@ -130,7 +130,7 @@ class Trailers extends \yii\db\ActiveRecord
 			$trailerListArray[$trailerObject->id] = $trailerObject->Registration." (".$trailerObject->Description.")";
 			}
 		//$trailerListArray = ArrayHelper::map($trailerList, 'id', 'Registration');	
-		array_unshift($trailerListArray, 'None');
+		//array_unshift($trailerListArray, 'None');
 		return $trailerListArray;
 		}
     

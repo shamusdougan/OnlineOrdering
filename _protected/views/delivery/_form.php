@@ -709,6 +709,8 @@ $this->registerJs("
 function renderTrailer(deliveryCount, trailerSlot, trailer_id, trailer_run_num)
 {
 
+
+	//alert(deliveryCount + ' ' + trailerSlot + ' ' + trailer_id + ' ' + trailer_run_num);
 	//get the place the trailer is to be rendered too	
 	//var target = $('#delivery_count_' + deliveryCount + ' > .delivery-load-trailer' + trailerSlot);
 	
@@ -1001,6 +1003,16 @@ $this->registerJs("$(document).on('click', '#select_truck_button', function(even
 	//var tipper=$('input[name=truck_row_select]:checked').attr('tipper');
 
 	alert('1: ' + trailer1_id + ' 2:' + trailer2_id);
+	if(trailer1_id != '' && trailer1_id != null && trailer1_id != 0)
+		{
+		renderTrailer(deliveryCount, 1, trailer1_id, truck_run_num);
+		}
+		
+	if(trailer2_id != '' && trailer2_id != null && trailer2_id != 0)
+		{
+		
+		renderTrailer(deliveryCount, 2, trailer2_id, truck_run_num);
+		}
 		
 	$('#select-modal').modal('hide');
 	renderTruck(deliveryCount, truck_id, truck_run_num)

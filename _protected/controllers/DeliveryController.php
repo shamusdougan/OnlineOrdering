@@ -776,9 +776,7 @@ class DeliveryController extends Controller
 		$trailer = Trailers::findOne($trailer_id);
 		$usedBins = Trailers::getUsedBins($trailer_id, $trailer_run_num, $requested_date, $delivery_load_id);
 		$selectedBins = array();
-		
-		
-		
+			
 		return $this->renderPartial('/Trailers/_trailer',
 				[
 				'trailer_slot_num' => $trailerSlot,
