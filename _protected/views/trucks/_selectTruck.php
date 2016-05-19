@@ -11,7 +11,7 @@ use yii\helpers\Html;
 * 
 */
 
-
+//print_r($data);
 ?>
 
 <h2>Available Trucks for <?= $selectionDate ?></h2>

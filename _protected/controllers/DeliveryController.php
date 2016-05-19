@@ -769,7 +769,7 @@ class DeliveryController extends Controller
 				}
 			
 			//check to see if another order is using the Truck
-			if(array_key_exists($delivery_run_num, $trucksUsed) && array_key_exists($truckObject->id, $trucksUsed[$delivery_run_num]))	
+			elseif(array_key_exists($delivery_run_num, $trucksUsed) && array_key_exists($truckObject->id, $trucksUsed[$delivery_run_num]))	
 				{
 				$used = true;
 				$binsRemaining = $trucksUsed[$delivery_run_num][$truckObject->id]['binsRemaining'];
