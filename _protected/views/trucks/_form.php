@@ -33,15 +33,33 @@ use app\models\Trailers;
 					'mobile' => ['type' => FORM::INPUT_TEXT, ],
 					'defaultTrailer1_id' => 
 						[
-						'type' => FORM::INPUT_DROPDOWN_LIST, 
-						'label' => "Default 1st Trailer",
-						'items' => Trailers::getActiveTrailersList(),
+						'type' => Form::INPUT_WIDGET,
+	    				'widgetClass' => '\kartik\widgets\Select2',
+	    				'options'=>
+	    					[
+	    					'data'=>Trailers::getActiveTrailersList(),
+	    					'options' => ['placeholder' => 'Select Trailer', 'selected' => null,],
+							'pluginOptions' => [
+								'allowClear' => true
+								],
+	    					],
+    				   
+						'label' => "Default 2nd Trailer",
 						],
 					'defaultTrailer2_id' => 
 						[
-						'type' => FORM::INPUT_DROPDOWN_LIST, 
+						'type' => Form::INPUT_WIDGET,
+	    				'widgetClass' => '\kartik\widgets\Select2',
+	    				'options'=>
+	    					[
+	    					'data'=>Trailers::getActiveTrailersList(),
+	    					'options' => ['placeholder' => 'Select Trailer', 'selected' => null,],
+	    					'pluginOptions' => [
+								'allowClear' => true
+								],
+	    					],
+						
 						'label' => "Default 2nd Trailer",
-						'items' => Trailers::getActiveTrailersList(),
 						],
 					
 					

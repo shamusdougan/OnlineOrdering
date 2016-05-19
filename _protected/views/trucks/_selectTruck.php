@@ -37,12 +37,14 @@ To create an additional delivery Run on the same day, select a Truck and click "
 		foreach($data as $delivery_run_num => $dataSection)
 			{
 			echo "<tr bgcolor='#6699ff'>";
-			echo "<td colspan='4' class='run_num_header' truck_run_num='".$delivery_run_num."' align=center><b>Delivery Run ".$delivery_run_num."</b></td>";
+			echo "<td colspan='4' class='run_num_header' truck_run_num='".$delivery_run_num."' ><b>Delivery Run ".$delivery_run_num."</b></td>";
 			echo "</tr>";
 			
 			$odd = true;
 			foreach($dataSection as $dataRow)
 				{
+					
+				//Class row for alternating colors
 				if($odd)
 					{
 					echo "<tr class='select_truck_id_".$dataRow['id']."' bgcolor='#ccddff'>";	
@@ -50,7 +52,14 @@ To create an additional delivery Run on the same day, select a Truck and click "
 				else{
 					echo "<tr class='select_truck_id_".$dataRow['id']."' bgcolor='#e6eeff'>";	
 					}
+					
+					
+					
+				//Truck Display Name
 				echo "<td style='padding-left: 5px'>".$dataRow['truck']."</td>";
+
+				
+				//Adds the add run link to the window
 				if($dataRow['used'])
 					{
 					echo "<td><A class='add_truck_run' 
@@ -58,10 +67,13 @@ To create an additional delivery Run on the same day, select a Truck and click "
 							next_truck_run_num='".($dataRow['delivery_run_num']+1)."' 
 							truck_id='".$dataRow['id']."' 
 							deliveryCount='".$deliveryCount."'
-							style='cursor: pointer'>Add Run <span class='glyphicon glyphicon-arrow-down'></span></a></td>";					echo "<td></td>";
+							style='cursor: pointer'>Add Run <span class='glyphicon glyphicon-arrow-down'></span></a></td>";
 					}
 				else{
 					echo "<td></td>";
+					}
+				if($dataRow['allowSelect']){
+					
 					echo "<td align=center><input type='radio' name='truck_row_select' 
 						value='".$dataRow['id']."' 
 						delivery_run_num='".$dataRow['delivery_run_num']."' 
@@ -69,9 +81,12 @@ To create an additional delivery Run on the same day, select a Truck and click "
 						trailer1_id='".$dataRow['trailer1_id']."'
 						trailer2_id='".$dataRow['trailer2_id']."'
 						
-						>";
+						></td>";
 					}
-				echo "</td>";
+				else{
+					echo "<td></td>";
+					}
+			
 				echo "</tr>";
 				
 				

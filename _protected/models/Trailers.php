@@ -314,27 +314,24 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 	* 
 	* @return
 	*/
-	public function getUsedBins($trailer_id, $trailer_run_num, $requested_date, $delivery_id)
+	public function getUsedBins($trailer_id, $trailer_run_num, $requested_date, $excludedDeliveryId)
 		{
 			$usedBins = array();
 			
 			//first check for all loads where the trailer is used in trailer slot 1
 			$deliveryLoads = DeliveryLoad::find()
 						->where(['delivery_on' => $requested_date, 'trailer1_id' => $trailer_id, 'trailer1_run_num' => $trailer_run_num])
+						->andWhere('delivery_id != :id', ['id'=>$excludedDeliveryId])
 						->all();
 
 			if(count($deliveryLoads) > 0)
 				{
 				foreach($deliveryLoads as $deliveryLoad)
 					{
-					//only care about bins from other orders not the current order
-					if($delivery_id != $deliveryLoad->id)
+					//go through each of the attached trailer bins as add them to the array
+					foreach($deliveryLoad->bins as $trailerLoadBin)
 						{
-						//go through each of the attached trailer bins as add them to the array
-						foreach($deliveryLoad->bins as $trailerLoadBin)
-							{
-							$usedBins[$trailerLoadBin->trailer_bin_id] = $trailerLoadBin->bin_load;
-							}
+						$usedBins[$trailerLoadBin->trailer_bin_id] = $trailerLoadBin->bin_load;
 						}
 					}
 				}
@@ -347,15 +344,12 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 				{
 				foreach($deliveryLoads as $deliveryLoad)
 					{
-					//only care about bins from other orders not the current order
-					if($delivery_id != $deliveryLoad->id)
+					//go through each of the attached trailer bins as add them to the array
+					foreach($deliveryLoad->bins as $trailerLoadBin)
 						{
-						//go through each of the attached trailer bins as add them to the array
-						foreach($deliveryLoad->bins as $trailerLoadBin)
-							{
-							$usedBins[$trailerLoadBin->trailer_bin_id] = $trailerLoadBin->bin_load;
-							}
+						$usedBins[$trailerLoadBin->trailer_bin_id] = $trailerLoadBin->bin_load;
 						}
+
 					}
 				}
 			
@@ -406,9 +400,9 @@ public function isAlreadyAssigned($requestedDate, $delivery_run_num)
 		$returnString = implode(", ", $binArray);
 				
 		return $returnString;
-		
-		
-		
 	}
+
+
+	
 		
 }

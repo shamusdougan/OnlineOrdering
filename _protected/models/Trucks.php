@@ -44,9 +44,18 @@ class Trucks extends \yii\db\ActiveRecord
             [['registration', 'Status'], 'required'],
             [['CreatedBy', 'Status', 'Auger', 'Blower', 'Tipper', 'max_trailers', 'defaultTrailer1_id', 'defaultTrailer2_id'], 'integer'],
             [['registration', 'mobile'], 'string', 'max' => 200],
-            [['description', 'Special_Instruction'], 'string', 'max' => 500]
+            [['description', 'Special_Instruction'], 'string', 'max' => 500],
+            [['defaultTrailer1_id', 'defaultTrailer2_id'], 'validateTrailers']
         ];
     }
+    
+    public function validateTrailers()
+    {
+		if($this->defaultTrailer1_id == $this->defaultTrailer2_id)
+			{
+			$this->addError('defaultTrailer1_id', 'Cant Use same Trailer Twice');
+			}
+	}
 
     /**
      * @inheritdoc
@@ -227,18 +236,62 @@ class Trucks extends \yii\db\ActiveRecord
 		
 	}
 	
-	
-	public function getTrucksUsed($requestedDate)
+	//truckUsed array is the follows 
+	/*$trucksUsed[delivery_run_num][truck_id] => 
+				[truck_id => X, 
+				trailer1_id => X, 
+				trailer1_run_num => X,
+				trailer2_id => Y, 
+				trailer2_run_num => Y,
+				binsRemaining => 4, 
+				tonsRemaining => 5]
+	*/
+	public function getTrucksUsed($requestedDate, $excludingDeliveryId)
 	{
 		
-		
+		//grab all the current delivery Loads from the database except the delivery Loads from the current delivery.
+		//We need to not include these, incase and existing delivery has a delivery_load removed. The cases where the delivery load is on the page
+		//shoule be caught by the selected trucks array
 		$deliveryLoads = DeliveryLoad::find()
 					->where(['delivery_on' => $requestedDate])
-					->all();		
+					->andWhere('delivery_id != :id', ['id'=>$excludingDeliveryId])
+					->all();	
+					
+		
+		//Go through the delivery loads and work out trailerbins and tons remaining
+		// array[trailer_run_num][trailer_id]['binsLeft' => XX, 'tonsLeft' => YY]
+		$trailerUsage = DeliveryLoad::getTrailerUsageArray($deliveryLoads);
+					
+		
+		
+						
 		$trucksUsedArray = array();	
 		foreach($deliveryLoads as $deliveryLoad)
 			{
-			$trucksUsedArray[$deliveryLoad->truck_run_num][$deliveryLoad->truck_id] = $deliveryLoad->truck_id;
+				$binsRemaining = 0;
+				$tonsRemaining = 0;
+				if(array_key_exists($deliveryLoad->trailer1_run_num, $trailerUsage) && array_key_exists($deliveryLoad->trailer1_id, $trailerUsage[$deliveryLoad->trailer1_run_num]))
+					{
+					$binsRemaining += $trailerUsage[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['binsLeft'];
+					$tonsRemaining += $trailerUsage[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['tonsLeft'];
+					}
+				if(array_key_exists($deliveryLoad->trailer2_run_num, $trailerUsage) && array_key_exists($deliveryLoad->trailer2_id, $trailerUsage[$deliveryLoad->trailer2_run_num]))
+					{
+					$binsRemaining += $trailerUsage[$deliveryLoad->trailer2_run_num][$deliveryLoad->trailer2_id]['binsLeft'];
+					$tonsRemaining += $trailerUsage[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['tonsLeft'];
+					}
+				
+				
+				$trucksUsedArray[$deliveryLoad->truck_run_num][$deliveryLoad->truck_id] = 
+					[
+					'truck_id' => $deliveryLoad->truck_id,
+					'trailer1_id' => $deliveryLoad->trailer1_id,
+					'trailer1_run_num' => $deliveryLoad->trailer1_run_num,				
+					'trailer2_id' => $deliveryLoad->trailer2_id,
+					'trailer2_run_num' => $deliveryLoad->trailer2_run_num,
+					'binsRemaining' => $binsRemaining,
+					'tonsRemaining' => 	$tonsRemaining,
+					];			
 			}
 			
 		
@@ -370,16 +423,22 @@ class Trucks extends \yii\db\ActiveRecord
 	}
 
 	
-	public function getDefault1stTrailer($requestedDate, $delivery_run_num)
+	public function getDefault1stTrailer($requestedDate, $delivery_run_num, $excludingDeliveryId = 0)
 	{
 		
-		$trailers = DeliveryLoad::find()->where(['trailer1_id' => $this->defaultTrailer1_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		$trailers = DeliveryLoad::find()
+			->where(['trailer1_id' => $this->defaultTrailer1_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])
+			->andWhere('delivery_id != :id', ['id'=>$excludingDeliveryId])
+			->all();
 		if(count($trailers))
 			{
 			return null;
 			}
 			
-		$trailers = DeliveryLoad::find()->where(['trailer2_id' => $this->defaultTrailer1_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		$trailers = DeliveryLoad::find()
+			->where(['trailer2_id' => $this->defaultTrailer1_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])
+			->andWhere('delivery_id != :id', ['id'=>$excludingDeliveryId])
+			->all();
 		if(count($trailers))
 			{
 			return null;
@@ -392,16 +451,22 @@ class Trucks extends \yii\db\ActiveRecord
 	
 	
 	
-	public function getDefault2ndTrailer($requestedDate, $delivery_run_num)
+	public function getDefault2ndTrailer($requestedDate, $delivery_run_num, $excludingDeliveryId = 0)
 	{
 		
-		$trailers = DeliveryLoad::find()->where(['trailer1_id' => $this->defaultTrailer2_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		$trailers = DeliveryLoad::find()
+			->where(['trailer1_id' => $this->defaultTrailer2_id, 'trailer1_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])
+			->andWhere('delivery_id != :id', ['id'=>$excludingDeliveryId])
+			->all();
 		if(count($trailers))
 			{
 			return null;
 			}
 			
-		$trailers = DeliveryLoad::find()->where(['trailer2_id' => $this->defaultTrailer2_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])->all();
+		$trailers = DeliveryLoad::find()
+			->where(['trailer2_id' => $this->defaultTrailer2_id, 'trailer2_run_num' => $delivery_run_num, 'delivery_on' => $requestedDate])
+			->andWhere('delivery_id != :id', ['id'=>$excludingDeliveryId])
+			->all();
 		if(count($trailers))
 			{
 			return null;

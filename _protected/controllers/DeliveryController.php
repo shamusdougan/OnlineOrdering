@@ -188,7 +188,7 @@ class DeliveryController extends Controller
 			else{
 				$model->order_id = $order_id;
 				$model->delivery_qty = $order->Qty_Tonnes;
-				$model->num_batches = $model->calculateBatchSize($model->delivery_qty);
+				$model->num_batches = $model->calculateBatchSize();
 				}
    			} 
    		else{
@@ -601,8 +601,60 @@ class DeliveryController extends Controller
 			}
 	}
     
+    
+    public function actionAjaxAddTruck($requested_date, $truck_id, $truck_run_num, $deliveryTrailers)
+    {
+		
+		
+	//Ok unpack the information in the $selectedTrailers Variable. it should be an csv array of vairables
+	// trailerid_trailerrunnum
+	$deliveryTrailersRawArray = explode(",", $deliveryTrailers);
+	
+	//Selected Truck array will look like array[trailer_run_num][trailer_id] => trailer_id
+	$deliveryTrailersArray = array();
+	if($deliveryTrailersRawArray[0] != "") //if no trucks have been selected on the page
+		{
+		if(array_key_exists(0, $deliveryTrailersRawArray))
+			{
+			$trailerDetails = explode("_", $deliveryTrailersRawArray[0]);
+			$trailer1_id = $trailerDetails[0];
+			$trailer1_run_num = $trailerDetails[1];
+			}
+		if(array_key_exists(1, $deliveryTrailersRawArray))
+			{
+			$trailerDetails = explode("_", $deliveryTrailersRawArray[1]);
+			$trailer2_id = $trailerDetails[0];
+			$trailer2_run_num = $trailerDetails[1];
+			}
+		}
 
-	public function actionAjaxAddTruck($requested_date, $truck_id, $truck_run_num, $trailer1_id, $trailer1_run_num)
+	$sqlQuery = "trailer1_id = '".$trailer1_id."' AND trailer1_run_num = '".$trailer1_run_num."'";
+	if(isset($trailer2_id))
+		{
+		$sqlQuery .= " AND trailer2_id = '".$trailer2_id."' AND trailer2_run_num = '".$trailer2_run_num."'";	
+		}
+
+		
+	$deliveryLoads = DeliveryLoad::find()
+							->where(['delivery_on' => $requested_date, 'trailer1_id' => $deliveryTrailersArray])
+							->where($sqlQuery)
+							->all();	
+		
+	foreach($deliveryLoads as $deliveryLoad)
+		{
+		$deliveryLoad->truck_id = $truck_id;
+		$deliveryLoad->truck_run_num = $truck_run_num;
+		$deliveryLoad->save();
+		}	
+	}
+
+
+
+
+
+
+
+	public function actionAjaxAddTruck2($requested_date, $truck_id, $truck_run_num, $trailer1_id, $trailer1_run_num)
 	{
 		
 		$deliveryLoads = DeliveryLoad::find()
@@ -620,27 +672,35 @@ class DeliveryController extends Controller
 
 
     
-    public function actionAjaxSelectTruck($requested_date, $deliveryCount, $selectedTrucks)
+    public function actionAjaxSelectTruck($requested_date, $deliveryCount, $selectedTrucks, $deliveryTrailers, $delivery_id)
     {
 		
 		
-	
+		//List of all the currently active trucks in the system
 		$truckList = Trucks::getActive();
-		$indexedTruckList = array();
-		foreach($truckList as $truckObject)
-			{
-			$indexedTruckList[$truckObject->id] = $truckObject;
-			}
-		$trucksUsed = Trucks::getTrucksUsed($requested_date);
+	
+			
+			
+		//truckUsed array is the follows $trucksUsed[delivery_run_num][truck_id] => 
+		/*$trucksUsed[delivery_run_num][truck_id] => 
+				[truck_id => X, 
+				trailer1_id => X, 
+				trailer1_run_num => X,
+				trailer2_id => Y, 
+				trailer2_run_num => Y,
+				binsRemaining => 4, 
+				tonsRemaining => 5]
+		*/
+		$trucksUsed = Trucks::getTrucksUsed($requested_date, $delivery_id);
 		
 		
-		
+	
 		
 		//Ok unpack the information in the $selectedTrucks Variable. it should be an csv array of vairables
 		// truckid_truckrunnum
 		$selectedTruckRawArray = explode(",", $selectedTrucks);
 		
-	
+		//Selected Truck array will look like array[truck_run_num][truck_id] => truck_id
 		$selectedTrucksArray = array();
 		if($selectedTruckRawArray[0] != "") //if no trucks have been selected on the page
 			{
@@ -651,6 +711,24 @@ class DeliveryController extends Controller
 				}	
 			}
 		
+		
+		//Ok unpack the information in the $selectedTrailers Variable. it should be an csv array of vairables
+		// trailerid_trailerrunnum
+		$deliveryTrailersRawArray = explode(",", $deliveryTrailers);
+		
+		//Selected Truck array will look like array[trailer_run_num][trailer_id] => trailer_id
+		$deliveryTrailersArray = array();
+		if($deliveryTrailersRawArray[0] != "") //if no trucks have been selected on the page
+			{
+			foreach($deliveryTrailersRawArray as $trailerDetails)
+				{
+				$details = explode("_", $trailerDetails);
+				$deliveryTrailersArray[$details[1]][$details[0]] = $details[0];
+				}	
+			}
+		
+		
+		
 		//Create the initial data array of all active trucks, if the truck has been used already on form or the truck has been used in another delivery then mark it as used.
 		//The $data array needs to $data[run_num][truck_id], 
 		$data = array();
@@ -658,28 +736,83 @@ class DeliveryController extends Controller
 		foreach($truckList as $truckObject)
 			{
 			
-			//check to see if the truck has been selected on the form already
-			$used = false;
+			//Default Values of truck selection, used if the truck HASNT been used in another order or currently seleted on the delivery form
+			$used = false; //if true adds the "add run button"
+			$allowSelect = true;
+			$binsRemaining = 0;
+			$tonsRemaining = 0;
+			$trailer1_run_num = 1;
+			$trailer2_run_num = 1;
+			$truckText = substr($truckObject->registration." (".$truckObject->description.")", 0, 40);
+			
+			//If there already trailers assigned dont change them, if not then assign the default trailer for the truck
+			if(count($deliveryTrailersArray))
+				{
+				$trailer1_id = 0;
+				$trailer2_id = 0;
+				}
+			else{
+				$trailer1_id = $truckObject->getDefault1stTrailer($requested_date, $delivery_run_num, $delivery_id);	
+				$trailer2_id = $truckObject->getDefault2ndTrailer($requested_date, $delivery_run_num, $delivery_id);
+				}
+				
+				
+				
+				
+			
+			
+			//for trucks already selected on the form
 			if(array_key_exists($delivery_run_num, $selectedTrucksArray) && array_key_exists($truckObject->id, $selectedTrucksArray[$delivery_run_num]))
 				{
 				$used = true;
+				$allowSelect = false;
 				}
 			
 			//check to see if another order is using the Truck
 			if(array_key_exists($delivery_run_num, $trucksUsed) && array_key_exists($truckObject->id, $trucksUsed[$delivery_run_num]))	
 				{
 				$used = true;
-				}
+				$binsRemaining = $trucksUsed[$delivery_run_num][$truckObject->id]['binsRemaining'];
+				$tonsRemaining = $trucksUsed[$delivery_run_num][$truckObject->id]['tonsRemaining'];
+				$trailer1_id = $trucksUsed[$delivery_run_num][$truckObject->id]['trailer1_id'];
+				$trailer1_run_num = $trucksUsed[$delivery_run_num][$truckObject->id]['trailer1_run_num'];
+				$trailer2_id = $trucksUsed[$delivery_run_num][$truckObject->id]['trailer2_id'];
+				$trailer2_run_num = $trucksUsed[$delivery_run_num][$truckObject->id]['trailer2_run_num'];
+				$truckText = substr($truckObject->registration." (".$truckObject->description.")", 0, 40);
+				//If there is room left on the truck and trailer combo then allow it to be selected
+				if($binsRemaining > 0)
+					{
+					$allowSelect = true;
+					$truckText .= "<br>&nbsp&nbspRemaining (".$binsRemaining." Bins, ".$tonsRemaining." Tons)";
+					}
+					
+				//dont allow the truck to be selected if the truck is used on another order with already assigned Trailers and this delivery load
+				//already has trailers chosen
 				
-			$data[1][] = [
+				if(count($deliveryTrailersArray))
+					{
+					$allowSelect = false;
+					$truckText = substr($truckObject->registration." (".$truckObject->description.")", 0, 40)."<BR>&nbsp&nbspTrailers Already assigned to Truck";
+					}
+				}
+			
+				
+			$data[$delivery_run_num][] = [
 				'id' => $truckObject->id, 
 				'delivery_run_num' => $delivery_run_num,
-				'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
-				'trailer1_id' => $truckObject->getDefault1stTrailer($requested_date, $delivery_run_num),
-				'trailer2_id' => $truckObject->getDefault2ndTrailer($requested_date, $delivery_run_num),
+				'truck' => $truckText,
+				'trailer1_id' => $trailer1_id,
+				'trailer1_run_num' => $trailer1_run_num,
+				'trailer2_id' => $trailer2_id,
+				'trailer2_run_num' => $trailer2_run_num,
 				'used' => $used,
+				'allowSelect' => $allowSelect,
+				'binsRemaining' => $binsRemaining,
+				'tonsRemaining' => $tonsRemaining,
 				];
 			}
+		
+
 		
 		//Add an entry in the selection for trucks that have been selected already on this order	
 		foreach($selectedTrucksArray as $truck_run_num => $truck_id_array)
@@ -693,9 +826,14 @@ class DeliveryController extends Controller
 						'id' => $indexedTruckList[$truck_id]->id, 
 						'delivery_run_num' => $truck_run_num,
 						'truck' => substr($indexedTruckList[$truck_id]->registration." (".$indexedTruckList[$truck_id]->description.")", 0, 40),
-						'trailer1_id' => $truckObject->getDefault1stTrailer($requested_date, $truck_run_num),
-						'trailer2_id' => $truckObject->getDefault2ndTrailer($requested_date, $truck_run_num),
+						'trailer1_id' => 0,
+						'trailer1_run_num' => 0,
+						'trailer2_id' => 0,
+						'trailer2_run_num' => 0,
 						'used' => true,
+						'allowSelect' => false,
+						'binsRemaining' => 0,
+						'tonsRemaining' => 0,
 						];
 					}	
 				}
@@ -708,21 +846,45 @@ class DeliveryController extends Controller
 					{
 						foreach($trucksArray as $truck_id)
 						{
+							
+						$used = true;
+						$binsRemaining = $trucksUsed[$truck_run_num][$truck_id]['binsRemaining'];
+						$tonsRemaining = $trucksUsed[$truck_run_num][$truck_id]['tonsRemaining'];
+						$trailer1_id = $trucksUsed[$truck_run_num][$truck_id]['trailer1_id'];
+						$trailer1_run_num = $trucksUsed[$truck_run_num][$truck_id]['trailer1_run_num'];
+						$trailer2_id = $trucksUsed[$truck_run_num][$truck_id]['trailer2_id'];
+						$trailer2_run_num = $trucksUsed[$truck_run_num][$truck_id]['trailer2_run_num'];
+						if($binsRemaining > 0)
+							{
+							$allowSelect = true;
+							}
+						else{
+							$allowSelect = false;
+							}	
+							
+							
+							
+							
 						$data[$truck_run_num][] = 
 							[
 							'id' => $indexedTruckList[$truck_id]->id, 
+							'id' => $truckObject->id, 
 							'delivery_run_num' => $truck_run_num,
-							'truck' => substr($indexedTruckList[$truck_id]->registration." (".$indexedTruckList[$truck_id]->description.")", 0, 40),
-							'trailer1_id' => $truckObject->getDefault1stTrailer($requested_date, $truck_run_num),
-							'trailer2_id' => $truckObject->getDefault2ndTrailer($requested_date, $truck_run_num),
-							'used' => true,
+							'truck' => substr($truckObject->registration." (".$truckObject->description.")", 0, 40),
+							'trailer1_id' => $trailer1_id,
+							'trailer1_run_num' => $trailer1_run_num,
+							'trailer2_id' => $trailer2_id,
+							'trailer2_run_num' => $trailer2_run_num,
+							'used' => $used,
+							'allowSelect' => $allowSelect,
+							'binsRemaining' => $binsRemaining,
+							'tonsRemaining' => $tonsRemaining,
 							];
 						}	
 					}
 			}
 		
 		
-	
 		
 		return $this->renderPartial("/Trucks/_selectTruck", [
 			'data' => $data,
@@ -730,19 +892,6 @@ class DeliveryController extends Controller
 			'selectionDate' => $requested_date,
 			
 			]);
-		
-		
-
-
-
-
-
-
-
-
-
-
-
 	}
     
     
@@ -768,13 +917,13 @@ class DeliveryController extends Controller
 	}
     
     
-    public function actionAjaxGetDeliveryLoadTrailer($trailerSlot, $deliveryCount, $trailer_id, $trailer_run_num, $requested_date, $delivery_load_id)
+    public function actionAjaxGetDeliveryLoadTrailer($trailerSlot, $deliveryCount, $trailer_id, $trailer_run_num, $requested_date, $delivery_id)
     {
 		
 		
 		
 		$trailer = Trailers::findOne($trailer_id);
-		$usedBins = Trailers::getUsedBins($trailer_id, $trailer_run_num, $requested_date, $delivery_load_id);
+		$usedBins = Trailers::getUsedBins($trailer_id, $trailer_run_num, $requested_date, $delivery_id);
 		$selectedBins = array();
 			
 		return $this->renderPartial('/Trailers/_trailer',

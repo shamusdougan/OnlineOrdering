@@ -256,10 +256,94 @@ class DeliveryLoad extends \yii\db\ActiveRecord
 		}
 		
 	return  $binArray;
-   
-   
-   
-   
-   }
+    }
+    
+    
+    
+    public function getNumberBinsUsed($trailer_id = null)
+    {
+    	$binCount = 0;
+		foreach($this->bins as $deliveryLoadBin)
+			{
+			if($trailer_id)
+				{
+				//echo $trailer_id. " = ". $deliveryLoadBin->trailerBin->trailer_id."<br>";
+				if($trailer_id == $deliveryLoadBin->trailerBin->trailer_id)
+					{
+					
+					$binCount++;
+					}					
+				}
+			else{
+				$binCount++;
+				}	
+			}
+			
+		return $binCount;
+	}
+	
+	
+	public function getTonsUsed($trailer_id = null)
+	{
+		$tonsUsed = 0;
+		foreach($this->bins as $deliveryLoadBin)
+			{
+			if($trailer_id)
+				{
+				if($deliveryLoadBin->trailerBin->trailer_id == $trailer_id)
+					{
+					$tonsUsed += $deliveryLoadBin->bin_load;
+					
+					}					
+				}
+			else{
+				$tonsUsed += $deliveryLoadBin->bin_load;
+				}	
+
+			}
+		
+		return $tonsUsed;
+	}
+	
+	
+	//return an srray formed like the following
+	// array[trailer_run_num][trailer_id]['binsLeft' => XX, 'tonsLeft' => YY]
+public function getTrailerUsageArray($deliveryLoads)
+	{
+		
+	$usageArray = array();
+
+	foreach($deliveryLoads as $deliveryLoad)
+		{
+		if($deliveryLoad->trailer1)
+			{
+			if(array_key_exists($deliveryLoad->trailer1_run_num, $usageArray) && array_key_exists($deliveryLoad->trailer1_id, $usageArray[$deliveryLoad->trailer1_run_num]))
+				{
+				$usageArray[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['binsLeft'] -= $deliveryLoad->getNumberBinsUsed($deliveryLoad->trailer1_id);
+				$usageArray[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['tonsLeft'] -= round($deliveryLoad->getTonsUsed($deliveryLoad->trailer1_id), 2);
+				}
+			else{
+				$usageArray[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['binsLeft'] = $deliveryLoad->trailer1->NumBins - $deliveryLoad->getNumberBinsUsed($deliveryLoad->trailer1_id);
+				$usageArray[$deliveryLoad->trailer1_run_num][$deliveryLoad->trailer1_id]['tonsLeft'] = $deliveryLoad->trailer1->Max_Capacity - round($deliveryLoad->getTonsUsed($deliveryLoad->trailer1_id),2);
+				}
+			}
+		
+		if($deliveryLoad->trailer2)
+			{
+			if(array_key_exists($deliveryLoad->trailer2_run_num, $usageArray) && array_key_exists($deliveryLoad->trailer2_id, $usageArray[$deliveryLoad->trailer2_run_num]))
+				{
+				$usageArray[$deliveryLoad->trailer2_run_num][$deliveryLoad->trailer2_id]['binsLeft'] -= $deliveryLoad->getNumberBinsUsed($deliveryLoad->trailer2_id);
+				$usageArray[$deliveryLoad->trailer2_run_num][$deliveryLoad->trailer2_id]['tonsLeft'] -= $deliveryLoad->getTonsUsed($deliveryLoad->trailer2_id);
+				}
+			else{
+				$usageArray[$deliveryLoad->trailer2_run_num][$deliveryLoad->trailer2_id]['binsLeft'] = $deliveryLoad->trailer2->NumBins - $deliveryLoad->getNumberBinsUsed($deliveryLoad->trailer2_id);
+				$usageArray[$deliveryLoad->trailer2_run_num][$deliveryLoad->trailer2_id]['tonsLeft'] = $deliveryLoad->trailer2->Max_Capacity - $deliveryLoad->getTonsUsed($deliveryLoad->trailer2_id);
+				}
+			}
+			
+		}
+		
+	return $usageArray;	
+	}
     
 }

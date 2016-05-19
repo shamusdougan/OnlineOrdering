@@ -123,24 +123,13 @@ class Delivery extends \yii\db\ActiveRecord
 
 	public function getBatchSize()
 		{
-			$order_size = $this->customerOrder->Qty_Tonnes;		
-			if($this->num_batches == 0)
-				{
-				$this->num_batches	= ceil($order_size / Delivery::MAX_BATCH_SIZE);
-				$this->save();
-				}
-			
-  			return number_format($order_size / $this->num_batches, 3)." T";
+  			return $this->calculateBatchSize()." T";
 		}
-    
-    
+ 
 
-
-	public function calculateBatchSize($order_qty)
-		{
-			$maximumBatchSize = 5; 
-			
-			return ceil($order_qty / $maximumBatchSize);
+	public function calculateBatchSize()
+		{	
+			return number_format($this->delivery_qty / $this->num_batches, 3);
 		}
 
 		
