@@ -1205,17 +1205,19 @@ public function actionPrintLabel($id)
 		'content' => $content,  
 		//'destination' => Pdf::DEST_FILE, 
 		//'filename' => 'c:\temp\test.pdf',
-		'format' => [50, 100], 
+		'format' => [50,100], 
  		'destination' => Pdf::DEST_BROWSER, 
 		'options' => ['title' => 'Customer Order'],
-		'marginLeft' => '3',
-		'marginRight' => '3',
-		'marginTop' => '3',
-		'marginBottom' => '3',
+		'marginLeft' => '2',
+		'marginRight' => '2',
+		'marginTop' => '2',
+		'marginBottom' => '2',
+		'orientation' => 'L',
 		
 	
     	]);
 
+	
 	
  	return $pdf->render(); 
 
