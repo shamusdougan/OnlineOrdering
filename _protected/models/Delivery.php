@@ -129,8 +129,19 @@ class Delivery extends \yii\db\ActiveRecord
 
 	public function calculateBatchSize()
 		{	
+			if($this->num_batches == 0)
+				{
+				return $this->getDefaultBatchSize();
+				}
 			return number_format($this->delivery_qty / $this->num_batches, 3);
 		}
+
+
+	public function getDefaultBatchSize()
+		{
+			return ceil($this->delivery_qty / Delivery::MAX_BATCH_SIZE);
+		}
+
 
 		
 	public function getBinLoad($trailerBin_id)

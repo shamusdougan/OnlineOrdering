@@ -188,7 +188,7 @@ class DeliveryController extends Controller
 			else{
 				$model->order_id = $order_id;
 				$model->delivery_qty = $order->Qty_Tonnes;
-				$model->num_batches = $model->calculateBatchSize();
+				$model->num_batches = $model->getDefaultBatchSize();
 				}
    			} 
    		else{
