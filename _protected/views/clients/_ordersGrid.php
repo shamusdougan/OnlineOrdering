@@ -111,11 +111,15 @@ $gridColumns = [
 				},
 			'copy' => function ($url, $model, $key) 
 	   			{
-                return Html::a('<span class="glyphicon glyphicon-tags"></span>','/customer-order/copy?id='.$model->id, 
-                	[
-                    'class' => 'order-copy-link',
-                    'title' => 'Copy this order',
-					]);
+	   			if(!$model->client->isOnCreditHold())
+	   				{
+					return Html::a('<span class="glyphicon glyphicon-tags"></span>','/customer-order/copy?id='.$model->id, 
+	                	[
+	                    'class' => 'order-copy-link',
+	                    'title' => 'Copy this order',
+						]);		
+					}
+                
 				},
 			],
 	    'headerOptions'=>['class'=>'kartik-sheet-style'],
@@ -128,13 +132,13 @@ echo GridView::widget(
 		'id' => 'client_orders-grid-control',
 		'panel'=>[
         		'type'=>GridView::TYPE_PRIMARY,
-        		'heading'=>"Company Contacts",
+        		'heading'=>"Previous Orders",
    		 ],
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 		'toolbar'=> 
 			[
 				['content'=>
-					Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Create New Order', 'class'=>'btn btn-success', 'client_id' => $model->id, 'id' => 'add_order_button' ]) . ' '.
+					($model->isOnCreditHold() ? "" : Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Create New Order', 'class'=>'btn btn-success', 'client_id' => $model->id, 'id' => 'add_order_button' ])). ' '.
 					Html::button('<i class="glyphicon glyphicon-repeat"></i>', ['type'=>'button', 'title'=>'Refresh Orders', 'id' => 'refresh_order_grid', 'class'=>'btn btn-success'])
 				],
 			],

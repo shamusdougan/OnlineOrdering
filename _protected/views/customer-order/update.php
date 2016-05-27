@@ -36,6 +36,7 @@ $this->title = 'Customer Order: ' . ' ' . $title . ($model->isActive() ? "" : "(
     <?= $this->render('_form', [
         'model' => $model, 
         'clientList' => $clientList, 
+        'creditHoldList' => $creditHoldList,
         'storageList' => $storageList, 
         'readOnly' => $readOnly
     ]) ?>

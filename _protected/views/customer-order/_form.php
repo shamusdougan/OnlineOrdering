@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
 
 
-
+//print_r(array_merge(['placeholder' => 'Select Client....', 'selected' => null,], $creditHoldList));
 
 if(!isset($readOnly)){ $readOnly = False;}
 
@@ -633,7 +633,15 @@ $( document ).ready(function() {
 		    				'options'=>
 		    					[
 		    					'data'=>$clientList,
-		    					'options' => ['placeholder' => 'Select Client....', 'selected' => null,],
+		    					'options' => 
+		    						[
+		    						'placeholder' => 'Select Client....', 
+		    						'selected' => null,
+		    						'options' => $creditHoldList
+		    							
+		    						
+		    						
+		    						],
 		    					'disabled' => $readOnly,
 		    					],
 							

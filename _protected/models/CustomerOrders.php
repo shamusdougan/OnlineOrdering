@@ -542,5 +542,26 @@ class CustomerOrders extends \yii\db\ActiveRecord
 		return $pdf->render();
 	}
 	
+	
+	
+	public function getCommodityIngredients()
+	{
+	return CustomerOrdersIngredients::find()
+			->joinWith('product')
+			->where(['order_id' => $this->id])
+			->andWhere(Product::tablename().'.Product_Category != :cat_id', ['cat_id' => Product::ADDITIVE])
+			->orderBy('ingredient_percent DESC')
+			->all();	
+	}
+	
+	
+	public function getAdditiveIngredients()
+	{
+	return CustomerOrdersIngredients::find()
+			->joinWith('product')
+			->where(['order_id' => $this->id, Product::tablename().'.Product_Category' => Product::ADDITIVE])
+			->orderBy('ingredient_percent DESC')
+			->all();	
+	}
 	  
 }

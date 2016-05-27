@@ -171,16 +171,21 @@ class CustomerOrderController extends Controller
 				if($model->validate())
 					{
 					$actionItems[] = ['label'=>'Save & Submit', 'button' => 'truck', 'url'=>null, 'overrideAction' =>'/customer-order/update?id='.$model->id.'&submitOrder=true', 'submit'=> 'customer-order-form', 'confirm' => 'Save Current Order and Submit?'];
-					$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
+					if(!$model->client->isOnCreditHold())
+						{
+						$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];		
+						}
 					$actionItems[] = ['label'=>'Print', 'button' => 'print', 'print_url'=>'customer-order/print?id='.$model->id.'&autoPrint=1'];	
-						
 					}
 				$model->clearErrors();
 				$readOnly = false;
 				}
 			else{
 				$actionItems[] = ['label'=>'Back', 'button' => 'back', 'url'=>'/customer-order/index'];
-				$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];
+				if(!$model->client->isOnCreditHold())
+					{
+					$actionItems[] = ['label'=>'Copy Order', 'button' => 'copy', 'url'=>'/customer-order/copy?id='.$model->id];		
+					}
 				$actionItems[] = ['label'=>'Print', 'button' => 'print', 'print_url'=>'/customer-order/print?id='.$model->id.'&autoPrint=1'];
 				
 			}
@@ -189,9 +194,22 @@ class CustomerOrderController extends Controller
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
-        				->select(['id', 'Company_Name', 'Trading_as'])
+        				->select(['id', 'Company_Name', 'Trading_as', 'Credit_Hold'])
         				->all();
-        	$clientList = ArrayHelper::map($clientObjects, 'id', 'clientListName') ;
+        				
+        	//generate two list the client list to display and the credit hold list
+        	$clientList = array();
+        	$creditHoldList = array();
+        	foreach($clientObjects as $clientObject)
+        		{
+				$clientList[$clientObject->id] = $clientObject->Company_Name;
+				if($clientObject->isOnCreditHold())
+					{
+					$clientList[$clientObject->id] .= " (Credit Hold)";
+					$creditHoldList[$clientObject->id] = ['disabled' => true];
+					}
+				}
+        	//$clientList = ArrayHelper::map($clientObjects, 'id', 'clientListName') ;
         	
         	
         	//generate the list of storage option available, this will be over written by ajax if the client changes
@@ -217,6 +235,7 @@ class CustomerOrderController extends Controller
                 'actionItems' => $actionItems, 
                 'storageList' => $storageList,
                 'readOnly' => $readOnly,
+                'creditHoldList' => $creditHoldList,
                 
             ]);
         }

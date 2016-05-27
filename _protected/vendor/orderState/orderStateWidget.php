@@ -139,7 +139,14 @@ public function run()
    {
    		$returnString = "<div class='innerDetails'>";
    		$returnString .= "<b>Order: ".Html::a($this->customerOrder->Order_ID, ['customer-order/update', 'id' => $this->customerOrder->id])."</b><br>";
-   		$returnString .= $this->customerOrder->Name;
+   		if($this->customerOrder->Customer_id == CustomerOrders::PLACEHOLDERID)
+   			{
+			$returnString .= "New";
+			}
+		else{
+			$returnString .= $this->customerOrder->Name;	
+			}
+   		
    		$returnString .= "</div>";
    		$returnString .= "<div class='innerState'>";
    		$returnString .= Lookup::item($this->customerOrder->Status, 'ORDER_STATUS');

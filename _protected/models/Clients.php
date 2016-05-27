@@ -510,7 +510,7 @@ class Clients extends \yii\db\ActiveRecord
 			{
 				
 			$ordered = $order->Qty_Tonnes;
-			$dispatched =  $order->delivery->weighbridgeTicket->net;
+			$dispatched =  $order->delivery->delivery_qty;
 			if($order->delivery->return)
 				{
 				$returned = $order->delivery->return->amount;
@@ -544,5 +544,11 @@ class Clients extends \yii\db\ActiveRecord
 						
 	}
 	
+	
+	
+	public function isOnCreditHold()
+	{
+		return ($this->Credit_Hold == True);
+	}
 }
 

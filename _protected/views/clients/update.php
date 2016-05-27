@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->Company_Name];
 ?>
 <div class="clients-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?> <?= $model->isOnCreditHold() ? "<span style='color: red'> Credit Hold </span>" : "" ?></h1>
   	<p><?= actionButtonsWidget::widget(['items' => $actionItems])  ?></p>
     <?= $this->render('_form', [
         'model' => $model, 
