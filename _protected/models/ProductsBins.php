@@ -64,7 +64,7 @@ class ProductsBins extends \yii\db\ActiveRecord
 		$productsBinsArray = array();
 		foreach($productsBins as $productBin)
 			{
-			$productsBinsArray[$productBin->getLocationString()][$productBin->id] = $productBin->name.($productBin->description != "" ? " (".substr($productBin->description, 0, 15).")" : "");
+			$productsBinsArray[$productBin->getLocationString()][$productBin->id] = $productBin->name;
 			}	
 			
 		return $productsBinsArray;

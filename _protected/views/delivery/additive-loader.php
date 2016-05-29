@@ -130,7 +130,17 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='50%'><b>Rego: </b></td>
-	 						<td wdith='50%'><?= $deliveryLoadObject->truck->registration ?></td>
+	 						<td wdith='50%'>
+	 						<?
+	 						if($deliveryLoadObject->truck)
+	 							{
+								echo  $deliveryLoadObject->truck->registration;
+								}
+							else{
+								echo "No Truck";
+							}
+	 						?>
+	 						 </td>
 	 					</tr>
 	 				</table>
 	 			</td>
@@ -290,7 +300,15 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='50%'><b>Rego: </b></td>
-	 						<td wdith='50%'><?= $deliveryLoadObject->truck->registration ?></td>
+	 						<td wdith='50%'>	<?
+	 						if($deliveryLoadObject->truck)
+	 							{
+								echo  $deliveryLoadObject->truck->registration;
+								}
+							else{
+								echo "No Truck";
+							}
+	 						?></td>
 	 					</tr>
 	 				</table>
 	 			</td>

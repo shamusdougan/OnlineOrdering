@@ -32,7 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
         		'format' => 'raw',
         		'value' => function ($data)
         			{
-					return html::a($data->Company_Name, "/clients/update?id=".$data->id);
+        			$returnString = html::a($data->Company_Name, "/clients/update?id=".$data->id);
+        			if($data->isOnCreditHold())
+        				{
+						$returnString .= "<span style='color: red'> (Credit Hold)</span>";
+						}
+					return $returnString;
 					},
         		],
         	'Trading_as',
