@@ -29,40 +29,16 @@ $this->registerJs(
 	"
    );
 
-/*
+
 $this->registerJs(
-    "$(document).on('click', '.order-copy-link', function() 
+    "$(document).on('click', '#add_order_button', function() 
     	{
-    		
-    	
-    	order_id = $(this).closest('tr').data('key')	
-    	
-    	
-    	
-    	//create a copy of the order and then navigate to that page
-		$.ajax
-  		({
-  		url: '".yii\helpers\Url::toRoute("customer-order/ajax-copy")."',
-		data: {id: order_id},
-		success: function (data, textStatus, jqXHR) 
-			{
-			alert('copied the order');
-           
-			},
-        error: function (jqXHR, textStatus, errorThrown) 
-        	{
-            console.log('An error occured!');
-            alert('Error in ajax request' );
-        	}
-		});
-    	
-    	
-		
-		});
+    	window.open('".yii\helpers\Url::toRoute(["customer-order/create-customer-order", 'customer_id' => $model->id])."');
+ 		});
 	"
    );
 
-*/
+
 
 
 

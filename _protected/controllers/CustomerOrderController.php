@@ -121,11 +121,27 @@ class CustomerOrderController extends Controller
 		$model->Order_ID = $model->getOrderNumber();
 		$model->save();
 		return $this->redirect([$redirectTo, 'id' => $model->id]);
-        
+     }
 
-        
 
-    }
+	public function actionCreateCustomerOrder($customer_id)
+	{
+		$model = new customerOrders(['scenario' => 'createDummy']);
+		$model->Customer_id = $customer_id;
+    	$model->Name = "XXXXX";
+    	$model->Created_On = Date('Y-m-d');
+    	$model->Created_By = Yii::$app->user->identity->id;
+    	$model->Status = customerOrders::STATUS_ACTIVE;
+    	if(!$model->save())
+    		{
+    		die("unable to create new order");
+        	}
+		$model->Order_ID = $model->getOrderNumber();
+		$model->save();
+		return $this->redirect(['update', 'id' => $model->id]);
+	}
+
+
 
     /**
      * Updates an existing customerOrders model.
