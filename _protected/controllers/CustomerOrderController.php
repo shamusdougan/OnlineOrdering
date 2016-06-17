@@ -281,44 +281,42 @@ class CustomerOrderController extends Controller
 		$this->view->params['menuItem'] = 'customer-order-production-active';
 		
 		
-		//if an order has been selected and the "Submit orders" button is pressed
-		$checkArray = Yii::$app->request->post('selection'); 
-		if($checkArray)
-			{
-			foreach($checkArray as $orderId)
-				{
-				if (($order = customerOrders::findOne($orderId)) !== null) 
-					{
-            		$order->submitOrder();
-        			}
-        		else {
-            		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
-        			}
-				}
-			}
-		
-		 
-		
-		
 		
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->getActiveOrders(Yii::$app->request->queryParams);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create?redirectTo=update-production-active'];
-		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'submit' => 'customer-order-active-list-form', 'url'=> null];
+		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'addClass' => 'submit_orders', 'url'=> null];
 		
 		$userListArray = User::getUserListArray();
-		
+		$customerList = Clients::getActiveClientListArray();
         return $this->render('production-active-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
             'userListArray' => $userListArray,
+            'customerList' => $customerList,
         ]);
     }
 
 
- 
+ public function actionAjaxSubmitOrder($selectedOrders)
+	{
+		
+		$order_id_array = explode(",", $selectedOrders);
+		foreach($order_id_array as $order_id)
+			{
+			if (($order = customerOrders::findOne($order_id)) !== null) 
+				{
+        		$order->submitOrder();
+    			}
+    		else {
+        		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
+    			}
+			}
+		
+		return 0;
+	}
  
  
 	 /**
@@ -431,18 +429,37 @@ class CustomerOrderController extends Controller
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->getSubmittedOrders(Yii::$app->request->queryParams);
 
-		$actionItems[] = ['label'=>'Unsubmit Order(s)', 'button' => 'reversetruck', 'submit' => 'customer-order-submitted-list-form', 'url'=> null];
+		$actionItems[] = ['label'=>'Unsubmit Order(s)', 'button' => 'reversetruck', 'addClass' => 'unsubmit_orders', 'url'=> null];
 		$userListArray = User::getUserListArray();
-
+		$customerList = Clients::getActiveClientListArray();
 
         return $this->render('production-submitted-list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'actionItems' => $actionItems,
             'userListArray' => $userListArray,
+            'customerList' => $customerList,
         ]);
     }
 
+
+	public function actionAjaxUnsubmitOrder($selectedOrders)
+	{
+		
+		$order_id_array = explode(",", $selectedOrders);
+		foreach($order_id_array as $order_id)
+			{
+			if (($order = customerOrders::findOne($order_id)) !== null) 
+				{
+        		$order->unSubmitOrder();
+    			}
+    		else {
+        		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
+    			}
+			}
+		
+		return 0;
+	}
  
   /**
      * Updates an existing customerOrders model.
@@ -484,9 +501,9 @@ class CustomerOrderController extends Controller
         	
         	$clientObjects = Clients::find()
         				->where('id != :id', ['id'=>Clients::DUMMY])
-        				->select(['id', 'Company_Name'])
+        				->select(['id', 'Company_Name', 'Credit_Hold'])
         				->all();
-        	$clientList = ArrayHelper::map($clientObjects, 'id', 'Company_Name') ;
+        	
         	
         	
         	//generate the list of storage option available, this will be over written by ajax if the client changes
@@ -506,8 +523,28 @@ class CustomerOrderController extends Controller
 				$storageList = 	array();
 				}
         	
+        	
+        	//generate two list the client list to display and the credit hold list
+        	$clientList = array();
+        	$creditHoldList = array();
+        	foreach($clientObjects as $clientObject)
+        		{
+				$clientList[$clientObject->id] = $clientObject->Company_Name;
+	
+				if($clientObject->isOnCreditHold())
+					{
+					$clientList[$clientObject->id] .= " (Credit Hold)";
+					$creditHoldList[$clientObject->id] = ['disabled' => true];
+					}
+				}
+        	
+        	
             return $this->render('update', [
-                'model' => $model, 'clientList' => $clientList, 'actionItems' => $actionItems, 'storageList' => $storageList
+                'model' => $model, 
+                'clientList' => $clientList, 
+                'actionItems' => $actionItems, 
+                'storageList' => $storageList,
+                'creditHoldList' => $creditHoldList,
             ]);
         }
     }

@@ -61,6 +61,11 @@ $returnString = "<fieldset class='sapFieldSet'>
 			$class .= " button_print";
 			$attributeString .= " print_url='".$actionItem['print_url']."'";
 			}
+			
+		if(array_key_exists('addClass', $actionItem))
+			{
+			$class .= " ".$actionItem['addClass'];
+			}
      	
      	
      	$returnString .= "<div class='".$class."' ".$attributeString.">";

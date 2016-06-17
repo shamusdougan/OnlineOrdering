@@ -15,7 +15,49 @@ use kartik\widgets\ActiveForm;
 $this->title = 'Customer Orders: ACTIVE';
 $this->params['breadcrumbs'][] = $this->title;
 
+$this->registerJS(
+"
 
+
+
+    $(document).on('click', '.submit_orders', function()  
+    {
+	var orderArray = [];
+    $('.order_cb').each(function()
+    {
+        if  ($(this).is(\":checked\"))
+        {
+            orderArray.push($(this).val());
+        }
+
+    });
+    
+   var selectedOrders = orderArray.join();
+   if(selectedOrders == '' || selectedOrders == null )
+			{
+			alert('No Orders selected');
+			}
+	else{
+        $.ajax({
+            url: '".yii\helpers\Url::toRoute("customer-order/ajax-submit-order")."',
+            dataType: 'json',
+            method: 'GET',
+            data: {selectedOrders: selectedOrders},
+            success: function (data, textStatus, jqXHR) {
+                $.pjax.reload({container:\"#order-grid\"});
+                },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('An error occured!');
+                alert('Error in ajax request' );
+                }
+            });
+        }
+    });
+	
+"
+
+
+);
 
 ?>
 <div class="customer-orders-index">
@@ -26,21 +68,23 @@ $this->params['breadcrumbs'][] = $this->title;
     
     
 
-
-    
-    
-  <?php $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'id' => 'customer-order-active-list-form']); ?>
-
-    
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'export' => false,
+        'pjax'=>true,
+	    'pjaxSettings' =>
+	        [
+	            'options' =>['id' => 'order-grid'],
+	        ],
         'columns' => [
 			
 			[
   			'class' => '\kartik\grid\CheckboxColumn',
+  			'checkboxOptions' =>
+	            [
+	                'class' => 'order_cb',
+	            ],
 			],
 			[
     		'attribute' => 'Order_ID',
@@ -50,9 +94,18 @@ $this->params['breadcrumbs'][] = $this->title;
 				return html::a($data->Order_ID, "/customer-order/update-production-active?id=".$data->id);
 				},
     		],
-            [
-            'attribute' => 'client.Company_Name',
+             [
+            'attribute' => 'Customer_id',
+            'value' => function ($data) use ($customerList)
+            	{
+				return $customerList[$data->Customer_id];
+				},
             'label' => "Customer",
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter' => $customerList,
+            'filterWidgetOptions'=>['pluginOptions'=>['allowClear'=>true],],
+    		'filterInputOptions'=>['placeholder'=>'Any Client'],
+    		'width' => '200px',
             ],
             'Name',
             [
@@ -116,6 +169,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
          
-<?php ActiveForm::end(); ?>
 
-</div>
+
+
