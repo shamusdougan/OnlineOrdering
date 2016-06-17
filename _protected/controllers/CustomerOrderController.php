@@ -284,6 +284,7 @@ class CustomerOrderController extends Controller
 		
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->getActiveOrders(Yii::$app->request->queryParams);
+        $dataProvider->setPagination(false);
 
 		$actionItems[] = ['label'=>'New', 'button' => 'new', 'url'=> '/customer-order/create?redirectTo=update-production-active'];
 		$actionItems[] = ['label'=>'Submit Orders', 'button' => 'truck', 'addClass' => 'submit_orders', 'url'=> null];
@@ -409,26 +410,12 @@ class CustomerOrderController extends Controller
     {
 		$this->view->params['menuItem'] = 'customer-order-production-submitted';
 		
-		//if an order has been selected and the "Submit orders" button is pressed
-		$checkArray = Yii::$app->request->post('selection'); 
-		if($checkArray)
-			{
-			foreach($checkArray as $orderId)
-				{
-				if (($order = customerOrders::findOne($orderId)) !== null) 
-					{
-            		$order->unSubmitOrder();
-        			}
-        		else {
-            		throw new NotFoundHttpException('The requested customer Order does not exist orderID: '.$orderId);
-        			}
-				}
-			}
-		
 		
         $searchModel = new customerOrdersSearch();
         $dataProvider = $searchModel->getSubmittedOrders(Yii::$app->request->queryParams);
-
+ 		$dataProvider->setPagination(false);
+ 		
+ 		
 		$actionItems[] = ['label'=>'Unsubmit Order(s)', 'button' => 'reversetruck', 'addClass' => 'unsubmit_orders', 'url'=> null];
 		$userListArray = User::getUserListArray();
 		$customerList = Clients::getActiveClientListArray();

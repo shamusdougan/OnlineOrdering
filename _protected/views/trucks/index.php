@@ -24,6 +24,34 @@ $gridColumns = [
 			'width' => '100px',
     		],
             'description',
+            [
+            'attribute' => 'defaultTrailer1_id',
+            'value' => function($data)
+            	{
+					if($data->defaultTrailer1)
+						{
+						return $data->defaultTrailer1->Description;
+						}
+					return null;
+				}
+            ],
+             [
+            'attribute' => 'defaultTrailer2_id',
+            'value' => function($data)
+            	{
+					if($data->max_trailers == 1)
+						{
+						return " ";
+						}
+					
+					
+					if($data->defaultTrailer2)
+						{
+						return $data->defaultTrailer2->Description;
+						}
+					return null;
+				}
+            ],
             'mobile',
             [
     		'attribute' => 'Auger',

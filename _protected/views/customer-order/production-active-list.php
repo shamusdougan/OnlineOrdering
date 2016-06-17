@@ -117,7 +117,7 @@ $this->registerJS(
 			'label' => 'Requested By Date',
 			'value' => function($data)
             	{
-					return date("D - d M Y", strtotime($data->Requested_Delivery_by));
+					return date("d M Y", strtotime($data->Requested_Delivery_by));
 				},
 			],
 			[

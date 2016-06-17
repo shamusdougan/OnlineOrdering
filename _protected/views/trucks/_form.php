@@ -44,7 +44,7 @@ use app\models\Trailers;
 								],
 	    					],
     				   
-						'label' => "Default 2nd Trailer",
+						'label' => "Default 1st Trailer",
 						],
 					'defaultTrailer2_id' => 
 						[

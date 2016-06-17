@@ -72,14 +72,21 @@ class Trucks extends \yii\db\ActiveRecord
             'Auger' => 'Auger',
             'Blower' => 'Blower',
             'Tipper' => 'Tipper',
-            'defaultTrailer1_id' => "Default 1st Trailer",
-            'defaultTrailer2_id' => "Default 2nd Trailer",
+            'defaultTrailer1_id' => "Default Trailer 1",
+            'defaultTrailer2_id' => "Default Trailer 2",
         ];
     }
     
     
+    public function getDefaultTrailer1()
+    {
+		return $this->hasOne(Trailers::className(), ['id' => 'defaultTrailer1_id'] );
+	}
     
-    
+     public function getDefaultTrailer2()
+    {
+		return $this->hasOne(Trailers::className(), ['id' => 'defaultTrailer2_id'] );
+	}
   
     /**
 	* 
