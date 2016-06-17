@@ -30,7 +30,7 @@ $gridColumns = [
             	{
 					if($data->defaultTrailer1)
 						{
-						return $data->defaultTrailer1->Description;
+						return $data->defaultTrailer1->Description." (".$data->defaultTrailer1->Registration.")";
 						}
 					return null;
 				}
@@ -47,7 +47,7 @@ $gridColumns = [
 					
 					if($data->defaultTrailer2)
 						{
-						return $data->defaultTrailer2->Description;
+						return $data->defaultTrailer2->Description." (".$data->defaultTrailer2->Registration.")";
 						}
 					return null;
 				}
