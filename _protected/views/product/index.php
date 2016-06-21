@@ -50,7 +50,7 @@ $gridColumns =
 	    'value' => function ($data)
 	    	{
 			$data->getCurrentPrice();
-			return number_format($data->price_pT, 2);
+			return "$".number_format($data->price_pT, 2);
 			},
 	    'hAlign' => 'right',
 	    ],

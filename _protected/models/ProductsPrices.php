@@ -194,7 +194,7 @@ class ProductsPrices extends \yii\db\ActiveRecord
 		$ws1->getColumnDimension('B')->setAutoSize(true);
 		$ws1->getColumnDimension('C')->setAutoSize(true);
 		
-		$baseProducts = Product::getBaseProductList();
+		$baseProducts = Product::getProductList();
 		$rowCount = 2; //Start the second row down
 		foreach($baseProducts as $product)
 			{

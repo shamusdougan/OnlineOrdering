@@ -244,7 +244,7 @@ $gridColumns = 	[
 					    'vAlign'=>'right',
 					    'value'=>function ($model, $key, $index, $widget) { 
 					        $p = compact('model', 'key', 'index');
-					        return $widget->col(1, $p) * ( $widget->col(2, $p) / 100);
+					        return $widget->col(2, $p) * ( $widget->col(3, $p) / 100);
 					    },
 					    'headerOptions'=>['class'=>'kartik-sheet-style'],
 					    'hAlign'=>'right', 

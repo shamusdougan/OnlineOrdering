@@ -127,64 +127,63 @@ class Product extends \yii\db\ActiveRecord
 		return Product::find()->where(['Status' => Product::ACTIVE]);
 	}
 
-	public function getCurrentPrice($priceDate = null, $recurseCheck = 0)
+	
+	
+	
+	public function getCurrentPrice($priceDate = null)
 	{
+
 		
-		$MAX_RECURSIONS = 2;
-		//echo $recurseCheck." ".$this->Name.": Recurse Check: ".$recurseCheck."<br>";
 		if($priceDate == null)
 			{
 			$priceDate = time();
 			}
 		
-		
-		//If its a base proudct type just grab the relevant price data from the pricing table
-		if($this->Mix_Type == Product::MIXTYPE_BASE)
-		{
-			//echo $recurseCheck." checking base product Cost<br>";
-			$result = ProductsPrices::find()
-						->where(['product_id' => $this->id])
-						->andWhere('`date_valid_from` <= :date_val', [':date_val' => date("Y-m-d", $priceDate)])
-						->orderBy(['date_valid_from' => SORT_DESC])
-						->one();
-								
-			if($result){
-				$this->price_pT = $result->price_pt;
-				}
-			else{
-				$this->price_pT = 0;	
+		//GRab the price from the price list check, if the product is a composite product and the set price is 0 return the calculated price
+		//echo $recurseCheck." checking base product Cost<br>";
+		$result = ProductsPrices::find()
+					->where(['product_id' => $this->id])
+					->andWhere('`date_valid_from` <= :date_val', [':date_val' => date("Y-m-d", $priceDate)])
+					->orderBy(['date_valid_from' => SORT_DESC])
+					->one();
+							
+		if($result){
+			$this->price_pT = $result->price_pt;
 			}
-		}
-		elseif($recurseCheck < $MAX_RECURSIONS && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
+		else{
+			$this->price_pT = 0;	
+			}
+		
+		
+		
+		return $this->price_pT;
+		
+	}
+	
+	/**
+	* 
+	*  Not currently being used but left here.
+	* 
+	*/
+	public function getCompositeCalculatedPrice($recurseCheck = 0)
+	{
+		if($recurseCheck < $MAX_RECURSIONS && $this->Mix_Type == Product::MIXTYPE_COMPOSITE)
 			{
 			//$recurseCheck." Check composite product price<br>";
 			$recurseCheck++;
 			$sum = 0;
 			foreach($this->ingredients as $productIngredient)
 				{
-					
-					
-					
 				$percent = $productIngredient->ingredient_percent;
 				$price = $productIngredient->ingredient->getCurrentPrice($priceDate, $recurseCheck);
 				$sum += ($price * ($percent/100));
-				
-				
-				
-				
 				}
-				
 			$this->price_pT = $sum;
-				
 			}
 		else{
 			die($recurseCheck. " Recursions, Product Name: ".$this->Name." Product Type Detected is: :".$this->getProductMixType()." Recursive situation found in calculating proudct pricing");
 		}
-		
-		return $this->price_pT;
-		
 	}
-	
 	
 	public function clearIngredients()
 	{
@@ -202,6 +201,14 @@ class Product extends \yii\db\ActiveRecord
 							->all();
 		}
 	
+	public function getProductList()
+		{
+		return Product::find()
+							->where(['Status' => Product::ACTIVE])
+							->orderBy('Product_ID')
+							->all();
+		}
+	
 	
 	public function getBaseProductListLookup()
 	{
@@ -215,7 +222,11 @@ class Product extends \yii\db\ActiveRecord
 		return ArrayHelper::map($baseProductList, 'Product_ID', 'id');
 	}
 	
-	
+	public function getProductCodeLookup()
+	{
+		$baseProductList = Product::getProductList();
+		return ArrayHelper::map($baseProductList, 'Product_ID', 'id');
+	}
 	
 	//Returns a product pricing matrix of the following FORMAT_DATE
 	
@@ -226,7 +237,7 @@ class Product extends \yii\db\ActiveRecord
 	public function getBaseProductsPrices()
 		{
 			
-		$baseProducts = Product::getBaseProductList();
+	
 		
 		$PastDataMonths = 6;			
 		$prices = ProductsPrices::getPriceData(time(), $PastDataMonths);
@@ -257,7 +268,7 @@ class Product extends \yii\db\ActiveRecord
 
 		ksort($pricingMatrix);
 		reset($pricingMatrix);
-		$baseProducts = Product::getBaseProductList();
+		$baseProducts = Product::getProductList();
 		
 		//we now need to back fill the relevant data for each of the base items
 		//If the earlest array isn't fully populated from the pricing data, then go through each unpriced item and get the price at that date.
@@ -306,7 +317,7 @@ class Product extends \yii\db\ActiveRecord
 		{
 		//tranform the pricing matrix into a yii DataProvider result to be displayed in a datagrid
 		$resultSet = [];
-		$baseProducts = Product::getBaseProductList();
+		$baseProducts = Product::getProductList();
 		foreach($baseProducts as $productObj)
 			{
 				

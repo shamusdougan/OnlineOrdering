@@ -57,10 +57,10 @@ foreach($basePricingMatrix as $dateIndex => $pricingArray )
 			
 			if(array_key_exists($data['product_id'], $basePricingMatrix[$dateIndex]))
 				{
-				return "<font size='+1'><b>".$data[$dateIndex]."</b></font>";
+				return "<font size='+1'><b>$".number_format($data[$dateIndex],2)."</b></font>";
 				}
 			else{
-				return "<span title='Price Set Previously'><i>".$data[$dateIndex]."</i></span>";
+				return "<span title='Price Set Previously'><i>$".number_format($data[$dateIndex],2)."</i></span>";
 				}
 			}
 		

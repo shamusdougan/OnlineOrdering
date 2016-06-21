@@ -8,8 +8,7 @@ use vendor\actionButtons\actionButtonsWidget;
 
 $this->title = 'Update Product: ' . ' ' . $model->Name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->Name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $model->Name;
 ?>
 <div class="product-update">
 

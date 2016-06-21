@@ -147,11 +147,13 @@ $this->registerJs(
 				]);
 
 ?>
+<?php ActiveForm::end(); ?>
+
 
 </div>
 
 
-<div style='width: 100%; <? if($model->Mix_Type != Product::MIXTYPE_BASE){ echo " display: none; ";} ?>' id='product_price_list' >
+<div style='width: 100%;' id='product_price_list' >
 	
 	<?= $this->render("/products-pricing/_pricingSingle", [
 					'product' => $model,
@@ -174,7 +176,7 @@ $this->registerJs(
 
 
 
-    <?php ActiveForm::end(); ?>
+  
 
 </div>
 

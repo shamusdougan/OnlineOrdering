@@ -362,8 +362,8 @@ class ProductController extends Controller
 	public function actionUpdatePricing()
 	{
 		
-	$basePricingMatrix = Product::getBaseProductsPrices();	//return the pricing matrix
-	$populatedPricingMatrix = Product::autoFillPricingMatrix($basePricingMatrix);
+	$pricingMatrix = Product::getBaseProductsPrices();	//return the pricing matrix
+	$populatedPricingMatrix = Product::autoFillPricingMatrix($pricingMatrix);
 	
 	$codefilter = Yii::$app->request->getQueryParam('filtercode', '');
 	$namefilter = Yii::$app->request->getQueryParam('filtername', '');
@@ -380,9 +380,8 @@ class ProductController extends Controller
 	return $this->render('updatePricing',
 							[
 							'dataProvider' => $dataProvider,
-							'basePricingMatrix' => $basePricingMatrix,
+							'basePricingMatrix' => $pricingMatrix,
 							'actionItems' => $actionItems,
-							'basePricingMatrix' => $basePricingMatrix,
 							'filterModel' => $filterModel,
 							]);
 		
@@ -616,7 +615,7 @@ class ProductController extends Controller
 		
 		//Clear any existing Pricing for the given date
 		$targetDate = strtotime($columnName);
-		$productLookupList = Product::getBaseProductCodeLookup();
+		$productLookupList = Product::getProductCodeLookup();
 		ProductsPrices::bulkDeleteDate($targetDate);
 		
 		

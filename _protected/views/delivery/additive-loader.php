@@ -169,7 +169,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 	</table>
 		
 	</div>
-	<div style='width: 100%; height: 620px;' >
+	<div style='width: 100%; height: 520px;' >
 		<table >
 			<tr style='background-color: #c6c6c6'>
 				<td width='350px'><b>PRODUCT</B></td>
@@ -328,7 +328,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 	</table>
 		
 	</div>
-	<div style='width: 100%; height: 620px;' >
+	<div style='width: 100%; height: 520px;' >
 		<table >
 			<tr style='background-color: #c6c6c6'>
 				<td width='350px'><b>PRODUCT</B></td>
