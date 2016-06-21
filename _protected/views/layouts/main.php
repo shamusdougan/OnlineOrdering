@@ -22,7 +22,7 @@ $items = [
 			['label' => 'Customers', 'icon' => 'user', 'url' => Url::toRoute('/clients'), 'active'=>sideNavActive::widget(['controller' => "clients", "actions" => ["create", "update", "index"]])],
 		];
 		
-if(User::hasRole('sales'))
+if(User::hasRole('sales') || User::hasRole('accounts'))
 	{
 	$items[] = ['label' => 'Sales', 'icon' => 'shopping-cart', 'items' => 
 					[
@@ -40,7 +40,7 @@ if(User::hasRole('production'))
 			['label' => 'Deliveries', 'icon' => 'road', 'url' => Url::toRoute('/delivery'), 'active'=>sideNavActive::widget(['controller' => "delivery", ])],
 			['label' => 'Returns', 'icon' => 'road', 'url' => Url::toRoute(['/returns']), 'active'=>sideNavActive::widget(['controller' => "returns"])],
 			['label' => 'Weighbridge', 'icon' => 'tags', 'url' => Url::toRoute('/weighbridge-ticket'), 'active'=>sideNavActive::widget(['controller' => "weighbridge-ticket", ])],
-			['label' => 'Products', 'icon' => 'tags', 'url' => Url::toRoute(['/product', "ProductSearch[Status]"=>1]), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['index', 'create', 'update'] ])],
+			
 			
 		
 		
@@ -50,6 +50,7 @@ if(User::hasRole('accounts'))
 	{
 	$items[] = ['label' => 'Accounts', 'icon' => 'usd', 'items' => 
 		[
+			['label' => 'Products', 'icon' => 'tags', 'url' => Url::toRoute(['/product', "ProductSearch[Status]"=>1]), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['index', 'create', 'update'] ])],
 			['label' => 'Price Lists', 'icon' => 'file', 'url' => Url::toRoute('/product/update-pricing'), 'active'=>sideNavActive::widget(['controller' => "product", 'actions' => ['update-pricing'] ])],
 			['label' => 'Daily Sales Figures', 'icon' => 'usd', 'url' => Url::toRoute('/clients/daily-sales-figures'), 'active'=>sideNavActive::widget(['controller' => "clients", 'actions' => ['daily-sales-figures'] ])],
 		
