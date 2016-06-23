@@ -12,36 +12,23 @@ echo "<?php\n";
 
 use yii\db\Migration;
 
-/**
- * Handles the dropping for table `<?= $table ?>`.
-<?= $this->render('_foreignTables', [
-    'foreignKeys' => $foreignKeys,
-]) ?>
- */
 class <?= $className ?> extends Migration
 {
-    /**
-     * @inheritdoc
-     */
     public function up()
     {
-<?= $this->render('_dropTable', [
-    'table' => $table,
-    'foreignKeys' => $foreignKeys,
-])
-?>
+        $this->dropTable('<?= $table ?>');
     }
 
-    /**
-     * @inheritdoc
-     */
     public function down()
     {
-<?= $this->render('_createTable', [
-    'table' => $table,
-    'fields' => $fields,
-    'foreignKeys' => $foreignKeys,
-])
-?>
+        $this->createTable('<?= $table ?>', [
+<?php foreach ($fields as $field): ?>
+<?php if ($field == end($fields)): ?>
+            '<?= $field['property'] ?>' => $this-><?= $field['decorators'] . "\n"?>
+<?php else: ?>
+            '<?= $field['property'] ?>' => $this-><?= $field['decorators'] . ",\n"?>
+<?php endif; ?>
+<?php endforeach; ?>
+        ]);
     }
 }

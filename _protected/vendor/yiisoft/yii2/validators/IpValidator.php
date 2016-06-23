@@ -11,6 +11,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\StringHelper;
 use yii\web\JsExpression;
 
 /**
@@ -457,7 +458,7 @@ class IpValidator extends Validator
      */
     private function parseNegatedRange ($string) {
         $isNegated = strpos($string, static::NEGATION_CHAR) === 0;
-        return [$isNegated, $isNegated ? substr($string, strlen(static::NEGATION_CHAR)) : $string];
+        return [$isNegated, ($isNegated ? substr($string, strlen(static::NEGATION_CHAR)) : $string)];
     }
 
     /**
@@ -535,7 +536,7 @@ class IpValidator extends Validator
      * @param string $ip an IPv4 or IPv6 address
      * @param integer $cidr
      * @param string $range subnet in CIDR format e.g. `10.0.0.0/8` or `2001:af::/64`
-     * @return boolean
+     * @return bool
      */
     private function inRange($ip, $cidr, $range)
     {
@@ -556,7 +557,10 @@ class IpValidator extends Validator
         }
 
         $binNet = $this->ip2bin($net);
-        return substr($binIp, 0, $range_cidr) === substr($binNet, 0, $range_cidr) && $cidr >= $range_cidr;
+        if (substr($binIp, 0, $range_cidr) === substr($binNet, 0, $range_cidr) && $cidr >= $range_cidr) {
+            return true;
+        }
+        return false;
     }
 
     /**

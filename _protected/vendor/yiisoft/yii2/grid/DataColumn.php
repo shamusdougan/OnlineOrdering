@@ -117,25 +117,6 @@ class DataColumn extends Column
             return parent::renderHeaderCellContent();
         }
 
-        $label = $this->getHeaderCellLabel();
-        if ($this->encodeLabel) {
-            $label = Html::encode($label);
-        }
-
-        if ($this->attribute !== null && $this->enableSorting &&
-            ($sort = $this->grid->dataProvider->getSort()) !== false && $sort->hasAttribute($this->attribute)) {
-            return $sort->link($this->attribute, array_merge($this->sortLinkOptions, ['label' => $label]));
-        } else {
-            return $label;
-        }
-    }
-
-    /**
-     * @inheritdoc
-     * @since 2.0.8
-     */
-    protected function getHeaderCellLabel()
-    {
         $provider = $this->grid->dataProvider;
 
         if ($this->label === null) {
@@ -156,7 +137,12 @@ class DataColumn extends Column
             $label = $this->label;
         }
 
-        return $label;
+        if ($this->attribute !== null && $this->enableSorting &&
+            ($sort = $provider->getSort()) !== false && $sort->hasAttribute($this->attribute)) {
+            return $sort->link($this->attribute, array_merge($this->sortLinkOptions, ['label' => ($this->encodeLabel ? Html::encode($label) : $label)]));
+        } else {
+            return $this->encodeLabel ? Html::encode($label) : $label;
+        }
     }
 
     /**

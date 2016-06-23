@@ -4,7 +4,7 @@
  * @package   yii2-export
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2015 - 2016
- * @version   1.2.5
+ * @version   1.2.4
  */
 
 namespace kartik\export;
@@ -441,7 +441,7 @@ class ExportMenu extends GridView
     /**
      * @var string the alias for the pdf library path to export to PDF
      */
-    public $pdfLibraryPath = '@vendor/mpdf/mpdf';
+    public $pdfLibraryPath = '@vendor/kartik-v/mpdf';
 
     /**
      * @var array the internalization configuration for this widget
@@ -1371,7 +1371,7 @@ class ExportMenu extends GridView
             $this->_endCol++;
             $cell = $this->_objPHPExcelSheet->setCellValue(
                 self::columnName($this->_endCol) . ($index + $this->_beginRow + 1),
-                empty($value) ? '' : strip_tags($value),
+                strip_tags($value),
                 true
             );
             $this->raiseEvent('onRenderDataCell', [$cell, $value, $model, $key, $index, $this]);
@@ -1426,7 +1426,7 @@ class ExportMenu extends GridView
         if (!empty($mime)) {
             header("Content-Type: {$mime}; charset={$this->encoding}");
         }
-        header("Content-Disposition: attachment; filename=\"{$this->filename}.{$extension}\"");
+        header("Content-Disposition: attachment; filename={$this->filename}.{$extension}");
         header("Cache-Control: max-age=0");
     }
 

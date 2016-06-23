@@ -134,7 +134,7 @@ class DeepCopy
         if (false === $isCloneable) {
             throw new CloneException(sprintf(
                 'Class "%s" is not cloneable.',
-                $reflectedObject->getName()
+                $object->getName()
             ));
         }
 

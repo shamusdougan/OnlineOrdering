@@ -20,11 +20,16 @@ use webvimark\extensions\BootstrapSwitch\BootstrapSwitch;
 		'layout'=>'horizontal',
 		'validateOnBlur' => false,
 	]); ?>
+	<?= $form->errorSummary($model); ?>
 
 	<?= $form->field($model->loadDefaultValues(), 'status')
 		->dropDownList(User::getStatusList()) ?>
 
 	<?= $form->field($model, 'username')->textInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
+	
+	<?= $form->field($model, 'firstname')->textInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
+	
+	<?= $form->field($model, 'surname')->textInput(['maxlength' => 255, 'autocomplete'=>'off']) ?>
 
 	<?php if ( $model->isNewRecord ): ?>
 

@@ -675,17 +675,14 @@ class Connection extends Component
     public function transaction(callable $callback, $isolationLevel = null)
     {
         $transaction = $this->beginTransaction($isolationLevel);
-        $level = $transaction->level;
 
         try {
             $result = call_user_func($callback, $this);
-            if ($transaction->isActive && $transaction->level === $level) {
+            if ($transaction->isActive) {
                 $transaction->commit();
             }
         } catch (\Exception $e) {
-            if ($transaction->isActive && $transaction->level === $level) {
-                $transaction->rollBack();
-            }
+            $transaction->rollBack();
             throw $e;
         }
 

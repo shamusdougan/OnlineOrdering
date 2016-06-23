@@ -178,8 +178,7 @@ class ActiveForm extends Widget
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }
-        ob_start();
-        ob_implicit_flush(false);
+        echo Html::beginForm($this->action, $this->method, $this->options);
     }
 
     /**
@@ -192,10 +191,6 @@ class ActiveForm extends Widget
         if (!empty($this->_fields)) {
             throw new InvalidCallException('Each beginField() should have a matching endField() call.');
         }
-
-        $content = ob_get_clean();
-        echo Html::beginForm($this->action, $this->method, $this->options);
-        echo $content;
 
         if ($this->enableClientScript) {
             $id = $this->options['id'];

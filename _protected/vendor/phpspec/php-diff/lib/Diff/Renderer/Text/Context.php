@@ -72,17 +72,17 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 			$j2 = $group[$lastItem][4];
 
 			if($i2 - $i1 >= 2) {
-				$diff .= '*** '.($group[0][1] + 1).','.$i2." ****".PHP_EOL;
+				$diff .= '*** '.($group[0][1] + 1).','.$i2." ****\n";
 			}
 			else {
 				$diff .= '*** '.$i2." ****\n";
 			}
 
 			if($j2 - $j1 >= 2) {
-				$separator = '--- '.($j1 + 1).','.$j2." ----".PHP_EOL;
+				$separator = '--- '.($j1 + 1).','.$j2." ----\n";
 			}
 			else {
-				$separator = '--- '.$j2." ----".PHP_EOL;
+				$separator = '--- '.$j2." ----\n";
 			}
 
 			$hasVisible = false;
@@ -99,7 +99,7 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 					if($tag == 'insert') {
 						continue;
 					}
-					$diff .= $this->tagMap[$tag].' '.implode(PHP_EOL.$this->tagMap[$tag].' ', $this->diff->GetA($i1, $i2)).PHP_EOL;
+					$diff .= $this->tagMap[$tag].' '.implode("\n".$this->tagMap[$tag].' ', $this->diff->GetA($i1, $i2))."\n";
 				}
 			}
 
@@ -119,7 +119,7 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 					if($tag == 'delete') {
 						continue;
 					}
-					$diff .= $this->tagMap[$tag].' '.implode(PHP_EOL.$this->tagMap[$tag].' ', $this->diff->GetB($j1, $j2)).PHP_EOL;
+					$diff .= $this->tagMap[$tag].' '.implode("\n".$this->tagMap[$tag].' ', $this->diff->GetB($j1, $j2))."\n";
 				}
 			}
 		}

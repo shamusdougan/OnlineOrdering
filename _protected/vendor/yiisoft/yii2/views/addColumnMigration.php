@@ -7,45 +7,24 @@
 /* @var $table string the name table */
 /* @var $fields array the fields */
 
-preg_match('/^add_(.+)_to_(.+)$/', $name, $matches);
-$columns = $matches[1];
-
 echo "<?php\n";
 ?>
 
 use yii\db\Migration;
 
-/**
- * Handles adding <?= $columns ?> to table `<?= $table ?>`.
-<?= $this->render('_foreignTables', [
-     'foreignKeys' => $foreignKeys,
- ]) ?>
- */
 class <?= $className ?> extends Migration
 {
-    /**
-     * @inheritdoc
-     */
     public function up()
     {
-<?= $this->render('_addColumns', [
-    'table' => $table,
-    'fields' => $fields,
-    'foreignKeys' => $foreignKeys,
-])
-?>
+<?php foreach ($fields as $field): ?>
+        $this->addColumn(<?= "'$table', '" . $field['property'] . "', \$this->" . $field['decorators'] ?>);
+<?php endforeach; ?>
     }
 
-    /**
-     * @inheritdoc
-     */
     public function down()
     {
-<?= $this->render('_dropColumns', [
-    'table' => $table,
-    'fields' => $fields,
-    'foreignKeys' => $foreignKeys,
-])
-?>
+<?php foreach ($fields as $field): ?>
+        $this->dropColumn(<?= "'$table', '" . $field['property'] . "'" ?>);
+<?php endforeach; ?>
     }
 }

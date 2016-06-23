@@ -47,11 +47,11 @@ class Schema extends \yii\db\Schema
         'datetime' => self::TYPE_DATETIME,
         'time' => self::TYPE_TIME,
         // character strings
-        'char' => self::TYPE_CHAR,
+        'char' => self::TYPE_STRING,
         'varchar' => self::TYPE_STRING,
         'text' => self::TYPE_TEXT,
         // unicode character strings
-        'nchar' => self::TYPE_CHAR,
+        'nchar' => self::TYPE_STRING,
         'nvarchar' => self::TYPE_STRING,
         'ntext' => self::TYPE_TEXT,
         // binary strings
@@ -425,5 +425,13 @@ SQL;
             $result[$row['index_name']][] = $row['field_name'];
         }
         return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function createColumnSchemaBuilder($type, $length = null)
+    {
+        return new ColumnSchemaBuilder($type, $length);
     }
 }

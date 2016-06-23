@@ -77,11 +77,6 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
      * @event Event an event that is triggered after a record is deleted.
      */
     const EVENT_AFTER_DELETE = 'afterDelete';
-    /**
-     * @event Event an event that is triggered after a record is refreshed.
-     * @since 2.0.8
-     */
-    const EVENT_AFTER_REFRESH = 'afterRefresh';
 
     /**
      * @var array attribute values indexed by attribute names
@@ -693,7 +688,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             return 0;
         }
 
-        $rows = static::updateAll($values, $this->getOldPrimaryKey(true));
+        $rows = $this->updateAll($values, $this->getOldPrimaryKey(true));
 
         foreach ($values as $name => $value) {
             $this->_oldAttributes[$name] = $this->_attributes[$name];
@@ -726,7 +721,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
         }
         // We do not check the return value of updateAll() because it's possible
         // that the UPDATE statement doesn't change anything and thus returns 0.
-        $rows = static::updateAll($values, $condition);
+        $rows = $this->updateAll($values, $condition);
 
         if ($lock !== null && !$rows) {
             throw new StaleObjectException('The object being updated is outdated.');
@@ -765,7 +760,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
      */
     public function updateCounters($counters)
     {
-        if (static::updateAllCounters($counters, $this->getOldPrimaryKey(true)) > 0) {
+        if ($this->updateAllCounters($counters, $this->getOldPrimaryKey(true)) > 0) {
             foreach ($counters as $name => $value) {
                 if (!isset($this->_attributes[$name])) {
                     $this->_attributes[$name] = $value;
@@ -810,7 +805,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             if ($lock !== null) {
                 $condition[$lock] = $this->$lock;
             }
-            $result = static::deleteAll($condition);
+            $result = $this->deleteAll($condition);
             if ($lock !== null && !$result) {
                 throw new StaleObjectException('The object being deleted is outdated.');
             }
@@ -956,17 +951,13 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
 
     /**
      * Repopulates this active record with the latest data.
-     *
-     * If the refresh is successful, an [[EVENT_AFTER_REFRESH]] event will be triggered.
-     * This event is available since version 2.0.8.
-     *
      * @return boolean whether the row still exists in the database. If true, the latest data
      * will be populated to this active record. Otherwise, this record will remain unchanged.
      */
     public function refresh()
     {
         /* @var $record BaseActiveRecord */
-        $record = static::findOne($this->getPrimaryKey(true));
+        $record = $this->findOne($this->getPrimaryKey(true));
         if ($record === null) {
             return false;
         }
@@ -975,21 +966,8 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
         }
         $this->_oldAttributes = $this->_attributes;
         $this->_related = [];
-        $this->afterRefresh();
 
         return true;
-    }
-
-    /**
-     * This method is called when the AR object is refreshed.
-     * The default implementation will trigger an [[EVENT_AFTER_REFRESH]] event.
-     * When overriding this method, make sure you call the parent implementation to ensure the
-     * event is triggered.
-     * @since 2.0.8
-     */
-    public function afterRefresh()
-    {
-        $this->trigger(self::EVENT_AFTER_REFRESH);
     }
 
     /**
@@ -1234,7 +1212,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             }
         } else {
             $p1 = $model->isPrimaryKey(array_keys($relation->link));
-            $p2 = static::isPrimaryKey(array_values($relation->link));
+            $p2 = $this->isPrimaryKey(array_values($relation->link));
             if ($p1 && $p2) {
                 if ($this->getIsNewRecord() && $model->getIsNewRecord()) {
                     throw new InvalidCallException('Unable to link models: at most one model can be newly created.');
@@ -1257,12 +1235,8 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             $this->_related[$name] = $model;
         } elseif (isset($this->_related[$name])) {
             if ($relation->indexBy !== null) {
-                if ($relation->indexBy instanceof \Closure) {
-                    $index = call_user_func($relation->indexBy, $model);
-                } else {
-                    $index = $model->{$relation->indexBy};
-                }
-                $this->_related[$name][$index] = $model;
+                $indexBy = $relation->indexBy;
+                $this->_related[$name][$model->$indexBy] = $model;
             } else {
                 $this->_related[$name][] = $model;
             }
@@ -1328,16 +1302,12 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
             }
         } else {
             $p1 = $model->isPrimaryKey(array_keys($relation->link));
-            $p2 = static::isPrimaryKey(array_values($relation->link));
+            $p2 = $this->isPrimaryKey(array_values($relation->link));
             if ($p2) {
-                if ($delete) {
-                    $model->delete();
-                } else {
-                    foreach ($relation->link as $a => $b) {
-                        $model->$a = null;
-                    }
-                    $model->save(false);
+                foreach ($relation->link as $a => $b) {
+                    $model->$a = null;
                 }
+                $delete ? $model->delete() : $model->save(false);
             } elseif ($p1) {
                 foreach ($relation->link as $a => $b) {
                     if (is_array($this->$b)) { // relation via array valued attribute
@@ -1496,7 +1466,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
     {
         $labels = $this->attributeLabels();
         if (isset($labels[$attribute])) {
-            return $labels[$attribute];
+            return ($labels[$attribute]);
         } elseif (strpos($attribute, '.')) {
             $attributeParts = explode('.', $attribute);
             $neededAttribute = array_pop($attributeParts);
@@ -1536,7 +1506,7 @@ abstract class BaseActiveRecord extends Model implements ActiveRecordInterface
     {
         $hints = $this->attributeHints();
         if (isset($hints[$attribute])) {
-            return $hints[$attribute];
+            return ($hints[$attribute]);
         } elseif (strpos($attribute, '.')) {
             $attributeParts = explode('.', $attribute);
             $neededAttribute = array_pop($attributeParts);

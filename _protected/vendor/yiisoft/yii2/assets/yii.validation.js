@@ -422,7 +422,7 @@ yii.validation = (function ($) {
         }
 
         if (options.mimeTypes && options.mimeTypes.length > 0) {
-            if (!validateMimeType(options.mimeTypes, file.type)) {
+            if (!~options.mimeTypes.indexOf(file.type)) {
                 messages.push(options.wrongMimeType.replace(/\{file\}/g, file.name));
             }
         }
@@ -434,16 +434,6 @@ yii.validation = (function ($) {
         if (options.minSize && options.minSize > file.size) {
             messages.push(options.tooSmall.replace(/\{file\}/g, file.name));
         }
-    }
-
-    function validateMimeType(mimeTypes, fileType) {
-        for (var i = 0, len = mimeTypes.length; i < len; i++) {
-            if (new RegExp(mimeTypes[i]).test(fileType)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     return pub;

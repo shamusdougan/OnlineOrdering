@@ -93,7 +93,7 @@ class BaseYii
      */
     public static function getVersion()
     {
-        return '2.0.8';
+        return '2.0.7';
     }
 
     /**
@@ -343,7 +343,7 @@ class BaseYii
             unset($type['class']);
             return static::$container->get($class, $params, $type);
         } elseif (is_callable($type, true)) {
-            return static::$container->invoke($type, $params);
+            return call_user_func($type, $params);
         } elseif (is_array($type)) {
             throw new InvalidConfigException('Object configuration must be an array containing a "class" element.');
         } else {

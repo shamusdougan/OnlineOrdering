@@ -4,7 +4,7 @@
  * @package   yii2-krajee-base
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
- * @version   1.8.5
+ * @version   1.8.2
  */
 
 namespace kartik\base;
@@ -27,6 +27,7 @@ class AssetBundle extends \yii\web\AssetBundle
     public $sourcePath = self::KRAJEE_PATH;
     public $depends = [
         'yii\web\JqueryAsset',
+        'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 

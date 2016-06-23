@@ -201,8 +201,7 @@
                     settings: settings,
                     attributes: attributes,
                     submitting: false,
-                    validated: false,
-                    target: $form.attr('target')
+                    validated: false
                 });
 
                 /**
@@ -335,7 +334,7 @@
                         delete messages[i];
                     }
                 }
-                if ($.isEmptyObject(messages) && needAjaxValidation) {
+                if (needAjaxValidation) {
                     var $button = data.submitObject,
                         extData = '&' + data.settings.ajaxParam + '=' + $form.attr('id');
                     if ($button && $button.length && $button.attr('name')) {
@@ -576,14 +575,7 @@
                 data.submitting = false;
             } else {
                 data.validated = true;
-                var buttonTarget = data.submitObject ? data.submitObject.attr('formtarget') : null;
-                if (buttonTarget) {
-                    // set target attribute to form tag before submit
-                    $form.attr('target', buttonTarget);
-                }
                 $form.submit();
-                // restore original target attribute value
-                $form.attr('target', data.target);
             }
         } else {
             $.each(data.attributes, function () {

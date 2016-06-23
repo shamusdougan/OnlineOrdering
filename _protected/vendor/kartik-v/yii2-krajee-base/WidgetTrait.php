@@ -4,7 +4,7 @@
  * @package   yii2-krajee-base
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
- * @version   1.8.5
+ * @version   1.8.2
  */
 
 namespace kartik\base;
@@ -16,7 +16,6 @@ use yii\web\View;
 /**
  * Trait used for Krajee widgets.
  *
- * @property bool   $enablePopStateFix
  * @property string $pluginName
  * @property string $pluginDestroyJs
  * @property array  $options
@@ -129,13 +128,7 @@ trait WidgetTrait
      */
     protected function getPluginScript($name, $element = null, $callback = null, $callbackCon = null)
     {
-        if ($element) {
-            $id = $element;
-            $sel = "{$id}.kvSelector()";
-        } else {
-            $sel = "'#" . $this->options['id'] . "'";
-            $id = "jQuery({$sel})";
-        }
+        $id = $element == null ? "jQuery('#" . $this->options['id'] . "')" : $element;
         $script = '';
         if ($this->pluginOptions !== false) {
             $this->registerPluginOptions($name);
@@ -148,14 +141,13 @@ trait WidgetTrait
             }
             $script .= ";\n";
         }
-        $script = "kvInitPlugin({$sel}, function(){\n  {$this->pluginDestroyJs}\n  {$script}\n});\n";
         if (!empty($this->pluginEvents)) {
             foreach ($this->pluginEvents as $event => $handler) {
                 $function = new JsExpression($handler);
-                $script .= "kvListenEvent('{$event}', {$sel}, {$function});\n";
+                $script .= "{$id}.on('{$event}', {$function});\n";
             }
         }
-        return $script;
+        return $this->pluginDestroyJs . "\n" . $script;
     }
 
     /**
@@ -176,8 +168,8 @@ trait WidgetTrait
      * Registers a JS code block for the widget.
      *
      * @param string  $js the JS code block to be registered
-     * @param integer $pos the position at which the JS script tag should be inserted in a page. The possible values
-     *     are:
+     * @param integer $pos the position at which the JS script tag should be inserted in a page. The possible
+     *     values are:
      *      - [[POS_HEAD]]: in the head section
      *      - [[POS_BEGIN]]: at the beginning of the body section
      *      - [[POS_END]]: at the end of the body section
@@ -194,16 +186,11 @@ trait WidgetTrait
             return;
         }
         $view = $this->getView();
-        WidgetAsset::register($view);
         $view->registerJs($js, $pos, $key);
         if (!empty($this->pjaxContainerId) && ($pos === View::POS_LOAD || $pos === View::POS_READY)) {
             $pjax = 'jQuery("#' . $this->pjaxContainerId . '")';
             $evComplete = 'pjax:complete.' . hash('crc32', $js);
             $view->registerJs("{$pjax}.off('{$evComplete}').on('{$evComplete}',function(){ {$js} });");
-            // hack fix for browser back and forward buttons
-            if ($this->enablePopStateFix) {
-                $view->registerJs("window.addEventListener('popstate',function(){window.location.reload();});");
-            }
         }
     }
 }

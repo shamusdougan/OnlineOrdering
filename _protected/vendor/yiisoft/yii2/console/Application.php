@@ -156,25 +156,15 @@ class Application extends \yii\base\Application
      * This method parses the specified route and creates the corresponding child module(s), controller and action
      * instances. It then calls [[Controller::runAction()]] to run the action with the given parameters.
      * If the route is empty, the method will use [[defaultRoute]].
-     *
-     * For example, to run `public function actionTest($a, $b)` assuming that the controller has options the following
-     * code should be used:
-     *
-     * ```php
-     * \Yii::$app->runAction('controller/test', ['option' => 'value', $a, $b]);
-     * ```
-     *
      * @param string $route the route that specifies the action.
      * @param array $params the parameters to be passed to the action
-     * @return integer|Response the result of the action. This can be either an exit code or Response object.
-     * Exit code 0 means normal, and other values mean abnormal. Exit code of `null` is treaded as `0` as well.
+     * @return integer the status code returned by the action execution. 0 means normal, and other values mean abnormal.
      * @throws Exception if the route is invalid
      */
     public function runAction($route, $params = [])
     {
         try {
-            $res = parent::runAction($route, $params);
-            return is_object($res) ? $res : (int)$res;
+            return (int)parent::runAction($route, $params);
         } catch (InvalidRouteException $e) {
             throw new Exception("Unknown command \"$route\".", 0, $e);
         }

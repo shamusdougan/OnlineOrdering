@@ -253,9 +253,6 @@ class BaseFileHelper
      */
     public static function copyDirectory($src, $dst, $options = [])
     {
-        if ($src === $dst || strpos($dst, $src) === 0) {
-            throw new InvalidParamException('Trying to copy a directory to itself or a subdirectory.');
-        }
         if (!is_dir($dst)) {
             static::createDirectory($dst, isset($options['dirMode']) ? $options['dirMode'] : 0775, true);
         }
@@ -285,10 +282,7 @@ class BaseFileHelper
                         @chmod($to, $options['fileMode']);
                     }
                 } else {
-                    // recursive copy, defaults to true
-                    if (!isset($options['recursive']) || $options['recursive']) {
-                        static::copyDirectory($from, $to, $options);
-                    }
+                    static::copyDirectory($from, $to, $options);
                 }
                 if (isset($options['afterCopy'])) {
                     call_user_func($options['afterCopy'], $from, $to);

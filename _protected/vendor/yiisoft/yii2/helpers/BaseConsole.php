@@ -7,7 +7,7 @@
 
 namespace yii\helpers;
 
-use yii\console\Markdown as ConsoleMarkdown;
+use yii\console\Markdown;
 
 /**
  * BaseConsole provides concrete implementation for [[Console]].
@@ -19,7 +19,6 @@ use yii\console\Markdown as ConsoleMarkdown;
  */
 class BaseConsole
 {
-    // foreground color control codes
     const FG_BLACK  = 30;
     const FG_RED    = 31;
     const FG_GREEN  = 32;
@@ -28,7 +27,7 @@ class BaseConsole
     const FG_PURPLE = 35;
     const FG_CYAN   = 36;
     const FG_GREY   = 37;
-    // background color control codes
+
     const BG_BLACK  = 40;
     const BG_RED    = 41;
     const BG_GREEN  = 42;
@@ -37,7 +36,7 @@ class BaseConsole
     const BG_PURPLE = 45;
     const BG_CYAN   = 46;
     const BG_GREY   = 47;
-    // fonts style control codes
+
     const RESET       = 0;
     const NORMAL      = 0;
     const BOLD        = 1;
@@ -455,12 +454,12 @@ class BaseConsole
 
     /**
      * Converts Markdown to be better readable in console environments by applying some ANSI format
-     * @param string $markdown the markdown string.
-     * @return string the parsed result as ANSI formatted string.
+     * @param string $markdown
+     * @return string
      */
     public static function markdownToAnsi($markdown)
     {
-        $parser = new ConsoleMarkdown();
+        $parser = new Markdown();
         return $parser->parse($markdown);
     }
 
@@ -588,7 +587,7 @@ class BaseConsole
 
     /**
      * Returns true if the console is running on windows
-     * @return boolean
+     * @return bool
      */
     public static function isRunningOnWindows()
     {
@@ -692,7 +691,7 @@ class BaseConsole
      * Prints a string to STDOUT.
      *
      * @param string $string the string to print
-     * @return integer|boolean Number of bytes printed or false on error
+     * @return int|boolean Number of bytes printed or false on error
      */
     public static function stdout($string)
     {
@@ -703,7 +702,7 @@ class BaseConsole
      * Prints a string to STDERR.
      *
      * @param string $string the string to print
-     * @return integer|boolean Number of bytes printed or false on error
+     * @return int|boolean Number of bytes printed or false on error
      */
     public static function stderr($string)
     {
