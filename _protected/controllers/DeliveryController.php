@@ -15,6 +15,7 @@ use app\models\TrailerBins;
 use app\models\WeighbridgeTicket;
 use app\models\returns;
 use app\models\Clients;
+use app\models\Printers;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -313,8 +314,9 @@ class DeliveryController extends Controller
     	$actionItems[] = ['label'=>'back', 'button' => 'back', 'url'=> 'index', 'confirm' => 'Exit with out saving?']; 
 		$actionItems[] = ['label'=>'Save', 'button' => 'save', 'url'=> null, 'overrideAction' => '/delivery/update?id='.$model->id.'&exit=false', 'submit' => 'delivery-form', 'confirm' => 'Save Delivery?']; 
 		$actionItems[] = ['label'=>'Save & Exit', 'button' => 'save', 'url'=> null, 'submit' => 'delivery-form', 'confirm' => 'Save and Exit Delivery?']; 
+		$actionItems[] = ['label'=>'Print All', 'button' => 'print', 'print_url'=> 'print-all?id='.$model->id]; 
 		$actionItems[] = ['label'=>'Print Loader', 'button' => 'print', 'print_url'=> 'print-additive-loader-pdf?id='.$model->id."&autoPrint=1"]; 
-		$actionItems[] = ['label'=>'Labels', 'button' => 'print', 'print_url'=>'/delivery/print-label?id='.$model->id.'&autoPrint=1' ];
+		$actionItems[] = ['label'=>'Print Label', 'button' => 'print', 'print_url'=>'/delivery/print-label?id='.$model->id.'&autoPrint=1' ];
 		if($model->hasWeighbridgeTicket())
 			{
 			$actionItems[] = ['label'=>'Weigh Ticket', 'button' => 'tags', 'url'=> '/weighbridge-ticket/update?id='.$model->weighbridgeTicket->id]; 		
@@ -1083,9 +1085,7 @@ class DeliveryController extends Controller
 	$content = $this->renderPartial("additive-loader", [
 			'delivery' => $delivery,
 			]);
-
-
-		
+	
 	$methods = 
 		[
 		'SetFooter'=>['{PAGENO}'],
@@ -1109,25 +1109,38 @@ class DeliveryController extends Controller
 	    $localPdf->render();
 		}
 
-
+	//$methods['SetJS'] = "jsPrintSetup.print();"	;
 	$pdf = new Pdf([
+		'methods' => $methods,
 		'content' => $content,  
-		
 		'format' => Pdf::FORMAT_A4, 
  		'destination' => Pdf::DEST_BROWSER, 
-		'options' => ['title' => 'Additive Loader Sheet'],
-
+		'options' => ['title' => 'Additive Loader Sheet print:PrimoPDF'],
 		'methods' => $methods,
     	]);
 	
-	
-	
- 	return $pdf->render(); 
-
+ 	$pdf->render();
 	}
 	
     
-    
+    public function actionPrintAll($id)
+    {
+    	
+    	
+    	$a4PrinterListString = Printers::getA4PrinterString();
+    	$labelPrinterListString = Printers::getLabelPrinterString();
+    	
+			
+    	return  $this->render("print-all", 
+    		[
+    		'delivery_id' => $id,
+    		'a4_printer_list' => $a4PrinterListString,
+    		'label_printer_list' => $labelPrinterListString,
+    		]);
+    	
+    	
+	
+	}
     
     public function actionAjaxCheckLoads($truck_id, $trailer1_id, $trailer2_id, $load_total)
     {

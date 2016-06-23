@@ -79,6 +79,7 @@ if(User::hasRole('Admin'))
 		['label' => 'User Roles', 'url' => Url::toRoute('/user-management/role'), 'active'=> sideNavActive::widget(['controller' => "role"])], 
 		['label' => 'User Groups', 'url' => Url::toRoute('/user-management/auth-item-group'), 'active'=> sideNavActive::widget(['controller' => "auth-item-group"])], 
 		['label' => 'Email Queue', 'url' => Url::toRoute('/email-queues/index'), 'active'=> sideNavActive::widget(['controller' => "email-queues"])], 
+		['label' => 'Local Printers', 'url' => Url::toRoute('/printers/index'), 'active'=> sideNavActive::widget(['controller' => "printers"])], 
 		
 
 		]];

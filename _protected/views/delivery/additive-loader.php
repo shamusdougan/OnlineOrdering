@@ -1,6 +1,3 @@
-
-
-
 <?php
 
 if(!$delivery->deliveryLoad)
@@ -121,7 +118,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='50%'><b>Truck Bin: </b></td>
-	 						<td wdith='50%'><?= $deliveryLoadObject->getTruckBinsString() ?></td>
+	 						<td width='50%'><?= $deliveryLoadObject->getTruckBinsString() ?></td>
 	 					</tr>
 	 				</table>
 	 			
@@ -130,7 +127,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='50%'><b>Rego: </b></td>
-	 						<td wdith='50%'>
+	 						<td width='50%'>
 	 						<?
 	 						if($deliveryLoadObject->truck)
 	 							{
@@ -148,7 +145,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='55%'><b>Batch Size: </b></td>
-	 						<td wdith='45%'>
+	 						<td width='45%'>
 	 						<?= $delivery->num_batches." x ".number_format(($delivery->delivery_qty / $delivery->num_batches), 3)."T" ?>
 	 						</td>
 	 					</tr>
@@ -308,7 +305,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='50%'><b>Truck Bin: </b></td>
-	 						<td wdith='50%'><?= $deliveryLoadObject->getTruckBinsString() ?></td>
+	 						<td width='50%'><?= $deliveryLoadObject->getTruckBinsString() ?></td>
 	 					</tr>
 	 				</table>
 	 			
@@ -317,7 +314,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='50%'><b>Rego: </b></td>
-	 						<td wdith='50%'>	<?
+	 						<td width='50%'>	<?
 	 						if($deliveryLoadObject->truck)
 	 							{
 								echo  $deliveryLoadObject->truck->registration;
@@ -333,7 +330,7 @@ foreach($delivery->deliveryLoad as $deliveryLoadObject){
 	 				<table width='100%'>
 	 					<tr>
 	 						<td width='55%'><b>Batch Size: </b></td>
-	 						<td wdith='40%'>
+	 						<td width='40%'>
 	 						<?= $delivery->num_batches." x ".number_format(($delivery->delivery_qty / $delivery->num_batches), 3)."T" ?>
 	 						</td>
 	 					</tr>
