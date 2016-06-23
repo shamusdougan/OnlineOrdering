@@ -10,52 +10,61 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
 
-<div class='sapient_login_wrapper'>
-   	<div class='sapient_login_content'>
-		<div class="panel-body">
-
-			<?php $form = ActiveForm::begin([
-				'id'      => 'login-form',
-				'options'=>['autocomplete'=>'off'],
-				'validateOnBlur'=>false,
-				'fieldConfig' => [
-					'template'=>"{input}\n{error}",
-				],
-			]) ?>
-			<span class='login_title'>Irwins Online Ordering System</span><br><br>
-			<?= $form->field($model, 'username')
-				->textInput(['placeholder'=>'email address', 'autocomplete'=>'off']) ?>
-
-			<?= $form->field($model, 'password')
-				->passwordInput(['placeholder'=>$model->getAttributeLabel('password'), 'autocomplete'=>'off']) ?>
-
-			<?= $form->field($model, 'rememberMe')->checkbox(['value'=>true]) ?>
-
-			<?= Html::submitButton(
-				UserManagementModule::t('front', 'Login'),
-				['class' => 'btn btn-lg btn-primary btn-block']
-			) ?>
-
-			<div class="row registration-block">
-				<div class="col-sm-6">
-					<?= GhostHtml::a(
-						UserManagementModule::t('front', "Registration"),
-						['/user-management/auth/registration']
-					) ?>
+<div class="container" id="login-wrapper">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><?= UserManagementModule::t('front', 'Authorization') ?></h3>
 				</div>
-				<div class="col-sm-6 text-right">
-					<?= GhostHtml::a(
-						UserManagementModule::t('front', "Forgot password ?"),
-						['/user-management/auth/password-recovery']
+				<div class="panel-body">
 
- 					) ?>
- 					
- 					
- 			<?php ActiveForm::end() ?>
- 		</div>
- 	</div>
- </div>		
+					<?php $form = ActiveForm::begin([
+						'id'      => 'login-form',
+						'options'=>['autocomplete'=>'off'],
+						'validateOnBlur'=>false,
+						'fieldConfig' => [
+							'template'=>"{input}\n{error}",
+						],
+					]) ?>
 
+					<?= $form->field($model, 'username')
+						->textInput(['placeholder'=>$model->getAttributeLabel('username'), 'autocomplete'=>'off']) ?>
+
+					<?= $form->field($model, 'password')
+						->passwordInput(['placeholder'=>$model->getAttributeLabel('password'), 'autocomplete'=>'off']) ?>
+
+					<?= $form->field($model, 'rememberMe')->checkbox(['value'=>true]) ?>
+
+					<?= Html::submitButton(
+						UserManagementModule::t('front', 'Login'),
+						['class' => 'btn btn-lg btn-primary btn-block']
+					) ?>
+
+					<div class="row registration-block">
+						<div class="col-sm-6">
+							<?= GhostHtml::a(
+								UserManagementModule::t('front', "Registration"),
+								['/user-management/auth/registration']
+							) ?>
+						</div>
+						<div class="col-sm-6 text-right">
+							<?= GhostHtml::a(
+								UserManagementModule::t('front', "Forgot password ?"),
+								['/user-management/auth/password-recovery']
+							) ?>
+						</div>
+					</div>
+
+
+
+
+					<?php ActiveForm::end() ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <?php
 $css = <<<CSS
@@ -74,50 +83,6 @@ html, body {
 #login-wrapper .registration-block {
 	margin-top: 15px;
 }
-
-.sapient_login_wrapper
-{
-	height: 100%;
-	
-	background-image: url("/images/login_background.jpg");
-	background-size:cover;
-}
-
-.sapient_login_content
-{
-	width: 400px;
-	position: relative;
-	top: 30%;
-	margin-right: auto;
-	margin-left: auto;
-	background-color: #EFEFEF;
-	border-radius: 20px;
-	padding-top: 10px;
-
-}
-
-.panel-body
-{
-	width: 100%;
-	height: 100%;
-	padding-left: 50px;
-	padding-bottom: 10px;
-}
-
-.panel-body input[type=text], input[type=password]
-{
-	width: 300px;
-}
-
-.login_title
-{
-	font-size: 24px;	
-	
-}
-
-
-
-
 CSS;
 
 $this->registerCss($css);

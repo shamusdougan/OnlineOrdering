@@ -1109,7 +1109,7 @@ class DeliveryController extends Controller
 	    $localPdf->render();
 		}
 
-	//$methods['SetJS'] = "jsPrintSetup.print();"	;
+	//$methods['SetJS'] = "parent.test();"	;
 	$pdf = new Pdf([
 		'methods' => $methods,
 		'content' => $content,  

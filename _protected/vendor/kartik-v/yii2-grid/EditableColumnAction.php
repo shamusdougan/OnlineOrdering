@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
- * @version   3.1.0
+ * @version   3.1.1
  */
 
 namespace kartik\grid;
@@ -36,7 +36,7 @@ use yii\web\Response;
  * {
  *    public function actions()
  *    {
- *        return ArrayHelper::merge(parent::actions(), [
+ *        return array_replace_recursive(parent::actions(), [
  *            'editbook' => [                                       // identifier for your editable column action
  *                'class' => EditableColumnAction::className(),     // action class name
  *                'modelClass' => Book::className(),                // the model for the record being edited

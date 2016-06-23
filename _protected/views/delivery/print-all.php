@@ -1,8 +1,7 @@
 <?
-//use yii\helpers\Html;
+use yii\helpers\Html;
 
-//$this->title = 'Print All';
-
+$this->title = 'Print All';
 
 $this->registerJs("
 
@@ -52,18 +51,21 @@ $this->registerJs("
 	//jsPrintSetup.setPrinter(labelPrinter);
 	
 
-	if(confirm('Print all'))
-		{
+
+
+		
+		
+		
+	$('#additiveFrame').load(function(){
 		jsPrintSetup.setPrinter(labelPrinter);
-		jsPrintSetup.printWindow(window.frames[0]);	
-		}
+		jsPrintSetup.setOption('numCopies', 2);
+		
+		iframe = window.frames[0];
+		
+		jsPrintSetup.printWindow(window.frames[0]);
+		});
 
-
-	//$('#labelFrame').load(function(){
-	//	jsPrintSetup.setPrinter(labelPrinter);
-	//	jsPrintSetup.setOption('numCopies', 2);
-	//	jsPrintSetup.printWindow(window);
-	//	});
+	
 
 ");
 
@@ -71,17 +73,20 @@ $this->registerJs("
 
 ?>
 
- <h1><?= 'blah' //Html::encode($this->title) ?></h1>
+ <h1><?= Html::encode($this->title) ?></h1>
 
 <div style='width: 100%; border-radius: 5px; border: 1px solid; background-color: #EFEFEF; padding: 5px'>
 Print All, this will print all of the doucments below.<br>
 The Printer selected for each print job is selected by matching against a list of a4 or label printers configured under settings.<br>
 </div><br>
-<div>
+
+<A href='#' onClick='printAdditive();'>test</A>
+
+
+
 <div>
 	Additive/Loader Sheet printing to: <span id='additiveLoader'></span><br>
 	Labels printing to: <span id='labels'></span>
 </div><br>
-<iframe id='additiveFrame' src='http://local.irwinstockfeeds.com.au/delivery/print-additive-loader-pdf?id=<?= $delivery_id ?>'></iframe>
+<iframe name='additiveFrame' id='additiveFrame' src='http://local.irwinstockfeeds.com.au/delivery/print-additive-loader-pdf?id=<?= $delivery_id ?>'></iframe>
 <iframe id='labelFrame' src='http://local.irwinstockfeeds.com.au/delivery/print-label?id=<?= $delivery_id ?>'></iframe>
-</div>

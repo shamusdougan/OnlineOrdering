@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2016
- * @version   3.1.0
+ * @version   3.1.1
  */
 
 namespace kartik\grid;
@@ -370,7 +370,7 @@ class DataColumn extends \yii\grid\DataColumn
         if ($this->filterType === GridView::FILTER_CHECKBOX) {
             return Html::activeCheckbox($this->grid->filterModel, $this->attribute, $this->filterInputOptions);
         }
-        $options = ArrayHelper::merge($this->filterWidgetOptions, $options);
+        $options = array_replace_recursive($this->filterWidgetOptions, $options);
         /** @var \kartik\base\Widget $widgetClass */
         return $widgetClass::widget($options);
     }
