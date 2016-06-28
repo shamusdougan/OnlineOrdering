@@ -1079,11 +1079,12 @@ class DeliveryController extends Controller
 	{
 		
 	$this->layout = "print";
-		
 	$delivery = Delivery::findOne($id);
+	$printer = new printers();
 	
 	return $this->render("additive-loader", [
 			'delivery' => $delivery,
+			'printer' => $printer,
 			], false, true);
 	
 	}

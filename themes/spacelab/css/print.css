@@ -1,5 +1,6 @@
 body {
   background: rgb(204,204,204); 
+
 	}
 	
 page {
@@ -21,13 +22,9 @@ table  {
 
 page[size="A4"] {  
   width: 21cm;
-  height: 29.5cm; 
+  height: 29.7cm; 
 }
 
-page[size="A4"][layout="portrait"] {
-  width: 29.7cm;
-  height: 21cm;  
-}
 
 page[size="A3"] {
   width: 29.7cm;
@@ -49,23 +46,32 @@ page[size="A5"][layout="portrait"] {
   height: 14.8cm;  
 }
 
-@media print {
-  body{
-    margin: 0;
+@media print 
+
+	{
+	  body
+	  	{
+    	margin: 0;
+    	box-shadow: 0;
+    	background: grey;
+  		}
+  
+  	nav, aside 
+  		{
+      	display: none;
+   		}
     
-    width: 21cm;
-    box-shadow: 0;
-  }
+  	page
+  		{
+  		margin: 0;
+  		padding: 0;
+  		box-shadow: 0;
+  		}
   
-  page{
-  	margin: 0;
-  	padding: 0;
-  	box-shadow: 0;
-  }
-  
-  body {
-  	background: grey;
-  }
+  	
 
 }
 
+@page :right {
+  margin-left: 0cm;
+}

@@ -79,4 +79,81 @@ class Printers extends \yii\db\ActiveRecord
 		return implode(",", $printerList);
 		
 	}
+	
+	/**
+	* This function will check that the mozilla browser is being used and that the plugin is installed
+	* 
+	* @return
+	*/
+	public function checkPlugin($view)
+	{
+		
+		$view->registerJs("
+		ddd
+		
+		
+		");
+		
+		
+	}
+	
+	
+	
+	public function printSetup($view)
+	{
+		$view->registerJs("
+			if (typeof jsPrintSetup == 'undefined') {
+				$('#printer_warning').show();
+				}
+			else{
+				var a4Printers = '".$this->getA4PrinterString()."'.split(',');
+				var labelPrinters = '".$this->getLabelPrinterString()."'.split(',');
+				var localPrinters = jsPrintSetup.getPrintersList().split(',');
+				
+				//assign the default printer if a match cannot be found
+				var a4Printer = jsPrintSetup.getPrinter();
+				var labelPrinter = jsPrintSetup.getPrinter();
+				
+				//iterate through the a4 printers looking for a match
+				for (var i = 0; i < a4Printers.length; i++) 
+					{
+			    	if(localPrinters.indexOf(a4Printers[i]) != -1)
+			    		{
+						a4Printer = a4Printers[i];
+						}
+					}
+				
+				//iterate through the label printers looking for a match
+				for (var i = 0; i < labelPrinters.length; i++) 
+					{
+			    	if(localPrinters.indexOf(labelPrinters[i]) != -1)
+			    		{
+						labelPrinter = labelPrinters[i];
+						}
+					}	
+				
+				
+				//$('#additiveLoader').text(a4Printer);
+				//$('#labels').text(labelPrinter);
+				
+				jsPrintSetup.setSilentPrint(false);
+				jsPrintSetup.setPrinter(a4Printer);
+				jsPrintSetup.setOption('shrinkToFit', true);
+				jsPrintSetup.setOption('headerStrLeft', '');
+				jsPrintSetup.setOption('headerStrRight', '');
+				jsPrintSetup.setOption('printBGColors', true);
+				jsPrintSetup.setOption('marginTop', 0);
+			   	jsPrintSetup.setOption('marginBottom', 0);
+			   	jsPrintSetup.setOption('marginLeft', 0);
+			   	jsPrintSetup.setOption('marginRight', 0);
+				jsPrintSetup.print();
+				}
+			");
+			
+		echo "<div id='printer_warning' style='width: 800px; margin-bottom: 10px;  margin-left: auto; margin-right: auto; border-radius: 5px; border: 1px solid; background-color: #EFEFEF; padding: 5px; display: none'>
+						<b>Warning: </b><br>
+						The Printer plugin needs to be installed in order to allow automatic printing.<br>
+						Click and download the printer plugin from here <a href='https://addons.mozilla.org/en-US/firefox/addon/js-print-setup/'>Install</a>
+			</div>";
+	}
 }

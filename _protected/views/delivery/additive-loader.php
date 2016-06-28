@@ -1,26 +1,17 @@
 <?php
+use app\models\printers;
 
-$this->registerJs("
 
-	jsPrintSetup.setSilentPrint(false);
-	jsPrintSetup.setPrinter('CutePDF Writer');
-	jsPrintSetup.setOption('shrinkToFit', true);
-	jsPrintSetup.setOption('headerStrLeft', '');
-	jsPrintSetup.setOption('headerStrRight', '');
-	jsPrintSetup.setOption('printBGColors', true);
-	jsPrintSetup.setOption('marginTop', 0);
-   	jsPrintSetup.setOption('marginBottom', 0);
-   	jsPrintSetup.setOption('marginLeft', 0);
-   	jsPrintSetup.setOption('marginRight', 0);
-	jsPrintSetup.print();
-	
-");
+$printer->printSetup($this);
+
+
 
 
 if(!$delivery->deliveryLoad)
 	{
 	?>
 	<page size="A4">
+	
 	<div style='width: 100%; height: 150px;'>
 		<table width='100%' >
 			<tr>
