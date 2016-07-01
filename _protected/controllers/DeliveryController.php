@@ -1075,12 +1075,14 @@ class DeliveryController extends Controller
 	* 
 	* @return
 	*/
-    public function actionPrintAdditiveLoader($id, $autoPrint = false)
+    public function actionPrintAdditiveLoader($id, $autoPrint = true)
 	{
 		
 	$this->layout = "print";
 	$delivery = Delivery::findOne($id);
 	$printer = new printers();
+	$printer->type = Printers::PRINTTYPE_A4;
+	$printer->autoprint = $autoPrint;
 	
 	return $this->render("additive-loader", [
 			'delivery' => $delivery,
@@ -1172,7 +1174,7 @@ class DeliveryController extends Controller
 	
 	
 	
-public function actionPrintLabel($id)
+public function actionPrintLabel($id, $autoPrint = true)
 	{
 		
 	$delivery = Delivery::findOne($id);
@@ -1180,7 +1182,9 @@ public function actionPrintLabel($id)
 	$this->layout = "print";
 	$delivery = Delivery::findOne($id);
 	$printer = new printers();
-	$printer->orientation = "";
+	$printer->type = Printers::PRINTTYPE_LABEL;
+	$printer->autoprint = $autoPrint;
+	
 	
 	return $this->render("_label", [
 			'delivery' => $delivery,

@@ -29,9 +29,13 @@ page[size="A4"] {
 
 page[size='label']
 {
-	width: 4.6cm;
 	height: 9.6cm;
+	width: 4.6cm;
 	padding: 0.2cm 0.2cm 0.2cm 0.2cm;
+	transform: rotate(270deg);
+	position: relative;
+	top: -2.4cm;
+	left: 2.6cm;
 }
 
 page[size="A3"] {

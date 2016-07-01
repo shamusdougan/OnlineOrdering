@@ -37,20 +37,6 @@ $this->registerJs("
 	$('#additiveLoader').text(a4Printer);
 	$('#labels').text(labelPrinter);
 	
-	//alert('hello world');
-	//Print the Additive Loader Sheet
-	//jsPrintSetup.setPrinter(a4Printer);
-	//jsPrintSetup.printWindow(window.frames[0]);	
-	
-
-	
-	
-
-	//Printer the Labels
-	//jsPrintSetup.setPrinter(labelPrinter);
-	//jsPrintSetup.setOption('numCopies', 2);
-	//jsPrintSetup.setPrinter(labelPrinter);
-	
 
 	
 
@@ -85,6 +71,6 @@ The Printer selected for each print job is selected by matching against a list o
 	Additive/Loader Sheet printing to: <span id='additiveLoader'></span><br>
 	Labels printing to: <span id='labels'></span>
 </div><br>
-<iframe id='additiveFrame' width='200' height='200' src='http://local.irwinstockfeeds.com.au/delivery/print-additive-loader-html?id=<?= $delivery_id ?>'></iframe>
-<iframe id='labelFrame' src='http://local.irwinstockfeeds.com.au/delivery/print-label?id=<?= $delivery_id ?>'></iframe>
+<iframe id='additiveFrame' width='200' height='200' src='http://local.irwinstockfeeds.com.au/delivery/print-additive-loader?id=<?= $delivery_id ?>&autoPrint=false'></iframe>
+<iframe id='labelFrame' src='http://local.irwinstockfeeds.com.au/delivery/print-label?id=<?= $delivery_id ?>'&autoPrint=false></iframe>
 </div>

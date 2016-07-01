@@ -1,15 +1,20 @@
 <?php
 
  $printer->printSetup($this);
+ 
+ print_r($printer);
+ 
+ 
 ?>
 <page size='label'>
-<table style='width: 100%; height: 100%;'>
+
+<table style='width: 100%; height: 100%;  '>
 	<tr>
 		<td style='height: 25%; width:100%; text-align: center'><img src="/images/irwin-logo.gif" ></td>
 	</tr>
 	<tr>
 		<td style='height: 75%;'> 
-			<table style=' padding-top: 20px; table-layout: fixed; width: 100%; font-size: 14px' >
+			<table style='table-layout: fixed; width: 100%; font-size: 14px' >
 				<tr>
 					<td width='100%'><b>Date:</b> <?= date("d M Y", strtotime($delivery->delivery_on)) ?></td>
 				</tr>
@@ -35,5 +40,10 @@
 			</table>
 		</td>
 	</tr>
+	
 </table>
+
 </page>
+
+
+
