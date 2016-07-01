@@ -1,17 +1,17 @@
 <?php
- use app\models\Lookup;
- 
-?>
 
-<table rotate="-90" style='width: 200px; height: 430px; border: 1px solid;'>
+ $printer->printSetup($this);
+?>
+<page size='label'>
+<table style='width: 100%; height: 100%;'>
 	<tr>
-		<td style='height: 160px; width:100%; text-align: center'><img src="images/irwin-logo.gif" ></td>
+		<td style='height: 25%; width:100%; text-align: center'><img src="/images/irwin-logo.gif" ></td>
 	</tr>
 	<tr>
-		<td style='height: 270px;'> 
+		<td style='height: 75%;'> 
 			<table style=' padding-top: 20px; table-layout: fixed; width: 100%; font-size: 14px' >
 				<tr>
-					<td width='100%'><b>Date:</b> <?= $delivery->delivery_on ?></td>
+					<td width='100%'><b>Date:</b> <?= date("d M Y", strtotime($delivery->delivery_on)) ?></td>
 				</tr>
 				<tr>
 					<td ><b>Customer:</b> <?= $delivery->customerOrder->client->Company_Name ?></td>
@@ -36,3 +36,4 @@
 		</td>
 	</tr>
 </table>
+</page>

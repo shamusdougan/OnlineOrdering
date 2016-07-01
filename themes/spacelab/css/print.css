@@ -11,6 +11,8 @@ page {
   box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
 }
 
+
+
 table  {
 	border-collapse: collapse;
 }
@@ -25,6 +27,12 @@ page[size="A4"] {
   height: 29.7cm; 
 }
 
+page[size='label']
+{
+	width: 4.6cm;
+	height: 9.6cm;
+	padding: 0.2cm 0.2cm 0.2cm 0.2cm;
+}
 
 page[size="A3"] {
   width: 29.7cm;
@@ -49,29 +57,18 @@ page[size="A5"][layout="portrait"] {
 @media print 
 
 	{
-	  body
+	  page, body
 	  	{
-    	margin: 0;
-    	box-shadow: 0;
-    	background: grey;
+    	margin: 0 0 0 0;
+    	box-shadow: 0 0 0;
+    	background: white;
   		}
   
-  	nav, aside 
-  		{
-      	display: none;
-   		}
+  	
     
-  	page
-  		{
-  		margin: 0;
-  		padding: 0;
-  		box-shadow: 0;
-  		}
+  	
   
   	
 
 }
 
-@page :right {
-  margin-left: 0cm;
-}

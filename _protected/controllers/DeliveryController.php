@@ -1177,6 +1177,18 @@ public function actionPrintLabel($id)
 		
 	$delivery = Delivery::findOne($id);
 	
+	$this->layout = "print";
+	$delivery = Delivery::findOne($id);
+	$printer = new printers();
+	$printer->orientation = "";
+	
+	return $this->render("_label", [
+			'delivery' => $delivery,
+			'printer' => $printer,
+			], false, true);
+	
+
+	/*
 	$content = $this->renderPartial("_label", [
 			'delivery' => $delivery,
 
@@ -1203,7 +1215,9 @@ public function actionPrintLabel($id)
 	
 	
  	return $pdf->render(); 
-
+	*/
+	
+	
 	}
 
 }
